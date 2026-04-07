@@ -93,6 +93,7 @@ function openAuthModal(mode = "login") {
   authMode = mode;
   fillProfileForm(getSavedProfile());
   applyAuthMode();
+  showAuthMessage("");
   modal.classList.add("active");
   initGoogleSignIn();
 }
@@ -100,6 +101,13 @@ function openAuthModal(mode = "login") {
 function closeAuthModal() {
   const modal = document.getElementById("authModal");
   if (modal) modal.classList.remove("active");
+}
+
+function showAuthMessage(message = "", isError = true) {
+  const el = document.getElementById("authMessage");
+  if (!el) return;
+  el.innerText = message;
+  el.style.color = isError ? "#b00020" : "#1b7f3a";
 }
 
 function parseJwtPayload(token) {
@@ -115,7 +123,7 @@ function parseJwtPayload(token) {
 async function handleGoogleCredential(response) {
   const payload = parseJwtPayload(response.credential || "");
   if (!payload?.email) {
-    alert("Google профіль не отримано");
+    showAuthMessage("Google профіль не отримано");
     return;
   }
 
@@ -128,9 +136,9 @@ async function handleGoogleCredential(response) {
     setSavedProfile(saved);
     updateAuthButton();
     closeAuthModal();
-    alert("Вхід через Google успішний");
+    showAuthMessage("");
   } catch (error) {
-    alert("Помилка Google входу");
+    showAuthMessage("Помилка Google входу");
   }
 }
 
@@ -170,15 +178,15 @@ async function submitAuthForm(e) {
     if (authMode === "register") {
       const termsChecked = document.getElementById("termsCheck")?.checked;
       if (!profile.name || !profile.lastName || !profile.phone || !profile.email || !profile.password || !profile.passwordConfirm) {
-        alert("Заповни ім'я, прізвище, телефон, email, пароль і повтор пароля");
+        showAuthMessage("Заповни ім'я, прізвище, телефон, email, пароль і повтор пароля");
         return;
       }
       if (profile.password !== profile.passwordConfirm) {
-        alert("Паролі не співпадають");
+        showAuthMessage("Паролі не співпадають");
         return;
       }
       if (!termsChecked) {
-        alert("Підтвердь згоду з правилами");
+        showAuthMessage("Підтвердь згоду з правилами");
         return;
       }
       saved = await registerUser({
@@ -190,7 +198,7 @@ async function submitAuthForm(e) {
       });
     } else {
       if (!profile.email || !profile.password) {
-        alert("Вкажи email і пароль");
+        showAuthMessage("Вкажи email і пароль");
         return;
       }
       saved = await loginUser({ phone: profile.phone, email: profile.email, password: profile.password });
@@ -199,9 +207,9 @@ async function submitAuthForm(e) {
     setSavedProfile(saved);
     updateAuthButton();
     closeAuthModal();
-    alert(authMode === "register" ? "Реєстрація успішна" : "Вхід успішний");
+    showAuthMessage("", false);
   } catch (error) {
-    alert(authMode === "register" ? "Помилка збереження даних" : "Користувача не знайдено");
+    showAuthMessage(authMode === "register" ? "Помилка збереження даних" : "Користувача не знайдено");
   }
 }
 
