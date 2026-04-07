@@ -12,21 +12,22 @@ app.use(cors({
 // JSON
 app.use(express.json());
 
-// 🔥 Статика (frontend)
+// 🔥 СТАТИКА
 app.use(express.static(path.join(__dirname, "../client")));
 
-// 🔥 Роут для товарів
-const productsRoute = require("./routes/products")
-app.use("/products", productsRoute);
+// 🔥 РОУТИ (ВАЖЛИВО — з /api)
+const productsRoute = require("./routes/products");
 const usersRoute = require("./routes/users");
-app.use("/users", usersRoute);
 const popularityRoute = require("./routes/popularity");
-app.use("/popularity", popularityRoute);
 
-// 🔥 Картинки (не обов'язково, але залишимо)
+app.use("/api/products", productsRoute);
+app.use("/api/users", usersRoute);
+app.use("/api/popularity", popularityRoute);
+
+// 🔥 КАРТИНКИ
 app.use("/images", express.static(path.join(__dirname, "../client/images")));
 
-// 🚀 Запуск сервера
+// 🚀 PORT
 const PORT = process.env.PORT || 3000;
 
 app.listen(PORT, () => {

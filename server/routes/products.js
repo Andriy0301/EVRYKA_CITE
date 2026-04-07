@@ -3,9 +3,22 @@ const router = express.Router();
 const fs = require("fs");
 const path = require("path");
 
-const products = require("../data/products.json");
+// правильні шляхи (важливо для Render)
+const productsPath = path.join(__dirname, "../data/products.json");
 const popularityPath = path.join(__dirname, "../data/popularity.json");
 
+// читаємо товари
+function readProducts() {
+  try {
+    const raw = fs.readFileSync(productsPath, "utf8");
+    return raw ? JSON.parse(raw) : [];
+  } catch (error) {
+    console.error("Error reading products:", error);
+    return [];
+  }
+}
+
+// читаємо популярність
 function readPopularity() {
   try {
     if (!fs.existsSync(popularityPath)) {
@@ -16,28 +29,49 @@ function readPopularity() {
     const raw = fs.readFileSync(popularityPath, "utf8");
     return raw ? JSON.parse(raw) : {};
   } catch (error) {
+    console.error("Error reading popularity:", error);
     return {};
   }
 }
 
-
-// всі товари
+// 👉 ВСІ ТОВАРИ
 router.get("/", (req, res) => {
-  const sort = req.query.sort;
-  const list = [...products];
+  try {
+    const sort = req.query.sort;
+    const products = readProducts();
 
-  if (sort === "popular") {
-    const popularity = readPopularity();
-    list.sort((a, b) => (popularity[b.id] || 0) - (popularity[a.id] || 0));
+    let list = [...products];
+
+    if (sort === "popular") {
+      const popularity = readPopularity();
+
+      list.sort((a, b) => {
+        return (popularity[b.id] || 0) - (popularity[a.id] || 0);
+      });
+    }
+
+    res.json(list);
+  } catch (error) {
+    console.error("GET /products error:", error);
+    res.status(500).json({ error: "Server error" });
   }
-
-  res.json(list);
 });
 
-// один товар
+// 👉 ОДИН ТОВАР
 router.get("/:id", (req, res) => {
-  const product = products.find(p => p.id == req.params.id);
-  res.json(product);
+  try {
+    const products = readProducts();
+    const product = products.find(p => p.id == req.params.id);
+
+    if (!product) {
+      return res.status(404).json({ error: "Product not found" });
+    }
+
+    res.json(product);
+  } catch (error) {
+    console.error("GET /products/:id error:", error);
+    res.status(500).json({ error: "Server error" });
+  }
 });
 
 module.exports = router;
