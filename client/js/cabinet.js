@@ -62,9 +62,8 @@ async function saveCabinet(e) {
     const updated = await updateUserProfile(payload);
     setProfile(updated);
     renderInitials(updated);
-    alert("Профіль оновлено");
   } catch (error) {
-    alert("Не вдалося зберегти профіль");
+    console.error("Не вдалося зберегти профіль", error);
   }
 }
 

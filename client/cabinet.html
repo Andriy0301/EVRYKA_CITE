@@ -45,7 +45,15 @@
     
   </section>
 
-  <main class="container">
+  <main class="container cabinet-layout">
+    <aside class="cabinet-sidebar">
+      <button class="cabinet-nav-btn active" type="button">Особисті дані</button>
+      <button class="cabinet-nav-btn" type="button">Мої замовлення</button>
+      <button class="cabinet-nav-btn" type="button">Бонуси</button>
+      <button class="cabinet-nav-btn" type="button">Обрані</button>
+      <button id="logoutBtn" class="cabinet-nav-btn logout" type="button">Вийти</button>
+    </aside>
+
     <section class="products cabinet-card">
       <h2>Мої дані</h2>
       <form id="cabinetForm" class="cabinet-form">
@@ -65,7 +73,6 @@
         <label>Адреса<input id="cabAddress" type="text"></label>
         <div class="cabinet-actions-row">
           <button class="checkout-btn" type="submit">Зберегти</button>
-          <button id="logoutBtn" class="clear-btn" type="button">Вийти</button>
         </div>
       </form>
     </section>
