@@ -638,8 +638,8 @@ a {
 }
 
 .favorite-btn {
-  width: 24px;
-  height: 24px;
+  width: 28px;
+  height: 28px;
   padding: 0;
   border: none;
   background: transparent;
@@ -659,8 +659,8 @@ a {
   border-radius: 0;
   margin-top: 0;
   padding: 0;
-  width: 24px;
-  height: 24px;
+  width: 28px;
+  height: 28px;
 }
 
 .favorite-btn:hover {
@@ -702,14 +702,14 @@ a {
 }
 
 .heart-icon {
-  width: 22px;
-  height: 22px;
+  width: 26px;
+  height: 26px;
 }
 
 .heart-icon path {
   fill: transparent;
   stroke: #d10035;
-  stroke-width: 1.6;
+  stroke-width: 2.2;
   transition: 0.2s;
 }
 
@@ -723,11 +723,24 @@ a {
   background: transparent;
   border: none;
   box-shadow: none;
+  width: 34px;
+  height: 34px;
 }
 
 #favoritesBtn:hover {
   background: transparent;
   color: inherit;
+  box-shadow: none;
+}
+
+.product button.favorite-btn:hover,
+.product button.favorite-btn:focus,
+.product button.favorite-btn:active,
+#favoritesBtn:focus,
+#favoritesBtn:active {
+  background: transparent !important;
+  box-shadow: none !important;
+  border-radius: 0 !important;
 }
 
 #favoritesSidebar .cart-header {
