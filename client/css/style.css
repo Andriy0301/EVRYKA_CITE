@@ -659,8 +659,9 @@ a {
   border-radius: 0;
   margin-top: 0;
   padding: 0;
-  width: 28px;
-  height: 28px;
+  width: 22px;
+  height: 22px;
+  transform: translate(-4px, 3px);
 }
 
 .favorite-btn:hover {
@@ -706,10 +707,20 @@ a {
   height: 26px;
 }
 
+.product .favorite-btn .heart-icon {
+  width: 20px;
+  height: 20px;
+}
+
+#favoritesBtn .heart-icon {
+  width: 32px;
+  height: 32px;
+}
+
 .heart-icon path {
   fill: transparent;
   stroke: #d10035;
-  stroke-width: 2.2;
+  stroke-width: 28;
   transition: 0.2s;
 }
 
