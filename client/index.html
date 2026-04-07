@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8">
+  <title>EVRYKA</title>
+  <link rel="stylesheet" href="css/style.css">
+<link href="https://fonts.googleapis.com/css2?family=PT+Sans+Caption:wght@400;700&display=swap" rel="stylesheet">
+<script src="https://accounts.google.com/gsi/client" async defer></script>
+</head>
+
+<body>
+
+<!-- 🔥 HEADER -->
+<header class="header">
+
+  <!-- 🔥 ЛОГО (клік на головну) -->
+  <a href="index.html" class="logo">
+  <img src="images/TOP_logo.png">
+</a>
+
+
+<div class="search-box">
+  <input type="text" placeholder="Пошук товарів..." id="search">
+
+  <div id="searchResults" class="search-results"></div>
+</div>
+
+  <!-- 📌 МЕНЮ -->
+  <nav class="nav">
+    <a href="#" class="active">ГОЛОВНА</a>
+<a href="#catalog" onclick="openCatalog(event)">КАТАЛОГ</a>
+<a href="#">ЗАМОВИТИ 3D ДРУК</a>
+<a href="#">КОНТАКТИ</a>
+  </nav>
+
+  <div class="header-actions">
+    <button id="authBtn" class="auth-icon-btn" title="Особистий кабінет">
+      <svg viewBox="0 0 24 24" aria-hidden="true">
+        <path d="M12 12c2.8 0 5-2.2 5-5s-2.2-5-5-5-5 2.2-5 5 2.2 5 5 5Zm0 2c-4.4 0-8 2.7-8 6v2h16v-2c0-3.3-3.6-6-8-6Z"></path>
+      </svg>
+    </button>
+    <!-- 🛒 КОШИК -->
+    <div class="cart" onclick="toggleCart(true)">
+      <img src="images/cart.jpg" class="cart-icon">
+      <span id="cartCount">0</span>
+    </div>
+  </div>
+
+</header>
+</header>
+
+<!-- 🔥 HERO -->
+<section class="hero">
+  <div class="hero-left">
+    <div class="brand">
+      <img src="images/text_logo.png" alt="logo" class="hero-logo">
+    </div>
+    <p class="slogan">Втілюємо ідеї в реальність</p>
+  </div>
+
+  <div class="hero-right">
+  <img src="images/hero.png" class="hero-image">
+</div>
+</section>
+
+<!-- 🔥 ОСНОВНИЙ КОНТЕНТ -->
+<div class="container">
+
+<div class="category-tabs">
+  <select id="sortSelect" class="sort-select">
+    <option value="default">Стандартне сортування</option>
+    <option value="popular">За популярністю</option>
+  </select>
+  <button class="tab active" data-cat="all">ВСІ</button>
+
+  <button class="tab" data-cat="Инструменты">ІНСТРУМЕНТИ</button>
+  <button class="tab" data-cat="Корпусы">КОРПУСИ</button>
+  <button class="tab" data-cat="Циклоны">ЦИКЛОНИ</button>
+  <button class="tab" data-cat="Игрушки">ІГРАШКИ</button>
+  <button class="tab" data-cat="Брелоки">БРЕЛКИ</button>
+</div>
+  <!-- 🔥 КАТАЛОГ -->
+  <section id="catalog" class="products">
+
+    <h2>Каталог товарів</h2>
+
+    <!-- 🔥 товари -->
+    <div id="products"></div>
+
+  </section>
+
+</div>
+
+<!-- 🔥 КОШИК -->
+<div id="cartOverlay" class="cart-overlay" onclick="toggleCart(false)"></div>
+
+<div id="cartSidebar" class="cart-sidebar">
+
+  <!-- HEADER -->
+  <div class="cart-header">
+    <h3>Кошик</h3>
+    <button class="close-btn" onclick="toggleCart(false)">✖</button>
+  </div>
+
+  <!-- ITEMS -->
+  <div id="cartItems" class="cart-items"></div>
+
+  <!-- FOOTER -->
+  <div class="cart-footer">
+
+    <div class="cart-total">
+      <span>Разом</span>
+      <div>
+        <b id="cartTotal">0</b>
+        <span>грн</span>
+      </div>
+    </div>
+
+    <button class="checkout-btn" onclick="checkout()">
+      Оформити
+    </button>
+
+    <button class="clear-btn" onclick="clearCart()">
+      Очистити кошик
+    </button>
+
+  </div>
+
+</div>
+
+<div id="authModal" class="auth-modal">
+  <div class="auth-modal-content auth-dark">
+    <button id="closeAuthBtn" class="close-btn">✖</button>
+    <h3 id="authTitle" class="auth-title">Log In</h3>
+    <form id="registerForm">
+      <input id="regName" class="auth-input auth-register-only" type="text" placeholder="Ім'я">
+      <input id="regPhone" class="auth-input auth-register-only" type="tel" placeholder="Телефон">
+      <input id="regEmail" class="auth-input" type="email" placeholder="Email Address*">
+      <input id="authPassword" class="auth-input" type="password" placeholder="Password*">
+      <input id="regCity" class="auth-input auth-register-only" type="text" placeholder="Місто доставки">
+      <input id="regWarehouse" class="auth-input auth-register-only" type="text" placeholder="Відділення пошти">
+      <input id="regAddress" class="auth-input auth-register-only" type="text" placeholder="Адреса (за потреби)">
+      <button id="authSubmitBtn" type="submit" class="auth-submit-btn">Log In</button>
+      <div class="auth-links">
+        <button id="switchRegisterBtn" type="button" class="auth-link-btn">Create Your Account</button>
+        <button id="switchLoginBtn" type="button" class="auth-link-btn">Forgot</button>
+      </div>
+      <label class="auth-terms auth-register-only">
+        <input id="termsCheck" type="checkbox">
+        <span>I agree to Terms of Use and Privacy Policy</span>
+      </label>
+      <div class="auth-divider">
+        <span>Login with other accounts</span>
+      </div>
+      <div id="googleSignInBtn" class="google-btn-wrap"></div>
+    </form>
+  </div>
+</div>
+
+<div id="products" class="products-grid"></div>
+
+<div class="load-more">
+  <button onclick="loadMore()">
+  Показати всі товари
+</button>
+</div>
+
+<footer class="footer">
+
+  <div class="footer-container">
+
+    <!-- 🔹 МЕНЮ -->
+    <div class="footer-col">
+      <h4>Меню</h4>
+      <a href="index.html">Головна</a>
+      <a href="#catalog">Магазин</a>
+      <a href="#">Покупцям</a>
+      <a href="#">Контакти</a>
+    </div>
+
+    <!-- 🔹 КАБІНЕТ -->
+    <div class="footer-col">
+      <h4>Особистий кабінет</h4>
+      <a href="#">Історія замовлень</a>
+      <a href="#">Мої дані</a>
+      <a href="#">Обране</a>
+    </div>
+
+    <!-- 🔹 КОНТАКТИ -->
+    <div class="footer-col">
+      <h4>Контакти</h4>
+      <p>Є питання? Зателефонуйте:</p>
+      <a href="tel:+380955222911" class="phone">+38 (050) 166 22 71</a>
+    </div>
+
+    <!-- 🔹 СОЦІАЛКИ -->
+    <div class="footer-col">
+      <h4>Ми в соцмережах</h4>
+
+      <div class="socials">
+        <a href="#">📷</a>
+        <a href="#">💬</a>
+      </div>
+
+      <p class="pay-text">Оплата</p>
+      <div class="payments">
+        <span>VISA</span>
+        <span>MasterCard</span>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- 🔻 НИЖНЯ ЧАСТИНА -->
+  <div class="footer-bottom">
+    <p>© 2026 EVRYKA</p>
+    <span>Українська</span>
+  </div>
+
+</footer>
+
+
+<!-- 🔥 JS -->
+<script src="js/api.js"></script>
+<script src="js/cart.js"></script>
+<script src="js/app.js"></script>
+
+</body>
+</html>

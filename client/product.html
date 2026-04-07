@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Товар</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<header class="header">
+
+  <!-- 🔥 ЛОГО (клік на головну) -->
+  <a href="index.html" class="logo">
+  <img src="images/TOP_logo.png">
+</a>
+
+  <!-- 🔍 ПОШУК -->
+ <div class="search-box">
+  <input type="text" placeholder="Пошук товарів..." id="search">
+
+  <div id="searchResults" class="search-results"></div>
+</div>
+
+  <!-- 📌 МЕНЮ -->
+  <nav class="nav">
+    <a href="index.html" class="active">ГОЛОВНА</a>
+<a href="#">КАТАЛОГ</a>
+<a href="#">ЗАМОВИТИ 3D ДРУК</a>
+<a href="#">КОНТАКТИ</a>
+  </nav>
+
+  <!-- 🛒 КОШИК -->
+  <div class="cart" onclick="toggleCart(true)">
+  <img src="images/cart.jpg" class="cart-icon">
+  <span id="cartCount">0</span>
+</div>
+
+</header>
+<div id="cartOverlay" class="cart-overlay" onclick="toggleCart(false)"></div>
+
+<div id="cartSidebar" class="cart-sidebar">
+
+  <!-- HEADER -->
+  <div class="cart-header">
+    <h3>Кошик</h3>
+    <button class="close-btn" onclick="toggleCart(false)">✖</button>
+  </div>
+
+  <!-- ITEMS -->
+  <div id="cartItems" class="cart-items"></div>
+
+  <!-- FOOTER -->
+  <div class="cart-footer">
+
+    <div class="cart-total">
+      <span>Разом</span>
+      <div>
+        <b id="cartTotal">0</b>
+        <span>грн</span>
+      </div>
+    </div>
+
+    <button class="checkout-btn" onclick="checkout()">
+      Оформити
+    </button>
+
+    <button class="clear-btn" onclick="clearCart()">
+      Очистити кошик
+    </button>
+
+  </div>
+
+</div>
+
+<div class="container">
+
+<div class="product-nav">
+
+  <!-- 🔙 кнопка -->
+  <a href="index.html" class="back-btn">
+  <svg class="back-icon" viewBox="0 0 24 24">
+    <path d="M15 6l-6 6 6 6" />
+  </svg>
+  Назад
+</a>
+
+  <!-- 🧭 breadcrumb -->
+  <div class="breadcrumbs">
+    <a href="index.html">Головна</a>
+    <span>/</span>
+
+    <a href="index.html#catalog">Каталог</a>
+    <span>/</span>
+
+    <span id="productCategory">Категорія</span>
+    <span>/</span>
+
+    <span id="breadcrumbTitle">Товар</span>
+  </div>
+
+</div>
+
+  <div class="product-page">
+
+    <!-- 🔥 галерея -->
+    <div class="product-gallery">
+      <div class="thumbnails" id="thumbnails"></div>
+
+      <div class="main-image">
+        <img id="mainImage" src="">
+      </div>
+    </div>
+
+    <!-- 🔥 інформація -->
+    <div class="product-info">
+      <h2 id="title"></h2>
+
+      <p class="price" id="price"></p>
+
+      <div class="qty-wrapper">
+        
+  <button onclick="changeProductQty(-1)" class="qty-btn">
+    <svg viewBox="0 0 24 24">
+      <path d="M5 12h14"/>
+    </svg>
+  </button>
+
+  <input type="number" id="qty" value="1" min="1" class="qty-input">
+
+  <button onclick="changeProductQty(1)" class="qty-btn">
+    <svg viewBox="0 0 24 24">
+      <path d="M12 5v14M5 12h14"/>
+    </svg>
+  </button>
+
+</div>
+
+      <button class="buy-btn" id="buyBtn">КУПИТИ</button>
+
+      <div class="desc" id="description"></div>
+    </div>
+
+  </div>
+</div>
+
+<footer class="footer">
+
+  <div class="footer-container">
+
+    <!-- 🔹 МЕНЮ -->
+    <div class="footer-col">
+      <h4>Меню</h4>
+      <a href="index.html">Головна</a>
+      <a href="#catalog">Магазин</a>
+      <a href="#">Покупцям</a>
+      <a href="#">Контакти</a>
+    </div>
+
+    <!-- 🔹 КАБІНЕТ -->
+    <div class="footer-col">
+      <h4>Особистий кабінет</h4>
+      <a href="#">Історія замовлень</a>
+      <a href="#">Мої дані</a>
+      <a href="#">Обране</a>
+    </div>
+
+    <!-- 🔹 КОНТАКТИ -->
+    <div class="footer-col">
+      <h4>Контакти</h4>
+      <p>Є питання? Зателефонуйте:</p>
+      <a href="tel:+380955222911" class="phone">+38 (050) 166 22 71</a>
+    </div>
+
+    <!-- 🔹 СОЦІАЛКИ -->
+    <div class="footer-col">
+      <h4>Ми в соцмережах</h4>
+
+      <div class="socials">
+        <a href="#">📷</a>
+        <a href="#">💬</a>
+      </div>
+
+      <p class="pay-text">Оплата</p>
+      <div class="payments">
+        <span>VISA</span>
+        <span>MasterCard</span>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- 🔻 НИЖНЯ ЧАСТИНА -->
+  <div class="footer-bottom">
+    <p>© 2026 EVRYKA</p>
+    <span>Українська</span>
+  </div>
+
+</footer>
+
+
+<script src="js/api.js"></script>
+<script src="js/product.js"></script>
+<script src="js/cart.js"></script>
+<script src="js/app.js"></script>
+
+</body>
+</html>
