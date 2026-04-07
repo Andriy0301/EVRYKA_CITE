@@ -3,8 +3,7 @@ async function loadProduct() {
   const id = Number(params.get("id"));
 
   try {
-    const res = await fetch(`${API_URL}/products`);
-    const products = await res.json();
+    const products = await getProducts();
 
     const product = products.find(p => Number(p.id) === id);
 
@@ -15,6 +14,8 @@ async function loadProduct() {
 
     // 🔥 дані
     document.getElementById("title").innerText = product.name;
+    document.getElementById("breadcrumbTitle").innerText = product.name;
+    document.getElementById("productCategory").innerText = product.category || "Товари";
     document.getElementById("price").innerText = product.price + " грн";
     document.getElementById("description").innerHTML = product.description || "";
 
