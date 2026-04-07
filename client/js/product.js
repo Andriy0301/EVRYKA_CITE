@@ -20,6 +20,7 @@ async function loadProduct() {
     document.getElementById("description").innerHTML = product.description || "";
 
     renderGallery(product);
+    renderSimilarProducts(product, products);
 
 document.getElementById("buyBtn").onclick = () => {
   const qty = document.getElementById("qty").value;
@@ -130,4 +131,35 @@ document.addEventListener("DOMContentLoaded", () => {
 
 function goBack() {
   window.history.back();
+}
+
+function renderSimilarProducts(currentProduct, allProducts) {
+  const container = document.getElementById("similarProducts");
+  if (!container) return;
+
+  const sameCategory = allProducts.filter((p) => {
+    return p.id !== currentProduct.id && p.category === currentProduct.category;
+  });
+
+  const mixed = sameCategory.sort(() => Math.random() - 0.5).slice(0, 8);
+  container.innerHTML = "";
+
+  if (!mixed.length) {
+    container.innerHTML = "<p>Схожих товарів поки немає</p>";
+    return;
+  }
+
+  mixed.forEach((p) => {
+    const card = document.createElement("div");
+    card.className = "similar-card";
+    card.innerHTML = `
+      <img src="${API_URL}${p.images?.[0] || ""}" alt="${p.name}">
+      <h4>${p.name}</h4>
+      <p>${p.price} грн</p>
+    `;
+    card.addEventListener("click", () => {
+      window.location.href = `product.html?id=${p.id}`;
+    });
+    container.appendChild(card);
+  });
 }
