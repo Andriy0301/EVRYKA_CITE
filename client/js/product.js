@@ -135,6 +135,8 @@ function goBack() {
 
 function renderSimilarProducts(currentProduct, allProducts) {
   const container = document.getElementById("similarProducts");
+  const prevBtn = document.getElementById("similarPrev");
+  const nextBtn = document.getElementById("similarNext");
   if (!container) return;
 
   const sameCategory = allProducts.filter((p) => {
@@ -146,6 +148,8 @@ function renderSimilarProducts(currentProduct, allProducts) {
 
   if (!mixed.length) {
     container.innerHTML = "<p>Схожих товарів поки немає</p>";
+    if (prevBtn) prevBtn.style.display = "none";
+    if (nextBtn) nextBtn.style.display = "none";
     return;
   }
 
@@ -162,4 +166,18 @@ function renderSimilarProducts(currentProduct, allProducts) {
     });
     container.appendChild(card);
   });
+
+  const scrollStep = 260;
+  if (prevBtn) {
+    prevBtn.style.display = "flex";
+    prevBtn.onclick = () => {
+      container.scrollBy({ left: -scrollStep, behavior: "smooth" });
+    };
+  }
+  if (nextBtn) {
+    nextBtn.style.display = "flex";
+    nextBtn.onclick = () => {
+      container.scrollBy({ left: scrollStep, behavior: "smooth" });
+    };
+  }
 }
