@@ -204,28 +204,9 @@ function updateCartCount() {
 async function checkout() {
   const cart = getCart();
   if (cart.length === 0) {
-    alert("Кошик порожній");
     return;
   }
 
-  const savedProfile = JSON.parse(localStorage.getItem("userProfile") || "null");
-  if (!savedProfile) {
-    alert("Спочатку увійдіть або зареєструйтесь у хедері");
-    return;
-  }
-
-  try {
-    await trackPopularity(
-      cart.map((item) => ({
-        productId: item.id,
-        qty: item.qty || 1
-      }))
-    );
-
-    clearCart();
-    toggleCart(false);
-    alert("Замовлення прийнято. Популярність товарів оновлено.");
-  } catch (error) {
-    alert("Не вдалося оформити замовлення");
-  }
+  localStorage.setItem("checkoutItems", JSON.stringify(cart));
+  window.location.href = "order.html";
 }

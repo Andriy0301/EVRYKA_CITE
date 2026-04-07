@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Оформлення замовлення - EVRYKA</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <header class="header">
+    <a href="index.html" class="logo"><img src="images/TOP_logo.png" alt="EVRYKA"></a>
+    <div class="search-box">
+      <input type="text" placeholder="Пошук товарів..." disabled>
+    </div>
+    <nav class="nav">
+      <a href="index.html">ГОЛОВНА</a>
+      <a href="index.html#catalog">КАТАЛОГ</a>
+      <a href="#" class="active">ОФОРМЛЕННЯ</a>
+    </nav>
+  </header>
+
+  <main class="container cabinet-layout">
+    <section class="products cabinet-card">
+      <h2>Дані для замовлення</h2>
+      <form id="orderForm" class="cabinet-form">
+        <label>Ім'я<input id="orderName" type="text" required></label>
+        <label>Прізвище<input id="orderLastName" type="text" required></label>
+        <label>Телефон<input id="orderPhone" type="tel" required></label>
+        <label>Email<input id="orderEmail" type="email" required></label>
+
+        <h3>Доставка</h3>
+        <label>Служба доставки
+          <select id="orderProvider">
+            <option value="nova_poshta">Нова пошта</option>
+            <option value="ukr_poshta">Укрпошта</option>
+          </select>
+        </label>
+        <label>Місто<input id="orderCity" type="text"></label>
+        <label>Відділення<input id="orderBranch" type="text"></label>
+        <label>Адреса<input id="orderAddress" type="text"></label>
+        <p id="orderMessage" class="auth-message"></p>
+        <div class="cabinet-actions-row">
+          <button class="checkout-btn" type="submit">Підтвердити замовлення</button>
+        </div>
+      </form>
+    </section>
+
+    <aside class="cabinet-sidebar">
+      <h4 style="margin:0 0 8px;">Ваше замовлення</h4>
+      <div id="orderItems"></div>
+      <div class="cart-total" style="margin-top:12px;">
+        <span>Разом</span>
+        <div><b id="orderTotal">0</b><span>грн</span></div>
+      </div>
+    </aside>
+  </main>
+
+  <script src="js/api.js?v=20260407"></script>
+  <script src="js/order.js?v=20260407"></script>
+</body>
+</html>

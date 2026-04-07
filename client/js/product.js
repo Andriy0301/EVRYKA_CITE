@@ -35,6 +35,19 @@ document.getElementById("buyBtn").onclick = () => {
   }, 1500);
 };
 
+document.getElementById("quickCheckoutBtn").onclick = () => {
+  const qty = Number(document.getElementById("qty").value || 1);
+  const checkoutItem = {
+    id: product.id,
+    name: product.name,
+    price: product.price,
+    qty: qty < 1 ? 1 : qty,
+    image: product.images?.[0] || ""
+  };
+  localStorage.setItem("checkoutItems", JSON.stringify([checkoutItem]));
+  window.location.href = "order.html";
+};
+
   } catch (err) {
     console.error(err);
     document.body.innerHTML = "<h2>Помилка завантаження</h2>";

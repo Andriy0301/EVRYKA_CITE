@@ -9,6 +9,7 @@ let currentFiltered = [];
 let currentCategory = "all";
 let currentSort = "default";
 const PROFILE_STORAGE_KEY = "userProfile";
+const FAVORITES_STORAGE_KEY = "favorites";
 const GOOGLE_CLIENT_ID = "143348684381-0atu6nifdbl67m534grua54kvm18sb2d.apps.googleusercontent.com";
 let authMode = "login";
 
@@ -231,6 +232,7 @@ function renderProducts(products) {
 
     div.innerHTML = `
       <img src="${API_URL}${p.images?.[0] || ''}">
+      <button class="favorite-btn ${isFavorite(p.id) ? "active" : ""}" onclick='toggleFavorite(event, ${JSON.stringify(p)})'>❤</button>
 
       <div class="product-content">
         <h3>${p.name || "Без назви"}</h3>
@@ -275,6 +277,89 @@ function goToProduct(id) {
 function buy(e, product) {
   e.stopPropagation();
   addToCart(product);
+}
+
+function getFavorites() {
+  return JSON.parse(localStorage.getItem(FAVORITES_STORAGE_KEY) || "[]");
+}
+
+function saveFavorites(favorites) {
+  localStorage.setItem(FAVORITES_STORAGE_KEY, JSON.stringify(favorites));
+}
+
+function isFavorite(productId) {
+  return getFavorites().some((item) => Number(item.id) === Number(productId));
+}
+
+function toggleFavorite(e, product) {
+  e.stopPropagation();
+  let favorites = getFavorites();
+  const exists = favorites.some((item) => Number(item.id) === Number(product.id));
+
+  if (exists) {
+    favorites = favorites.filter((item) => Number(item.id) !== Number(product.id));
+  } else {
+    favorites.push({
+      id: product.id,
+      name: product.name,
+      price: product.price,
+      image: product.images?.[0] || product.image || ""
+    });
+  }
+
+  saveFavorites(favorites);
+  renderProducts(currentFiltered.length ? currentFiltered : allProducts);
+  renderFavoritesList();
+}
+
+function toggleFavorites(open) {
+  const sidebar = document.getElementById("favoritesSidebar");
+  const overlay = document.getElementById("favoritesOverlay");
+  if (!sidebar || !overlay) return;
+
+  if (open) {
+    sidebar.classList.add("active");
+    overlay.classList.add("active");
+    renderFavoritesList();
+  } else {
+    sidebar.classList.remove("active");
+    overlay.classList.remove("active");
+  }
+}
+
+function renderFavoritesList() {
+  const container = document.getElementById("favoritesItems");
+  if (!container) return;
+
+  const favorites = getFavorites();
+  container.innerHTML = "";
+
+  if (!favorites.length) {
+    container.innerHTML = "<p style='text-align:center;'>Немає обраних товарів</p>";
+    return;
+  }
+
+  favorites.forEach((item) => {
+    const div = document.createElement("div");
+    div.className = "favorite-item";
+    div.innerHTML = `
+      <img src="${API_URL}${item.image}" alt="${item.name}">
+      <div style="flex:1;">
+        <h4 style="margin:0 0 4px;">${item.name}</h4>
+        <p style="margin:0;">${item.price} грн</p>
+      </div>
+      <button class="remove-btn" data-id="${item.id}">✖</button>
+    `;
+
+    div.addEventListener("click", () => goToProduct(item.id));
+    const removeBtn = div.querySelector(".remove-btn");
+    removeBtn.addEventListener("click", (event) => {
+      event.stopPropagation();
+      toggleFavorite(event, item);
+    });
+
+    container.appendChild(div);
+  });
 }
 
 // =========================

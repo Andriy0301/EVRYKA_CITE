@@ -40,6 +40,9 @@
       </svg>
       <span id="authInitials" class="auth-initials"></span>
     </button>
+    <button id="favoritesBtn" class="auth-icon-btn" title="Обрані" onclick="toggleFavorites(true)">
+      ❤
+    </button>
     <!-- 🛒 КОШИК -->
     <div class="cart" onclick="toggleCart(true)">
       <img src="images/cart.jpg" class="cart-icon">
@@ -123,6 +126,15 @@
 
   </div>
 
+</div>
+
+<div id="favoritesOverlay" class="cart-overlay" onclick="toggleFavorites(false)"></div>
+<div id="favoritesSidebar" class="cart-sidebar">
+  <div class="cart-header">
+    <h3>Обрані товари</h3>
+    <button class="close-btn" onclick="toggleFavorites(false)">✖</button>
+  </div>
+  <div id="favoritesItems" class="cart-items"></div>
 </div>
 
 <div id="authModal" class="auth-modal">

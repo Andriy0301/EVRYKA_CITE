@@ -637,6 +637,39 @@ a {
   font-weight: 700;
 }
 
+.favorite-btn {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  width: 34px;
+  height: 34px;
+  border: none;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.9);
+  color: #666;
+  font-size: 18px;
+  cursor: pointer;
+}
+
+.favorite-btn.active {
+  color: #e1003c;
+}
+
+.favorite-item {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  padding: 10px 0;
+  border-bottom: 1px solid #eee;
+}
+
+.favorite-item img {
+  width: 62px;
+  height: 62px;
+  object-fit: cover;
+  border-radius: 8px;
+}
+
 .sort-select {
   border: 1px solid #ddd;
   border-radius: 999px;
