@@ -1,4 +1,4 @@
-const API_URL = "https://evryka-cite.onrender.com";
+const API_URL = ""; // важливо — пусто
 
 function sleep(ms) {
   return new Promise((resolve) => setTimeout(resolve, ms));
@@ -6,12 +6,16 @@ function sleep(ms) {
 
 async function getProducts(sort = "default") {
   const query = sort === "popular" ? "?sort=popular" : "";
-  const url = `${API_URL}/products${query}`;
+  const url = `/api/products${query}`;
 
-  for (let attempt = 0; attempt < 2; attempt += 1) {
+  for (let attempt = 0; attempt < 2; attempt++) {
     try {
       const res = await fetch(url, { cache: "no-store" });
-      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+
+      if (!res.ok) {
+        throw new Error(`HTTP ${res.status}`);
+      }
+
       return await res.json();
     } catch (error) {
       if (attempt === 1) throw error;
@@ -21,9 +25,11 @@ async function getProducts(sort = "default") {
 }
 
 async function registerUser(profile) {
-  const res = await fetch(`${API_URL}/users/register`, {
+  const res = await fetch(`/api/users/register`, {
     method: "POST",
-    headers: { "Content-Type": "application/json" },
+    headers: {
+      "Content-Type": "application/json"
+    },
     body: JSON.stringify(profile)
   });
 
@@ -35,9 +41,11 @@ async function registerUser(profile) {
 }
 
 async function loginUser(payload) {
-  const res = await fetch(`${API_URL}/users/login`, {
+  const res = await fetch(`/api/users/login`, {
     method: "POST",
-    headers: { "Content-Type": "application/json" },
+    headers: {
+      "Content-Type": "application/json"
+    },
     body: JSON.stringify(payload)
   });
 
@@ -49,9 +57,11 @@ async function loginUser(payload) {
 }
 
 async function googleAuthLogin(payload) {
-  const res = await fetch(`${API_URL}/users/google-login`, {
+  const res = await fetch(`/api/users/google-login`, {
     method: "POST",
-    headers: { "Content-Type": "application/json" },
+    headers: {
+      "Content-Type": "application/json"
+    },
     body: JSON.stringify(payload)
   });
 
@@ -63,9 +73,11 @@ async function googleAuthLogin(payload) {
 }
 
 async function trackPopularity(items) {
-  const res = await fetch(`${API_URL}/popularity/track`, {
+  const res = await fetch(`/api/popularity/track`, {
     method: "POST",
-    headers: { "Content-Type": "application/json" },
+    headers: {
+      "Content-Type": "application/json"
+    },
     body: JSON.stringify({ items })
   });
 
