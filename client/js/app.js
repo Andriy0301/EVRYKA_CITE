@@ -48,10 +48,7 @@ function fillProfileForm(profile) {
     regName: profile?.name || "",
     regLastName: profile?.lastName || "",
     regPhone: profile?.phone || "",
-    regEmail: profile?.email || "",
-    regCity: profile?.delivery?.city || "",
-    regWarehouse: profile?.delivery?.warehouse || "",
-    regAddress: profile?.delivery?.address || ""
+    regEmail: profile?.email || ""
   };
 
   Object.entries(mapping).forEach(([id, value]) => {
@@ -150,12 +147,7 @@ async function submitAuthForm(e) {
     phone: document.getElementById("regPhone")?.value?.trim(),
     email: document.getElementById("regEmail")?.value?.trim(),
     password: document.getElementById("authPassword")?.value?.trim(),
-    passwordConfirm: document.getElementById("authPasswordConfirm")?.value?.trim(),
-    delivery: {
-      city: document.getElementById("regCity")?.value?.trim(),
-      warehouse: document.getElementById("regWarehouse")?.value?.trim(),
-      address: document.getElementById("regAddress")?.value?.trim()
-    }
+    passwordConfirm: document.getElementById("authPasswordConfirm")?.value?.trim()
   };
 
   try {
@@ -179,8 +171,7 @@ async function submitAuthForm(e) {
         lastName: profile.lastName,
         phone: profile.phone,
         email: profile.email,
-        password: profile.password,
-        delivery: profile.delivery
+        password: profile.password
       });
     } else {
       if (!profile.email || !profile.password) {
@@ -433,7 +424,16 @@ document.addEventListener("DOMContentLoaded", () => {
   const switchLoginBtn = document.getElementById("switchLoginBtn");
   const sortSelect = document.getElementById("sortSelect");
 
-  if (authBtn) authBtn.onclick = () => openAuthModal("login");
+  if (authBtn) {
+    authBtn.onclick = () => {
+      const profile = getSavedProfile();
+      if (profile?.id) {
+        window.location.href = "cabinet.html";
+      } else {
+        openAuthModal("login");
+      }
+    };
+  }
   if (closeAuth) closeAuth.onclick = closeAuthModal;
   if (switchRegisterBtn) switchRegisterBtn.onclick = () => openAuthModal("register");
   if (switchLoginBtn) switchLoginBtn.onclick = () => openAuthModal("login");

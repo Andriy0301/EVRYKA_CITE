@@ -23,6 +23,12 @@ function writeUsers(users) {
   fs.writeFileSync(usersPath, JSON.stringify(users, null, 2));
 }
 
+function sanitizeUser(user) {
+  if (!user) return user;
+  const { password, ...safeUser } = user;
+  return safeUser;
+}
+
 router.post("/register", (req, res) => {
   const { name, lastName, phone, email, password, delivery = {} } = req.body || {};
 
@@ -60,7 +66,7 @@ router.post("/register", (req, res) => {
   }
 
   writeUsers(users);
-  return res.json(savedUser);
+  return res.json(sanitizeUser(savedUser));
 });
 
 router.post("/login", (req, res) => {
@@ -85,7 +91,7 @@ router.post("/login", (req, res) => {
     return res.status(404).json({ error: "user not found" });
   }
 
-  return res.json(user);
+  return res.json(sanitizeUser(user));
 });
 
 router.post("/google-login", (req, res) => {
@@ -114,7 +120,39 @@ router.post("/google-login", (req, res) => {
     writeUsers(users);
   }
 
-  return res.json(user);
+  return res.json(sanitizeUser(user));
+});
+
+router.post("/update-profile", (req, res) => {
+  const { id, name, lastName, phone, delivery = {} } = req.body || {};
+  if (!id) {
+    return res.status(400).json({ error: "id is required" });
+  }
+
+  const users = readUsers();
+  const index = users.findIndex((u) => String(u.id) === String(id));
+  if (index < 0) {
+    return res.status(404).json({ error: "user not found" });
+  }
+
+  const current = users[index];
+  const updated = {
+    ...current,
+    name: String(name || current.name || "").trim(),
+    lastName: String(lastName || current.lastName || "").trim(),
+    phone: String(phone || current.phone || "").trim(),
+    delivery: {
+      provider: String(delivery.provider || current.delivery?.provider || "nova_poshta").trim(),
+      city: String(delivery.city || current.delivery?.city || "").trim(),
+      branch: String(delivery.branch || current.delivery?.branch || "").trim(),
+      address: String(delivery.address || current.delivery?.address || "").trim()
+    },
+    updatedAt: new Date().toISOString()
+  };
+
+  users[index] = updated;
+  writeUsers(users);
+  return res.json(sanitizeUser(updated));
 });
 
 module.exports = router;

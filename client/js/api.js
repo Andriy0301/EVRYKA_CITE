@@ -87,3 +87,19 @@ async function trackPopularity(items) {
 
   return res.json();
 }
+
+async function updateUserProfile(payload) {
+  const res = await fetch(`/api/users/update-profile`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify(payload)
+  });
+
+  if (!res.ok) {
+    throw new Error("Не вдалося оновити профіль");
+  }
+
+  return res.json();
+}

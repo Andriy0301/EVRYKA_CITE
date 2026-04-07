@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Особистий кабінет - EVRYKA</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <header class="header">
+    <a href="index.html" class="logo">
+      <img src="images/TOP_logo.png" alt="EVRYKA">
+    </a>
+    <nav class="nav">
+      <a href="index.html">ГОЛОВНА</a>
+      <a href="index.html#catalog">КАТАЛОГ</a>
+    </nav>
+  </header>
+
+  <main class="cabinet-page">
+    <section class="cabinet-card">
+      <h1>Особистий кабінет</h1>
+      <form id="cabinetForm" class="cabinet-form">
+        <label>Ім'я<input id="cabName" type="text" required></label>
+        <label>Прізвище<input id="cabLastName" type="text" required></label>
+        <label>Телефон<input id="cabPhone" type="tel" required></label>
+        <label>Email<input id="cabEmail" type="email" disabled></label>
+
+        <h3>Доставка</h3>
+        <label>Служба доставки
+          <select id="cabProvider">
+            <option value="nova_poshta">Нова пошта</option>
+            <option value="ukr_poshta">Укрпошта</option>
+          </select>
+        </label>
+        <label>Місто<input id="cabCity" type="text"></label>
+        <label>Відділення<input id="cabBranch" type="text"></label>
+        <label>Адреса<input id="cabAddress" type="text"></label>
+
+        <div class="cabinet-actions-row">
+          <button class="checkout-btn" type="submit">Зберегти</button>
+          <button id="logoutBtn" class="clear-btn" type="button">Вийти</button>
+        </div>
+      </form>
+    </section>
+  </main>
+
+  <script src="js/api.js?v=20260407"></script>
+  <script src="js/cabinet.js?v=20260407"></script>
+</body>
+</html>

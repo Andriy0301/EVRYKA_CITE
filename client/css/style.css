@@ -751,6 +751,44 @@ a {
   justify-content: center;
 }
 
+.cabinet-page {
+  display: flex;
+  justify-content: center;
+  padding: 40px 20px;
+}
+
+.cabinet-card {
+  width: min(700px, 96vw);
+  background: #fff;
+  border-radius: 14px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+  padding: 26px;
+}
+
+.cabinet-form {
+  display: grid;
+  gap: 12px;
+}
+
+.cabinet-form label {
+  display: grid;
+  gap: 6px;
+  font-weight: 600;
+}
+
+.cabinet-form input,
+.cabinet-form select {
+  padding: 10px 12px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+}
+
+.cabinet-actions-row {
+  margin-top: 10px;
+  display: flex;
+  gap: 10px;
+}
+
 /* 🔍 ПОШУК */
 
 
