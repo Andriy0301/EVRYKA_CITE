@@ -46,6 +46,7 @@ function updateAuthButton() {
 function fillProfileForm(profile) {
   const mapping = {
     regName: profile?.name || "",
+    regLastName: profile?.lastName || "",
     regPhone: profile?.phone || "",
     regEmail: profile?.email || "",
     regCity: profile?.delivery?.city || "",
@@ -109,7 +110,8 @@ async function handleGoogleCredential(response) {
   try {
     const saved = await googleAuthLogin({
       email: payload.email,
-      name: payload.name || "Google User"
+      name: payload.given_name || payload.name || "Google",
+      lastName: payload.family_name || "User"
     });
     setSavedProfile(saved);
     updateAuthButton();
@@ -144,9 +146,11 @@ async function submitAuthForm(e) {
 
   const profile = {
     name: document.getElementById("regName")?.value?.trim(),
+    lastName: document.getElementById("regLastName")?.value?.trim(),
     phone: document.getElementById("regPhone")?.value?.trim(),
     email: document.getElementById("regEmail")?.value?.trim(),
     password: document.getElementById("authPassword")?.value?.trim(),
+    passwordConfirm: document.getElementById("authPasswordConfirm")?.value?.trim(),
     delivery: {
       city: document.getElementById("regCity")?.value?.trim(),
       warehouse: document.getElementById("regWarehouse")?.value?.trim(),
@@ -158,15 +162,26 @@ async function submitAuthForm(e) {
     let saved;
     if (authMode === "register") {
       const termsChecked = document.getElementById("termsCheck")?.checked;
-      if (!profile.name || !profile.phone || !profile.email || !profile.password) {
-        alert("Заповни ім'я, телефон, email і пароль");
+      if (!profile.name || !profile.lastName || !profile.phone || !profile.email || !profile.password || !profile.passwordConfirm) {
+        alert("Заповни ім'я, прізвище, телефон, email, пароль і повтор пароля");
+        return;
+      }
+      if (profile.password !== profile.passwordConfirm) {
+        alert("Паролі не співпадають");
         return;
       }
       if (!termsChecked) {
         alert("Підтвердь згоду з правилами");
         return;
       }
-      saved = await registerUser(profile);
+      saved = await registerUser({
+        name: profile.name,
+        lastName: profile.lastName,
+        phone: profile.phone,
+        email: profile.email,
+        password: profile.password,
+        delivery: profile.delivery
+      });
     } else {
       if (!profile.email || !profile.password) {
         alert("Вкажи email і пароль");

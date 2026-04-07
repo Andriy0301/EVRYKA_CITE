@@ -24,10 +24,10 @@ function writeUsers(users) {
 }
 
 router.post("/register", (req, res) => {
-  const { name, phone, email, password, delivery = {} } = req.body || {};
+  const { name, lastName, phone, email, password, delivery = {} } = req.body || {};
 
-  if (!name || !phone || !email || !password) {
-    return res.status(400).json({ error: "name, phone, email and password are required" });
+  if (!name || !lastName || !phone || !email || !password) {
+    return res.status(400).json({ error: "name, lastName, phone, email and password are required" });
   }
 
   const users = readUsers();
@@ -41,6 +41,7 @@ router.post("/register", (req, res) => {
   const savedUser = {
     id: existingIndex >= 0 ? users[existingIndex].id : Date.now(),
     name: String(name).trim(),
+    lastName: String(lastName).trim(),
     phone: normalizedPhone,
     email: normalizedEmail,
     password: String(password),
@@ -88,7 +89,7 @@ router.post("/login", (req, res) => {
 });
 
 router.post("/google-login", (req, res) => {
-  const { email, name } = req.body || {};
+  const { email, name, lastName } = req.body || {};
   const normalizedEmail = String(email || "").trim().toLowerCase();
 
   if (!normalizedEmail) {
@@ -102,6 +103,7 @@ router.post("/google-login", (req, res) => {
     user = {
       id: Date.now(),
       name: String(name || "Google User").trim(),
+      lastName: String(lastName || "User").trim(),
       phone: "",
       email: normalizedEmail,
       password: "",
