@@ -232,11 +232,13 @@ function renderProducts(products) {
 
     div.innerHTML = `
       <img src="${API_URL}${p.images?.[0] || ''}">
-      <button class="favorite-btn ${isFavorite(p.id) ? "active" : ""}" onclick='toggleFavorite(event, ${JSON.stringify(p)})'>❤</button>
 
       <div class="product-content">
         <h3>${p.name || "Без назви"}</h3>
-        <p class="price">${p.price || 0} грн</p>
+        <div class="price-row">
+          <p class="price">${p.price || 0} грн</p>
+          <button class="favorite-btn ${isFavorite(p.id) ? "active" : ""}" onclick='toggleFavorite(event, ${JSON.stringify(p)})'>❤</button>
+        </div>
       </div>
 
       <button class="buy-btn" onclick='buy(event, ${JSON.stringify(p)})'>
@@ -348,11 +350,11 @@ function renderFavoritesList() {
         <h4 style="margin:0 0 4px;">${item.name}</h4>
         <p style="margin:0;">${item.price} грн</p>
       </div>
-      <button class="remove-btn" data-id="${item.id}">✖</button>
+      <button class="favorite-remove-btn" data-id="${item.id}">✖</button>
     `;
 
     div.addEventListener("click", () => goToProduct(item.id));
-    const removeBtn = div.querySelector(".remove-btn");
+    const removeBtn = div.querySelector(".favorite-remove-btn");
     removeBtn.addEventListener("click", (event) => {
       event.stopPropagation();
       toggleFavorite(event, item);

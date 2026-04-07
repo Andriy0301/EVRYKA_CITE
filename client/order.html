@@ -19,7 +19,16 @@
     </nav>
   </header>
 
-  <main class="container cabinet-layout">
+  <main class="container order-layout">
+    <section class="products cabinet-card order-items-card">
+      <h2>Ваше замовлення</h2>
+      <div id="orderItems"></div>
+      <div class="cart-total order-total-row">
+        <span>Разом</span>
+        <div><b id="orderTotal">0</b><span>грн</span></div>
+      </div>
+    </section>
+
     <section class="products cabinet-card">
       <h2>Дані для замовлення</h2>
       <form id="orderForm" class="cabinet-form">
@@ -44,15 +53,6 @@
         </div>
       </form>
     </section>
-
-    <aside class="cabinet-sidebar">
-      <h4 style="margin:0 0 8px;">Ваше замовлення</h4>
-      <div id="orderItems"></div>
-      <div class="cart-total" style="margin-top:12px;">
-        <span>Разом</span>
-        <div><b id="orderTotal">0</b><span>грн</span></div>
-      </div>
-    </aside>
   </main>
 
   <script src="js/api.js?v=20260407"></script>
