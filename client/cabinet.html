@@ -11,21 +11,36 @@
     <a href="index.html" class="logo">
       <img src="images/TOP_logo.png" alt="EVRYKA">
     </a>
+    <div class="search-box">
+      <input type="text" placeholder="Пошук товарів..." disabled>
+    </div>
     <nav class="nav">
       <a href="index.html">ГОЛОВНА</a>
       <a href="index.html#catalog">КАТАЛОГ</a>
+      <a href="#" class="active">КАБІНЕТ</a>
     </nav>
   </header>
 
-  <main class="cabinet-page">
-    <section class="cabinet-card">
-      <h1>Особистий кабінет</h1>
+  <section class="hero">
+    <div class="hero-left">
+      <div class="brand">
+        <img src="images/text_logo.png" alt="logo" class="hero-logo">
+      </div>
+      <p class="slogan">Особистий кабінет клієнта</p>
+    </div>
+    <div class="hero-right">
+      <img src="images/hero.png" class="hero-image" alt="hero">
+    </div>
+  </section>
+
+  <main class="container">
+    <section class="products cabinet-card">
+      <h2>Мої дані</h2>
       <form id="cabinetForm" class="cabinet-form">
         <label>Ім'я<input id="cabName" type="text" required></label>
         <label>Прізвище<input id="cabLastName" type="text" required></label>
         <label>Телефон<input id="cabPhone" type="tel" required></label>
         <label>Email<input id="cabEmail" type="email" disabled></label>
-
         <h3>Доставка</h3>
         <label>Служба доставки
           <select id="cabProvider">
@@ -36,7 +51,6 @@
         <label>Місто<input id="cabCity" type="text"></label>
         <label>Відділення<input id="cabBranch" type="text"></label>
         <label>Адреса<input id="cabAddress" type="text"></label>
-
         <div class="cabinet-actions-row">
           <button class="checkout-btn" type="submit">Зберегти</button>
           <button id="logoutBtn" class="clear-btn" type="button">Вийти</button>
@@ -44,6 +58,45 @@
       </form>
     </section>
   </main>
+
+  <footer class="footer">
+    <div class="footer-container">
+      <div class="footer-col">
+        <h4>Меню</h4>
+        <a href="index.html">Головна</a>
+        <a href="index.html#catalog">Магазин</a>
+        <a href="#">Покупцям</a>
+        <a href="#">Контакти</a>
+      </div>
+      <div class="footer-col">
+        <h4>Особистий кабінет</h4>
+        <a href="#">Історія замовлень</a>
+        <a href="#">Мої дані</a>
+        <a href="#">Обране</a>
+      </div>
+      <div class="footer-col">
+        <h4>Контакти</h4>
+        <p>Є питання? Зателефонуйте:</p>
+        <a href="tel:+380955222911" class="phone">+38 (050) 166 22 71</a>
+      </div>
+      <div class="footer-col">
+        <h4>Ми в соцмережах</h4>
+        <div class="socials">
+          <a href="#">📷</a>
+          <a href="#">💬</a>
+        </div>
+        <p class="pay-text">Оплата</p>
+        <div class="payments">
+          <span>VISA</span>
+          <span>MasterCard</span>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>© 2026 EVRYKA</p>
+      <span>Українська</span>
+    </div>
+  </footer>
 
   <script src="js/api.js?v=20260407"></script>
   <script src="js/cabinet.js?v=20260407"></script>
