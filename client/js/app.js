@@ -16,11 +16,16 @@ let authMode = "login";
 // 🔹 ЗАВАНТАЖЕННЯ
 // =========================
 async function loadProducts() {
-  const products = await getProducts(currentSort);
-
-  allProducts = products;
-
-  applyFilters();
+  try {
+    const products = await getProducts(currentSort);
+    allProducts = Array.isArray(products) ? products : [];
+    applyFilters();
+  } catch (error) {
+    console.error("Products load failed:", error);
+    allProducts = [];
+    applyFilters();
+    alert("Не вдалося завантажити товари. Онови сторінку через 2-3 секунди.");
+  }
 }
 
 function getSavedProfile() {
@@ -196,7 +201,7 @@ function renderProducts(products) {
     div.onclick = () => goToProduct(p.id);
 
     div.innerHTML = `
-      <img src="http://localhost:3000${p.images?.[0] || ''}">
+      <img src="${API_URL}${p.images?.[0] || ''}">
 
       <div class="product-content">
         <h3>${p.name || "Без назви"}</h3>
@@ -299,7 +304,7 @@ function renderSearchResults(products, query) {
     div.onclick = () => goToProduct(p.id);
 
     div.innerHTML = `
-      <img src="http://localhost:3000${p.images?.[0] || ''}">
+      <img src="${API_URL}${p.images?.[0] || ''}">
       <div>
         <h4>${p.name}</h4>
         <p>${p.price} грн</p>

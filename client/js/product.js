@@ -3,7 +3,7 @@ async function loadProduct() {
   const id = Number(params.get("id"));
 
   try {
-    const res = await fetch("http://localhost:3000/products");
+    const res = await fetch(`${API_URL}/products`);
     const products = await res.json();
 
     const product = products.find(p => Number(p.id) === id);
@@ -49,18 +49,18 @@ function renderGallery(product) {
 
   if (!product.images || product.images.length === 0) return;
 
-  mainImage.src = "http://localhost:3000" + product.images[0];
+  mainImage.src = `${API_URL}${product.images[0]}`;
 
   product.images.forEach((img, i) => {
     const el = document.createElement("img");
-    el.src = "http://localhost:3000" + img;
+    el.src = `${API_URL}${img}`;
 
     if (i === 0) {
       el.style.border = "2px solid #2c4a6b";
     }
 
     el.onclick = () => {
-      mainImage.src = "http://localhost:3000" + img;
+      mainImage.src = `${API_URL}${img}`;
 
       document.querySelectorAll(".thumbnails img").forEach(t => {
         t.style.border = "2px solid transparent";

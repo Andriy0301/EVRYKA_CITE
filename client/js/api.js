@@ -1,9 +1,23 @@
-const API_URL = "http://127.0.0.1:3000";
+const API_URL = "https://evryka-cite.onrender.com";
+
+function sleep(ms) {
+  return new Promise((resolve) => setTimeout(resolve, ms));
+}
 
 async function getProducts(sort = "default") {
   const query = sort === "popular" ? "?sort=popular" : "";
-  const res = await fetch(`${API_URL}/products${query}`);
-  return res.json();
+  const url = `${API_URL}/products${query}`;
+
+  for (let attempt = 0; attempt < 2; attempt += 1) {
+    try {
+      const res = await fetch(url, { cache: "no-store" });
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+      return await res.json();
+    } catch (error) {
+      if (attempt === 1) throw error;
+      await sleep(1200);
+    }
+  }
 }
 
 async function registerUser(profile) {

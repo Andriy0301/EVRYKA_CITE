@@ -82,7 +82,7 @@ function renderCart() {
     div.className = "cart-item";
 
     div.innerHTML = `
-      <img src="http://localhost:3000${item.image}" />
+      <img src="${API_URL}${item.image}" />
 
       <div class="cart-info">
         <h4>${item.name}</h4>
