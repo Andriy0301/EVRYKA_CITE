@@ -9,7 +9,7 @@ let currentFiltered = [];
 let currentCategory = "all";
 let currentSort = "default";
 const PROFILE_STORAGE_KEY = "userProfile";
-const GOOGLE_CLIENT_ID = "143348684381-995fc6hmqn6fru6ccp4d6gsi9sfr3psk.apps.googleusercontent.com";
+const GOOGLE_CLIENT_ID = "143348684381-0atu6nifdbl67m534grua54kvm18sb2d.apps.googleusercontent.com";
 let authMode = "login";
 
 // =========================
