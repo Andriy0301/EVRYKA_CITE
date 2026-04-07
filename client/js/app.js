@@ -39,8 +39,20 @@ function setSavedProfile(profile) {
 function updateAuthButton() {
   const profile = getSavedProfile();
   const authBtn = document.getElementById("authBtn");
+  const initialsEl = document.getElementById("authInitials");
   if (!authBtn) return;
   authBtn.title = profile?.name ? `Кабінет: ${profile.name}` : "Особистий кабінет";
+  if (!initialsEl) return;
+
+  if (profile?.name) {
+    const first = String(profile.name || "").trim().charAt(0).toUpperCase();
+    const second = String(profile.lastName || "").trim().charAt(0).toUpperCase();
+    initialsEl.innerText = `${first}${second || ""}`;
+    initialsEl.style.display = "flex";
+  } else {
+    initialsEl.innerText = "";
+    initialsEl.style.display = "none";
+  }
 }
 
 function fillProfileForm(profile) {

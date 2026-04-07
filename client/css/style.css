@@ -628,6 +628,19 @@ a {
   fill: currentColor;
 }
 
+.auth-initials {
+  min-width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: #111;
+  color: #fff;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  font-weight: 700;
+}
+
 .sort-select {
   border: 1px solid #ddd;
   border-radius: 999px;

@@ -8,6 +8,21 @@ function setProfile(profile) {
   localStorage.setItem(PROFILE_STORAGE_KEY, JSON.stringify(profile));
 }
 
+function renderInitials(profile) {
+  const initialsEl = document.getElementById("authInitials");
+  if (!initialsEl) return;
+  const first = String(profile?.name || "").trim().charAt(0).toUpperCase();
+  const second = String(profile?.lastName || "").trim().charAt(0).toUpperCase();
+  const initials = `${first}${second || ""}`;
+  if (!initials.trim()) {
+    initialsEl.style.display = "none";
+    initialsEl.innerText = "";
+    return;
+  }
+  initialsEl.innerText = initials;
+  initialsEl.style.display = "flex";
+}
+
 function fillCabinet(profile) {
   document.getElementById("cabName").value = profile?.name || "";
   document.getElementById("cabLastName").value = profile?.lastName || "";
@@ -43,6 +58,7 @@ async function saveCabinet(e) {
   try {
     const updated = await updateUserProfile(payload);
     setProfile(updated);
+    renderInitials(updated);
     alert("Профіль оновлено");
   } catch (error) {
     alert("Не вдалося зберегти профіль");
@@ -62,6 +78,9 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   fillCabinet(profile);
+  renderInitials(profile);
+  const authBtn = document.getElementById("authBtn");
+  if (authBtn) authBtn.addEventListener("click", () => window.location.href = "cabinet.html");
   document.getElementById("cabinetForm").addEventListener("submit", saveCabinet);
   document.getElementById("logoutBtn").addEventListener("click", logout);
 });
