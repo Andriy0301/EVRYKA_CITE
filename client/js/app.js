@@ -237,7 +237,11 @@ function renderProducts(products) {
         <h3>${p.name || "Без назви"}</h3>
         <div class="price-row">
           <p class="price">${p.price || 0} грн</p>
-          <button class="favorite-btn ${isFavorite(p.id) ? "active" : ""}" onclick='toggleFavorite(event, ${JSON.stringify(p)})'>❤</button>
+          <button class="favorite-btn ${isFavorite(p.id) ? "active" : ""}" onclick='toggleFavorite(event, ${JSON.stringify(p)})'>
+            <svg class="heart-icon" viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M12 21s-7-4.35-9.5-8.28C.18 9.2 1.56 5 5.47 4.23c2.2-.43 4.1.56 5.2 2.1 1.1-1.54 3-2.53 5.2-2.1 3.91.77 5.29 4.97 2.97 8.49C19 16.65 12 21 12 21z"></path>
+            </svg>
+          </button>
         </div>
       </div>
 

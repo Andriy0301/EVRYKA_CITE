@@ -638,36 +638,33 @@ a {
 }
 
 .favorite-btn {
-  width: auto;
-  height: auto;
+  width: 24px;
+  height: 24px;
   padding: 0;
   border: none;
-  background: #d1d1d15d;
-  color: transparent;
-  -webkit-text-stroke: 1px #d10035;
-  font-size: 28px;
-  line-height: 1;
+  background: transparent;
   cursor: pointer;
   flex-shrink: 0;
   transition: 0.2s;
   box-shadow: none;
   border-radius: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .product .favorite-btn {
-  background: #d1d1d15d;
+  background: transparent;
   box-shadow: none;
   border-radius: 0;
 }
 
 .favorite-btn:hover {
-  background: #d1d1d15d;
-  color: #d10035;
+  background: transparent;
 }
 
 .favorite-btn.active {
-  background: #d1d1d15d;
-  color: #d10035;
+  background: transparent;
 }
 
 .favorite-item {
@@ -700,16 +697,22 @@ a {
   color: #fff;
 }
 
-.header-favorite-icon {
-  color: transparent;
-  -webkit-text-stroke: 1px #d10035;
-  font-size: 24px;
-  line-height: 1;
+.heart-icon {
+  width: 22px;
+  height: 22px;
+}
+
+.heart-icon path {
+  fill: transparent;
+  stroke: #d10035;
+  stroke-width: 1.6;
   transition: 0.2s;
 }
 
-#favoritesBtn:hover .header-favorite-icon {
-  color: #d10035;
+.favorite-btn:hover .heart-icon path,
+.favorite-btn.active .heart-icon path,
+#favoritesBtn:hover .heart-icon path {
+  fill: #d10035;
 }
 
 #favoritesSidebar .cart-header {
