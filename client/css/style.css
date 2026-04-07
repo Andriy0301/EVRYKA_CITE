@@ -657,6 +657,10 @@ a {
   background: transparent;
   box-shadow: none;
   border-radius: 0;
+  margin-top: 0;
+  padding: 0;
+  width: 24px;
+  height: 24px;
 }
 
 .favorite-btn:hover {
@@ -713,6 +717,17 @@ a {
 .favorite-btn.active .heart-icon path,
 #favoritesBtn:hover .heart-icon path {
   fill: #d10035;
+}
+
+#favoritesBtn {
+  background: transparent;
+  border: none;
+  box-shadow: none;
+}
+
+#favoritesBtn:hover {
+  background: transparent;
+  color: inherit;
 }
 
 #favoritesSidebar .cart-header {
