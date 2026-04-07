@@ -35,11 +35,11 @@
 
   <div class="header-actions">
     <button id="authBtn" class="auth-icon-btn" title="Особистий кабінет">
-      <svg viewBox="0 0 24 24" aria-hidden="true">
+      <svg id="authIcon" viewBox="0 0 24 24" aria-hidden="true">
         <path d="M12 12c2.8 0 5-2.2 5-5s-2.2-5-5-5-5 2.2-5 5 2.2 5 5 5Zm0 2c-4.4 0-8 2.7-8 6v2h16v-2c0-3.3-3.6-6-8-6Z"></path>
       </svg>
+      <span id="authInitials" class="auth-initials"></span>
     </button>
-    <span id="authInitials" class="auth-initials"></span>
     <!-- 🛒 КОШИК -->
     <div class="cart" onclick="toggleCart(true)">
       <img src="images/cart.jpg" class="cart-icon">
@@ -68,10 +68,6 @@
 <div class="container">
 
 <div class="category-tabs">
-  <select id="sortSelect" class="sort-select">
-    <option value="default">Стандартне сортування</option>
-    <option value="popular">За популярністю</option>
-  </select>
   <button class="tab active" data-cat="all">ВСІ</button>
 
   <button class="tab" data-cat="Инструменты">ІНСТРУМЕНТИ</button>
@@ -130,7 +126,7 @@
 </div>
 
 <div id="authModal" class="auth-modal">
-  <div class="auth-modal-content auth-dark">
+  <div class="auth-modal-content auth-light">
     <button id="closeAuthBtn" class="close-btn">✖</button>
     <h3 id="authTitle" class="auth-title">Log In</h3>
     <form id="registerForm">

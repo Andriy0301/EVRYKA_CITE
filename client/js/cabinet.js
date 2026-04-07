@@ -10,6 +10,7 @@ function setProfile(profile) {
 
 function renderInitials(profile) {
   const initialsEl = document.getElementById("authInitials");
+  const authIcon = document.getElementById("authIcon");
   if (!initialsEl) return;
   const first = String(profile?.name || "").trim().charAt(0).toUpperCase();
   const second = String(profile?.lastName || "").trim().charAt(0).toUpperCase();
@@ -17,10 +18,12 @@ function renderInitials(profile) {
   if (!initials.trim()) {
     initialsEl.style.display = "none";
     initialsEl.innerText = "";
+    if (authIcon) authIcon.style.display = "block";
     return;
   }
   initialsEl.innerText = initials;
   initialsEl.style.display = "flex";
+  if (authIcon) authIcon.style.display = "none";
 }
 
 function fillCabinet(profile) {

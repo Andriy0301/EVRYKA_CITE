@@ -39,19 +39,22 @@ function setSavedProfile(profile) {
 function updateAuthButton() {
   const profile = getSavedProfile();
   const authBtn = document.getElementById("authBtn");
+  const authIcon = document.getElementById("authIcon");
   const initialsEl = document.getElementById("authInitials");
   if (!authBtn) return;
   authBtn.title = profile?.name ? `Кабінет: ${profile.name}` : "Особистий кабінет";
-  if (!initialsEl) return;
+  if (!initialsEl || !authIcon) return;
 
   if (profile?.name) {
     const first = String(profile.name || "").trim().charAt(0).toUpperCase();
     const second = String(profile.lastName || "").trim().charAt(0).toUpperCase();
     initialsEl.innerText = `${first}${second || ""}`;
     initialsEl.style.display = "flex";
+    authIcon.style.display = "none";
   } else {
     initialsEl.innerText = "";
     initialsEl.style.display = "none";
+    authIcon.style.display = "block";
   }
 }
 
@@ -434,7 +437,6 @@ document.addEventListener("DOMContentLoaded", () => {
   const closeAuth = document.getElementById("closeAuthBtn");
   const switchRegisterBtn = document.getElementById("switchRegisterBtn");
   const switchLoginBtn = document.getElementById("switchLoginBtn");
-  const sortSelect = document.getElementById("sortSelect");
 
   if (authBtn) {
     authBtn.onclick = () => {
@@ -450,13 +452,6 @@ document.addEventListener("DOMContentLoaded", () => {
   if (switchRegisterBtn) switchRegisterBtn.onclick = () => openAuthModal("register");
   if (switchLoginBtn) switchLoginBtn.onclick = () => openAuthModal("login");
   if (authForm) authForm.addEventListener("submit", submitAuthForm);
-  if (sortSelect) {
-    sortSelect.addEventListener("change", () => {
-      currentSort = sortSelect.value;
-      loadProducts();
-    });
-  }
-
   updateAuthButton();
   loadProducts();
   updateCartCount();

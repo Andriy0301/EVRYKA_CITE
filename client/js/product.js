@@ -117,11 +117,3 @@ document.addEventListener("DOMContentLoaded", () => {
 function goBack() {
   window.history.back();
 }
-document.getElementById("breadcrumbTitle").innerText = product.name;
-
-// якщо є category
-if (product.category) {
-  document.getElementById("productCategory").innerText = product.category;
-} else {
-  document.getElementById("productCategory").innerText = "Товари";
-}

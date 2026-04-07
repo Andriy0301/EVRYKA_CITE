@@ -615,7 +615,6 @@ a {
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  margin-right: 20px;
 }
 
 .auth-icon-btn:hover {
@@ -629,15 +628,11 @@ a {
 }
 
 .auth-initials {
-  min-width: 28px;
-  height: 28px;
-  border-radius: 50%;
-  background: #111;
   color: #fff;
   display: none;
   align-items: center;
   justify-content: center;
-  font-size: 12px;
+  font-size: 11px;
   font-weight: 700;
 }
 
@@ -674,43 +669,44 @@ a {
   gap: 10px;
 }
 
-.auth-dark {
+.auth-light {
   width: min(520px, 92vw);
-  background: #2a2d36;
-  color: #f0f3fb;
-  border-radius: 10px;
-  padding: 36px 38px 30px;
+  background: #fff;
+  color: #111;
+  border-radius: 14px;
+  padding: 28px 30px 24px;
+  box-shadow: 0 14px 35px rgba(0, 0, 0, 0.18);
 }
 
 .auth-title {
   text-align: center;
-  font-size: 52px;
-  font-weight: 400;
+  font-size: 38px;
+  font-weight: 600;
   margin: 0 0 20px;
 }
 
 .auth-input {
-  background: transparent;
-  border: none;
-  border-bottom: 1px solid #5f6676;
-  color: #d7deee;
-  padding: 14px 0;
-  font-size: 20px;
+  background: #fff;
+  border: 1px solid #dcdcdc;
+  border-radius: 10px;
+  color: #222;
+  padding: 12px 14px;
+  font-size: 16px;
   outline: none;
 }
 
 .auth-input::placeholder {
-  color: #8f98ab;
+  color: #7e7e7e;
 }
 
 .auth-submit-btn {
-  margin-top: 20px;
+  margin-top: 12px;
   border: none;
-  border-radius: 6px;
+  border-radius: 10px;
   padding: 14px;
-  font-size: 18px;
-  background: #4f545f;
-  color: #9fb0d1;
+  font-size: 16px;
+  background: #111;
+  color: #fff;
   cursor: pointer;
 }
 
@@ -724,8 +720,8 @@ a {
 .auth-link-btn {
   background: none;
   border: none;
-  color: #00d167;
-  font-size: 18px;
+  color: #2c4a6b;
+  font-size: 16px;
   cursor: pointer;
   padding: 0;
 }
@@ -735,7 +731,7 @@ a {
   display: flex;
   align-items: center;
   gap: 8px;
-  color: #c6ccda;
+  color: #333;
 }
 
 .auth-terms input {
@@ -747,7 +743,7 @@ a {
   margin: 18px 0 8px;
   display: flex;
   align-items: center;
-  color: #9ca4b3;
+  color: #888;
   gap: 10px;
 }
 
@@ -756,7 +752,7 @@ a {
   content: "";
   flex: 1;
   height: 1px;
-  background: #5f6676;
+  background: #ddd;
 }
 
 .google-btn-wrap {
