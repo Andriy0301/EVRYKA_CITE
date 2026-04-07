@@ -638,19 +638,26 @@ a {
 }
 
 .favorite-btn {
-  width: 34px;
-  height: 34px;
+  width: auto;
+  height: auto;
+  padding: 0;
   border: none;
-  border-radius: 50%;
-  background: #f3f3f3;
-  color: #666;
-  font-size: 18px;
+  background: transparent;
+  color: transparent;
+  -webkit-text-stroke: 2px #d10035;
+  font-size: 28px;
+  line-height: 1;
   cursor: pointer;
   flex-shrink: 0;
+  transition: 0.2s;
+}
+
+.favorite-btn:hover {
+  color: #d10035;
 }
 
 .favorite-btn.active {
-  color: #e1003c;
+  color: #d10035;
 }
 
 .favorite-item {
@@ -688,7 +695,7 @@ a {
   margin-top: 10px;
   padding: 14px;
   border: none;
-  border-radius: 12px;
+  border-radius: 999px;
   background: #f4f4f4;
   color: #111;
   font-size: 16px;
