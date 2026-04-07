@@ -644,12 +644,18 @@ a {
   border: none;
   background: transparent;
   color: transparent;
-  -webkit-text-stroke: 2px #d10035;
+  -webkit-text-stroke: 1px #d10035;
   font-size: 28px;
   line-height: 1;
   cursor: pointer;
   flex-shrink: 0;
   transition: 0.2s;
+}
+
+.product .favorite-btn {
+  background: transparent;
+  box-shadow: none;
+  border-radius: 0;
 }
 
 .favorite-btn:hover {
