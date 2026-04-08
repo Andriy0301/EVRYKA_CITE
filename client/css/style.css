@@ -722,10 +722,9 @@ a {
 .heart-icon path {
   fill: transparent;
   stroke: #d10035;
-  stroke-width: 20;
+  stroke-width: 34;
   stroke-linecap: round;
   stroke-linejoin: round;
-  vector-effect: non-scaling-stroke;
   transition: 0.2s;
 }
 
@@ -814,6 +813,12 @@ a {
   overflow-x: auto;
   padding-bottom: 8px;
   scroll-behavior: smooth;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.similar-list::-webkit-scrollbar {
+  display: none;
 }
 
 .similar-wrap {
@@ -888,6 +893,10 @@ a {
   align-items: center;
   gap: 10px;
   margin-bottom: 10px;
+}
+
+.product-price-row {
+  margin-bottom: 14px;
 }
 
 .order-layout {
@@ -1208,7 +1217,7 @@ a {
   top: -5px;
   right: -8px;
 
-  background: rgb(96, 0, 0);
+  background: #d10035;
   color: white;
 
   font-size: 12px;

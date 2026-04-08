@@ -21,6 +21,7 @@ async function loadProduct() {
 
     renderGallery(product);
     renderSimilarProducts(product, products);
+    setupProductFavorite(product);
 
 document.getElementById("buyBtn").onclick = () => {
   const qty = document.getElementById("qty").value;
@@ -53,6 +54,47 @@ document.getElementById("quickCheckoutBtn").onclick = () => {
     console.error(err);
     document.body.innerHTML = "<h2>Помилка завантаження</h2>";
   }
+}
+
+function getFavorites() {
+  try {
+    return JSON.parse(localStorage.getItem("favorites")) || [];
+  } catch {
+    return [];
+  }
+}
+
+function saveFavorites(favorites) {
+  localStorage.setItem("favorites", JSON.stringify(favorites));
+}
+
+function isFavorite(productId) {
+  return getFavorites().some((item) => Number(item.id) === Number(productId));
+}
+
+function setupProductFavorite(product) {
+  const btn = document.getElementById("productFavoriteBtn");
+  if (!btn) return;
+
+  const syncState = () => {
+    btn.classList.toggle("active", isFavorite(product.id));
+  };
+
+  btn.onclick = () => {
+    const favorites = getFavorites();
+    const index = favorites.findIndex((item) => Number(item.id) === Number(product.id));
+
+    if (index >= 0) {
+      favorites.splice(index, 1);
+    } else {
+      favorites.push(product);
+    }
+
+    saveFavorites(favorites);
+    syncState();
+  };
+
+  syncState();
 }
 
 // 🔥 галерея
