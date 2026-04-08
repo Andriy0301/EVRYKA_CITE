@@ -1,4 +1,8 @@
 const API_URL = ""; // важливо — пусто
+const CITY_SEARCH_CACHE = new Map();
+const CITY_SEARCH_PENDING = new Map();
+const WAREHOUSE_CACHE = new Map();
+const WAREHOUSE_PENDING = new Map();
 
 function sleep(ms) {
   return new Promise((resolve) => setTimeout(resolve, ms));
@@ -142,21 +146,65 @@ async function saveUserCart(profile, items) {
 }
 
 async function searchNovaPoshtaCities(query) {
-  const res = await fetch(`/api/shipping/nova-poshta/cities?query=${encodeURIComponent(query)}`);
-  if (!res.ok) {
-    throw new Error("Не вдалося завантажити список міст");
+  const normalizedQuery = String(query || "").trim().toLowerCase();
+  if (!normalizedQuery) return [];
+
+  if (CITY_SEARCH_CACHE.has(normalizedQuery)) {
+    return CITY_SEARCH_CACHE.get(normalizedQuery);
   }
-  return res.json();
+
+  if (CITY_SEARCH_PENDING.has(normalizedQuery)) {
+    return CITY_SEARCH_PENDING.get(normalizedQuery);
+  }
+
+  const request = (async () => {
+    const res = await fetch(`/api/shipping/nova-poshta/cities?query=${encodeURIComponent(normalizedQuery)}`);
+    if (!res.ok) {
+      throw new Error("Не вдалося завантажити список міст");
+    }
+    const data = await res.json();
+    CITY_SEARCH_CACHE.set(normalizedQuery, data);
+    return data;
+  })();
+
+  CITY_SEARCH_PENDING.set(normalizedQuery, request);
+  try {
+    return await request;
+  } finally {
+    CITY_SEARCH_PENDING.delete(normalizedQuery);
+  }
 }
 
 async function getNovaPoshtaWarehouses(cityRef, type = "warehouse") {
-  const res = await fetch(
-    `/api/shipping/nova-poshta/warehouses?cityRef=${encodeURIComponent(cityRef)}&type=${encodeURIComponent(type)}`
-  );
-  if (!res.ok) {
-    throw new Error("Не вдалося завантажити список відділень");
+  const cacheKey = `${String(cityRef || "").trim()}|${String(type || "warehouse").trim()}`;
+  if (!cityRef) return [];
+
+  if (WAREHOUSE_CACHE.has(cacheKey)) {
+    return WAREHOUSE_CACHE.get(cacheKey);
   }
-  return res.json();
+
+  if (WAREHOUSE_PENDING.has(cacheKey)) {
+    return WAREHOUSE_PENDING.get(cacheKey);
+  }
+
+  const request = (async () => {
+    const res = await fetch(
+      `/api/shipping/nova-poshta/warehouses?cityRef=${encodeURIComponent(cityRef)}&type=${encodeURIComponent(type)}`
+    );
+    if (!res.ok) {
+      throw new Error("Не вдалося завантажити список відділень");
+    }
+    const data = await res.json();
+    WAREHOUSE_CACHE.set(cacheKey, data);
+    return data;
+  })();
+
+  WAREHOUSE_PENDING.set(cacheKey, request);
+  try {
+    return await request;
+  } finally {
+    WAREHOUSE_PENDING.delete(cacheKey);
+  }
 }
 
 async function createNovaPoshtaTtn(payload) {
