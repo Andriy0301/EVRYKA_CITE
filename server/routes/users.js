@@ -232,17 +232,29 @@ router.post("/cart", (req, res) => {
   });
 
   if (index < 0) {
-    return res.status(404).json({ error: "user not found" });
+    users.push({
+      id: normalizedId || Date.now(),
+      name: "",
+      lastName: "",
+      middleName: "",
+      phone: normalizedPhone,
+      email: normalizedEmail,
+      password: "",
+      delivery: { provider: "nova_poshta", city: "", branch: "", address: "" },
+      cart: normalizeCartItems(items),
+      updatedAt: new Date().toISOString()
+    });
+  } else {
+    users[index] = {
+      ...users[index],
+      cart: normalizeCartItems(items),
+      updatedAt: new Date().toISOString()
+    };
   }
 
-  users[index] = {
-    ...users[index],
-    cart: normalizeCartItems(items),
-    updatedAt: new Date().toISOString()
-  };
-
   writeUsers(users);
-  return res.json({ items: users[index].cart });
+  const savedUser = index < 0 ? users[users.length - 1] : users[index];
+  return res.json({ items: savedUser.cart });
 });
 
 module.exports = router;

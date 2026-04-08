@@ -27,7 +27,9 @@ function canSyncCart(profile) {
 function syncCartToAccount(cart) {
   const profile = getCurrentProfileForCart();
   if (!canSyncCart(profile) || typeof saveUserCart !== "function") return;
-  saveUserCart(profile, cart).catch(() => {});
+  saveUserCart(profile, cart).catch((error) => {
+    console.error("Cart sync failed:", error);
+  });
 }
 
 async function hydrateCartFromAccount(profile = getCurrentProfileForCart()) {
