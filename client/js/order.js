@@ -3,6 +3,7 @@ const CHECKOUT_ITEMS_KEY = "checkoutItems";
 let cityOptions = [];
 let cityDropdownVisible = false;
 let citySearchTimer = null;
+let citySelectionInProgress = false;
 let branchOptions = [];
 let branchDropdownVisible = false;
 
@@ -248,6 +249,8 @@ async function onCityInput() {
 }
 
 async function onCityChange() {
+  if (citySelectionInProgress) return;
+
   const cityEl = document.getElementById("orderCity");
   const cityRefEl = document.getElementById("orderCityRef");
   const providerEl = document.getElementById("orderProvider");
@@ -323,9 +326,11 @@ function bindCitySuggestionEvents() {
   const cityRefEl = document.getElementById("orderCityRef");
   const deliveryTypeEl = document.getElementById("orderDeliveryType");
 
-  listEl.addEventListener("click", async (event) => {
+  listEl.addEventListener("mousedown", async (event) => {
     const btn = event.target.closest(".city-suggestion-item");
     if (!btn) return;
+    event.preventDefault();
+    citySelectionInProgress = true;
 
     const cityName = btn.dataset.name || "";
     const cityRef = btn.dataset.ref || "";
@@ -333,6 +338,11 @@ function bindCitySuggestionEvents() {
     cityRefEl.value = cityRef;
     renderCitySuggestions([]);
     await loadWarehouses(cityRef, deliveryTypeEl.value);
+
+    // Даємо завершитися blur/change і повертаємо нормальний стан.
+    setTimeout(() => {
+      citySelectionInProgress = false;
+    }, 0);
   });
 
   document.addEventListener("click", (event) => {
