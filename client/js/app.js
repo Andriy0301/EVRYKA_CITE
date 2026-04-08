@@ -37,6 +37,10 @@ function setSavedProfile(profile) {
   localStorage.setItem(PROFILE_STORAGE_KEY, JSON.stringify(profile));
 }
 
+function canSyncByProfile(profile) {
+  return Boolean(profile?.id || profile?.email || profile?.phone);
+}
+
 function updateAuthButton() {
   const profile = getSavedProfile();
   const authBtn = document.getElementById("authBtn");
@@ -135,6 +139,7 @@ async function handleGoogleCredential(response) {
       lastName: payload.family_name || "User"
     });
     setSavedProfile(saved);
+    await hydrateFavoritesFromAccount(saved);
     if (typeof hydrateCartFromAccount === "function") {
       await hydrateCartFromAccount(saved);
     }
@@ -209,6 +214,7 @@ async function submitAuthForm(e) {
     }
 
     setSavedProfile(saved);
+    await hydrateFavoritesFromAccount(saved);
     if (typeof hydrateCartFromAccount === "function") {
       await hydrateCartFromAccount(saved);
     }
@@ -297,6 +303,30 @@ function getFavorites() {
 
 function saveFavorites(favorites) {
   localStorage.setItem(FAVORITES_STORAGE_KEY, JSON.stringify(favorites));
+  syncFavoritesToAccount(favorites);
+}
+
+function syncFavoritesToAccount(favorites) {
+  const profile = getSavedProfile();
+  if (!canSyncByProfile(profile) || typeof saveUserFavorites !== "function") return;
+  saveUserFavorites(profile, favorites).catch((error) => {
+    console.error("Favorites sync failed:", error);
+  });
+}
+
+async function hydrateFavoritesFromAccount(profile = getSavedProfile()) {
+  if (!canSyncByProfile(profile) || typeof getUserFavorites !== "function") return;
+  try {
+    const data = await getUserFavorites(profile);
+    const favorites = Array.isArray(data?.items) ? data.items : [];
+    localStorage.setItem(FAVORITES_STORAGE_KEY, JSON.stringify(favorites));
+    renderFavoritesList();
+    if (allProducts.length) {
+      renderProducts(currentFiltered.length ? currentFiltered : allProducts);
+    }
+  } catch (error) {
+    console.error("Favorites hydrate failed:", error);
+  }
 }
 
 function isFavorite(productId) {
@@ -572,6 +602,7 @@ document.addEventListener("DOMContentLoaded", () => {
   if (switchLoginBtn) switchLoginBtn.onclick = () => openAuthModal("login");
   if (authForm) authForm.addEventListener("submit", submitAuthForm);
   updateAuthButton();
+  hydrateFavoritesFromAccount();
   loadProducts();
   updateCartCount();
 });

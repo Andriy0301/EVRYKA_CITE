@@ -145,6 +145,42 @@ async function saveUserCart(profile, items) {
   return res.json();
 }
 
+async function getUserFavorites(profile) {
+  const params = new URLSearchParams();
+  if (profile?.id) params.set("id", String(profile.id));
+  if (profile?.email) params.set("email", String(profile.email));
+  if (profile?.phone) params.set("phone", String(profile.phone));
+
+  const res = await fetch(`/api/users/favorites?${params.toString()}`);
+  if (!res.ok) {
+    const body = await res.json().catch(() => ({}));
+    throw new Error(body.error || "Не вдалося завантажити обрані");
+  }
+  return res.json();
+}
+
+async function saveUserFavorites(profile, items) {
+  const res = await fetch(`/api/users/favorites`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({
+      id: profile?.id,
+      email: profile?.email,
+      phone: profile?.phone,
+      items: items || []
+    })
+  });
+
+  if (!res.ok) {
+    const body = await res.json().catch(() => ({}));
+    throw new Error(body.error || "Не вдалося зберегти обрані");
+  }
+
+  return res.json();
+}
+
 async function searchNovaPoshtaCities(query) {
   const normalizedQuery = String(query || "").trim().toLowerCase();
   if (!normalizedQuery) return [];

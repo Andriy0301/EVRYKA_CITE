@@ -42,6 +42,18 @@ function normalizeCartItems(items) {
     .filter((item) => Number.isFinite(item.id) && item.id > 0);
 }
 
+function normalizeFavoriteItems(items) {
+  if (!Array.isArray(items)) return [];
+  return items
+    .map((item) => ({
+      id: Number(item?.id),
+      name: String(item?.name || "").trim(),
+      price: Number(item?.price || 0),
+      image: String(item?.image || "").trim()
+    }))
+    .filter((item) => Number.isFinite(item.id) && item.id > 0);
+}
+
 router.post("/register", (req, res) => {
   const { name, lastName, middleName, phone, email, password, delivery = {} } = req.body || {};
 
@@ -258,6 +270,73 @@ router.post("/cart", (req, res) => {
   writeUsers(users);
   const savedUser = index < 0 ? users[users.length - 1] : users[index];
   return res.json({ items: savedUser.cart });
+});
+
+router.get("/favorites", (req, res) => {
+  const id = String(req.query.id || "").trim();
+  const email = String(req.query.email || "").trim().toLowerCase();
+  const phone = String(req.query.phone || "").trim();
+
+  if (!id && !email && !phone) {
+    return res.status(400).json({ error: "id/email/phone is required" });
+  }
+
+  const users = readUsers();
+  const user = users.find((u) => {
+    return (
+      (id && String(u.id) === id) ||
+      (email && String(u.email || "").toLowerCase() === email) ||
+      (phone && String(u.phone || "").trim() === phone)
+    );
+  });
+
+  if (!user) {
+    return res.status(404).json({ error: "user not found" });
+  }
+
+  return res.json({ items: normalizeFavoriteItems(user?.favorites || []) });
+});
+
+router.post("/favorites", (req, res) => {
+  const { id, email, phone, items } = req.body || {};
+  const normalizedId = String(id || "").trim();
+  const normalizedEmail = String(email || "").trim().toLowerCase();
+  const normalizedPhone = String(phone || "").trim();
+
+  const users = readUsers();
+  const index = users.findIndex((u) => {
+    return (
+      (normalizedId && String(u.id) === normalizedId) ||
+      (normalizedEmail && String(u.email || "").toLowerCase() === normalizedEmail) ||
+      (normalizedPhone && String(u.phone || "").trim() === normalizedPhone)
+    );
+  });
+
+  if (index < 0) {
+    users.push({
+      id: normalizedId || Date.now(),
+      name: "",
+      lastName: "",
+      middleName: "",
+      phone: normalizedPhone,
+      email: normalizedEmail,
+      password: "",
+      delivery: { provider: "nova_poshta", city: "", branch: "", address: "" },
+      cart: [],
+      favorites: normalizeFavoriteItems(items),
+      updatedAt: new Date().toISOString()
+    });
+  } else {
+    users[index] = {
+      ...users[index],
+      favorites: normalizeFavoriteItems(items),
+      updatedAt: new Date().toISOString()
+    };
+  }
+
+  writeUsers(users);
+  const savedUser = index < 0 ? users[users.length - 1] : users[index];
+  return res.json({ items: savedUser.favorites });
 });
 
 module.exports = router;
