@@ -39,7 +39,8 @@
 
         <h3>Доставка</h3>
         <label>Служба доставки
-          <select id="orderProvider">
+          <select id="orderProvider" required>
+            <option value="">Оберіть службу доставки</option>
             <option value="nova_poshta">Нова пошта</option>
             <option value="ukr_poshta">Укрпошта</option>
           </select>
@@ -53,9 +54,9 @@
           </select>
         </label>
 
-        <label id="cityWrap">Обрати місто
-          <input id="orderCity" type="text" list="citySuggestions" autocomplete="off">
-          <datalist id="citySuggestions"></datalist>
+        <label id="cityWrap" class="city-autocomplete-wrap">Обрати місто
+          <input id="orderCity" type="text" autocomplete="off">
+          <div id="citySuggestions" class="city-suggestions" style="display:none;"></div>
         </label>
         <input id="orderCityRef" type="hidden">
 

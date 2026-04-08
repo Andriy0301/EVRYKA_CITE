@@ -1,6 +1,16 @@
 const PROFILE_STORAGE_KEY = "userProfile";
 const CHECKOUT_ITEMS_KEY = "checkoutItems";
 let cityOptions = [];
+let cityDropdownVisible = false;
+let citySearchTimer = null;
+
+function capitalizeCityInput(value) {
+  return String(value || "")
+    .toLowerCase()
+    .replace(/(^|\s|-)([a-zа-яіїєґ])/giu, (match, separator, letter) => {
+      return `${separator}${letter.toUpperCase()}`;
+    });
+}
 
 function getProfile() {
   return JSON.parse(localStorage.getItem(PROFILE_STORAGE_KEY) || "null");
@@ -21,7 +31,7 @@ function fillForm(profile) {
   document.getElementById("orderLastName").value = profile?.lastName || "";
   document.getElementById("orderPhone").value = profile?.phone || "";
   document.getElementById("orderEmail").value = profile?.email || "";
-  document.getElementById("orderProvider").value = profile?.delivery?.provider || "nova_poshta";
+  document.getElementById("orderProvider").value = profile?.delivery?.provider || "";
   document.getElementById("orderDeliveryType").value = profile?.delivery?.deliveryType || "warehouse";
   document.getElementById("orderCity").value = profile?.delivery?.city || "";
   document.getElementById("orderAddress").value = profile?.delivery?.address || "";
@@ -72,12 +82,14 @@ function setupDeliveryUI() {
   const applyVisibility = () => {
     const provider = providerEl.value;
     const deliveryType = deliveryTypeEl.value;
+    const hasProvider = Boolean(provider);
     const isNova = provider === "nova_poshta";
 
-    deliveryTypeWrap.style.display = isNova ? "grid" : "none";
+    deliveryTypeWrap.style.display = hasProvider && isNova ? "grid" : "none";
+    document.getElementById("cityWrap").style.display = hasProvider ? "grid" : "none";
     cityEl.placeholder = isNova ? "Почніть вводити місто..." : "Місто";
-    branchWrap.style.display = isNova && deliveryType === "address" ? "none" : "grid";
-    addressWrap.style.display = isNova && deliveryType === "address" ? "grid" : "none";
+    branchWrap.style.display = !hasProvider || (isNova && deliveryType === "address") ? "none" : "grid";
+    addressWrap.style.display = hasProvider && isNova && deliveryType === "address" ? "grid" : "none";
 
     branchLabel.firstChild.textContent = deliveryType === "postomat" ? "Обрати поштомат" : "Обрати відділення";
     branchEl.required = isNova && deliveryType !== "address";
@@ -86,6 +98,14 @@ function setupDeliveryUI() {
     if (!isNova) {
       cityRefEl.value = "";
       branchEl.innerHTML = `<option value="">Вкажіть відділення вручну</option>`;
+    }
+
+    if (!hasProvider) {
+      cityRefEl.value = "";
+      cityEl.value = "";
+      addressEl.value = "";
+      branchEl.innerHTML = `<option value="">Спочатку оберіть службу доставки</option>`;
+      renderCitySuggestions([]);
     }
   };
 
@@ -101,18 +121,33 @@ function setupDeliveryUI() {
 
 async function onCityInput() {
   const cityEl = document.getElementById("orderCity");
-  const listEl = document.getElementById("citySuggestions");
   const providerEl = document.getElementById("orderProvider");
-  const query = cityEl.value.trim();
-
-  if (providerEl.value !== "nova_poshta" || query.length < 2) return;
-
-  try {
-    cityOptions = await searchNovaPoshtaCities(query);
-    listEl.innerHTML = cityOptions.map((city) => `<option value="${city.Present}"></option>`).join("");
-  } catch (error) {
-    showMessage(error.message || "Не вдалося знайти місто");
+  const cityRefEl = document.getElementById("orderCityRef");
+  const normalized = capitalizeCityInput(cityEl.value);
+  if (cityEl.value !== normalized) {
+    cityEl.value = normalized;
   }
+  const query = normalized.trim();
+  cityRefEl.value = "";
+
+  if (citySearchTimer) {
+    clearTimeout(citySearchTimer);
+  }
+
+  if (providerEl.value !== "nova_poshta" || query.length < 3) {
+    renderCitySuggestions([]);
+    return;
+  }
+
+  citySearchTimer = setTimeout(async () => {
+    try {
+      cityOptions = await searchNovaPoshtaCities(query);
+      renderCitySuggestions(cityOptions);
+    } catch (error) {
+      renderCitySuggestions([]);
+      showMessage(error.message || "Не вдалося знайти місто");
+    }
+  }, 350);
 }
 
 async function onCityChange() {
@@ -125,8 +160,57 @@ async function onCityChange() {
   const selectedCity = cityOptions.find((city) => city.Present === cityEl.value.trim());
   cityRefEl.value = selectedCity?.Ref || "";
   if (selectedCity?.Ref) {
+    renderCitySuggestions([]);
     await loadWarehouses(selectedCity.Ref, deliveryType);
   }
+}
+
+function renderCitySuggestions(options) {
+  const listEl = document.getElementById("citySuggestions");
+
+  if (!options.length) {
+    listEl.style.display = "none";
+    listEl.innerHTML = "";
+    cityDropdownVisible = false;
+    return;
+  }
+
+  listEl.innerHTML = options
+    .slice(0, 8)
+    .map(
+      (city) =>
+        `<button type="button" class="city-suggestion-item" data-ref="${city.Ref}" data-name="${city.Present}">${city.Present}</button>`
+    )
+    .join("");
+
+  listEl.style.display = "block";
+  cityDropdownVisible = true;
+}
+
+function bindCitySuggestionEvents() {
+  const listEl = document.getElementById("citySuggestions");
+  const cityEl = document.getElementById("orderCity");
+  const cityRefEl = document.getElementById("orderCityRef");
+  const deliveryTypeEl = document.getElementById("orderDeliveryType");
+
+  listEl.addEventListener("click", async (event) => {
+    const btn = event.target.closest(".city-suggestion-item");
+    if (!btn) return;
+
+    const cityName = btn.dataset.name || "";
+    const cityRef = btn.dataset.ref || "";
+    cityEl.value = cityName;
+    cityRefEl.value = cityRef;
+    renderCitySuggestions([]);
+    await loadWarehouses(cityRef, deliveryTypeEl.value);
+  });
+
+  document.addEventListener("click", (event) => {
+    const wrap = document.getElementById("cityWrap");
+    if (!wrap.contains(event.target) && cityDropdownVisible) {
+      renderCitySuggestions([]);
+    }
+  });
 }
 
 async function loadWarehouses(cityRef, deliveryType) {
@@ -135,9 +219,22 @@ async function loadWarehouses(cityRef, deliveryType) {
   branchEl.innerHTML = `<option value="">Завантаження...</option>`;
   try {
     const warehouses = await getNovaPoshtaWarehouses(cityRef, deliveryType);
+    const filtered = warehouses.filter((w) => {
+      const text = `${w.Description || ""} ${w.ShortAddress || ""}`.toLowerCase();
+      const isPostomat = text.includes("поштомат");
+      if (deliveryType === "postomat") return isPostomat;
+      if (deliveryType === "warehouse") return !isPostomat;
+      return true;
+    });
+
+    if (!filtered.length) {
+      branchEl.innerHTML = `<option value="">Немає доступних точок</option>`;
+      return;
+    }
+
     branchEl.innerHTML = [
       `<option value="">Оберіть зі списку</option>`,
-      ...warehouses.map((w) => `<option value="${w.Ref}">${w.Description}</option>`)
+      ...filtered.map((w) => `<option value="${w.Ref}">${w.Description}</option>`)
     ].join("");
   } catch (error) {
     branchEl.innerHTML = `<option value="">Не вдалося завантажити</option>`;
@@ -171,6 +268,11 @@ async function submitOrder(e) {
 
   if (!profile.name || !profile.lastName || !profile.phone || !profile.email) {
     showMessage("Заповніть контактні дані");
+    return;
+  }
+
+  if (!profile.delivery.provider) {
+    showMessage("Оберіть службу доставки");
     return;
   }
 
@@ -228,6 +330,7 @@ document.addEventListener("DOMContentLoaded", () => {
   fillForm(getProfile());
   setupDeliveryUI();
   renderItems(items);
+  bindCitySuggestionEvents();
   document.getElementById("orderCity").addEventListener("input", onCityInput);
   document.getElementById("orderCity").addEventListener("change", onCityChange);
   document.getElementById("orderForm").addEventListener("submit", submitOrder);

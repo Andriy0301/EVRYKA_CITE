@@ -911,6 +911,41 @@ a {
   overflow-y: auto;
 }
 
+.city-autocomplete-wrap {
+  position: relative;
+}
+
+.city-suggestions {
+  position: absolute;
+  top: calc(100% + 6px);
+  left: 0;
+  right: 0;
+  max-height: 220px;
+  overflow-y: auto;
+  background: #ffffff;
+  border: 1px solid #e3e3e3;
+  border-radius: 10px;
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.14);
+  z-index: 30;
+  padding: 6px;
+}
+
+.city-suggestion-item {
+  width: 100%;
+  border: none;
+  background: transparent;
+  text-align: left;
+  border-radius: 8px;
+  padding: 10px 12px;
+  font-size: 14px;
+  color: #202020;
+  cursor: pointer;
+}
+
+.city-suggestion-item:hover {
+  background: #f3f3f3;
+}
+
 .order-total-row {
   margin-top: 12px;
   border-top: 1px solid #eee;

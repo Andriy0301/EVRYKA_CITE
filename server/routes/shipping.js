@@ -33,12 +33,6 @@ async function callNovaPoshta(modelName, calledMethod, methodProperties = {}) {
   return data.data || [];
 }
 
-function deliveryTypeToWarehouseCategory(type) {
-  if (type === "postomat") return "Postomat";
-  if (type === "warehouse") return "Branch";
-  return null;
-}
-
 function deliveryTypeToServiceType(type) {
   if (type === "address") return "WarehouseDoors";
   return "WarehouseWarehouse";
@@ -66,18 +60,11 @@ router.get("/nova-poshta/cities", async (req, res) => {
 router.get("/nova-poshta/warehouses", async (req, res) => {
   try {
     const cityRef = String(req.query.cityRef || "").trim();
-    const type = String(req.query.type || "warehouse").trim();
     if (!cityRef) {
       return res.status(400).json({ error: "Не передано місто" });
     }
 
-    const category = deliveryTypeToWarehouseCategory(type);
-    const methodProperties = { CityRef: cityRef };
-    if (category) {
-      methodProperties.CategoryOfWarehouse = category;
-    }
-
-    const data = await callNovaPoshta("AddressGeneral", "getWarehouses", methodProperties);
+    const data = await callNovaPoshta("AddressGeneral", "getWarehouses", { CityRef: cityRef });
     return res.json(data);
   } catch (error) {
     return res.status(500).json({ error: error.message || "Не вдалося завантажити відділення" });
