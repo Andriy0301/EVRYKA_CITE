@@ -135,6 +135,9 @@ async function handleGoogleCredential(response) {
       lastName: payload.family_name || "User"
     });
     setSavedProfile(saved);
+    if (typeof hydrateCartFromAccount === "function") {
+      await hydrateCartFromAccount(saved);
+    }
     updateAuthButton();
     closeAuthModal();
     showAuthMessage("");
@@ -206,6 +209,9 @@ async function submitAuthForm(e) {
     }
 
     setSavedProfile(saved);
+    if (typeof hydrateCartFromAccount === "function") {
+      await hydrateCartFromAccount(saved);
+    }
     updateAuthButton();
     closeAuthModal();
     showAuthMessage("", false);

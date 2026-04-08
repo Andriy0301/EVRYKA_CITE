@@ -105,6 +105,42 @@ async function updateUserProfile(payload) {
   return res.json();
 }
 
+async function getUserCart(profile) {
+  const params = new URLSearchParams();
+  if (profile?.id) params.set("id", String(profile.id));
+  if (profile?.email) params.set("email", String(profile.email));
+  if (profile?.phone) params.set("phone", String(profile.phone));
+
+  const res = await fetch(`/api/users/cart?${params.toString()}`);
+  if (!res.ok) {
+    const body = await res.json().catch(() => ({}));
+    throw new Error(body.error || "Не вдалося завантажити кошик");
+  }
+  return res.json();
+}
+
+async function saveUserCart(profile, items) {
+  const res = await fetch(`/api/users/cart`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({
+      id: profile?.id,
+      email: profile?.email,
+      phone: profile?.phone,
+      items: items || []
+    })
+  });
+
+  if (!res.ok) {
+    const body = await res.json().catch(() => ({}));
+    throw new Error(body.error || "Не вдалося зберегти кошик");
+  }
+
+  return res.json();
+}
+
 async function searchNovaPoshtaCities(query) {
   const res = await fetch(`/api/shipping/nova-poshta/cities?query=${encodeURIComponent(query)}`);
   if (!res.ok) {

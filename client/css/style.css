@@ -941,20 +941,20 @@ a {
 .order-items-card .qty-controls {
   display: inline-flex;
   align-items: center;
-  gap: 8px;
+  gap: 4px;
   background: #f2f2f2;
   border-radius: 999px;
-  padding: 6px;
+  padding: 4px 8px;
 }
 
 .order-items-card .qty-controls button {
-  width: 44px;
-  height: 44px;
+  width: 34px;
+  height: 34px;
   border: none;
-  border-radius: 14px;
+  border-radius: 10px;
   background: transparent;
   color: #1a1a1a;
-  font-size: 30px;
+  font-size: 28px;
   line-height: 1;
   cursor: pointer;
   transition: 0.2s;
@@ -965,19 +965,15 @@ a {
 }
 
 .order-items-card .qty-controls .order-qty-plus {
-  background: #090b10;
-  color: #fff;
-}
-
-.order-items-card .qty-controls .order-qty-plus:hover {
-  background: #1a1d24;
+  background: transparent;
+  color: #1a1a1a;
 }
 
 .order-items-card .qty-controls span {
-  min-width: 34px;
+  min-width: 26px;
   text-align: center;
-  font-size: 30px;
-  font-weight: 500;
+  font-size: 32px;
+  font-weight: 600;
   line-height: 1;
 }
 

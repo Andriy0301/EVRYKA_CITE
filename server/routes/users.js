@@ -29,6 +29,19 @@ function sanitizeUser(user) {
   return safeUser;
 }
 
+function normalizeCartItems(items) {
+  if (!Array.isArray(items)) return [];
+  return items
+    .map((item) => ({
+      id: Number(item?.id),
+      name: String(item?.name || "").trim(),
+      price: Number(item?.price || 0),
+      qty: Math.max(1, Number(item?.qty || 1)),
+      image: String(item?.image || "").trim()
+    }))
+    .filter((item) => Number.isFinite(item.id) && item.id > 0);
+}
+
 router.post("/register", (req, res) => {
   const { name, lastName, middleName, phone, email, password, delivery = {} } = req.body || {};
 
@@ -176,6 +189,52 @@ router.post("/update-profile", (req, res) => {
   }
   writeUsers(users);
   return res.json(sanitizeUser(updated));
+});
+
+router.get("/cart", (req, res) => {
+  const id = String(req.query.id || "").trim();
+  const email = String(req.query.email || "").trim().toLowerCase();
+  const phone = String(req.query.phone || "").trim();
+
+  const users = readUsers();
+  const user = users.find((u) => {
+    return (
+      (id && String(u.id) === id) ||
+      (email && String(u.email || "").toLowerCase() === email) ||
+      (phone && String(u.phone || "").trim() === phone)
+    );
+  });
+
+  return res.json({ items: normalizeCartItems(user?.cart || []) });
+});
+
+router.post("/cart", (req, res) => {
+  const { id, email, phone, items } = req.body || {};
+  const normalizedId = String(id || "").trim();
+  const normalizedEmail = String(email || "").trim().toLowerCase();
+  const normalizedPhone = String(phone || "").trim();
+
+  const users = readUsers();
+  const index = users.findIndex((u) => {
+    return (
+      (normalizedId && String(u.id) === normalizedId) ||
+      (normalizedEmail && String(u.email || "").toLowerCase() === normalizedEmail) ||
+      (normalizedPhone && String(u.phone || "").trim() === normalizedPhone)
+    );
+  });
+
+  if (index < 0) {
+    return res.status(404).json({ error: "user not found" });
+  }
+
+  users[index] = {
+    ...users[index],
+    cart: normalizeCartItems(items),
+    updatedAt: new Date().toISOString()
+  };
+
+  writeUsers(users);
+  return res.json({ items: users[index].cart });
 });
 
 module.exports = router;

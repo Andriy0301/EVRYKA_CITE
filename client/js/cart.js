@@ -9,6 +9,41 @@ function getCart() {
 function saveCart(cart) {
   localStorage.setItem("cart", JSON.stringify(cart));
   updateCartCount();
+  syncCartToAccount(cart);
+}
+
+function getCurrentProfileForCart() {
+  try {
+    return JSON.parse(localStorage.getItem("userProfile") || "null");
+  } catch {
+    return null;
+  }
+}
+
+function canSyncCart(profile) {
+  return Boolean(profile?.id || profile?.email || profile?.phone);
+}
+
+function syncCartToAccount(cart) {
+  const profile = getCurrentProfileForCart();
+  if (!canSyncCart(profile) || typeof saveUserCart !== "function") return;
+  saveUserCart(profile, cart).catch(() => {});
+}
+
+async function hydrateCartFromAccount(profile = getCurrentProfileForCart()) {
+  if (!canSyncCart(profile) || typeof getUserCart !== "function") return;
+  try {
+    const data = await getUserCart(profile);
+    const items = Array.isArray(data?.items) ? data.items : [];
+    localStorage.setItem("cart", JSON.stringify(items));
+    updateCartCount();
+    const sidebar = document.getElementById("cartSidebar");
+    if (sidebar?.classList.contains("active")) {
+      renderCart();
+    }
+  } catch (_) {
+    // silent fallback to local cart
+  }
 }
 
 
@@ -182,6 +217,7 @@ function clearCart() {
   localStorage.removeItem("cart");
   renderCart();
   updateCartCount();
+  syncCartToAccount([]);
 }
 
 
@@ -210,3 +246,7 @@ async function checkout() {
   localStorage.setItem("checkoutItems", JSON.stringify(cart));
   window.location.href = "order.html";
 }
+
+document.addEventListener("DOMContentLoaded", () => {
+  hydrateCartFromAccount();
+});
