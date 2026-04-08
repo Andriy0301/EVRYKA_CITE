@@ -938,43 +938,15 @@ a {
   flex-shrink: 0;
 }
 
-.order-items-card .qty-controls {
-  display: inline-flex;
-  align-items: center;
-  gap: 4px;
-  background: #f2f2f2;
-  border-radius: 999px;
-  padding: 4px 8px;
+.order-items-card .order-qty-wrapper {
+  margin-bottom: 0;
 }
 
-.order-items-card .qty-controls button {
-  width: 34px;
-  height: 34px;
-  border: none;
-  border-radius: 10px;
-  background: transparent;
-  color: #1a1a1a;
-  font-size: 28px;
-  line-height: 1;
-  cursor: pointer;
-  transition: 0.2s;
-}
-
-.order-items-card .qty-controls button:hover {
-  background: #e7e7e7;
-}
-
-.order-items-card .qty-controls .order-qty-plus {
-  background: transparent;
-  color: #1a1a1a;
-}
-
-.order-items-card .qty-controls span {
-  min-width: 26px;
+.order-items-card .order-qty-value {
+  min-width: 60px;
   text-align: center;
-  font-size: 32px;
-  font-weight: 600;
-  line-height: 1;
+  font-size: 16px;
+  font-weight: 700;
 }
 
 .city-autocomplete-wrap {

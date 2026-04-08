@@ -196,6 +196,10 @@ router.get("/cart", (req, res) => {
   const email = String(req.query.email || "").trim().toLowerCase();
   const phone = String(req.query.phone || "").trim();
 
+  if (!id && !email && !phone) {
+    return res.status(400).json({ error: "id/email/phone is required" });
+  }
+
   const users = readUsers();
   const user = users.find((u) => {
     return (
@@ -204,6 +208,10 @@ router.get("/cart", (req, res) => {
       (phone && String(u.phone || "").trim() === phone)
     );
   });
+
+  if (!user) {
+    return res.status(404).json({ error: "user not found" });
+  }
 
   return res.json({ items: normalizeCartItems(user?.cart || []) });
 });

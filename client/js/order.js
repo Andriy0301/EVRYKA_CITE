@@ -76,10 +76,14 @@ function renderItems(items) {
       <div style="flex:1;">
         <h4 style="margin:0 0 4px;">${item.name}</h4>
         <p style="margin:0 0 8px;">${item.price} грн x ${qty}</p>
-        <div class="qty-controls">
-          <button type="button" class="order-qty-minus" data-id="${item.id}">-</button>
-          <span>${qty}</span>
-          <button type="button" class="order-qty-plus" data-id="${item.id}">+</button>
+        <div class="qty-wrapper order-qty-wrapper">
+          <button type="button" class="qty-btn order-qty-minus" data-id="${item.id}" aria-label="Зменшити кількість">
+            <svg viewBox="0 0 24 24"><path d="M5 12h14"/></svg>
+          </button>
+          <span class="order-qty-value">${qty}</span>
+          <button type="button" class="qty-btn order-qty-plus" data-id="${item.id}" aria-label="Збільшити кількість">
+            <svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>
+          </button>
         </div>
       </div>
       <button type="button" class="favorite-remove-btn order-remove-btn" data-id="${item.id}">✖</button>

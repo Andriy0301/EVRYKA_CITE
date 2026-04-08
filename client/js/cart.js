@@ -34,8 +34,17 @@ async function hydrateCartFromAccount(profile = getCurrentProfileForCart()) {
   if (!canSyncCart(profile) || typeof getUserCart !== "function") return;
   try {
     const data = await getUserCart(profile);
-    const items = Array.isArray(data?.items) ? data.items : [];
-    localStorage.setItem("cart", JSON.stringify(items));
+    const serverItems = Array.isArray(data?.items) ? data.items : [];
+    const localItems = getCart();
+
+    // Якщо на сервері порожньо, але локально вже є товари (наприклад, після свіжого логіну),
+    // не стираємо локальний кошик, а синхронізуємо його на сервер.
+    if (serverItems.length === 0 && localItems.length > 0) {
+      syncCartToAccount(localItems);
+      return;
+    }
+
+    localStorage.setItem("cart", JSON.stringify(serverItems));
     updateCartCount();
     const sidebar = document.getElementById("cartSidebar");
     if (sidebar?.classList.contains("active")) {
