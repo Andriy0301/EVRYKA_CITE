@@ -348,8 +348,9 @@ function renderFavoritesList() {
   favorites.forEach((item) => {
     const div = document.createElement("div");
     div.className = "favorite-item";
+    const imageSrc = resolveProductImageSrc(item);
     div.innerHTML = `
-      <img src="${API_URL}${item.image}" alt="${item.name}">
+      <img src="${imageSrc}" alt="${item.name}">
       <div style="flex:1;">
         <h4 style="margin:0 0 4px;">${item.name}</h4>
         <p style="margin:0;">${item.price} грн</p>
@@ -366,6 +367,13 @@ function renderFavoritesList() {
 
     container.appendChild(div);
   });
+}
+
+function resolveProductImageSrc(item) {
+  const candidate = item?.image || item?.images?.[0] || "";
+  if (!candidate) return "images/TOP_logo.png";
+  if (/^https?:\/\//i.test(candidate)) return candidate;
+  return `${API_URL}${candidate}`;
 }
 
 function clearFavorites() {

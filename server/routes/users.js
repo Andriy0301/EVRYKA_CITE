@@ -30,7 +30,7 @@ function sanitizeUser(user) {
 }
 
 router.post("/register", (req, res) => {
-  const { name, lastName, phone, email, password, delivery = {} } = req.body || {};
+  const { name, lastName, middleName, phone, email, password, delivery = {} } = req.body || {};
 
   if (!name || !lastName || !phone || !email || !password) {
     return res.status(400).json({ error: "name, lastName, phone, email and password are required" });
@@ -48,6 +48,7 @@ router.post("/register", (req, res) => {
     id: existingIndex >= 0 ? users[existingIndex].id : Date.now(),
     name: String(name).trim(),
     lastName: String(lastName).trim(),
+    middleName: String(middleName || "").trim(),
     phone: normalizedPhone,
     email: normalizedEmail,
     password: String(password),
@@ -95,7 +96,7 @@ router.post("/login", (req, res) => {
 });
 
 router.post("/google-login", (req, res) => {
-  const { email, name, lastName } = req.body || {};
+  const { email, name, lastName, middleName } = req.body || {};
   const normalizedEmail = String(email || "").trim().toLowerCase();
 
   if (!normalizedEmail) {
@@ -110,6 +111,7 @@ router.post("/google-login", (req, res) => {
       id: Date.now(),
       name: String(name || "Google User").trim(),
       lastName: String(lastName || "User").trim(),
+      middleName: String(middleName || "").trim(),
       phone: "",
       email: normalizedEmail,
       password: "",
@@ -124,13 +126,19 @@ router.post("/google-login", (req, res) => {
 });
 
 router.post("/update-profile", (req, res) => {
-  const { id, name, lastName, phone, delivery = {} } = req.body || {};
-  if (!id) {
-    return res.status(400).json({ error: "id is required" });
-  }
+  const { id, name, lastName, middleName, phone, email, delivery = {} } = req.body || {};
+  const normalizedEmail = String(email || "").trim().toLowerCase();
+  const normalizedPhone = String(phone || "").trim();
 
   const users = readUsers();
-  const index = users.findIndex((u) => String(u.id) === String(id));
+  let index = users.findIndex((u) => String(u.id) === String(id));
+  if (index < 0 && normalizedEmail) {
+    index = users.findIndex((u) => String(u.email || "").toLowerCase() === normalizedEmail);
+  }
+  if (index < 0 && normalizedPhone) {
+    index = users.findIndex((u) => String(u.phone || "").trim() === normalizedPhone);
+  }
+
   if (index < 0) {
     return res.status(404).json({ error: "user not found" });
   }
@@ -140,7 +148,9 @@ router.post("/update-profile", (req, res) => {
     ...current,
     name: String(name || current.name || "").trim(),
     lastName: String(lastName || current.lastName || "").trim(),
-    phone: String(phone || current.phone || "").trim(),
+    middleName: String(middleName || current.middleName || "").trim(),
+    phone: normalizedPhone || String(current.phone || "").trim(),
+    email: normalizedEmail || String(current.email || "").trim().toLowerCase(),
     delivery: {
       provider: String(delivery.provider || current.delivery?.provider || "nova_poshta").trim(),
       city: String(delivery.city || current.delivery?.city || "").trim(),

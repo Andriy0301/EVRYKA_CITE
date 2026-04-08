@@ -29,6 +29,7 @@ function getCheckoutItems() {
 function fillForm(profile) {
   document.getElementById("orderName").value = profile?.name || "";
   document.getElementById("orderLastName").value = profile?.lastName || "";
+  document.getElementById("orderMiddleName").value = profile?.middleName || "";
   document.getElementById("orderPhone").value = profile?.phone || "";
   document.getElementById("orderEmail").value = profile?.email || "";
   document.getElementById("orderProvider").value = profile?.delivery?.provider || "";
@@ -77,6 +78,8 @@ function setupDeliveryUI() {
   const cityEl = document.getElementById("orderCity");
   const addressWrap = document.getElementById("addressWrap");
   const addressEl = document.getElementById("orderAddress");
+  const middleNameWrap = document.getElementById("middleNameWrap");
+  const middleNameEl = document.getElementById("orderMiddleName");
   const cityRefEl = document.getElementById("orderCityRef");
 
   const applyVisibility = () => {
@@ -90,10 +93,12 @@ function setupDeliveryUI() {
     cityEl.placeholder = isNova ? "Почніть вводити місто..." : "Місто";
     branchWrap.style.display = !hasProvider || (isNova && deliveryType === "address") ? "none" : "grid";
     addressWrap.style.display = hasProvider && isNova && deliveryType === "address" ? "grid" : "none";
+    middleNameWrap.style.display = hasProvider && isNova && deliveryType === "address" ? "grid" : "none";
 
     branchLabel.firstChild.textContent = deliveryType === "postomat" ? "Обрати поштомат" : "Обрати відділення";
     branchEl.required = isNova && deliveryType !== "address";
     addressEl.required = isNova && deliveryType === "address";
+    middleNameEl.required = isNova && deliveryType === "address";
 
     if (!isNova) {
       cityRefEl.value = "";
@@ -104,6 +109,7 @@ function setupDeliveryUI() {
       cityRefEl.value = "";
       cityEl.value = "";
       addressEl.value = "";
+      middleNameEl.value = "";
       branchEl.innerHTML = `<option value="">Спочатку оберіть службу доставки</option>`;
       renderCitySuggestions([]);
     }
@@ -157,11 +163,30 @@ async function onCityChange() {
   const deliveryType = document.getElementById("orderDeliveryType").value;
   if (providerEl.value !== "nova_poshta") return;
 
-  const selectedCity = cityOptions.find((city) => city.Present === cityEl.value.trim());
+  const normalizedInput = capitalizeCityInput(cityEl.value.trim());
+  cityEl.value = normalizedInput;
+
+  let selectedCity = cityOptions.find((city) => city.Present === normalizedInput);
+  if (!selectedCity && normalizedInput.length >= 3) {
+    try {
+      const freshCities = await searchNovaPoshtaCities(normalizedInput);
+      cityOptions = freshCities;
+      selectedCity =
+        freshCities.find((city) => city.Present === normalizedInput) ||
+        freshCities.find((city) => city.Present.toLowerCase().startsWith(normalizedInput.toLowerCase()));
+    } catch (error) {
+      showMessage(error.message || "Не вдалося знайти місто");
+    }
+  }
+
   cityRefEl.value = selectedCity?.Ref || "";
   if (selectedCity?.Ref) {
+    cityEl.value = selectedCity.Present;
     renderCitySuggestions([]);
     await loadWarehouses(selectedCity.Ref, deliveryType);
+  } else {
+    renderCitySuggestions([]);
+    document.getElementById("orderBranch").innerHTML = `<option value="">Спочатку оберіть місто зі списку</option>`;
   }
 }
 
@@ -254,6 +279,7 @@ async function submitOrder(e) {
     id: getProfile()?.id,
     name: document.getElementById("orderName").value.trim(),
     lastName: document.getElementById("orderLastName").value.trim(),
+    middleName: document.getElementById("orderMiddleName").value.trim(),
     phone: document.getElementById("orderPhone").value.trim(),
     email: document.getElementById("orderEmail").value.trim(),
     delivery: {
@@ -285,6 +311,10 @@ async function submitOrder(e) {
       showMessage("Вкажіть адресу доставки");
       return;
     }
+    if (profile.delivery.deliveryType === "address" && !profile.middleName) {
+      showMessage("Вкажіть по батькові для адресної доставки");
+      return;
+    }
     if (profile.delivery.deliveryType !== "address" && !profile.delivery.branch) {
       showMessage("Оберіть відділення або поштомат");
       return;
@@ -304,6 +334,7 @@ async function submitOrder(e) {
       const ttnResult = await createNovaPoshtaTtn({
         recipientName: profile.name,
         recipientLastName: profile.lastName,
+        recipientMiddleName: profile.middleName,
         recipientPhone: profile.phone,
         cityRef: profile.delivery.cityRef,
         warehouseRef: profile.delivery.branch,
@@ -333,5 +364,6 @@ document.addEventListener("DOMContentLoaded", () => {
   bindCitySuggestionEvents();
   document.getElementById("orderCity").addEventListener("input", onCityInput);
   document.getElementById("orderCity").addEventListener("change", onCityChange);
+  document.getElementById("orderCity").addEventListener("blur", onCityChange);
   document.getElementById("orderForm").addEventListener("submit", submitOrder);
 });

@@ -764,6 +764,17 @@ a {
 
 #favoritesItems {
   padding: 16px 18px;
+  flex: 1;
+  overflow-y: auto;
+  min-height: 0;
+}
+
+#favoritesSidebar .cart-footer {
+  margin-top: auto;
+  position: sticky;
+  bottom: 0;
+  background: #fff;
+  z-index: 2;
 }
 
 .favorite-item {
@@ -1504,6 +1515,19 @@ a {
   background: #ffecec;
   border-color: #ffbdbd;
   color: #d10000;
+}
+
+.favorite-clear-btn {
+  margin-top: 0;
+  background: #ffecec;
+  border: 1px solid #ffbdbd;
+  color: #d10000;
+}
+
+.favorite-clear-btn:hover {
+  background: #ffdede;
+  border-color: #ff9d9d;
+  color: #be0000;
 }
 
 .cart-total {

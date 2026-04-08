@@ -8,6 +8,13 @@ function setProfile(profile) {
   localStorage.setItem(PROFILE_STORAGE_KEY, JSON.stringify(profile));
 }
 
+function showCabinetMessage(message = "", isError = true) {
+  const el = document.getElementById("cabinetMessage");
+  if (!el) return;
+  el.innerText = message;
+  el.style.color = isError ? "#b00020" : "#1b7f3a";
+}
+
 function renderInitials(profile) {
   const initialsEl = document.getElementById("authInitials");
   const authIcon = document.getElementById("authIcon");
@@ -41,7 +48,7 @@ async function saveCabinet(e) {
   e.preventDefault();
   const current = getProfile();
   if (!current?.id) {
-    window.location.href = "index.html";
+    showCabinetMessage("Потрібно увійти в акаунт повторно");
     return;
   }
 
@@ -62,8 +69,10 @@ async function saveCabinet(e) {
     const updated = await updateUserProfile(payload);
     setProfile(updated);
     renderInitials(updated);
+    showCabinetMessage("Дані профілю збережено", false);
   } catch (error) {
     console.error("Не вдалося зберегти профіль", error);
+    showCabinetMessage("Не вдалося зберегти зміни профілю");
   }
 }
 

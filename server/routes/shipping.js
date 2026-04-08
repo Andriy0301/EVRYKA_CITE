@@ -76,6 +76,7 @@ router.post("/nova-poshta/create-ttn", async (req, res) => {
     const {
       recipientName,
       recipientLastName,
+      recipientMiddleName,
       recipientPhone,
       cityRef,
       warehouseRef,
@@ -104,6 +105,7 @@ router.post("/nova-poshta/create-ttn", async (req, res) => {
     const recipientCounterparty = await callNovaPoshta("Counterparty", "save", {
       FirstName: recipientName,
       LastName: recipientLastName,
+      MiddleName: String(recipientMiddleName || "").trim(),
       Phone: recipientPhone,
       CounterpartyType: "PrivatePerson",
       CounterpartyProperty: "Recipient"
