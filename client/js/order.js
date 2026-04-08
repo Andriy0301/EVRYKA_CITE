@@ -28,6 +28,25 @@ function getCheckoutItems() {
   return JSON.parse(localStorage.getItem("cart") || "[]");
 }
 
+function saveCheckoutItems(items) {
+  const normalized = (items || [])
+    .map((item) => ({
+      ...item,
+      qty: Math.max(1, Number(item.qty || 1))
+    }))
+    .filter((item) => Number(item.qty || 0) > 0);
+
+  localStorage.setItem(CHECKOUT_ITEMS_KEY, JSON.stringify(normalized));
+  return normalized;
+}
+
+function getOrderItemImage(item) {
+  const candidate = item?.image || item?.images?.[0] || "";
+  if (!candidate) return "images/TOP_logo.png";
+  if (/^https?:\/\//i.test(candidate)) return candidate;
+  return `${API_URL}${candidate}`;
+}
+
 function fillForm(profile) {
   document.getElementById("orderName").value = profile?.name || "";
   document.getElementById("orderLastName").value = profile?.lastName || "";
@@ -50,18 +69,56 @@ function renderItems(items) {
     const qty = Number(item.qty || 1);
     total += Number(item.price || 0) * qty;
     const row = document.createElement("div");
-    row.className = "favorite-item";
+    row.className = "cart-item";
     row.innerHTML = `
-      <img src="${API_URL}${item.image || item.images?.[0] || ""}" alt="${item.name}">
+      <img src="${getOrderItemImage(item)}" alt="${item.name}">
       <div style="flex:1;">
         <h4 style="margin:0 0 4px;">${item.name}</h4>
-        <p style="margin:0;">${item.price} грн x ${qty}</p>
+        <p style="margin:0 0 8px;">${item.price} грн x ${qty}</p>
+        <div class="qty-controls">
+          <button type="button" class="order-qty-minus" data-id="${item.id}">-</button>
+          <span>${qty}</span>
+          <button type="button" class="order-qty-plus" data-id="${item.id}">+</button>
+        </div>
       </div>
+      <button type="button" class="favorite-remove-btn order-remove-btn" data-id="${item.id}">✖</button>
     `;
     container.appendChild(row);
   });
 
   totalEl.innerText = total;
+
+  container.querySelectorAll(".order-qty-minus").forEach((btn) => {
+    btn.addEventListener("click", () => changeOrderItemQty(btn.dataset.id, -1));
+  });
+  container.querySelectorAll(".order-qty-plus").forEach((btn) => {
+    btn.addEventListener("click", () => changeOrderItemQty(btn.dataset.id, 1));
+  });
+  container.querySelectorAll(".order-remove-btn").forEach((btn) => {
+    btn.addEventListener("click", () => removeOrderItem(btn.dataset.id));
+  });
+}
+
+function changeOrderItemQty(itemId, delta) {
+  const items = getCheckoutItems();
+  const index = items.findIndex((item) => String(item.id) === String(itemId));
+  if (index < 0) return;
+
+  const nextQty = Number(items[index].qty || 1) + Number(delta || 0);
+  if (nextQty <= 0) {
+    items.splice(index, 1);
+  } else {
+    items[index].qty = nextQty;
+  }
+
+  const updated = saveCheckoutItems(items);
+  renderItems(updated);
+}
+
+function removeOrderItem(itemId) {
+  const items = getCheckoutItems().filter((item) => String(item.id) !== String(itemId));
+  const updated = saveCheckoutItems(items);
+  renderItems(updated);
 }
 
 function showMessage(msg, isError = true) {
@@ -140,6 +197,10 @@ function setupDeliveryUI() {
     applyVisibility();
     if (providerEl.value === "nova_poshta" && cityRefEl.value) {
       await loadWarehouses(cityRefEl.value, deliveryTypeEl.value);
+      branchEl.focus();
+      onBranchInput();
+    } else {
+      branchEl.placeholder = "Спочатку оберіть місто зі списку";
     }
   });
   applyVisibility();
@@ -165,6 +226,16 @@ async function onCityInput() {
     return;
   }
 
+  // Показуємо дропдаун одразу, без очікування відповіді API.
+  const instantMatches = cityOptions.filter((city) =>
+    String(city.Present || "").toLowerCase().includes(query.toLowerCase())
+  );
+  if (instantMatches.length) {
+    renderCitySuggestions(instantMatches);
+  } else {
+    renderCityLoading();
+  }
+
   citySearchTimer = setTimeout(async () => {
     try {
       cityOptions = await searchNovaPoshtaCities(query);
@@ -173,7 +244,7 @@ async function onCityInput() {
       renderCitySuggestions([]);
       showMessage(error.message || "Не вдалося знайти місто");
     }
-  }, 120);
+  }, 40);
 }
 
 async function onCityChange() {
@@ -235,6 +306,13 @@ function renderCitySuggestions(options) {
     )
     .join("");
 
+  listEl.style.display = "block";
+  cityDropdownVisible = true;
+}
+
+function renderCityLoading() {
+  const listEl = document.getElementById("citySuggestions");
+  listEl.innerHTML = `<button type="button" class="city-suggestion-item" disabled>Пошук...</button>`;
   listEl.style.display = "block";
   cityDropdownVisible = true;
 }

@@ -928,6 +928,16 @@ a {
   overflow-y: auto;
 }
 
+.order-items-card .cart-item {
+  padding-right: 12px;
+}
+
+.order-items-card .order-remove-btn {
+  position: static;
+  margin-left: 8px;
+  flex-shrink: 0;
+}
+
 .city-autocomplete-wrap {
   position: relative;
   width: 100%;
