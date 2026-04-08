@@ -103,3 +103,38 @@ async function updateUserProfile(payload) {
 
   return res.json();
 }
+
+async function searchNovaPoshtaCities(query) {
+  const res = await fetch(`/api/shipping/nova-poshta/cities?query=${encodeURIComponent(query)}`);
+  if (!res.ok) {
+    throw new Error("Не вдалося завантажити список міст");
+  }
+  return res.json();
+}
+
+async function getNovaPoshtaWarehouses(cityRef, type = "warehouse") {
+  const res = await fetch(
+    `/api/shipping/nova-poshta/warehouses?cityRef=${encodeURIComponent(cityRef)}&type=${encodeURIComponent(type)}`
+  );
+  if (!res.ok) {
+    throw new Error("Не вдалося завантажити список відділень");
+  }
+  return res.json();
+}
+
+async function createNovaPoshtaTtn(payload) {
+  const res = await fetch(`/api/shipping/nova-poshta/create-ttn`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify(payload)
+  });
+
+  if (!res.ok) {
+    const body = await res.json().catch(() => ({}));
+    throw new Error(body.error || "Не вдалося створити ТТН");
+  }
+
+  return res.json();
+}

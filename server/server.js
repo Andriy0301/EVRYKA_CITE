@@ -19,10 +19,12 @@ app.use(express.static(path.join(__dirname, "../client")));
 const productsRoute = require("./routes/products");
 const usersRoute = require("./routes/users");
 const popularityRoute = require("./routes/popularity");
+const shippingRoute = require("./routes/shipping");
 
 app.use("/api/products", productsRoute);
 app.use("/api/users", usersRoute);
 app.use("/api/popularity", popularityRoute);
+app.use("/api/shipping", shippingRoute);
 
 // 🔥 КАРТИНКИ
 app.use("/images", express.static(path.join(__dirname, "../client/images")));

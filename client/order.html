@@ -44,9 +44,28 @@
             <option value="ukr_poshta">Укрпошта</option>
           </select>
         </label>
-        <label>Місто<input id="orderCity" type="text"></label>
-        <label>Відділення<input id="orderBranch" type="text"></label>
-        <label>Адреса<input id="orderAddress" type="text"></label>
+
+        <label id="deliveryTypeWrap">Тип доставки
+          <select id="orderDeliveryType">
+            <option value="warehouse">Відділення</option>
+            <option value="postomat">Поштомат</option>
+            <option value="address">Адресна доставка</option>
+          </select>
+        </label>
+
+        <label id="cityWrap">Обрати місто
+          <input id="orderCity" type="text" list="citySuggestions" autocomplete="off">
+          <datalist id="citySuggestions"></datalist>
+        </label>
+        <input id="orderCityRef" type="hidden">
+
+        <label id="branchWrap">Обрати відділення
+          <select id="orderBranch"></select>
+        </label>
+
+        <label id="addressWrap" style="display:none;">Адреса доставки
+          <input id="orderAddress" type="text" placeholder="Вулиця, будинок, квартира">
+        </label>
         <p id="orderMessage" class="auth-message"></p>
         <div class="cabinet-actions-row">
           <button class="checkout-btn" type="submit">Підтвердити замовлення</button>

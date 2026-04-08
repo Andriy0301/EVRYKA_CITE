@@ -368,6 +368,12 @@ function renderFavoritesList() {
   });
 }
 
+function clearFavorites() {
+  saveFavorites([]);
+  renderFavoritesList();
+  renderProducts(currentFiltered.length ? currentFiltered : allProducts);
+}
+
 // =========================
 // 🔹 ПОШУК (логіка)
 // =========================
