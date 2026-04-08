@@ -11,7 +11,16 @@ function getProfile() {
 }
 
 function setProfile(profile) {
-  localStorage.setItem(PROFILE_STORAGE_KEY, JSON.stringify(profile));
+  const current = getProfile() || {};
+  const merged = {
+    ...current,
+    ...(profile || {}),
+    delivery: {
+      ...(current.delivery || {}),
+      ...((profile || {}).delivery || {})
+    }
+  };
+  localStorage.setItem(PROFILE_STORAGE_KEY, JSON.stringify(merged));
 }
 
 function showCabinetMessage(message = "", isError = true) {

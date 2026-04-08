@@ -29,6 +29,22 @@ function sanitizeUser(user) {
   return safeUser;
 }
 
+function normalizeDelivery(input = {}, current = {}) {
+  const source = input || {};
+  const prev = current || {};
+  const nextBranch = source.branch ?? source.warehouse ?? prev.branch ?? prev.warehouse ?? "";
+
+  return {
+    provider: String(source.provider ?? prev.provider ?? "nova_poshta").trim(),
+    deliveryType: String(source.deliveryType ?? prev.deliveryType ?? "warehouse").trim(),
+    city: String(source.city ?? prev.city ?? "").trim(),
+    cityRef: String(source.cityRef ?? prev.cityRef ?? "").trim(),
+    branch: String(nextBranch).trim(),
+    branchText: String(source.branchText ?? prev.branchText ?? "").trim(),
+    address: String(source.address ?? prev.address ?? "").trim()
+  };
+}
+
 function normalizeCartItems(items) {
   if (!Array.isArray(items)) return [];
   return items
@@ -69,19 +85,18 @@ router.post("/register", (req, res) => {
     return u.phone === normalizedPhone || (normalizedEmail && u.email === normalizedEmail);
   });
 
+  const existingUser = existingIndex >= 0 ? users[existingIndex] : null;
   const savedUser = {
-    id: existingIndex >= 0 ? users[existingIndex].id : Date.now(),
+    id: existingUser ? existingUser.id : Date.now(),
     name: String(name).trim(),
     lastName: String(lastName).trim(),
     middleName: String(middleName || "").trim(),
     phone: normalizedPhone,
     email: normalizedEmail,
-    password: String(password),
-    delivery: {
-      city: String(delivery.city || "").trim(),
-      warehouse: String(delivery.warehouse || "").trim(),
-      address: String(delivery.address || "").trim()
-    },
+    password: String(password || existingUser?.password || ""),
+    delivery: normalizeDelivery(delivery, existingUser?.delivery),
+    cart: Array.isArray(existingUser?.cart) ? existingUser.cart : [],
+    favorites: Array.isArray(existingUser?.favorites) ? existingUser.favorites : [],
     updatedAt: new Date().toISOString()
   };
 
@@ -140,7 +155,9 @@ router.post("/google-login", (req, res) => {
       phone: "",
       email: normalizedEmail,
       password: "",
-      delivery: { city: "", warehouse: "", address: "" },
+      delivery: normalizeDelivery({}),
+      cart: [],
+      favorites: [],
       updatedAt: new Date().toISOString()
     };
     users.push(user);
@@ -175,7 +192,7 @@ router.post("/update-profile", (req, res) => {
           middleName: "",
           phone: "",
           email: "",
-          delivery: { provider: "nova_poshta", city: "", branch: "", address: "" }
+          delivery: normalizeDelivery({})
         };
 
   const updated = {
@@ -185,15 +202,7 @@ router.post("/update-profile", (req, res) => {
     middleName: String(middleName || current.middleName || "").trim(),
     phone: normalizedPhone || String(current.phone || "").trim(),
     email: normalizedEmail || String(current.email || "").trim().toLowerCase(),
-    delivery: {
-      provider: String(delivery.provider || current.delivery?.provider || "nova_poshta").trim(),
-      deliveryType: String(delivery.deliveryType || current.delivery?.deliveryType || "warehouse").trim(),
-      city: String(delivery.city || current.delivery?.city || "").trim(),
-      cityRef: String(delivery.cityRef || current.delivery?.cityRef || "").trim(),
-      branch: String(delivery.branch || current.delivery?.branch || "").trim(),
-      branchText: String(delivery.branchText || current.delivery?.branchText || "").trim(),
-      address: String(delivery.address || current.delivery?.address || "").trim()
-    },
+    delivery: normalizeDelivery(delivery, current.delivery),
     updatedAt: new Date().toISOString()
   };
 
@@ -255,8 +264,9 @@ router.post("/cart", (req, res) => {
       phone: normalizedPhone,
       email: normalizedEmail,
       password: "",
-      delivery: { provider: "nova_poshta", city: "", branch: "", address: "" },
+      delivery: normalizeDelivery({}),
       cart: normalizeCartItems(items),
+      favorites: [],
       updatedAt: new Date().toISOString()
     });
   } else {
@@ -321,7 +331,7 @@ router.post("/favorites", (req, res) => {
       phone: normalizedPhone,
       email: normalizedEmail,
       password: "",
-      delivery: { provider: "nova_poshta", city: "", branch: "", address: "" },
+      delivery: normalizeDelivery({}),
       cart: [],
       favorites: normalizeFavoriteItems(items),
       updatedAt: new Date().toISOString()
