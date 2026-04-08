@@ -175,8 +175,11 @@ router.post("/update-profile", (req, res) => {
     email: normalizedEmail || String(current.email || "").trim().toLowerCase(),
     delivery: {
       provider: String(delivery.provider || current.delivery?.provider || "nova_poshta").trim(),
+      deliveryType: String(delivery.deliveryType || current.delivery?.deliveryType || "warehouse").trim(),
       city: String(delivery.city || current.delivery?.city || "").trim(),
+      cityRef: String(delivery.cityRef || current.delivery?.cityRef || "").trim(),
       branch: String(delivery.branch || current.delivery?.branch || "").trim(),
+      branchText: String(delivery.branchText || current.delivery?.branchText || "").trim(),
       address: String(delivery.address || current.delivery?.address || "").trim()
     },
     updatedAt: new Date().toISOString()
