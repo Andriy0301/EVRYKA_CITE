@@ -140,7 +140,7 @@ async function onCityInput() {
     clearTimeout(citySearchTimer);
   }
 
-  if (providerEl.value !== "nova_poshta" || query.length < 3) {
+  if (providerEl.value !== "nova_poshta" || query.length < 1) {
     renderCitySuggestions([]);
     return;
   }
@@ -153,7 +153,7 @@ async function onCityInput() {
       renderCitySuggestions([]);
       showMessage(error.message || "Не вдалося знайти місто");
     }
-  }, 350);
+  }, 120);
 }
 
 async function onCityChange() {
@@ -179,11 +179,12 @@ async function onCityChange() {
     }
   }
 
-  cityRefEl.value = selectedCity?.Ref || "";
-  if (selectedCity?.Ref) {
+  const selectedCityRef = selectedCity?.DeliveryCity || selectedCity?.Ref || "";
+  cityRefEl.value = selectedCityRef;
+  if (selectedCityRef) {
     cityEl.value = selectedCity.Present;
     renderCitySuggestions([]);
-    await loadWarehouses(selectedCity.Ref, deliveryType);
+    await loadWarehouses(selectedCityRef, deliveryType);
   } else {
     renderCitySuggestions([]);
     document.getElementById("orderBranch").innerHTML = `<option value="">Спочатку оберіть місто зі списку</option>`;
@@ -204,7 +205,7 @@ function renderCitySuggestions(options) {
     .slice(0, 8)
     .map(
       (city) =>
-        `<button type="button" class="city-suggestion-item" data-ref="${city.Ref}" data-name="${city.Present}">${city.Present}</button>`
+        `<button type="button" class="city-suggestion-item" data-ref="${city.DeliveryCity || city.Ref}" data-name="${city.Present}">${city.Present}</button>`
     )
     .join("");
 
@@ -362,7 +363,13 @@ document.addEventListener("DOMContentLoaded", () => {
   setupDeliveryUI();
   renderItems(items);
   bindCitySuggestionEvents();
-  document.getElementById("orderCity").addEventListener("input", onCityInput);
+  const cityInput = document.getElementById("orderCity");
+  cityInput.addEventListener("input", onCityInput);
+  cityInput.addEventListener("focus", () => {
+    if (cityInput.value.trim().length >= 1) {
+      onCityInput();
+    }
+  });
   document.getElementById("orderCity").addEventListener("change", onCityChange);
   document.getElementById("orderCity").addEventListener("blur", onCityChange);
   document.getElementById("orderForm").addEventListener("submit", submitOrder);

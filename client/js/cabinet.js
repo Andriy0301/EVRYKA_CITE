@@ -47,16 +47,27 @@ function fillCabinet(profile) {
 async function saveCabinet(e) {
   e.preventDefault();
   const current = getProfile();
-  if (!current?.id) {
+  if (!current?.id && !current?.email && !current?.phone) {
     showCabinetMessage("Потрібно увійти в акаунт повторно");
+    return;
+  }
+
+  const name = document.getElementById("cabName").value.trim();
+  const lastName = document.getElementById("cabLastName").value.trim();
+  const phone = document.getElementById("cabPhone").value.trim();
+  const email = (document.getElementById("cabEmail").value || current?.email || "").trim();
+
+  if (!name || !lastName || !phone || !email) {
+    showCabinetMessage("Обов'язкові поля: ім'я, прізвище, телефон, email");
     return;
   }
 
   const payload = {
     id: current.id,
-    name: document.getElementById("cabName").value.trim(),
-    lastName: document.getElementById("cabLastName").value.trim(),
-    phone: document.getElementById("cabPhone").value.trim(),
+    email: email,
+    name: name,
+    lastName: lastName,
+    phone: phone,
     delivery: {
       provider: document.getElementById("cabProvider").value,
       city: document.getElementById("cabCity").value.trim(),
