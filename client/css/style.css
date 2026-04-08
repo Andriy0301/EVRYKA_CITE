@@ -917,6 +917,12 @@ a {
   margin-bottom: 30px;
 }
 
+.order-layout .cabinet-card {
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+}
+
 .order-items-card #orderItems {
   max-height: 340px;
   overflow-y: auto;
@@ -924,6 +930,8 @@ a {
 
 .city-autocomplete-wrap {
   position: relative;
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .city-suggestions {
@@ -939,6 +947,7 @@ a {
   box-shadow: 0 12px 28px rgba(0, 0, 0, 0.14);
   z-index: 30;
   padding: 6px;
+  box-sizing: border-box;
 }
 
 .city-suggestion-item {
@@ -1172,9 +1181,17 @@ a {
 
 .cabinet-form input,
 .cabinet-form select {
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
   padding: 10px 12px;
   border: 1px solid #ddd;
   border-radius: 8px;
+}
+
+.cabinet-form {
+  width: 100%;
+  min-width: 0;
 }
 
 .cabinet-actions-row {

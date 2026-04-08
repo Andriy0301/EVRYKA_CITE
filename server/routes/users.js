@@ -139,11 +139,20 @@ router.post("/update-profile", (req, res) => {
     index = users.findIndex((u) => String(u.phone || "").trim() === normalizedPhone);
   }
 
-  if (index < 0) {
-    return res.status(404).json({ error: "user not found" });
-  }
+  const current =
+    index >= 0
+      ? users[index]
+      : {
+          id: id || Date.now(),
+          password: "",
+          name: "",
+          lastName: "",
+          middleName: "",
+          phone: "",
+          email: "",
+          delivery: { provider: "nova_poshta", city: "", branch: "", address: "" }
+        };
 
-  const current = users[index];
   const updated = {
     ...current,
     name: String(name || current.name || "").trim(),
@@ -160,7 +169,11 @@ router.post("/update-profile", (req, res) => {
     updatedAt: new Date().toISOString()
   };
 
-  users[index] = updated;
+  if (index >= 0) {
+    users[index] = updated;
+  } else {
+    users.push(updated);
+  }
   writeUsers(users);
   return res.json(sanitizeUser(updated));
 });

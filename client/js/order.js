@@ -3,6 +3,8 @@ const CHECKOUT_ITEMS_KEY = "checkoutItems";
 let cityOptions = [];
 let cityDropdownVisible = false;
 let citySearchTimer = null;
+let branchOptions = [];
+let branchDropdownVisible = false;
 
 function capitalizeCityInput(value) {
   return String(value || "")
@@ -73,8 +75,8 @@ function setupDeliveryUI() {
   const deliveryTypeEl = document.getElementById("orderDeliveryType");
   const deliveryTypeWrap = document.getElementById("deliveryTypeWrap");
   const branchWrap = document.getElementById("branchWrap");
-  const branchLabel = branchWrap.querySelector("label") || branchWrap;
   const branchEl = document.getElementById("orderBranch");
+  const branchRefEl = document.getElementById("orderBranchRef");
   const cityEl = document.getElementById("orderCity");
   const addressWrap = document.getElementById("addressWrap");
   const addressEl = document.getElementById("orderAddress");
@@ -95,14 +97,18 @@ function setupDeliveryUI() {
     addressWrap.style.display = hasProvider && isNova && deliveryType === "address" ? "grid" : "none";
     middleNameWrap.style.display = hasProvider && isNova && deliveryType === "address" ? "grid" : "none";
 
-    branchLabel.firstChild.textContent = deliveryType === "postomat" ? "Обрати поштомат" : "Обрати відділення";
+    branchWrap.firstChild.textContent = deliveryType === "postomat" ? "Обрати поштомат" : "Обрати відділення";
     branchEl.required = isNova && deliveryType !== "address";
     addressEl.required = isNova && deliveryType === "address";
     middleNameEl.required = isNova && deliveryType === "address";
 
     if (!isNova) {
       cityRefEl.value = "";
-      branchEl.innerHTML = `<option value="">Вкажіть відділення вручну</option>`;
+      branchRefEl.value = "";
+      branchEl.value = "";
+      branchEl.placeholder = "Вкажіть відділення вручну";
+      branchOptions = [];
+      renderBranchSuggestions([]);
     }
 
     if (!hasProvider) {
@@ -110,13 +116,27 @@ function setupDeliveryUI() {
       cityEl.value = "";
       addressEl.value = "";
       middleNameEl.value = "";
-      branchEl.innerHTML = `<option value="">Спочатку оберіть службу доставки</option>`;
+      branchRefEl.value = "";
+      branchEl.value = "";
+      branchEl.placeholder = "Спочатку оберіть службу доставки";
+      branchOptions = [];
+      renderBranchSuggestions([]);
       renderCitySuggestions([]);
     }
   };
 
   providerEl.addEventListener("change", applyVisibility);
   deliveryTypeEl.addEventListener("change", async () => {
+    const branchEl = document.getElementById("orderBranch");
+    const branchRefEl = document.getElementById("orderBranchRef");
+    branchEl.value = "";
+    branchRefEl.value = "";
+    branchOptions = [];
+    renderBranchSuggestions([]);
+    branchEl.placeholder = deliveryTypeEl.value === "postomat"
+      ? "Почніть вводити поштомат..."
+      : "Почніть вводити відділення...";
+
     applyVisibility();
     if (providerEl.value === "nova_poshta" && cityRefEl.value) {
       await loadWarehouses(cityRefEl.value, deliveryTypeEl.value);
@@ -187,7 +207,13 @@ async function onCityChange() {
     await loadWarehouses(selectedCityRef, deliveryType);
   } else {
     renderCitySuggestions([]);
-    document.getElementById("orderBranch").innerHTML = `<option value="">Спочатку оберіть місто зі списку</option>`;
+    const branchEl = document.getElementById("orderBranch");
+    const branchRefEl = document.getElementById("orderBranchRef");
+    branchRefEl.value = "";
+    branchEl.value = "";
+    branchEl.placeholder = "Спочатку оберіть місто зі списку";
+    branchOptions = [];
+    renderBranchSuggestions([]);
   }
 }
 
@@ -241,8 +267,11 @@ function bindCitySuggestionEvents() {
 
 async function loadWarehouses(cityRef, deliveryType) {
   const branchEl = document.getElementById("orderBranch");
+  const branchRefEl = document.getElementById("orderBranchRef");
   if (!cityRef) return;
-  branchEl.innerHTML = `<option value="">Завантаження...</option>`;
+  branchRefEl.value = "";
+  branchEl.value = "";
+  branchEl.placeholder = "Завантаження...";
   try {
     const warehouses = await getNovaPoshtaWarehouses(cityRef, deliveryType);
     const filtered = warehouses.filter((w) => {
@@ -254,18 +283,98 @@ async function loadWarehouses(cityRef, deliveryType) {
     });
 
     if (!filtered.length) {
-      branchEl.innerHTML = `<option value="">Немає доступних точок</option>`;
+      branchOptions = [];
+      branchEl.value = "";
+      branchEl.placeholder = "Немає доступних точок";
+      renderBranchSuggestions([]);
       return;
     }
 
-    branchEl.innerHTML = [
-      `<option value="">Оберіть зі списку</option>`,
-      ...filtered.map((w) => `<option value="${w.Ref}">${w.Description}</option>`)
-    ].join("");
+    branchOptions = filtered;
+    branchEl.placeholder = "Почніть вводити відділення...";
+    renderBranchSuggestions(branchOptions);
   } catch (error) {
-    branchEl.innerHTML = `<option value="">Не вдалося завантажити</option>`;
+    branchOptions = [];
+    branchEl.value = "";
+    branchEl.placeholder = "Не вдалося завантажити";
+    renderBranchSuggestions([]);
     showMessage(error.message || "Помилка завантаження відділень");
   }
+}
+
+function renderBranchSuggestions(options) {
+  const listEl = document.getElementById("branchSuggestions");
+  if (!options.length) {
+    listEl.style.display = "none";
+    listEl.innerHTML = "";
+    branchDropdownVisible = false;
+    return;
+  }
+
+  listEl.innerHTML = options
+    .slice(0, 14)
+    .map(
+      (w) =>
+        `<button type="button" class="city-suggestion-item" data-ref="${w.Ref}" data-name="${w.Description}">${w.Description}</button>`
+    )
+    .join("");
+  listEl.style.display = "block";
+  branchDropdownVisible = true;
+}
+
+function onBranchInput() {
+  const branchEl = document.getElementById("orderBranch");
+  const branchRefEl = document.getElementById("orderBranchRef");
+  const query = branchEl.value.trim().toLowerCase();
+  branchRefEl.value = "";
+
+  if (!branchOptions.length) {
+    renderBranchSuggestions([]);
+    return;
+  }
+
+  if (!query) {
+    renderBranchSuggestions(branchOptions);
+    return;
+  }
+
+  const filtered = branchOptions.filter((w) => (w.Description || "").toLowerCase().includes(query));
+  renderBranchSuggestions(filtered);
+}
+
+function onBranchChange() {
+  const branchEl = document.getElementById("orderBranch");
+  const branchRefEl = document.getElementById("orderBranchRef");
+  const query = branchEl.value.trim().toLowerCase();
+  const selected =
+    branchOptions.find((w) => (w.Description || "").toLowerCase() === query) ||
+    branchOptions.find((w) => (w.Description || "").toLowerCase().includes(query));
+  if (selected) {
+    branchEl.value = selected.Description;
+    branchRefEl.value = selected.Ref;
+  }
+  renderBranchSuggestions([]);
+}
+
+function bindBranchSuggestionEvents() {
+  const listEl = document.getElementById("branchSuggestions");
+  const branchEl = document.getElementById("orderBranch");
+  const branchRefEl = document.getElementById("orderBranchRef");
+
+  listEl.addEventListener("click", (event) => {
+    const btn = event.target.closest(".city-suggestion-item");
+    if (!btn) return;
+    branchEl.value = btn.dataset.name || "";
+    branchRefEl.value = btn.dataset.ref || "";
+    renderBranchSuggestions([]);
+  });
+
+  document.addEventListener("click", (event) => {
+    const wrap = document.getElementById("branchWrap");
+    if (!wrap.contains(event.target) && branchDropdownVisible) {
+      renderBranchSuggestions([]);
+    }
+  });
 }
 
 async function submitOrder(e) {
@@ -288,7 +397,8 @@ async function submitOrder(e) {
       deliveryType: document.getElementById("orderDeliveryType").value,
       city: document.getElementById("orderCity").value.trim(),
       cityRef: document.getElementById("orderCityRef").value.trim(),
-      branch: document.getElementById("orderBranch").value.trim(),
+      branch: document.getElementById("orderBranchRef").value.trim(),
+      branchText: document.getElementById("orderBranch").value.trim(),
       address: document.getElementById("orderAddress").value.trim()
     }
   };
@@ -363,6 +473,7 @@ document.addEventListener("DOMContentLoaded", () => {
   setupDeliveryUI();
   renderItems(items);
   bindCitySuggestionEvents();
+  bindBranchSuggestionEvents();
   const cityInput = document.getElementById("orderCity");
   cityInput.addEventListener("input", onCityInput);
   cityInput.addEventListener("focus", () => {
@@ -372,5 +483,14 @@ document.addEventListener("DOMContentLoaded", () => {
   });
   document.getElementById("orderCity").addEventListener("change", onCityChange);
   document.getElementById("orderCity").addEventListener("blur", onCityChange);
+  const branchInput = document.getElementById("orderBranch");
+  branchInput.addEventListener("input", onBranchInput);
+  branchInput.addEventListener("change", onBranchChange);
+  branchInput.addEventListener("blur", onBranchChange);
+  branchInput.addEventListener("focus", () => {
+    if (branchOptions.length) {
+      onBranchInput();
+    }
+  });
   document.getElementById("orderForm").addEventListener("submit", submitOrder);
 });

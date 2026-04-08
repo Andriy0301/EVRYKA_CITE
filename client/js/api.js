@@ -98,7 +98,8 @@ async function updateUserProfile(payload) {
   });
 
   if (!res.ok) {
-    throw new Error("Не вдалося оновити профіль");
+    const body = await res.json().catch(() => ({}));
+    throw new Error(body.error || "Не вдалося оновити профіль");
   }
 
   return res.json();

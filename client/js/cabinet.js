@@ -83,7 +83,7 @@ async function saveCabinet(e) {
     showCabinetMessage("Дані профілю збережено", false);
   } catch (error) {
     console.error("Не вдалося зберегти профіль", error);
-    showCabinetMessage("Не вдалося зберегти зміни профілю");
+    showCabinetMessage(error.message || "Не вдалося зберегти зміни профілю");
   }
 }
 

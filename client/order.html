@@ -60,9 +60,11 @@
         </label>
         <input id="orderCityRef" type="hidden">
 
-        <label id="branchWrap">Обрати відділення
-          <select id="orderBranch"></select>
+        <label id="branchWrap" class="city-autocomplete-wrap">Обрати відділення
+          <input id="orderBranch" type="text" autocomplete="off" placeholder="Почніть вводити відділення...">
+          <div id="branchSuggestions" class="city-suggestions" style="display:none;"></div>
         </label>
+        <input id="orderBranchRef" type="hidden">
 
         <label id="addressWrap" style="display:none;">Адреса доставки
           <input id="orderAddress" type="text" placeholder="Вулиця, будинок, квартира">
@@ -78,7 +80,7 @@
     </section>
   </main>
 
-  <script src="js/api.js?v=20260409"></script>
-  <script src="js/order.js?v=20260409"></script>
+  <script src="js/api.js?v=20260410"></script>
+  <script src="js/order.js?v=20260410"></script>
 </body>
 </html>
