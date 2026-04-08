@@ -168,8 +168,16 @@ function renderSimilarProducts(currentProduct, allProducts) {
   });
 
   const scrollStep = 260;
+  const updateArrowState = () => {
+    if (!prevBtn || !nextBtn) return;
+    const maxScroll = Math.max(0, container.scrollWidth - container.clientWidth);
+    prevBtn.disabled = container.scrollLeft <= 2;
+    nextBtn.disabled = container.scrollLeft >= maxScroll - 2;
+  };
+
   if (prevBtn) {
     prevBtn.style.display = "flex";
+    prevBtn.disabled = true;
     prevBtn.onclick = () => {
       container.scrollBy({ left: -scrollStep, behavior: "smooth" });
     };
@@ -180,4 +188,8 @@ function renderSimilarProducts(currentProduct, allProducts) {
       container.scrollBy({ left: scrollStep, behavior: "smooth" });
     };
   }
+
+  container.addEventListener("scroll", updateArrowState, { passive: true });
+  window.addEventListener("resize", updateArrowState);
+  setTimeout(updateArrowState, 0);
 }

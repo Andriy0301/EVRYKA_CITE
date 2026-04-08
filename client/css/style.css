@@ -651,6 +651,7 @@ a {
   display: inline-flex;
   align-items: center;
   justify-content: center;
+  overflow: visible;
 }
 
 .product .favorite-btn {
@@ -705,6 +706,7 @@ a {
 .heart-icon {
   width: 26px;
   height: 26px;
+  overflow: visible;
 }
 
 .product .favorite-btn .heart-icon {
@@ -721,6 +723,9 @@ a {
   fill: transparent;
   stroke: #d10035;
   stroke-width: 28;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  vector-effect: non-scaling-stroke;
   transition: 0.2s;
 }
 
@@ -818,25 +823,35 @@ a {
 }
 
 .similar-arrow {
-  width: 34px;
-  height: 34px;
-  border: 1px solid #ddd;
+  width: 38px;
+  height: 38px;
+  border: 1px solid #d6d6d6;
   border-radius: 50%;
-  background: #fff;
-  color: #333;
+  background: #f7f7f7;
+  color: #242424;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 24px;
+  font-size: 28px;
   line-height: 1;
   cursor: pointer;
   flex-shrink: 0;
+  transition: background 0.2s ease, color 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
 }
 
 .similar-arrow:hover {
   background: #111;
   color: #fff;
   border-color: #111;
+  transform: translateY(-1px);
+}
+
+.similar-arrow:disabled {
+  background: #efefef;
+  color: #a8a8a8;
+  border-color: #e4e4e4;
+  cursor: default;
+  transform: none;
 }
 
 .similar-card {
