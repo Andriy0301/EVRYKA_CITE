@@ -915,12 +915,14 @@ a {
   gap: 18px;
   margin-top: 24px;
   margin-bottom: 30px;
+  justify-items: center;
 }
 
 .order-layout .cabinet-card {
-  width: 100%;
-  max-width: 100%;
+  width: min(980px, 92vw);
+  max-width: 980px;
   box-sizing: border-box;
+  margin: 0 auto;
 }
 
 .order-items-card #orderItems {
