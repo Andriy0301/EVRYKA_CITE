@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Адмін - Замовлення</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <main class="admin-orders-wrap">
+    <section class="products cabinet-card">
+      <h2>Усі замовлення</h2>
+      <label>Адмін-ключ
+        <input id="adminKeyInput" type="password" placeholder="Введіть ключ доступу">
+      </label>
+      <div class="cabinet-actions-row">
+        <button id="loadOrdersBtn" type="button" class="checkout-btn">Завантажити замовлення</button>
+      </div>
+      <p id="adminOrdersMessage" class="auth-message"></p>
+    </section>
+
+    <section id="adminOrdersList"></section>
+  </main>
+
+  <script src="js/api.js?v=20260416"></script>
+  <script src="js/admin-orders.js?v=20260416"></script>
+</body>
+</html>

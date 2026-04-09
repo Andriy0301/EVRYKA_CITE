@@ -148,6 +148,8 @@ async function handleGoogleCredential(response) {
       lastName: payload.family_name || "User"
     });
     setSavedProfile(saved);
+    localStorage.setItem(FAVORITES_STORAGE_KEY, "[]");
+    renderFavoritesList();
     await hydrateFavoritesFromAccount(saved);
     if (typeof hydrateCartFromAccount === "function") {
       await hydrateCartFromAccount(saved);
@@ -223,6 +225,8 @@ async function submitAuthForm(e) {
     }
 
     setSavedProfile(saved);
+    localStorage.setItem(FAVORITES_STORAGE_KEY, "[]");
+    renderFavoritesList();
     await hydrateFavoritesFromAccount(saved);
     if (typeof hydrateCartFromAccount === "function") {
       await hydrateCartFromAccount(saved);
@@ -335,6 +339,11 @@ async function hydrateFavoritesFromAccount(profile = getSavedProfile()) {
     }
   } catch (error) {
     console.error("Favorites hydrate failed:", error);
+    localStorage.setItem(FAVORITES_STORAGE_KEY, "[]");
+    renderFavoritesList();
+    if (allProducts.length) {
+      renderProducts(currentFiltered.length ? currentFiltered : allProducts);
+    }
   }
 }
 

@@ -259,3 +259,29 @@ async function createNovaPoshtaTtn(payload) {
 
   return res.json();
 }
+
+async function createOrder(payload) {
+  const res = await fetch(`/api/orders`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify(payload)
+  });
+
+  if (!res.ok) {
+    const body = await res.json().catch(() => ({}));
+    throw new Error(body.error || "Не вдалося зберегти замовлення");
+  }
+
+  return res.json();
+}
+
+async function getAllOrders(adminKey) {
+  const res = await fetch(`/api/orders/all?key=${encodeURIComponent(String(adminKey || ""))}`);
+  if (!res.ok) {
+    const body = await res.json().catch(() => ({}));
+    throw new Error(body.error || "Не вдалося завантажити замовлення");
+  }
+  return res.json();
+}

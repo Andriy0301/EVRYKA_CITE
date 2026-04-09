@@ -37,6 +37,7 @@ function normalizeDelivery(input = {}, current = {}) {
   return {
     provider: String(source.provider ?? prev.provider ?? "nova_poshta").trim(),
     deliveryType: String(source.deliveryType ?? prev.deliveryType ?? "warehouse").trim(),
+    paymentMethod: String(source.paymentMethod ?? prev.paymentMethod ?? "cod").trim(),
     city: String(source.city ?? prev.city ?? "").trim(),
     cityRef: String(source.cityRef ?? prev.cityRef ?? "").trim(),
     branch: String(nextBranch).trim(),
@@ -301,10 +302,10 @@ router.get("/favorites", (req, res) => {
   });
 
   if (!user) {
-    return res.status(404).json({ error: "user not found" });
+    return res.json({ items: [] });
   }
 
-  return res.json({ items: normalizeFavoriteItems(user?.favorites || []) });
+  return res.json({ items: normalizeFavoriteItems(user.favorites || []) });
 });
 
 router.post("/favorites", (req, res) => {

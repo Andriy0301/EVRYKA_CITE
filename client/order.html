@@ -102,6 +102,12 @@
         <label>Email<input id="orderEmail" type="email" required></label>
 
         <h3>Доставка</h3>
+        <label>Спосіб оплати
+          <select id="orderPaymentMethod" required>
+            <option value="cod">Оплата при отриманні</option>
+            <option value="liqpay">Оплата LiqPay</option>
+          </select>
+        </label>
         <label>Служба доставки
           <select id="orderProvider" required>
             <option value="">Оберіть службу доставки</option>
@@ -144,9 +150,21 @@
     </section>
   </main>
 
-  <script src="js/api.js?v=20260414"></script>
-  <script src="js/order.js?v=20260414"></script>
-  <script src="js/cart.js?v=20260414"></script>
-  <script src="js/app.js?v=20260414"></script>
+  <div id="orderSuccessModal" class="auth-modal" style="display:none;">
+    <div class="auth-modal-content order-success-content">
+      <button class="auth-close" type="button" onclick="closeOrderSuccessModal()">✖</button>
+      <h3>Ваше замовлення успішно оформлене</h3>
+      <p id="orderSuccessNumber" class="order-success-number"></p>
+      <div id="orderSuccessDetails" class="order-success-details"></div>
+      <div class="cabinet-actions-row">
+        <button type="button" class="checkout-btn" onclick="closeOrderSuccessModal()">Закрити</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="js/api.js?v=20260416"></script>
+  <script src="js/order.js?v=20260416"></script>
+  <script src="js/cart.js?v=20260416"></script>
+  <script src="js/app.js?v=20260416"></script>
 </body>
 </html>

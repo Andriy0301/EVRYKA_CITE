@@ -65,6 +65,7 @@ function fillForm(profile) {
   document.getElementById("orderEmail").value = profile?.email || "";
   document.getElementById("orderProvider").value = profile?.delivery?.provider || "";
   document.getElementById("orderDeliveryType").value = profile?.delivery?.deliveryType || "warehouse";
+  document.getElementById("orderPaymentMethod").value = profile?.delivery?.paymentMethod || "cod";
   document.getElementById("orderCity").value = profile?.delivery?.city || "";
   document.getElementById("orderAddress").value = profile?.delivery?.address || "";
 }
@@ -139,6 +140,68 @@ function showMessage(msg, isError = true) {
   const el = document.getElementById("orderMessage");
   el.innerText = msg;
   el.style.color = isError ? "#b00020" : "#1b7f3a";
+}
+
+function getProviderTitle(provider) {
+  if (provider === "nova_poshta") return "Нова пошта";
+  if (provider === "ukr_poshta") return "Укрпошта";
+  return "-";
+}
+
+function getDeliveryTypeTitle(type) {
+  if (type === "warehouse") return "Відділення";
+  if (type === "postomat") return "Поштомат";
+  if (type === "address") return "Адресна доставка";
+  return "-";
+}
+
+function getPaymentMethodTitle(method) {
+  if (method === "cod") return "Оплата при отриманні";
+  if (method === "liqpay") return "Оплата LiqPay";
+  return "-";
+}
+
+function buildOrderSuccessDetails(order) {
+  const customer = order?.customer || {};
+  const delivery = customer?.delivery || {};
+  const items = Array.isArray(order?.items) ? order.items : [];
+  const itemsHtml = items
+    .map((item) => `<li>${item.name} x ${item.qty} — ${Number(item.price || 0) * Number(item.qty || 1)} грн</li>`)
+    .join("");
+
+  return `
+    <p><b>ПІБ:</b> ${customer.lastName || ""} ${customer.name || ""} ${customer.middleName || ""}</p>
+    <p><b>Телефон:</b> ${customer.phone || "-"}</p>
+    <p><b>Email:</b> ${customer.email || "-"}</p>
+    <p><b>Служба доставки:</b> ${getProviderTitle(delivery.provider)}</p>
+    <p><b>Тип доставки:</b> ${getDeliveryTypeTitle(delivery.deliveryType)}</p>
+    <p><b>Оплата:</b> ${getPaymentMethodTitle(delivery.paymentMethod)}</p>
+    <p><b>Місто:</b> ${delivery.city || "-"}</p>
+    <p><b>Відділення/поштомат:</b> ${delivery.branchText || "-"}</p>
+    <p><b>Адреса:</b> ${delivery.address || "-"}</p>
+    ${order?.ttn ? `<p><b>ТТН:</b> ${order.ttn}</p>` : ""}
+    <p><b>Сума:</b> ${order?.total || 0} грн</p>
+    <p><b>Товари:</b></p>
+    <ul>${itemsHtml}</ul>
+  `;
+}
+
+function showOrderSuccessModal(order) {
+  const modal = document.getElementById("orderSuccessModal");
+  const num = document.getElementById("orderSuccessNumber");
+  const details = document.getElementById("orderSuccessDetails");
+  if (!modal || !num || !details) return;
+
+  num.textContent = `Номер замовлення: ${order?.orderNumber || "-"}`;
+  details.innerHTML = buildOrderSuccessDetails(order);
+  modal.style.display = "flex";
+}
+
+function closeOrderSuccessModal() {
+  const modal = document.getElementById("orderSuccessModal");
+  if (!modal) return;
+  modal.style.display = "none";
+  window.location.href = "index.html";
 }
 
 function setupDeliveryUI() {
@@ -496,6 +559,7 @@ async function submitOrder(e) {
     delivery: {
       provider: document.getElementById("orderProvider").value,
       deliveryType: document.getElementById("orderDeliveryType").value,
+      paymentMethod: document.getElementById("orderPaymentMethod").value || "cod",
       city: document.getElementById("orderCity").value.trim(),
       cityRef: document.getElementById("orderCityRef").value.trim(),
       branch: document.getElementById("orderBranchRef").value.trim(),
@@ -534,6 +598,8 @@ async function submitOrder(e) {
   }
 
   try {
+    const totalCost = items.reduce((sum, item) => sum + Number(item.price || 0) * Number(item.qty || 1), 0);
+    let ttn = "";
     if (profile.id) {
       const updated = await updateUserProfile(profile);
       setProfile(updated);
@@ -542,7 +608,6 @@ async function submitOrder(e) {
     }
 
     if (profile.delivery.provider === "nova_poshta") {
-      const totalCost = items.reduce((sum, item) => sum + Number(item.price || 0) * Number(item.qty || 1), 0);
       const ttnResult = await createNovaPoshtaTtn({
         recipientName: profile.name,
         recipientLastName: profile.lastName,
@@ -555,14 +620,28 @@ async function submitOrder(e) {
         cost: totalCost,
         cargoDescription: items.slice(0, 3).map((item) => item.name).join(", ")
       });
-      showMessage(`Замовлення оформлено. ТТН: ${ttnResult.ttn}`, false);
-    } else {
-      showMessage("Замовлення оформлено успішно", false);
+      ttn = ttnResult.ttn || "";
     }
 
+    const savedOrder = await createOrder({
+      customer: profile,
+      items,
+      total: totalCost,
+      ttn
+    });
+
+    showMessage("", false);
     await trackPopularity(items.map((item) => ({ productId: item.id, qty: item.qty || 1 })));
     localStorage.removeItem(CHECKOUT_ITEMS_KEY);
     localStorage.removeItem("cart");
+    if (typeof saveUserCart === "function") {
+      await saveUserCart(profile, []);
+    }
+    if (typeof updateCart === "function") {
+      updateCart();
+    }
+    renderItems([]);
+    showOrderSuccessModal(savedOrder);
   } catch (error) {
     showMessage(error.message || "Не вдалося оформити замовлення");
   }
