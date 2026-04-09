@@ -82,6 +82,7 @@ router.post("/nova-poshta/create-ttn", async (req, res) => {
       warehouseRef,
       address,
       deliveryType,
+      paymentMethod,
       cost,
       cargoDescription
     } = req.body || {};
@@ -148,6 +149,17 @@ router.post("/nova-poshta/create-ttn", async (req, res) => {
       RecipientsPhone: recipientPhone,
       RecipientContactName: recipientFullName
     };
+
+    // Для післяплати додаємо контроль оплати на повну суму замовлення.
+    if (String(paymentMethod || "cod").trim().toLowerCase() === "cod") {
+      docPayload.BackwardDeliveryData = [
+        {
+          PayerType: "Recipient",
+          CargoType: "Money",
+          RedeliveryString: String(Math.max(1, Number(cost || 0)))
+        }
+      ];
+    }
 
     if (deliveryType === "address") {
       docPayload.RecipientAddressName = address || "";

@@ -617,6 +617,7 @@ async function submitOrder(e) {
         warehouseRef: profile.delivery.branch,
         address: profile.delivery.address,
         deliveryType: profile.delivery.deliveryType,
+        paymentMethod: profile.delivery.paymentMethod,
         cost: totalCost,
         cargoDescription: items.slice(0, 3).map((item) => item.name).join(", ")
       });
