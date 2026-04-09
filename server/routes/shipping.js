@@ -227,15 +227,9 @@ router.post("/nova-poshta/create-ttn", async (req, res) => {
       }
     ];
 
-    // Для післяплати додаємо контроль оплати на повну суму замовлення.
+    // Для оплати при отриманні ставимо саме контроль оплати на суму замовлення.
     if (String(paymentMethod || "cod").trim().toLowerCase() === "cod") {
-      docPayload.BackwardDeliveryData = [
-        {
-          PayerType: "Recipient",
-          CargoType: "Money",
-          RedeliveryString: String(Math.max(1, Number(cost || 0)))
-        }
-      ];
+      docPayload.AfterpaymentOnGoodsCost = String(Math.max(1, Number(cost || 0)));
     }
 
     if (deliveryType === "address") {
