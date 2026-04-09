@@ -53,6 +53,35 @@
   
   </header>
 
+  <div id="cartOverlay" class="cart-overlay" onclick="toggleCart(false)"></div>
+  <div id="cartSidebar" class="cart-sidebar">
+    <div class="cart-header">
+      <h3>Кошик</h3>
+      <button class="close-btn" onclick="toggleCart(false)">✖</button>
+    </div>
+    <div id="cartItems" class="cart-items"></div>
+    <div class="cart-footer">
+      <div class="cart-total">
+        <span>Разом</span>
+        <div><b id="cartTotal">0</b><span>грн</span></div>
+      </div>
+      <button class="checkout-btn" onclick="checkout()">Оформити</button>
+      <button class="clear-btn" onclick="clearCart()">Очистити кошик</button>
+    </div>
+  </div>
+
+  <div id="favoritesOverlay" class="cart-overlay" onclick="toggleFavorites(false)"></div>
+  <div id="favoritesSidebar" class="cart-sidebar">
+    <div class="cart-header">
+      <h3>Обрані товари</h3>
+      <button class="close-btn" onclick="toggleFavorites(false)">✖</button>
+    </div>
+    <div id="favoritesItems" class="cart-items"></div>
+    <div class="cart-footer">
+      <button class="clear-btn favorite-clear-btn" onclick="clearFavorites()">Очистити обрані</button>
+    </div>
+  </div>
+
 
   <main class="container order-layout">
     <section class="products cabinet-card order-items-card">
@@ -115,10 +144,9 @@
     </section>
   </main>
 
-  <script src="js/api.js?v=20260411"></script>
-  <script src="js/order.js?v=20260411"></script>
-  <script src="js/cart.js?v=20260413"></script>
-  <script src="js/favorites.js?v=20260413"></script>
-  <script src="js/profile.js?v=20260413"></script>
+  <script src="js/api.js?v=20260414"></script>
+  <script src="js/order.js?v=20260414"></script>
+  <script src="js/cart.js?v=20260414"></script>
+  <script src="js/app.js?v=20260414"></script>
 </body>
 </html>
