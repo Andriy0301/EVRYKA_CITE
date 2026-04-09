@@ -603,7 +603,7 @@ a {
   flex: 1 1 auto;
   min-width: 0;
   max-width: min(520px, 36vw);
-  margin-left: 16px;
+  margin-left: 28px;
 }
 
 .header .nav {
@@ -617,6 +617,11 @@ a {
   gap: 8px;
   flex-shrink: 0;
   margin-left: 18px;
+}
+
+/* як від «Контактів» до профілю: gap 8px + відступ 18px */
+.header-actions #authBtn {
+  margin-right: 18px;
 }
 
 .auth-icon-btn {
