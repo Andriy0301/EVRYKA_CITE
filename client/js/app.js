@@ -337,12 +337,18 @@ async function hydrateFavoritesFromAccount(profile = getSavedProfile()) {
     if (allProducts.length) {
       renderProducts(currentFiltered.length ? currentFiltered : allProducts);
     }
+    if (typeof applyCatalogFilters === "function") {
+      void applyCatalogFilters();
+    }
   } catch (error) {
     console.error("Favorites hydrate failed:", error);
     localStorage.setItem(FAVORITES_STORAGE_KEY, "[]");
     renderFavoritesList();
     if (allProducts.length) {
       renderProducts(currentFiltered.length ? currentFiltered : allProducts);
+    }
+    if (typeof applyCatalogFilters === "function") {
+      void applyCatalogFilters();
     }
   }
 }
@@ -370,6 +376,9 @@ function toggleFavorite(e, product) {
   saveFavorites(favorites);
   renderProducts(currentFiltered.length ? currentFiltered : allProducts);
   renderFavoritesList();
+  if (typeof applyCatalogFilters === "function") {
+    void applyCatalogFilters();
+  }
 }
 
 function toggleFavorites(open) {
@@ -434,6 +443,9 @@ function clearFavorites() {
   saveFavorites([]);
   renderFavoritesList();
   renderProducts(currentFiltered.length ? currentFiltered : allProducts);
+  if (typeof applyCatalogFilters === "function") {
+    void applyCatalogFilters();
+  }
 }
 
 // =========================
@@ -524,12 +536,15 @@ more.onclick = () => {
       behavior: "smooth",
       block: "start"
     });
+  } else if (document.getElementById("catalogPageGrid")) {
+    document.querySelector(".catalog-page-layout")?.scrollIntoView({
+      behavior: "smooth",
+      block: "start"
+    });
+  } else {
+    window.location.href = "catalog.html";
   }
 };
-document.querySelectorAll(".tab").forEach(t => t.classList.remove("active"));
-
-const catalogTab = document.querySelector('[data-cat="all"]');
-if (catalogTab) catalogTab.classList.add("active");
 
   searchResults.appendChild(more);
 
@@ -610,7 +625,7 @@ function scrollToCatalogFromHash() {
 // =========================
 // 🔹 СТАРТ
 // =========================
-document.addEventListener("DOMContentLoaded", () => {
+document.addEventListener("DOMContentLoaded", async () => {
   initCategoryTabs();
   const authBtn = document.getElementById("authBtn");
   const authForm = document.getElementById("registerForm");
@@ -634,7 +649,10 @@ document.addEventListener("DOMContentLoaded", () => {
   if (authForm) authForm.addEventListener("submit", submitAuthForm);
   updateAuthButton();
   hydrateFavoritesFromAccount();
-  loadProducts();
+  await loadProducts();
+  if (typeof initCatalogPage === "function") {
+    initCatalogPage();
+  }
   updateCartCount();
   scrollToCatalogFromHash();
 });
@@ -645,7 +663,3 @@ document.addEventListener("DOMContentLoaded", () => {
 function goHome() {
   window.location.href = "index.html";
 }
-document.querySelectorAll(".tab").forEach(t => t.classList.remove("active"));
-
-const catalogTab = document.querySelector('[data-cat="all"]');
-if (catalogTab) catalogTab.classList.add("active");

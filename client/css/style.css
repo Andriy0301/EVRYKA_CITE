@@ -2603,6 +2603,129 @@ font-weight: bold;
   border: 1px solid #e7e7e7;
 }
 
+/* ——— сторінка каталогу ——— */
+.catalog-page-layout {
+  display: grid;
+  grid-template-columns: 260px minmax(0, 1fr);
+  gap: 28px;
+  align-items: start;
+  margin-top: 10px;
+  margin-bottom: 48px;
+}
+
+.catalog-filters {
+  position: sticky;
+  top: 88px;
+  padding: 20px;
+  background: #fafafa;
+  border: 1px solid #ececec;
+  border-radius: 14px;
+}
+
+.catalog-filters-title {
+  margin: 0 0 16px;
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.catalog-filter-block {
+  margin-bottom: 18px;
+}
+
+.catalog-filter-label {
+  display: block;
+  font-size: 13px;
+  font-weight: 700;
+  margin-bottom: 8px;
+  color: #333;
+}
+
+.catalog-filter-select,
+.catalog-filter-input {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 10px 12px;
+  border-radius: 10px;
+  border: 1px solid #ddd;
+  font-size: 14px;
+  font-family: inherit;
+  background: #fff;
+}
+
+.catalog-price-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.catalog-price-row .catalog-filter-input {
+  flex: 1;
+  min-width: 0;
+}
+
+.catalog-price-dash {
+  color: #999;
+  flex-shrink: 0;
+}
+
+.catalog-reset-btn {
+  width: 100%;
+  margin-top: 4px;
+  padding: 10px 14px;
+  border-radius: 999px;
+  border: 1px solid #ddd;
+  background: #fff;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 600;
+  transition: background 0.2s, border-color 0.2s;
+}
+
+.catalog-reset-btn:hover {
+  background: #f0f0f0;
+  border-color: #ccc;
+}
+
+.catalog-main {
+  min-width: 0;
+}
+
+.catalog-products-section.products {
+  max-width: none;
+  margin: 0;
+  padding: 0;
+}
+
+.catalog-products-section.products h2 {
+  text-align: left;
+  margin-bottom: 18px;
+}
+
+.catalog-products-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 24px;
+  padding: 0 0 24px;
+}
+
+.catalog-empty {
+  grid-column: 1 / -1;
+  text-align: center;
+  padding: 48px 16px;
+  color: #666;
+  font-size: 15px;
+}
+
+@media (max-width: 900px) {
+  .catalog-page-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .catalog-filters {
+    position: static;
+  }
+}
+
 /* ——— плаваючий чат ——— */
 .chat-widget-root {
   position: fixed;

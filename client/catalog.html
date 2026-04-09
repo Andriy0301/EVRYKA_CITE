@@ -3,34 +3,28 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Товар - EVRYKA</title>
+  <title>Каталог - EVRYKA</title>
   <link rel="stylesheet" href="css/style.css">
   <link href="https://fonts.googleapis.com/css2?family=PT+Sans+Caption:wght@400;700&display=swap" rel="stylesheet">
   <script src="https://accounts.google.com/gsi/client" async defer></script>
 </head>
 <body>
 
-<!-- 🔥 HEADER -->
 <header class="header">
-
-  <!-- 🔥 ЛОГО (клік на головну) -->
   <a href="index.html" class="logo">
-  <img src="images/TOP_logo.png">
-</a>
+    <img src="images/TOP_logo.png" alt="EVRYKA">
+  </a>
 
+  <div class="search-box">
+    <input type="text" placeholder="Пошук товарів..." id="search">
+    <div id="searchResults" class="search-results"></div>
+  </div>
 
-<div class="search-box">
-  <input type="text" placeholder="Пошук товарів..." id="search">
-
-  <div id="searchResults" class="search-results"></div>
-</div>
-
-  <!-- 📌 МЕНЮ -->
   <nav class="nav">
-    <a href="#" class="active">ГОЛОВНА</a>
-      <a href="catalog.html">КАТАЛОГ</a>
-<a href="#">ЗАМОВИТИ 3D ДРУК</a>
-<a href="#">КОНТАКТИ</a>
+    <a href="index.html">ГОЛОВНА</a>
+    <a href="catalog.html" class="active">КАТАЛОГ</a>
+    <a href="#">ЗАМОВИТИ 3D ДРУК</a>
+    <a href="#">КОНТАКТИ</a>
   </nav>
 
   <div class="header-actions">
@@ -45,30 +39,79 @@
         <path d="M257 88L255 88C248.355 74.9828 235.475 63.8415 224 55.1304C173.114 16.5016 99.2988 19.267 51 61.2894C-1.26738 106.765 -12.8083 185.773 13.0116 248C25.4527 277.984 45.9981 303.467 67.9105 327C103.494 365.215 144.281 398.581 184 432.421C198.063 444.402 211.938 456.598 226 468.579C233.971 475.37 241.993 483.022 253 483.907C268.121 485.122 278.342 475.197 289 466C306.641 450.778 324.263 435.533 342 420.421C356.437 408.121 370.854 395.797 385 383.166C443.359 331.055 512 269.827 512 185C512 178.072 512.538 170.886 511.715 164C506.476 120.199 486.854 78.636 450 52.7207C401.715 18.7669 334.983 19.4645 288 55.1304C276.525 63.8415 263.645 74.9828 257 88z"></path>
       </svg>
     </button>
-    <!-- 🛒 КОШИК -->
     <div class="cart" onclick="toggleCart(true)">
-      <img src="images/cart.jpg" class="cart-icon">
+      <img src="images/cart.jpg" class="cart-icon" alt="">
       <span id="cartCount">0</span>
     </div>
   </div>
-
 </header>
+
+<div class="container">
+  <div class="product-nav catalog-page-nav">
+    <a href="index.html" class="back-btn">
+      <svg class="back-icon" viewBox="0 0 24 24" aria-hidden="true">
+        <path d="M15 6l-6 6 6 6"></path>
+      </svg>
+      Назад
+    </a>
+    <div class="breadcrumbs">
+      <a href="index.html">Головна</a>
+      <span>/</span>
+      <span>Каталог</span>
+    </div>
+  </div>
+
+  <div class="catalog-page-layout">
+    <aside class="catalog-filters" aria-label="Фільтри каталогу">
+      <h2 class="catalog-filters-title">Фільтри</h2>
+
+      <div class="catalog-filter-block">
+        <label class="catalog-filter-label" for="catalogSort">Сортування</label>
+        <select id="catalogSort" class="catalog-filter-select">
+          <option value="default">За замовчуванням</option>
+          <option value="price_asc">Спочатку дешевші</option>
+          <option value="price_desc">Спочатку дорожчі</option>
+          <option value="popular">Популярніші</option>
+        </select>
+      </div>
+
+      <div class="catalog-filter-block">
+        <label class="catalog-filter-label" for="catalogFilterCategory">Категорія</label>
+        <select id="catalogFilterCategory" class="catalog-filter-select">
+          <option value="all">Усі категорії</option>
+        </select>
+      </div>
+
+      <div class="catalog-filter-block">
+        <span class="catalog-filter-label">Ціна, грн</span>
+        <div class="catalog-price-row">
+          <input type="number" id="catalogPriceMin" class="catalog-filter-input" min="0" step="1" placeholder="Від">
+          <span class="catalog-price-dash">—</span>
+          <input type="number" id="catalogPriceMax" class="catalog-filter-input" min="0" step="1" placeholder="До">
+        </div>
+      </div>
+
+      <button type="button" id="catalogResetFilters" class="catalog-reset-btn">Скинути фільтри</button>
+    </aside>
+
+    <div class="catalog-main">
+      <section class="products catalog-products-section">
+        <h2>Каталог товарів</h2>
+        <div id="catalogPageGrid" class="catalog-products-grid"></div>
+      </section>
+    </div>
+  </div>
+</div>
+
 <div id="cartOverlay" class="cart-overlay" onclick="toggleCart(false)"></div>
 
 <div id="cartSidebar" class="cart-sidebar">
-
-  <!-- HEADER -->
   <div class="cart-header">
     <h3>Кошик</h3>
     <button class="close-btn" onclick="toggleCart(false)">✖</button>
   </div>
-
-  <!-- ITEMS -->
   <div id="cartItems" class="cart-items"></div>
-
-  <!-- FOOTER -->
   <div class="cart-footer">
-
     <div class="cart-total">
       <span>Разом</span>
       <div>
@@ -76,17 +119,9 @@
         <span>грн</span>
       </div>
     </div>
-
-    <button class="checkout-btn" onclick="checkout()">
-      Оформити
-    </button>
-
-    <button class="clear-btn" onclick="clearCart()">
-      Очистити кошик
-    </button>
-
+    <button class="checkout-btn" onclick="checkout()">Оформити</button>
+    <button class="clear-btn" onclick="clearCart()">Очистити кошик</button>
   </div>
-
 </div>
 
 <div id="favoritesOverlay" class="cart-overlay" onclick="toggleFavorites(false)"></div>
@@ -97,9 +132,7 @@
   </div>
   <div id="favoritesItems" class="cart-items"></div>
   <div class="cart-footer">
-    <button class="clear-btn" onclick="clearFavorites()">
-      Очистити обрані
-    </button>
+    <button class="clear-btn" onclick="clearFavorites()">Очистити обрані</button>
   </div>
 </div>
 
@@ -132,99 +165,8 @@
   </div>
 </div>
 
-<div class="container">
-
-<div class="product-nav">
-
-  <!-- 🔙 кнопка -->
-  <a href="index.html" class="back-btn">
-  <svg class="back-icon" viewBox="0 0 24 24">
-    <path d="M15 6l-6 6 6 6" />
-  </svg>
-  Назад
-</a>
-
-  <!-- 🧭 breadcrumb -->
-  <div class="breadcrumbs">
-    <a href="index.html">Головна</a>
-    <span>/</span>
-
-    <a href="index.html#catalog">Каталог</a>
-    <span>/</span>
-
-    <span id="productCategory">Категорія</span>
-    <span>/</span>
-
-    <span id="breadcrumbTitle">Товар</span>
-  </div>
-
-</div>
-
-  <div class="product-page">
-
-    <!-- 🔥 галерея -->
-    <div class="product-gallery">
-      <div class="thumbnails" id="thumbnails"></div>
-
-      <div class="main-image">
-        <img id="mainImage" src="">
-      </div>
-    </div>
-
-    <!-- 🔥 інформація -->
-    <div class="product-info">
-      <h2 id="title"></h2>
-
-      <div class="price-row product-price-row">
-        <p class="price" id="price"></p>
-        <button id="productFavoriteBtn" class="favorite-btn" type="button" aria-label="Додати в обране">
-          <svg class="heart-icon" viewBox="0 0 512 512" aria-hidden="true">
-            <path d="M257 88L255 88C248.355 74.9828 235.475 63.8415 224 55.1304C173.114 16.5016 99.2988 19.267 51 61.2894C-1.26738 106.765 -12.8083 185.773 13.0116 248C25.4527 277.984 45.9981 303.467 67.9105 327C103.494 365.215 144.281 398.581 184 432.421C198.063 444.402 211.938 456.598 226 468.579C233.971 475.37 241.993 483.022 253 483.907C268.121 485.122 278.342 475.197 289 466C306.641 450.778 324.263 435.533 342 420.421C356.437 408.121 370.854 395.797 385 383.166C443.359 331.055 512 269.827 512 185C512 178.072 512.538 170.886 511.715 164C506.476 120.199 486.854 78.636 450 52.7207C401.715 18.7669 334.983 19.4645 288 55.1304C276.525 63.8415 263.645 74.9828 257 88z"></path>
-          </svg>
-        </button>
-      </div>
-
-      <div class="qty-wrapper">
-        
-  <button onclick="changeProductQty(-1)" class="qty-btn">
-    <svg viewBox="0 0 24 24">
-      <path d="M5 12h14"/>
-    </svg>
-  </button>
-
-  <input type="number" id="qty" value="1" min="1" class="qty-input">
-
-  <button onclick="changeProductQty(1)" class="qty-btn">
-    <svg viewBox="0 0 24 24">
-      <path d="M12 5v14M5 12h14"/>
-    </svg>
-  </button>
-
-</div>
-
-      <button class="buy-btn" id="buyBtn">КУПИТИ</button>
-      <button class="quick-checkout-btn" id="quickCheckoutBtn">ОФОРМИТИ</button>
-
-      <div class="desc" id="description"></div>
-    </div>
-
-  </div>
-
-  <section class="similar-section">
-    <h3>Схожі товари</h3>
-    <div class="similar-wrap">
-      <button id="similarPrev" class="similar-arrow" type="button" aria-label="Попередні товари">❮</button>
-      <div id="similarProducts" class="similar-list"></div>
-      <button id="similarNext" class="similar-arrow" type="button" aria-label="Наступні товари">❯</button>
-    </div>
-  </section>
-</div>
-
 <footer class="footer">
-
   <div class="footer-container">
-
-    <!-- 🔹 МЕНЮ -->
     <div class="footer-col">
       <h4>Меню</h4>
       <a href="index.html">Головна</a>
@@ -232,46 +174,34 @@
       <a href="#">Покупцям</a>
       <a href="#">Контакти</a>
     </div>
-
-    <!-- 🔹 КАБІНЕТ -->
     <div class="footer-col">
       <h4>Особистий кабінет</h4>
       <a href="#">Історія замовлень</a>
       <a href="#">Мої дані</a>
       <a href="#">Обране</a>
     </div>
-
-    <!-- 🔹 КОНТАКТИ -->
     <div class="footer-col">
       <h4>Контакти</h4>
       <p>Є питання? Зателефонуйте:</p>
       <a href="tel:+380955222911" class="phone">+38 (050) 166 22 71</a>
     </div>
-
-    <!-- 🔹 СОЦІАЛКИ -->
     <div class="footer-col">
       <h4>Ми в соцмережах</h4>
-
       <div class="socials">
         <a href="#">📷</a>
         <a href="#">💬</a>
       </div>
-
       <p class="pay-text">Оплата</p>
       <div class="payments">
         <span>VISA</span>
         <span>MasterCard</span>
       </div>
     </div>
-
   </div>
-
-  <!-- 🔻 НИЖНЯ ЧАСТИНА -->
   <div class="footer-bottom">
     <p>© 2026 EVRYKA</p>
     <span>Українська</span>
   </div>
-
 </footer>
 
 <div id="chatWidgetRoot" class="chat-widget-root">
@@ -298,11 +228,10 @@
   </div>
 </div>
 
-<script src="js/api.js?v=20260423"></script>
-<script src="js/product.js?v=20260423"></script>
-<script src="js/cart.js?v=20260423"></script>
+<script src="js/api.js?v=20260426"></script>
+<script src="js/cart.js?v=20260426"></script>
 <script src="js/app.js?v=20260426"></script>
+<script src="js/catalog.js?v=20260426"></script>
 <script src="js/chat-widget.js?v=20260426"></script>
-
 </body>
 </html>
