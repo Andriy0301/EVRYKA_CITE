@@ -600,6 +600,7 @@ async function submitOrder(e) {
   try {
     const totalCost = items.reduce((sum, item) => sum + Number(item.price || 0) * Number(item.qty || 1), 0);
     let ttn = "";
+    const orderNumber = `EVR-${Date.now().toString().slice(-8)}`;
     if (profile.id) {
       const updated = await updateUserProfile(profile);
       setProfile(updated);
@@ -618,6 +619,7 @@ async function submitOrder(e) {
         address: profile.delivery.address,
         deliveryType: profile.delivery.deliveryType,
         paymentMethod: profile.delivery.paymentMethod,
+        orderNumber,
         cost: totalCost,
         cargoDescription: items.slice(0, 3).map((item) => item.name).join(", ")
       });
@@ -627,6 +629,7 @@ async function submitOrder(e) {
     const savedOrder = await createOrder({
       customer: profile,
       items,
+      orderNumber,
       total: totalCost,
       ttn
     });

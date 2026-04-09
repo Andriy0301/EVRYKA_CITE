@@ -37,14 +37,14 @@ function normalizeItems(items) {
 }
 
 router.post("/", (req, res) => {
-  const { customer = {}, items = [], total = 0, ttn = "" } = req.body || {};
+  const { customer = {}, items = [], total = 0, ttn = "", orderNumber: incomingOrderNumber = "" } = req.body || {};
   const normalizedItems = normalizeItems(items);
 
   if (!normalizedItems.length) {
     return res.status(400).json({ error: "Немає товарів у замовленні" });
   }
 
-  const orderNumber = `EVR-${Date.now().toString().slice(-8)}`;
+  const orderNumber = String(incomingOrderNumber || "").trim() || `EVR-${Date.now().toString().slice(-8)}`;
   const savedOrder = {
     id: Date.now(),
     orderNumber,

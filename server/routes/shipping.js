@@ -159,6 +159,7 @@ router.post("/nova-poshta/create-ttn", async (req, res) => {
       address,
       deliveryType,
       paymentMethod,
+      orderNumber,
       cost,
       cargoDescription
     } = req.body || {};
@@ -202,7 +203,7 @@ router.post("/nova-poshta/create-ttn", async (req, res) => {
       Weight: "0.5",
       ServiceType: deliveryTypeToServiceType(deliveryType),
       SeatsAmount: "1",
-      Description: cargoDescription || "Товари EVRYKA",
+      Description: `Замовлення ${String(orderNumber || "").trim() || "EVRYKA"}`.slice(0, 35),
       Cost: String(Math.max(1, Number(cost || 0))),
       CitySender: senderCityRef,
       Sender: senderRef,
@@ -215,6 +216,16 @@ router.post("/nova-poshta/create-ttn", async (req, res) => {
       RecipientsPhone: recipientPhone,
       RecipientContactName: recipientFullName
     };
+
+    // Default package dimensions for every order.
+    docPayload.OptionsSeat = [
+      {
+        volumetricWidth: "24",
+        volumetricLength: "20",
+        volumetricHeight: "16",
+        weight: "0.5"
+      }
+    ];
 
     // Для післяплати додаємо контроль оплати на повну суму замовлення.
     if (String(paymentMethod || "cod").trim().toLowerCase() === "cod") {
