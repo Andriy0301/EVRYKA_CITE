@@ -2604,6 +2604,15 @@ font-weight: bold;
 }
 
 /* ——— сторінка каталогу ——— */
+.catalog-page-nav.product-nav {
+  margin-top: 36px;
+  margin-bottom: 48px;
+}
+
+.catalog-page-nav .breadcrumbs {
+  font-size: 16px;
+}
+
 .catalog-page-layout {
   display: grid;
   grid-template-columns: 260px minmax(0, 1fr);
@@ -2616,40 +2625,64 @@ font-weight: bold;
 .catalog-filters {
   position: sticky;
   top: 88px;
-  padding: 20px;
+  padding: 22px;
   background: #fafafa;
   border: 1px solid #ececec;
   border-radius: 14px;
+  font-size: 16px;
 }
 
 .catalog-filters-title {
-  margin: 0 0 16px;
-  font-size: 18px;
+  margin: 0 0 18px;
+  font-size: 22px;
   font-weight: 700;
 }
 
 .catalog-filter-block {
-  margin-bottom: 18px;
+  margin-bottom: 22px;
 }
 
 .catalog-filter-label {
   display: block;
-  font-size: 13px;
+  font-size: 16px;
   font-weight: 700;
-  margin-bottom: 8px;
+  margin-bottom: 10px;
   color: #333;
 }
 
-.catalog-filter-select,
 .catalog-filter-input {
   width: 100%;
   box-sizing: border-box;
-  padding: 10px 12px;
+  padding: 12px 14px;
   border-radius: 10px;
   border: 1px solid #ddd;
-  font-size: 14px;
-  font-family: inherit;
+  font-size: 16px;
+  line-height: 1.45;
+  font-family: "PT Sans Caption", sans-serif;
   background: #fff;
+  color: #222;
+}
+
+.catalog-filter-select {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 12px 14px;
+  border-radius: 10px;
+  border: 1px solid #ddd;
+  font-size: 16px;
+  line-height: 1.45;
+  font-family: "PT Sans Caption", sans-serif;
+  background: #fff;
+  color: #222;
+  cursor: pointer;
+  appearance: auto;
+}
+
+.catalog-filter-select option {
+  font-family: "PT Sans Caption", sans-serif;
+  font-size: 16px;
+  font-weight: 400;
+  color: #222;
 }
 
 .catalog-price-row {
@@ -2671,13 +2704,14 @@ font-weight: bold;
 .catalog-reset-btn {
   width: 100%;
   margin-top: 4px;
-  padding: 10px 14px;
+  padding: 11px 14px;
   border-radius: 999px;
   border: 1px solid #ddd;
   background: #fff;
   cursor: pointer;
-  font-size: 14px;
+  font-size: 15px;
   font-weight: 600;
+  font-family: "PT Sans Caption", sans-serif;
   transition: background 0.2s, border-color 0.2s;
 }
 
