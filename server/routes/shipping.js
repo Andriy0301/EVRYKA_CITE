@@ -5,6 +5,7 @@ const router = express.Router();
 const NOVA_POSHTA_API_URL = "https://api.novaposhta.ua/v2.0/json/";
 const NOVA_POSHTA_API_KEY =
   process.env.NOVA_POSHTA_API_KEY || "c21832386bc9bfa724d114721295a7f2";
+let SENDER_CONFIG_CACHE = null;
 
 async function callNovaPoshta(modelName, calledMethod, methodProperties = {}) {
   const res = await fetch(NOVA_POSHTA_API_URL, {
@@ -36,6 +37,81 @@ async function callNovaPoshta(modelName, calledMethod, methodProperties = {}) {
 function deliveryTypeToServiceType(type) {
   if (type === "address") return "WarehouseDoors";
   return "WarehouseWarehouse";
+}
+
+async function resolveSenderConfig() {
+  if (SENDER_CONFIG_CACHE) return SENDER_CONFIG_CACHE;
+
+  const envSenderRef = String(process.env.NOVA_POSHTA_SENDER_REF || "").trim();
+  const envSenderAddressRef = String(process.env.NOVA_POSHTA_SENDER_ADDRESS_REF || "").trim();
+  const envSenderContactRef = String(process.env.NOVA_POSHTA_SENDER_CONTACT_REF || "").trim();
+  const envSenderPhone = String(process.env.NOVA_POSHTA_SENDER_PHONE || "").trim();
+  const envSenderCityRef = String(process.env.NOVA_POSHTA_SENDER_CITY_REF || "").trim();
+
+  // If everything is configured explicitly, prefer env values.
+  if (envSenderRef && envSenderAddressRef && envSenderContactRef && envSenderPhone && envSenderCityRef) {
+    SENDER_CONFIG_CACHE = {
+      senderRef: envSenderRef,
+      senderAddressRef: envSenderAddressRef,
+      senderContactRef: envSenderContactRef,
+      senderPhone: envSenderPhone,
+      senderCityRef: envSenderCityRef
+    };
+    return SENDER_CONFIG_CACHE;
+  }
+
+  const counterparties = await callNovaPoshta("Counterparty", "getCounterparties", {
+    CounterpartyProperty: "Sender",
+    Page: 1
+  });
+  const sender = counterparties[0] || {};
+  const senderRef = envSenderRef || sender.Ref || "";
+
+  if (!senderRef) {
+    throw new Error("Не вдалося автоматично знайти відправника (Sender Ref)");
+  }
+
+  const senderAddresses = await callNovaPoshta("Counterparty", "getCounterpartyAddresses", {
+    Ref: senderRef,
+    CounterpartyProperty: "Sender"
+  });
+  const senderAddress = senderAddresses[0] || {};
+  const senderAddressRef = envSenderAddressRef || senderAddress.Ref || "";
+  const senderCityRef = envSenderCityRef || senderAddress.CityRef || senderAddress.MainDescription || "";
+
+  if (!senderAddressRef) {
+    throw new Error("Не вдалося автоматично знайти адресу відправника");
+  }
+
+  const senderContacts = await callNovaPoshta("Counterparty", "getCounterpartyContactPersons", {
+    Ref: senderRef,
+    Page: 1
+  });
+  const senderContact = senderContacts[0] || {};
+  const senderContactRef = envSenderContactRef || senderContact.Ref || "";
+  const senderPhone =
+    envSenderPhone ||
+    String(senderContact.Phones || "").split(",")[0].trim() ||
+    String(sender.Phone || "").trim();
+
+  if (!senderContactRef) {
+    throw new Error("Не вдалося автоматично знайти контакт відправника");
+  }
+  if (!senderCityRef) {
+    throw new Error("Не вдалося автоматично знайти місто відправника");
+  }
+  if (!senderPhone || senderPhone.length < 10) {
+    throw new Error("Не вдалося автоматично знайти телефон відправника");
+  }
+
+  SENDER_CONFIG_CACHE = {
+    senderRef,
+    senderAddressRef,
+    senderContactRef,
+    senderPhone,
+    senderCityRef
+  };
+  return SENDER_CONFIG_CACHE;
 }
 
 router.get("/nova-poshta/cities", async (req, res) => {
@@ -91,24 +167,7 @@ router.post("/nova-poshta/create-ttn", async (req, res) => {
       return res.status(400).json({ error: "Не вистачає даних отримувача" });
     }
 
-    const senderRef = String(process.env.NOVA_POSHTA_SENDER_REF || "").trim();
-    const senderAddressRef = String(process.env.NOVA_POSHTA_SENDER_ADDRESS_REF || "").trim();
-    const senderContactRef = String(process.env.NOVA_POSHTA_SENDER_CONTACT_REF || "").trim();
-    const senderPhone = String(process.env.NOVA_POSHTA_SENDER_PHONE || "").trim();
-    const senderCityRef = String(process.env.NOVA_POSHTA_SENDER_CITY_REF || "").trim();
-
-    const missingEnv = [];
-    if (!senderRef) missingEnv.push("NOVA_POSHTA_SENDER_REF");
-    if (!senderAddressRef) missingEnv.push("NOVA_POSHTA_SENDER_ADDRESS_REF");
-    if (!senderContactRef) missingEnv.push("NOVA_POSHTA_SENDER_CONTACT_REF");
-    if (!senderPhone) missingEnv.push("NOVA_POSHTA_SENDER_PHONE");
-    if (!senderCityRef) missingEnv.push("NOVA_POSHTA_SENDER_CITY_REF");
-
-    if (missingEnv.length) {
-      return res.status(500).json({
-        error: `Для створення ТТН заповніть серверні змінні: ${missingEnv.join(", ")}`
-      });
-    }
+    const { senderRef, senderAddressRef, senderContactRef, senderPhone, senderCityRef } = await resolveSenderConfig();
 
     const recipientCounterparty = await callNovaPoshta("Counterparty", "save", {
       FirstName: recipientName,

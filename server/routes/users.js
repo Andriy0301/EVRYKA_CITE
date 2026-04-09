@@ -235,7 +235,7 @@ router.get("/cart", (req, res) => {
   });
 
   if (!user) {
-    return res.status(404).json({ error: "user not found" });
+    return res.json({ items: [] });
   }
 
   return res.json({ items: normalizeCartItems(user?.cart || []) });
