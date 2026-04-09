@@ -919,8 +919,8 @@ a {
 }
 
 .order-layout .cabinet-card {
-  width: min(920px, 92vw);
-  max-width: 920px;
+  width: min(860px, 92vw);
+  max-width: 860px;
   box-sizing: border-box;
   margin: 0 auto;
 }
