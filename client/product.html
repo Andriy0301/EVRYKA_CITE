@@ -1,11 +1,16 @@
 <!DOCTYPE html>
-<html>
+<html lang="uk">
 <head>
-  <title>Товар</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Товар - EVRYKA</title>
   <link rel="stylesheet" href="css/style.css">
+  <link href="https://fonts.googleapis.com/css2?family=PT+Sans+Caption:wght@400;700&display=swap" rel="stylesheet">
+  <script src="https://accounts.google.com/gsi/client" async defer></script>
 </head>
 <body>
 
+<!-- 🔥 HEADER -->
 <header class="header">
 
   <!-- 🔥 ЛОГО (клік на головну) -->
@@ -13,8 +18,8 @@
   <img src="images/TOP_logo.png">
 </a>
 
-  <!-- 🔍 ПОШУК -->
- <div class="search-box">
+
+<div class="search-box">
   <input type="text" placeholder="Пошук товарів..." id="search">
 
   <div id="searchResults" class="search-results"></div>
@@ -28,11 +33,24 @@
 <a href="#">КОНТАКТИ</a>
   </nav>
 
-  <!-- 🛒 КОШИК -->
-  <div class="cart" onclick="toggleCart(true)">
-  <img src="images/cart.jpg" class="cart-icon">
-  <span id="cartCount">0</span>
-</div>
+  <div class="header-actions">
+    <button id="authBtn" class="auth-icon-btn" title="Особистий кабінет">
+      <svg id="authIcon" viewBox="0 0 24 24" aria-hidden="true">
+        <path d="M12 12c2.8 0 5-2.2 5-5s-2.2-5-5-5-5 2.2-5 5 2.2 5 5 5Zm0 2c-4.4 0-8 2.7-8 6v2h16v-2c0-3.3-3.6-6-8-6Z"></path>
+      </svg>
+      <span id="authInitials" class="auth-initials"></span>
+    </button>
+    <button id="favoritesBtn" class="auth-icon-btn" title="Обрані" onclick="toggleFavorites(true)">
+      <svg class="heart-icon" viewBox="0 0 512 512" aria-hidden="true">
+        <path d="M257 88L255 88C248.355 74.9828 235.475 63.8415 224 55.1304C173.114 16.5016 99.2988 19.267 51 61.2894C-1.26738 106.765 -12.8083 185.773 13.0116 248C25.4527 277.984 45.9981 303.467 67.9105 327C103.494 365.215 144.281 398.581 184 432.421C198.063 444.402 211.938 456.598 226 468.579C233.971 475.37 241.993 483.022 253 483.907C268.121 485.122 278.342 475.197 289 466C306.641 450.778 324.263 435.533 342 420.421C356.437 408.121 370.854 395.797 385 383.166C443.359 331.055 512 269.827 512 185C512 178.072 512.538 170.886 511.715 164C506.476 120.199 486.854 78.636 450 52.7207C401.715 18.7669 334.983 19.4645 288 55.1304C276.525 63.8415 263.645 74.9828 257 88z"></path>
+      </svg>
+    </button>
+    <!-- 🛒 КОШИК -->
+    <div class="cart" onclick="toggleCart(true)">
+      <img src="images/cart.jpg" class="cart-icon">
+      <span id="cartCount">0</span>
+    </div>
+  </div>
 
 </header>
 <div id="cartOverlay" class="cart-overlay" onclick="toggleCart(false)"></div>
@@ -69,6 +87,49 @@
 
   </div>
 
+</div>
+
+<div id="favoritesOverlay" class="cart-overlay" onclick="toggleFavorites(false)"></div>
+<div id="favoritesSidebar" class="cart-sidebar">
+  <div class="cart-header">
+    <h3>Обрані товари</h3>
+    <button class="close-btn" onclick="toggleFavorites(false)">✖</button>
+  </div>
+  <div id="favoritesItems" class="cart-items"></div>
+  <div class="cart-footer">
+    <button class="clear-btn" onclick="clearFavorites()">
+      Очистити обрані
+    </button>
+  </div>
+</div>
+
+<div id="authModal" class="auth-modal">
+  <div class="auth-modal-content auth-light">
+    <button id="closeAuthBtn" class="close-btn">✖</button>
+    <h3 id="authTitle" class="auth-title">Log In</h3>
+    <form id="registerForm">
+      <input id="regName" class="auth-input auth-register-only" type="text" placeholder="Ім'я">
+      <input id="regLastName" class="auth-input auth-register-only" type="text" placeholder="Прізвище">
+      <input id="regPhone" class="auth-input auth-register-only" type="tel" placeholder="Телефон">
+      <input id="regEmail" class="auth-input" type="email" placeholder="Email Address*">
+      <input id="authPassword" class="auth-input" type="password" placeholder="Password*">
+      <input id="authPasswordConfirm" class="auth-input auth-register-only" type="password" placeholder="Repeat password*">
+      <button id="authSubmitBtn" type="submit" class="auth-submit-btn">Log In</button>
+      <p id="authMessage" class="auth-message"></p>
+      <div class="auth-links">
+        <button id="switchRegisterBtn" type="button" class="auth-link-btn">Create Your Account</button>
+        <button id="switchLoginBtn" type="button" class="auth-link-btn">Back to Log In</button>
+      </div>
+      <label class="auth-terms auth-register-only">
+        <input id="termsCheck" type="checkbox">
+        <span>I agree to Terms of Use and Privacy Policy</span>
+      </label>
+      <div class="auth-divider">
+        <span>Login with other accounts</span>
+      </div>
+      <div id="googleSignInBtn" class="google-btn-wrap"></div>
+    </form>
+  </div>
 </div>
 
 <div class="container">
