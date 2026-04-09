@@ -66,20 +66,34 @@
       <h2 class="catalog-filters-title">Фільтри</h2>
 
       <div class="catalog-filter-block">
-        <label class="catalog-filter-label" for="catalogSort">Сортування</label>
-        <select id="catalogSort" class="catalog-filter-select">
-          <option value="default">За замовчуванням</option>
-          <option value="price_asc">Спочатку дешевші</option>
-          <option value="price_desc">Спочатку дорожчі</option>
-          <option value="popular">Популярніші</option>
-        </select>
+        <span class="catalog-filter-label" id="catalogSortLabel">Сортування</span>
+        <div class="catalog-select-wrap">
+          <button type="button" class="catalog-select-trigger" id="catalogSortTrigger" aria-expanded="false" aria-haspopup="listbox" aria-labelledby="catalogSortLabel catalogSortValue">
+            <span class="catalog-select-value" id="catalogSortValue">За замовчуванням</span>
+            <svg class="catalog-select-chevron" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9l6 6 6-6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+          </button>
+          <ul class="catalog-select-panel" role="listbox" hidden></ul>
+          <select id="catalogSort" class="catalog-filter-select-native" tabindex="-1" aria-hidden="true">
+            <option value="default">За замовчуванням</option>
+            <option value="price_asc">Спочатку дешевші</option>
+            <option value="price_desc">Спочатку дорожчі</option>
+            <option value="popular">Популярніші</option>
+          </select>
+        </div>
       </div>
 
       <div class="catalog-filter-block">
-        <label class="catalog-filter-label" for="catalogFilterCategory">Категорія</label>
-        <select id="catalogFilterCategory" class="catalog-filter-select">
-          <option value="all">Усі категорії</option>
-        </select>
+        <span class="catalog-filter-label" id="catalogCategoryLabel">Категорія</span>
+        <div class="catalog-select-wrap">
+          <button type="button" class="catalog-select-trigger" id="catalogCategoryTrigger" aria-expanded="false" aria-haspopup="listbox" aria-labelledby="catalogCategoryLabel catalogCategoryValue">
+            <span class="catalog-select-value" id="catalogCategoryValue">Усі категорії</span>
+            <svg class="catalog-select-chevron" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9l6 6 6-6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+          </button>
+          <ul class="catalog-select-panel" role="listbox" hidden></ul>
+          <select id="catalogFilterCategory" class="catalog-filter-select-native" tabindex="-1" aria-hidden="true">
+            <option value="all">Усі категорії</option>
+          </select>
+        </div>
       </div>
 
       <div class="catalog-filter-block">
@@ -231,7 +245,7 @@
 <script src="js/api.js?v=20260426"></script>
 <script src="js/cart.js?v=20260426"></script>
 <script src="js/app.js?v=20260426"></script>
-<script src="js/catalog.js?v=20260426"></script>
+<script src="js/catalog.js?v=20260427"></script>
 <script src="js/chat-widget.js?v=20260426"></script>
 </body>
 </html>
