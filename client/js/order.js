@@ -204,6 +204,16 @@ function closeOrderSuccessModal() {
   window.location.href = "index.html";
 }
 
+function initOrderSuccessModalEvents() {
+  const modal = document.getElementById("orderSuccessModal");
+  if (!modal) return;
+  modal.addEventListener("click", (event) => {
+    if (event.target === modal) {
+      closeOrderSuccessModal();
+    }
+  });
+}
+
 function setupDeliveryUI() {
   const providerEl = document.getElementById("orderProvider");
   const deliveryTypeEl = document.getElementById("orderDeliveryType");
@@ -677,4 +687,5 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
   document.getElementById("orderForm").addEventListener("submit", submitOrder);
+  initOrderSuccessModalEvents();
 });

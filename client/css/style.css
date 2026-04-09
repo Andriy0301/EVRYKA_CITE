@@ -2366,12 +2366,46 @@ font-weight: bold;
 
 .order-success-content {
   max-width: 560px;
+  position: relative;
+  border: 1px solid #e8e8e8;
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.2);
+}
+
+.order-success-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 8px;
+}
+
+.order-success-header h3 {
+  margin: 0;
+}
+
+.order-success-check {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: #1b7f3a;
+  color: #fff;
+  font-weight: 800;
+  font-size: 18px;
+}
+
+.order-success-close {
+  position: absolute;
+  top: 14px;
+  right: 14px;
 }
 
 .order-success-number {
   margin: 6px 0 14px;
   font-weight: 700;
-  color: #d10035;
+  color: #2447d5;
+  font-size: 24px;
 }
 
 .order-success-details {
