@@ -2473,18 +2473,94 @@ font-weight: bold;
   border: 1px solid #ececec;
   border-radius: 12px;
   background: #fff;
-  padding: 14px;
+  padding: 10px;
 }
 
-.cab-order-head {
+.cab-order-summary {
+  width: 100%;
+  border: none;
+  background: transparent;
   display: flex;
   justify-content: space-between;
-  align-items: center;
+  align-items: flex-start;
   gap: 10px;
-  margin-bottom: 8px;
+  margin-bottom: 0;
+  text-align: left;
+  cursor: pointer;
+  padding: 6px;
+  border-radius: 10px;
+}
+
+.cab-order-summary:hover {
+  background: #f7f8fb;
 }
 
 .cab-order-number {
   font-weight: 800;
   color: #1f4ed4;
+}
+
+.cab-order-meta {
+  margin: 2px 0 0;
+  color: #6f6f6f;
+  font-size: 13px;
+}
+
+.cab-order-summary-right {
+  text-align: right;
+}
+
+.cab-order-summary-right p {
+  margin: 0 0 6px;
+}
+
+.cab-order-thumbs {
+  display: flex;
+  justify-content: flex-end;
+  gap: 4px;
+}
+
+.cab-order-thumb {
+  width: 28px;
+  height: 28px;
+  border-radius: 6px;
+  object-fit: cover;
+  border: 1px solid #e7e7e7;
+}
+
+.cab-order-details {
+  display: none;
+  margin-top: 8px;
+  border-top: 1px solid #efefef;
+  padding: 10px 8px 6px;
+}
+
+.cab-order-details.active {
+  display: block;
+}
+
+.cab-order-items {
+  list-style: none;
+  padding: 0;
+  margin: 8px 0 0;
+  display: grid;
+  gap: 8px;
+}
+
+.cab-order-item-row {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.cab-order-item-row p {
+  margin: 0;
+}
+
+.cab-order-item-image {
+  width: 40px;
+  height: 40px;
+  border-radius: 8px;
+  object-fit: cover;
+  border: 1px solid #e7e7e7;
 }

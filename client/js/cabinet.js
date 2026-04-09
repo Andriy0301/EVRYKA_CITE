@@ -38,6 +38,13 @@ function formatCabOrderDate(value) {
   }
 }
 
+function getCabOrderItemImage(item) {
+  const candidate = item?.image || item?.images?.[0] || "";
+  if (!candidate) return "images/TOP_logo.png";
+  if (/^https?:\/\//i.test(candidate)) return candidate;
+  return `${API_URL}${candidate}`;
+}
+
 function renderCabinetOrders(orders) {
   const list = document.getElementById("cabOrdersList");
   if (!list) return;
@@ -48,25 +55,56 @@ function renderCabinetOrders(orders) {
   }
 
   list.innerHTML = orders
-    .map((order) => {
+    .map((order, index) => {
       const items = Array.isArray(order?.items) ? order.items : [];
+      const orderUiId = String(order?.id || order?.orderNumber || index);
+      const thumbsHtml = items
+        .slice(0, 5)
+        .map((item) => `<img class="cab-order-thumb" src="${getCabOrderItemImage(item)}" alt="${item.name}">`)
+        .join("");
       const itemsHtml = items
-        .map((item) => `<li>${item.name} x ${item.qty} — ${Number(item.price || 0) * Number(item.qty || 1)} грн</li>`)
+        .map(
+          (item) => `
+            <li class="cab-order-item-row">
+              <img class="cab-order-item-image" src="${getCabOrderItemImage(item)}" alt="${item.name}">
+              <div>
+                <p><b>${item.name}</b></p>
+                <p>${item.qty} x ${Number(item.price || 0)} грн = ${Number(item.price || 0) * Number(item.qty || 1)} грн</p>
+              </div>
+            </li>
+          `
+        )
         .join("");
       return `
         <article class="cab-order-card">
-          <div class="cab-order-head">
-            <span class="cab-order-number">№ ${order.orderNumber || "-"}</span>
-            <span>${formatCabOrderDate(order.createdAt)}</span>
+          <button type="button" class="cab-order-summary" data-order-toggle="${orderUiId}">
+            <div>
+              <span class="cab-order-number">№ ${order.orderNumber || "-"}</span>
+              <p class="cab-order-meta">${formatCabOrderDate(order.createdAt)}</p>
+            </div>
+            <div class="cab-order-summary-right">
+              <p><b>${Number(order.total || 0)} грн</b></p>
+              <div class="cab-order-thumbs">${thumbsHtml}</div>
+            </div>
+          </button>
+          <div class="cab-order-details" data-order-details="${orderUiId}">
+            <p><b>Сума:</b> ${Number(order.total || 0)} грн</p>
+            <p><b>Доставка:</b> ${order?.customer?.delivery?.city || "-"}, ${order?.customer?.delivery?.branchText || "-"}</p>
+            ${order?.ttn ? `<p><b>ТТН:</b> ${order.ttn}</p>` : ""}
+            <ul class="cab-order-items">${itemsHtml}</ul>
           </div>
-          <p><b>Сума:</b> ${Number(order.total || 0)} грн</p>
-          <p><b>Доставка:</b> ${order?.customer?.delivery?.city || "-"}, ${order?.customer?.delivery?.branchText || "-"}</p>
-          ${order?.ttn ? `<p><b>ТТН:</b> ${order.ttn}</p>` : ""}
-          <ul>${itemsHtml}</ul>
         </article>
       `;
     })
     .join("");
+
+  list.querySelectorAll("[data-order-toggle]").forEach((btn) => {
+    btn.addEventListener("click", () => {
+      const target = list.querySelector(`[data-order-details="${btn.dataset.orderToggle}"]`);
+      if (!target) return;
+      target.classList.toggle("active");
+    });
+  });
 }
 
 async function loadCabinetOrders(profile) {

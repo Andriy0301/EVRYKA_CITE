@@ -594,6 +594,19 @@ function shuffleArray(array) {
   return arr;
 }
 
+function scrollToCatalogFromHash() {
+  if (!window.location.hash || !window.location.hash.startsWith("#catalog")) return;
+  const catalog = document.getElementById("catalog");
+  if (!catalog) return;
+
+  setTimeout(() => {
+    const headerHeight = document.querySelector(".header")?.offsetHeight || 80;
+    const offset = headerHeight + 18;
+    const top = catalog.getBoundingClientRect().top + window.pageYOffset - offset;
+    window.scrollTo({ top: Math.max(0, top), behavior: "smooth" });
+  }, 60);
+}
+
 // =========================
 // 🔹 СТАРТ
 // =========================
@@ -623,6 +636,7 @@ document.addEventListener("DOMContentLoaded", () => {
   hydrateFavoritesFromAccount();
   loadProducts();
   updateCartCount();
+  scrollToCatalogFromHash();
 });
 
 // =========================
