@@ -1,5 +1,5 @@
-const PROFILE_STORAGE_KEY = "userProfile";
-const CHECKOUT_ITEMS_KEY = "checkoutItems";
+const ORDER_PROFILE_STORAGE_KEY = "userProfile";
+const ORDER_CHECKOUT_ITEMS_KEY = "checkoutItems";
 let cityOptions = [];
 let cityDropdownVisible = false;
 let citySearchTimer = null;
@@ -16,7 +16,7 @@ function capitalizeCityInput(value) {
 }
 
 function getProfile() {
-  return JSON.parse(localStorage.getItem(PROFILE_STORAGE_KEY) || "null");
+  return JSON.parse(localStorage.getItem(ORDER_PROFILE_STORAGE_KEY) || "null");
 }
 
 function setProfile(profile) {
@@ -29,11 +29,11 @@ function setProfile(profile) {
       ...((profile || {}).delivery || {})
     }
   };
-  localStorage.setItem(PROFILE_STORAGE_KEY, JSON.stringify(merged));
+  localStorage.setItem(ORDER_PROFILE_STORAGE_KEY, JSON.stringify(merged));
 }
 
 function getCheckoutItems() {
-  const direct = JSON.parse(localStorage.getItem(CHECKOUT_ITEMS_KEY) || "[]");
+  const direct = JSON.parse(localStorage.getItem(ORDER_CHECKOUT_ITEMS_KEY) || "[]");
   if (direct.length) return direct;
   return JSON.parse(localStorage.getItem("cart") || "[]");
 }
@@ -46,7 +46,7 @@ function saveCheckoutItems(items) {
     }))
     .filter((item) => Number(item.qty || 0) > 0);
 
-  localStorage.setItem(CHECKOUT_ITEMS_KEY, JSON.stringify(normalized));
+  localStorage.setItem(ORDER_CHECKOUT_ITEMS_KEY, JSON.stringify(normalized));
   return normalized;
 }
 
@@ -633,7 +633,7 @@ async function submitOrder(e) {
 
     showMessage("", false);
     await trackPopularity(items.map((item) => ({ productId: item.id, qty: item.qty || 1 })));
-    localStorage.removeItem(CHECKOUT_ITEMS_KEY);
+    localStorage.removeItem(ORDER_CHECKOUT_ITEMS_KEY);
     localStorage.removeItem("cart");
     if (typeof saveUserCart === "function") {
       await saveUserCart(profile, []);
