@@ -164,12 +164,29 @@ function getPaymentMethodTitle(method) {
   return "-";
 }
 
+function escapeOrderHtml(text) {
+  return String(text || "")
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;");
+}
+
 function buildOrderSuccessDetails(order) {
   const customer = order?.customer || {};
   const delivery = customer?.delivery || {};
   const items = Array.isArray(order?.items) ? order.items : [];
   const itemsHtml = items
-    .map((item) => `<li>${item.name} x ${item.qty} — ${Number(item.price || 0) * Number(item.qty || 1)} грн</li>`)
+    .map((item) => {
+      const nameSafe = escapeOrderHtml(item.name);
+      const src = getOrderItemImage(item);
+      const sum = Number(item.price || 0) * Number(item.qty || 1);
+      return `
+        <li class="order-success-item">
+          <img class="order-success-item-thumb" src="${src}" alt="${nameSafe}" loading="lazy">
+          <span class="order-success-item-text">${nameSafe} x ${item.qty} — ${sum} грн</span>
+        </li>`;
+    })
     .join("");
 
   return `
@@ -185,7 +202,7 @@ function buildOrderSuccessDetails(order) {
     ${order?.ttn ? `<p><b>ТТН:</b> ${order.ttn}</p>` : ""}
     <p><b>Сума:</b> ${order?.total || 0} грн</p>
     <p><b>Товари:</b></p>
-    <ul>${itemsHtml}</ul>
+    <ul class="order-success-items">${itemsHtml}</ul>
   `;
 }
 
