@@ -1570,8 +1570,8 @@ a {
   margin-top: 10px;
 }
 
-/* «Очистити кошик» — як раніше */
-#cartSidebar .cart-footer .clear-btn {
+/* «Очистити кошик» і «Очистити обрані» — однакові стилі */
+.cart-footer .clear-btn {
   background: #fafafa;
   color: #333;
   border: 1px solid #e5e5e5;
@@ -1580,28 +1580,10 @@ a {
   box-shadow: none;
 }
 
-#cartSidebar .cart-footer .clear-btn:hover {
+.cart-footer .clear-btn:hover {
   background: #ffecec;
   border-color: #ffbdbd;
   color: #d10000;
-}
-
-/* «Очистити обрані» — пігулка, синій текст, легка тінь */
-#favoritesSidebar .cart-footer .clear-btn {
-  background: #f4f4f4;
-  color: #1a3a8a;
-  border: 1px solid #e6e6e6;
-  border-radius: 999px;
-  font-weight: 700;
-  box-shadow: 0 3px 12px rgba(0, 0, 0, 0.07);
-  transition: background 0.2s, border-color 0.2s, color 0.2s, box-shadow 0.2s;
-}
-
-#favoritesSidebar .cart-footer .clear-btn:hover {
-  background: #ffeaea;
-  border-color: #f0c8c8;
-  color: #152a66;
-  box-shadow: 0 4px 14px rgba(160, 40, 40, 0.1);
 }
 
 .cart-total {
