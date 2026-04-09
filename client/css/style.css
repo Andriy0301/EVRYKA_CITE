@@ -940,13 +940,26 @@ a {
 
 .order-items-card .order-qty-wrapper {
   margin-bottom: 0;
+  padding: 3px;
+  gap: 4px;
 }
 
 .order-items-card .order-qty-value {
-  min-width: 60px;
+  min-width: 40px;
   text-align: center;
-  font-size: 16px;
+  font-size: 14px;
   font-weight: 700;
+}
+
+.order-items-card .order-qty-wrapper .qty-btn {
+  width: 30px;
+  height: 30px;
+}
+
+.order-items-card .order-qty-wrapper .qty-btn svg {
+  width: 12px;
+  height: 12px;
+  stroke-width: 3;
 }
 
 .city-autocomplete-wrap {
