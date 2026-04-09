@@ -91,15 +91,22 @@ router.post("/nova-poshta/create-ttn", async (req, res) => {
       return res.status(400).json({ error: "Не вистачає даних отримувача" });
     }
 
-    const senderRef = process.env.NOVA_POSHTA_SENDER_REF;
-    const senderAddressRef = process.env.NOVA_POSHTA_SENDER_ADDRESS_REF;
-    const senderContactRef = process.env.NOVA_POSHTA_SENDER_CONTACT_REF;
-    const senderPhone = process.env.NOVA_POSHTA_SENDER_PHONE;
+    const senderRef = String(process.env.NOVA_POSHTA_SENDER_REF || "").trim();
+    const senderAddressRef = String(process.env.NOVA_POSHTA_SENDER_ADDRESS_REF || "").trim();
+    const senderContactRef = String(process.env.NOVA_POSHTA_SENDER_CONTACT_REF || "").trim();
+    const senderPhone = String(process.env.NOVA_POSHTA_SENDER_PHONE || "").trim();
+    const senderCityRef = String(process.env.NOVA_POSHTA_SENDER_CITY_REF || "").trim();
 
-    if (!senderRef || !senderAddressRef || !senderContactRef || !senderPhone) {
+    const missingEnv = [];
+    if (!senderRef) missingEnv.push("NOVA_POSHTA_SENDER_REF");
+    if (!senderAddressRef) missingEnv.push("NOVA_POSHTA_SENDER_ADDRESS_REF");
+    if (!senderContactRef) missingEnv.push("NOVA_POSHTA_SENDER_CONTACT_REF");
+    if (!senderPhone) missingEnv.push("NOVA_POSHTA_SENDER_PHONE");
+    if (!senderCityRef) missingEnv.push("NOVA_POSHTA_SENDER_CITY_REF");
+
+    if (missingEnv.length) {
       return res.status(500).json({
-        error:
-          "Для створення ТТН заповніть серверні змінні NOVA_POSHTA_SENDER_REF, NOVA_POSHTA_SENDER_ADDRESS_REF, NOVA_POSHTA_SENDER_CONTACT_REF, NOVA_POSHTA_SENDER_PHONE"
+        error: `Для створення ТТН заповніть серверні змінні: ${missingEnv.join(", ")}`
       });
     }
 
@@ -138,7 +145,7 @@ router.post("/nova-poshta/create-ttn", async (req, res) => {
       SeatsAmount: "1",
       Description: cargoDescription || "Товари EVRYKA",
       Cost: String(Math.max(1, Number(cost || 0))),
-      CitySender: process.env.NOVA_POSHTA_SENDER_CITY_REF || "",
+      CitySender: senderCityRef,
       Sender: senderRef,
       SenderAddress: senderAddressRef,
       ContactSender: senderContactRef,
