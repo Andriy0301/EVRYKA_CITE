@@ -1590,19 +1590,6 @@ a {
   color: #d10000;
 }
 
-.favorite-clear-btn {
-  margin-top: 0;
-  background: #ffecec;
-  border: 1px solid #ffbdbd;
-  color: #d10000;
-}
-
-.favorite-clear-btn:hover {
-  background: #ffdede;
-  border-color: #ff9d9d;
-  color: #be0000;
-}
-
 .cart-total {
   display: flex;
   justify-content: space-between;
