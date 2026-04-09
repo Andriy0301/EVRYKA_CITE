@@ -4,7 +4,7 @@ const path = require("path");
 
 const router = express.Router();
 const ordersPath = path.join(__dirname, "../data/orders.json");
-const ADMIN_ORDERS_KEY = process.env.ADMIN_ORDERS_KEY || "evryka-admin-2026";
+const ADMIN_ORDERS_KEY = process.env.ADMIN_ORDERS_KEY || "31415";
 
 function readOrders() {
   try {

@@ -152,8 +152,33 @@
     </div>
   </footer>
 
+  <div id="chatWidgetRoot" class="chat-widget-root">
+    <button type="button" id="chatWidgetToggle" class="chat-widget-toggle" aria-expanded="false" aria-controls="chatWidgetPanel" title="Написати нам">
+      <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true">
+        <path fill="currentColor" d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm0 14H5.17L4 17.17V4h16v12z"></path>
+      </svg>
+    </button>
+    <div id="chatWidgetPanel" class="chat-widget-panel" role="dialog" aria-modal="true" aria-labelledby="chatWidgetTitle" aria-hidden="true">
+      <div class="chat-widget-head">
+        <span id="chatWidgetTitle">Напишіть нам</span>
+        <button type="button" class="chat-widget-close" aria-label="Закрити чат">×</button>
+      </div>
+      <div class="chat-widget-body">
+        <p class="chat-widget-intro">Задайте запитання — відповімо електронною поштою або зателефонуємо.</p>
+        <div id="chatWidgetMessages" class="chat-widget-messages"></div>
+        <label class="chat-widget-label">Email <span class="chat-widget-opt">(за бажанням)</span>
+          <input type="email" id="chatWidgetEmail" class="chat-widget-input" placeholder="name@email.com" maxlength="200">
+        </label>
+        <textarea id="chatWidgetText" class="chat-widget-textarea" rows="3" placeholder="Ваше запитання…" maxlength="2000"></textarea>
+        <button type="button" id="chatWidgetSend" class="chat-widget-send">Надіслати</button>
+        <p id="chatWidgetStatus" class="chat-widget-status" role="status"></p>
+      </div>
+    </div>
+  </div>
+
   <script src="js/api.js?v=20260422"></script>
   <script src="js/cabinet.js?v=20260422"></script>
   <script src="js/cart.js?v=20260422"></script>
+  <script src="js/chat-widget.js?v=20260426"></script>
 </body>
 </html>
