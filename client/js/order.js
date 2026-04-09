@@ -67,6 +67,9 @@ function fillForm(profile) {
   document.getElementById("orderDeliveryType").value = profile?.delivery?.deliveryType || "warehouse";
   document.getElementById("orderPaymentMethod").value = profile?.delivery?.paymentMethod || "cod";
   document.getElementById("orderCity").value = profile?.delivery?.city || "";
+  document.getElementById("orderCityRef").value = profile?.delivery?.cityRef || "";
+  document.getElementById("orderBranch").value = profile?.delivery?.branchText || profile?.delivery?.branch || "";
+  document.getElementById("orderBranchRef").value = profile?.delivery?.branch || "";
   document.getElementById("orderAddress").value = profile?.delivery?.address || "";
 }
 
@@ -439,12 +442,17 @@ function bindCitySuggestionEvents() {
   });
 }
 
-async function loadWarehouses(cityRef, deliveryType) {
+async function loadWarehouses(cityRef, deliveryType, options = {}) {
+  const preserveSelection = Boolean(options?.preserveSelection);
+  const preselectedBranchRef = String(options?.preselectedBranchRef || "").trim();
+  const preselectedBranchText = String(options?.preselectedBranchText || "").trim();
   const branchEl = document.getElementById("orderBranch");
   const branchRefEl = document.getElementById("orderBranchRef");
   if (!cityRef) return;
-  branchRefEl.value = "";
-  branchEl.value = "";
+  if (!preserveSelection) {
+    branchRefEl.value = "";
+    branchEl.value = "";
+  }
   branchEl.placeholder = "Завантаження...";
   try {
     const warehouses = await getNovaPoshtaWarehouses(cityRef, deliveryType);
@@ -466,6 +474,17 @@ async function loadWarehouses(cityRef, deliveryType) {
 
     branchOptions = filtered;
     branchEl.placeholder = "Почніть вводити відділення...";
+
+    if (preserveSelection && preselectedBranchRef) {
+      const matched =
+        filtered.find((w) => String(w.Ref || "") === preselectedBranchRef) ||
+        filtered.find((w) => String(w.Description || "").trim() === preselectedBranchText);
+      if (matched) {
+        branchRefEl.value = matched.Ref;
+        branchEl.value = matched.Description;
+      }
+    }
+
     renderBranchSuggestions(branchOptions);
   } catch (error) {
     branchOptions = [];
@@ -474,6 +493,18 @@ async function loadWarehouses(cityRef, deliveryType) {
     renderBranchSuggestions([]);
     showMessage(error.message || "Помилка завантаження відділень");
   }
+}
+
+function hydratePrefilledNovaDelivery(profile) {
+  const provider = String(profile?.delivery?.provider || "").trim();
+  const cityRef = String(profile?.delivery?.cityRef || "").trim();
+  if (provider !== "nova_poshta" || !cityRef) return;
+
+  loadWarehouses(cityRef, document.getElementById("orderDeliveryType").value, {
+    preserveSelection: true,
+    preselectedBranchRef: profile?.delivery?.branch,
+    preselectedBranchText: profile?.delivery?.branchText
+  });
 }
 
 function renderBranchSuggestions(options) {
@@ -662,9 +693,11 @@ async function submitOrder(e) {
 }
 
 document.addEventListener("DOMContentLoaded", () => {
+  const profile = getProfile();
   const items = getCheckoutItems();
-  fillForm(getProfile());
+  fillForm(profile);
   setupDeliveryUI();
+  hydratePrefilledNovaDelivery(profile);
   renderItems(items);
   bindCitySuggestionEvents();
   bindBranchSuggestionEvents();

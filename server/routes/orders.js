@@ -50,6 +50,7 @@ router.post("/", (req, res) => {
     orderNumber,
     createdAt: new Date().toISOString(),
     customer: {
+      id: String(customer?.id || "").trim(),
       name: String(customer?.name || "").trim(),
       lastName: String(customer?.lastName || "").trim(),
       middleName: String(customer?.middleName || "").trim(),
@@ -73,6 +74,28 @@ router.post("/", (req, res) => {
   orders.unshift(savedOrder);
   writeOrders(orders);
   return res.json(savedOrder);
+});
+
+router.get("/my", (req, res) => {
+  const id = String(req.query.id || "").trim();
+  const email = String(req.query.email || "").trim().toLowerCase();
+  const phone = String(req.query.phone || "").trim();
+
+  if (!id && !email && !phone) {
+    return res.status(400).json({ error: "id/email/phone is required" });
+  }
+
+  const orders = readOrders();
+  const filtered = orders.filter((order) => {
+    const customer = order?.customer || {};
+    return (
+      (id && String(customer.id || "").trim() === id) ||
+      (email && String(customer.email || "").trim().toLowerCase() === email) ||
+      (phone && String(customer.phone || "").trim() === phone)
+    );
+  });
+
+  return res.json({ orders: filtered });
 });
 
 router.get("/all", (req, res) => {

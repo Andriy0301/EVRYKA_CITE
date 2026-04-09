@@ -59,14 +59,14 @@
 
   <main class="container cabinet-layout">
     <aside class="cabinet-sidebar">
-      <button class="cabinet-nav-btn active" type="button">Особисті дані</button>
-      <button class="cabinet-nav-btn" type="button">Мої замовлення</button>
+      <button class="cabinet-nav-btn active" type="button" data-section="personal">Особисті дані</button>
+      <button class="cabinet-nav-btn" type="button" data-section="orders">Мої замовлення</button>
       <button class="cabinet-nav-btn" type="button">Бонуси</button>
       <button class="cabinet-nav-btn" type="button">Обрані</button>
       <button id="logoutBtn" class="cabinet-nav-btn logout" type="button">Вийти</button>
     </aside>
 
-    <section class="products cabinet-card">
+    <section id="cabPersonalSection" class="products cabinet-card">
       <h2>Мої дані</h2>
       <form id="cabinetForm" class="cabinet-form">
         <label>Ім'я<input id="cabName" type="text" required></label>
@@ -105,6 +105,11 @@
           <button class="checkout-btn" type="submit">Зберегти</button>
         </div>
       </form>
+    </section>
+
+    <section id="cabOrdersSection" class="products cabinet-card" style="display:none;">
+      <h2>Мої замовлення</h2>
+      <div id="cabOrdersList" class="cab-orders-list"></div>
     </section>
   </main>
 
@@ -147,8 +152,8 @@
     </div>
   </footer>
 
-  <script src="js/api.js?v=20260413"></script>
-  <script src="js/cabinet.js?v=20260413"></script>
-  <script src="js/cart.js?v=20260413"></script>
+  <script src="js/api.js?v=20260421"></script>
+  <script src="js/cabinet.js?v=20260421"></script>
+  <script src="js/cart.js?v=20260421"></script>
 </body>
 </html>

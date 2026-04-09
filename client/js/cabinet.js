@@ -30,6 +30,76 @@ function showCabinetMessage(message = "", isError = true) {
   el.style.color = isError ? "#b00020" : "#1b7f3a";
 }
 
+function formatCabOrderDate(value) {
+  try {
+    return new Date(value).toLocaleString("uk-UA");
+  } catch {
+    return value || "-";
+  }
+}
+
+function renderCabinetOrders(orders) {
+  const list = document.getElementById("cabOrdersList");
+  if (!list) return;
+
+  if (!Array.isArray(orders) || !orders.length) {
+    list.innerHTML = "<p>Поки що немає оформлених замовлень.</p>";
+    return;
+  }
+
+  list.innerHTML = orders
+    .map((order) => {
+      const items = Array.isArray(order?.items) ? order.items : [];
+      const itemsHtml = items
+        .map((item) => `<li>${item.name} x ${item.qty} — ${Number(item.price || 0) * Number(item.qty || 1)} грн</li>`)
+        .join("");
+      return `
+        <article class="cab-order-card">
+          <div class="cab-order-head">
+            <span class="cab-order-number">№ ${order.orderNumber || "-"}</span>
+            <span>${formatCabOrderDate(order.createdAt)}</span>
+          </div>
+          <p><b>Сума:</b> ${Number(order.total || 0)} грн</p>
+          <p><b>Доставка:</b> ${order?.customer?.delivery?.city || "-"}, ${order?.customer?.delivery?.branchText || "-"}</p>
+          ${order?.ttn ? `<p><b>ТТН:</b> ${order.ttn}</p>` : ""}
+          <ul>${itemsHtml}</ul>
+        </article>
+      `;
+    })
+    .join("");
+}
+
+async function loadCabinetOrders(profile) {
+  if (typeof getMyOrders !== "function") return;
+  const list = document.getElementById("cabOrdersList");
+  if (list) list.innerHTML = "<p>Завантаження...</p>";
+  try {
+    const data = await getMyOrders(profile);
+    renderCabinetOrders(data?.orders || []);
+  } catch (error) {
+    if (list) list.innerHTML = "<p>Не вдалося завантажити замовлення.</p>";
+  }
+}
+
+function setupCabinetSections() {
+  const personal = document.getElementById("cabPersonalSection");
+  const orders = document.getElementById("cabOrdersSection");
+  const buttons = Array.from(document.querySelectorAll(".cabinet-nav-btn[data-section]"));
+  if (!personal || !orders || !buttons.length) return;
+
+  const show = (section) => {
+    personal.style.display = section === "personal" ? "block" : "none";
+    orders.style.display = section === "orders" ? "block" : "none";
+    buttons.forEach((btn) => {
+      btn.classList.toggle("active", btn.dataset.section === section);
+    });
+  };
+
+  buttons.forEach((btn) => {
+    btn.addEventListener("click", () => show(btn.dataset.section));
+  });
+}
+
 function renderInitials(profile) {
   const initialsEl = document.getElementById("authInitials");
   const authIcon = document.getElementById("authIcon");
@@ -93,8 +163,9 @@ function setupCabinetDeliveryUI() {
     cityEl.placeholder = isNova ? "Почніть вводити місто..." : "Місто";
     branchWrap.firstChild.textContent = deliveryType === "postomat" ? "Обрати поштомат" : "Обрати відділення";
     branchEl.placeholder = deliveryType === "postomat" ? "Почніть вводити поштомат..." : "Почніть вводити відділення...";
-    branchEl.required = isNova && deliveryType !== "address";
-    addressEl.required = isNova && deliveryType === "address";
+    // У профілі поля доставки не обов'язкові.
+    branchEl.required = false;
+    addressEl.required = false;
 
     if (!isNova) {
       cityRefEl.value = "";
@@ -380,7 +451,9 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   fillCabinet(profile);
+  setupCabinetSections();
   setupCabinetDeliveryUI();
+  loadCabinetOrders(profile);
   bindCabinetSuggestionEvents();
   document.getElementById("cabCity").addEventListener("input", onCabCityInput);
   document.getElementById("cabCity").addEventListener("change", onCabCityChange);

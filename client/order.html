@@ -155,19 +155,22 @@
       <button class="close-btn order-success-close" type="button" onclick="closeOrderSuccessModal()">✖</button>
       <div class="order-success-header">
         <span class="order-success-check" aria-hidden="true">✓</span>
-        <h3>Ваше замовлення успішно оформлене</h3>
+        <div class="order-success-title-wrap">
+          <h3>Ваше замовлення успішно оформлене</h3>
+          <p class="order-success-subtitle">Дякуємо за покупку! Деталі замовлення нижче.</p>
+        </div>
       </div>
       <p id="orderSuccessNumber" class="order-success-number"></p>
       <div id="orderSuccessDetails" class="order-success-details"></div>
-      <div class="cabinet-actions-row">
+      <div class="cabinet-actions-row order-success-actions">
         <button type="button" class="checkout-btn" onclick="closeOrderSuccessModal()">Закрити</button>
       </div>
     </div>
   </div>
 
-  <script src="js/api.js?v=20260419"></script>
-  <script src="js/order.js?v=20260419"></script>
-  <script src="js/cart.js?v=20260419"></script>
-  <script src="js/app.js?v=20260419"></script>
+  <script src="js/api.js?v=20260420"></script>
+  <script src="js/order.js?v=20260420"></script>
+  <script src="js/cart.js?v=20260420"></script>
+  <script src="js/app.js?v=20260420"></script>
 </body>
 </html>

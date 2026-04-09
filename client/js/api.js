@@ -285,3 +285,17 @@ async function getAllOrders(adminKey) {
   }
   return res.json();
 }
+
+async function getMyOrders(profile) {
+  const params = new URLSearchParams();
+  if (profile?.id) params.set("id", String(profile.id));
+  if (profile?.email) params.set("email", String(profile.email));
+  if (profile?.phone) params.set("phone", String(profile.phone));
+
+  const res = await fetch(`/api/orders/my?${params.toString()}`);
+  if (!res.ok) {
+    const body = await res.json().catch(() => ({}));
+    throw new Error(body.error || "Не вдалося завантажити історію замовлень");
+  }
+  return res.json();
+}
