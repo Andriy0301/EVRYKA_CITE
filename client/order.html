@@ -179,13 +179,11 @@
         <button type="button" class="chat-widget-close" aria-label="Закрити чат">×</button>
       </div>
       <div class="chat-widget-body">
-        <p class="chat-widget-intro">Задайте запитання — відповімо електронною поштою або зателефонуємо.</p>
-        <div id="chatWidgetMessages" class="chat-widget-messages"></div>
-        <label class="chat-widget-label">Email <span class="chat-widget-opt">(за бажанням)</span>
-          <input type="email" id="chatWidgetEmail" class="chat-widget-input" placeholder="name@email.com" maxlength="200">
-        </label>
-        <textarea id="chatWidgetText" class="chat-widget-textarea" rows="3" placeholder="Ваше запитання…" maxlength="2000"></textarea>
-        <button type="button" id="chatWidgetSend" class="chat-widget-send">Надіслати</button>
+        <div id="chatWidgetMessages" class="chat-widget-messages" aria-live="polite"></div>
+        <div class="chat-widget-compose">
+          <input type="text" id="chatWidgetText" class="chat-widget-field" placeholder="Ваше запитання…" maxlength="2000" autocomplete="off">
+          <button type="button" id="chatWidgetSend" class="chat-widget-send">Надіслати</button>
+        </div>
         <p id="chatWidgetStatus" class="chat-widget-status" role="status"></p>
       </div>
     </div>
@@ -195,6 +193,6 @@
   <script src="js/order.js?v=20260424"></script>
   <script src="js/cart.js?v=20260424"></script>
   <script src="js/app.js?v=20260426"></script>
-  <script src="js/chat-widget.js?v=20260426"></script>
+  <script src="js/chat-widget.js?v=20260430"></script>
 </body>
 </html>

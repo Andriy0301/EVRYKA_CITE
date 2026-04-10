@@ -167,7 +167,17 @@ function fillCabinet(profile) {
   document.getElementById("cabLastName").value = profile?.lastName || "";
   document.getElementById("cabPhone").value = profile?.phone || "";
   document.getElementById("cabEmail").value = profile?.email || "";
-  document.getElementById("cabProvider").value = profile?.delivery?.provider || "nova_poshta";
+  let cabProvider = profile?.delivery?.provider || "";
+  if (
+    !cabProvider &&
+    (profile?.delivery?.city ||
+      profile?.delivery?.cityRef ||
+      profile?.delivery?.branch ||
+      profile?.delivery?.branchText)
+  ) {
+    cabProvider = "nova_poshta";
+  }
+  document.getElementById("cabProvider").value = cabProvider;
   document.getElementById("cabDeliveryType").value = profile?.delivery?.deliveryType || "warehouse";
   document.getElementById("cabCity").value = profile?.delivery?.city || "";
   document.getElementById("cabCityRef").value = profile?.delivery?.cityRef || "";
@@ -193,6 +203,14 @@ function setupCabinetDeliveryUI() {
     const provider = providerEl.value;
     const deliveryType = deliveryTypeEl.value;
     const isNova = provider === "nova_poshta";
+
+    if (!provider) {
+      deliveryTypeWrap.style.display = "none";
+      cityWrap.style.display = "none";
+      branchWrap.style.display = "none";
+      addressWrap.style.display = "none";
+      return;
+    }
 
     deliveryTypeWrap.style.display = isNova ? "grid" : "none";
     cityWrap.style.display = "grid";
