@@ -1326,16 +1326,32 @@ a {
 /* 🔥 сама іконка */
 .cart-icon {
   display: block;
-  width: 30px;
-  height: 30px;
+  width: 36px;
+  height: 36px;
   object-fit: contain;
+  transition: transform 0.22s ease, filter 0.22s ease;
+}
+
+.cart:hover .cart-icon {
+  transform: scale(1.08) translateY(-2px);
+  filter: drop-shadow(0 3px 6px rgba(0, 0, 0, 0.18));
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cart-icon {
+    transition: none;
+  }
+  .cart:hover .cart-icon {
+    transform: none;
+    filter: none;
+  }
 }
 
 /* 🔴 кружечок з кількістю */
 #cartCount {
   position: absolute;
-  top: -5px;
-  right: -8px;
+  top: -6px;
+  right: -9px;
 
   background: #d10035;
   color: white;
