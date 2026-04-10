@@ -134,9 +134,9 @@ function renderCart() {
         <h4>${item.name}</h4>
         <p>${item.price} грн</p>
 
-        <div class="cart-qty">
+        <div class="qty-wrapper cart-qty-wrapper">
 
-  <button onclick="changeQty(${i}, -1)" class="qty-btn">
+  <button type="button" onclick="changeQty(${i}, -1)" class="qty-btn" aria-label="Зменшити кількість">
     <svg viewBox="0 0 24 24">
       <path d="M5 12h14"/>
     </svg>
@@ -150,7 +150,7 @@ function renderCart() {
     onchange="setQty(${i}, this.value)"
   >
 
-  <button onclick="changeQty(${i}, 1)" class="qty-btn">
+  <button type="button" onclick="changeQty(${i}, 1)" class="qty-btn" aria-label="Збільшити кількість">
     <svg viewBox="0 0 24 24">
       <path d="M12 5v14M5 12h14"/>
     </svg>
