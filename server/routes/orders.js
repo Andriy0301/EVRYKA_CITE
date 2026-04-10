@@ -4,6 +4,7 @@ const path = require("path");
 
 const router = express.Router();
 const ordersPath = path.join(__dirname, "../data/orders.json");
+const { notifyNewOrder } = require("../utils/telegram");
 const ADMIN_ORDERS_KEY = process.env.ADMIN_ORDERS_KEY || "31415";
 
 function readOrders() {
@@ -73,6 +74,17 @@ router.post("/", (req, res) => {
   const orders = readOrders();
   orders.unshift(savedOrder);
   writeOrders(orders);
+
+  notifyNewOrder(savedOrder)
+    .then((r) => {
+      if (r?.skipped) {
+        console.warn("[telegram] Замовлення збережено, але Telegram вимкнено (немає змінних середовища).");
+      } else if (!r?.ok) {
+        console.error("[telegram] sendMessage (замовлення) не вдався:", r?.status, r?.detail);
+      }
+    })
+    .catch((e) => console.error("[telegram]", e?.message || e));
+
   return res.json(savedOrder);
 });
 

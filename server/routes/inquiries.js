@@ -4,6 +4,7 @@ const path = require("path");
 
 const router = express.Router();
 const inquiriesPath = path.join(__dirname, "../data/inquiries.json");
+const { notifyInquiry } = require("../utils/telegram");
 
 function readInquiries() {
   try {
@@ -48,6 +49,18 @@ router.post("/", (req, res) => {
   const list = readInquiries();
   list.unshift(entry);
   writeInquiries(list);
+
+  notifyInquiry(entry)
+    .then((r) => {
+      if (r?.skipped) {
+        console.warn(
+          "[telegram] Повідомлення з чату збережено, але Telegram вимкнено: задайте TELEGRAM_BOT_TOKEN і TELEGRAM_CHAT_ID на сервері (Render → Environment)."
+        );
+      } else if (!r?.ok) {
+        console.error("[telegram] sendMessage не вдався:", r?.status, r?.detail);
+      }
+    })
+    .catch((e) => console.error("[telegram]", e?.message || e));
 
   return res.json({ ok: true, id: entry.id });
 });
