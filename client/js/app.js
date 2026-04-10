@@ -278,21 +278,10 @@ function renderProducts(products) {
     container.appendChild(div);
   });
 
-  const btn = document.querySelector(".load-more");
-  if (btn) {
-    btn.style.display = visibleCount >= products.length ? "none" : "block";
+  const loadMoreWrap = document.querySelector(".load-more");
+  if (loadMoreWrap) {
+    loadMoreWrap.style.display = "block";
   }
-}
-
-// =========================
-// 🔹 ПОКАЗАТИ ВСЕ
-// =========================
-function loadMore() {
-  visibleCount = currentFiltered.length;
-  renderProducts(currentFiltered);
-
-  const btn = document.querySelector(".load-more");
-  if (btn) btn.style.display = "none";
 }
 
 // =========================
