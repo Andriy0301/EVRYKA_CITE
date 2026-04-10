@@ -7,6 +7,14 @@ const NOVA_POSHTA_API_KEY =
   process.env.NOVA_POSHTA_API_KEY || "c21832386bc9bfa724d114721295a7f2";
 let SENDER_CONFIG_CACHE = null;
 
+/** Дата відправлення для API НП: лише день у форматі DD.MM.YYYY, часовий пояс України (інакше NP повертає "DateTime cannot be less then now"). */
+function formatNovaPoshtaShipmentDate() {
+  const s = new Date().toLocaleString("sv-SE", { timeZone: "Europe/Kyiv" });
+  const datePart = s.split(" ")[0];
+  const [y, m, d] = datePart.split("-");
+  return `${d}.${m}.${y}`;
+}
+
 async function callNovaPoshta(modelName, calledMethod, methodProperties = {}) {
   const res = await fetch(NOVA_POSHTA_API_URL, {
     method: "POST",
@@ -198,7 +206,7 @@ router.post("/nova-poshta/create-ttn", async (req, res) => {
     const docPayload = {
       PayerType: "Recipient",
       PaymentMethod: "Cash",
-      DateTime: new Date().toLocaleDateString("uk-UA"),
+      DateTime: formatNovaPoshtaShipmentDate(),
       CargoType: "Cargo",
       Weight: "0.5",
       ServiceType: deliveryTypeToServiceType(deliveryType),
