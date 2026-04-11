@@ -25,23 +25,26 @@ body {
   scroll-margin-top: calc(var(--ev-shell-margin) + var(--ev-header-h) + 8px);
 }
 
-.evryka-shell {
-  margin: var(--ev-shell-margin);
-  border-radius: var(--ev-shell-radius);
+/* Хедер окремий у DOM, візуально — верхня частина тієї ж «картки», що й hero */
+.page-home .header.header--in-shell.header--home-detached {
+  margin: var(--ev-shell-margin) var(--ev-shell-margin) 0;
+  border-radius: var(--ev-shell-radius) var(--ev-shell-radius) 0 0;
   background: var(--ev-shell-bg);
+  box-sizing: border-box;
+}
+
+.page-home .evryka-shell {
+  margin: 0 var(--ev-shell-margin) var(--ev-shell-margin);
+  border-radius: 0 0 var(--ev-shell-radius) var(--ev-shell-radius);
+  background: transparent;
   box-shadow: none;
 }
 
-/* Кути «карточки»: без overflow:hidden на обгортці — sticky header лишається коректним */
-.evryka-shell .header--in-shell {
-  border-radius: var(--ev-shell-radius) var(--ev-shell-radius) 0 0;
-}
-
-.evryka-shell .hero-evryka--allbirds {
+.page-home .evryka-shell .hero-evryka--allbirds {
   border-radius: 0 0 var(--ev-shell-radius) var(--ev-shell-radius);
 }
 
-/* Header усередині shell: без окремого фону й ліній */
+/* Header: без ліній; фон задає лише .header--home-detached на головній */
 .header.header--in-shell {
   position: sticky;
   top: 0;
@@ -437,8 +440,12 @@ body.header-nav-open {
 }
 
 @media (max-width: 768px) {
-  .evryka-shell {
-    margin: clamp(8px, 2.5vw, 14px);
+  .page-home .header.header--in-shell.header--home-detached {
+    margin: clamp(8px, 2.5vw, 14px) clamp(8px, 2.5vw, 14px) 0;
+  }
+
+  .page-home .evryka-shell {
+    margin: 0 clamp(8px, 2.5vw, 14px) clamp(8px, 2.5vw, 14px);
   }
 
   .header-inner {
