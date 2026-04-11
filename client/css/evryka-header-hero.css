@@ -18,18 +18,23 @@ body {
 /* ——— Allbirds-style «карточка»: головна ——— */
 .page-home {
   background: #ebebeb;
-  --ev-header-h: 56px;
   --ev-header-float-inset: clamp(10px, 2vw, 16px);
+  /* Зовнішній відступ «картки» = від краю вікна до шапки/банера (для fixed header) */
+  --ev-stack-outer: var(--ev-shell-margin);
+  /* Висота зони під фіксовану плашку (оверлей меню, scroll-margin) */
+  --ev-header-h: calc(
+    var(--ev-stack-outer) + var(--ev-header-float-inset) + 52px + env(safe-area-inset-top, 0px)
+  );
 }
 
 .page-home #catalog {
-  scroll-margin-top: calc(var(--ev-shell-margin) + 24px);
+  scroll-margin-top: calc(var(--ev-header-h) + 8px);
 }
 
 /* Одна «картка» з банером (усі кути) + компактна шапка поверх банера */
 .page-home .evryka-hero-stack {
   position: relative;
-  margin: var(--ev-shell-margin);
+  margin: var(--ev-stack-outer);
 }
 
 .page-home .evryka-shell {
@@ -44,13 +49,13 @@ body {
   border-radius: var(--ev-shell-radius);
 }
 
-/* Плаваюча шапка: менша, скло, банер видно ззаду; усі кути заокруглені */
+/* Плаваюча шапка: fixed — завжди видима при скролі; вирівняна з «карткою» */
 .page-home .header.header--in-shell.header--home-detached {
-  position: absolute;
-  top: var(--ev-header-float-inset);
-  left: var(--ev-header-float-inset);
-  right: var(--ev-header-float-inset);
-  z-index: 20;
+  position: fixed;
+  top: calc(var(--ev-stack-outer) + var(--ev-header-float-inset) + env(safe-area-inset-top, 0px));
+  left: calc(var(--ev-stack-outer) + var(--ev-header-float-inset) + env(safe-area-inset-left, 0px));
+  right: calc(var(--ev-stack-outer) + var(--ev-header-float-inset) + env(safe-area-inset-right, 0px));
+  z-index: 990;
   margin: 0;
   width: auto;
   max-width: none;
@@ -504,14 +509,11 @@ body.header-nav-open {
 }
 
 @media (max-width: 768px) {
-  .page-home .evryka-hero-stack {
-    margin: clamp(8px, 2.5vw, 14px);
+  .page-home {
+    --ev-stack-outer: clamp(8px, 2.5vw, 14px);
   }
 
   .page-home .header.header--in-shell.header--home-detached {
-    top: 10px;
-    left: 10px;
-    right: 10px;
     border-radius: 22px;
   }
 
