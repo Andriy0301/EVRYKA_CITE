@@ -1,4 +1,4 @@
-console.log("APP LOADED");
+﻿console.log("APP LOADED");
 
 // =========================
 // 🔹 СТАН
@@ -423,7 +423,7 @@ function renderFavoritesList() {
 
 function resolveProductImageSrc(item) {
   const candidate = item?.image || item?.images?.[0] || "";
-  if (!candidate) return "images/TOP_logo.png";
+  if (!candidate) return "images/favicon.png";
   if (/^https?:\/\//i.test(candidate)) return candidate;
   return `${API_URL}${candidate}`;
 }
@@ -611,10 +611,54 @@ function scrollToCatalogFromHash() {
   }, 60);
 }
 
+function initHeroCarousel() {
+  const root = document.querySelector(".hero-carousel");
+  if (!root) return;
+  const slides = [...root.querySelectorAll(".hero-slide")];
+  const dotsRoot = root.querySelector(".hero-carousel-dots");
+  const prev = root.querySelector(".hero-carousel-prev");
+  const next = root.querySelector(".hero-carousel-next");
+  if (!slides.length || !dotsRoot) return;
+
+  let idx = slides.findIndex((el) => el.classList.contains("is-active"));
+  if (idx < 0) idx = 0;
+
+  dotsRoot.innerHTML = "";
+  slides.forEach((_, i) => {
+    const b = document.createElement("button");
+    b.type = "button";
+    b.className = "hero-carousel-dot";
+    b.setAttribute("aria-label", "Слайд " + (i + 1));
+    b.addEventListener("click", () => goTo(i));
+    dotsRoot.appendChild(b);
+  });
+
+  const dotEls = () => [...dotsRoot.querySelectorAll(".hero-carousel-dot")];
+
+  function goTo(i) {
+    idx = (i + slides.length) % slides.length;
+    slides.forEach((el, j) => el.classList.toggle("is-active", j === idx));
+    dotEls().forEach((d, j) => d.classList.toggle("is-active", j === idx));
+  }
+
+  if (prev) prev.addEventListener("click", () => goTo(idx - 1));
+  if (next) next.addEventListener("click", () => goTo(idx + 1));
+
+  let timer = setInterval(() => goTo(idx + 1), 7000);
+  root.addEventListener("mouseenter", () => clearInterval(timer));
+  root.addEventListener("mouseleave", () => {
+    clearInterval(timer);
+    timer = setInterval(() => goTo(idx + 1), 7000);
+  });
+
+  goTo(idx);
+}
+
 // =========================
 // 🔹 СТАРТ
 // =========================
 document.addEventListener("DOMContentLoaded", async () => {
+  initHeroCarousel();
   initCategoryTabs();
   const authBtn = document.getElementById("authBtn");
   const authForm = document.getElementById("registerForm");

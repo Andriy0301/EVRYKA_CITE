@@ -1,4 +1,4 @@
-const PROFILE_STORAGE_KEY = "userProfile";
+﻿const PROFILE_STORAGE_KEY = "userProfile";
 let cabCityOptions = [];
 let cabBranchOptions = [];
 let cabCityDropdownVisible = false;
@@ -40,7 +40,7 @@ function formatCabOrderDate(value) {
 
 function getCabOrderItemImage(item) {
   const candidate = item?.image || item?.images?.[0] || "";
-  if (!candidate) return "images/TOP_logo.png";
+  if (!candidate) return "images/favicon.png";
   if (/^https?:\/\//i.test(candidate)) return candidate;
   return `${API_URL}${candidate}`;
 }
