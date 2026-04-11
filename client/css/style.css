@@ -3,6 +3,7 @@ body {
   color: #111;
   margin: 0;
   padding-top: 0;
+  background: #fff;
 }
 
 a {
@@ -582,6 +583,27 @@ a {
   border-bottom: 1px solid rgba(0, 0, 0, 0.06);
 }
 
+/* Home: заокруглений банер + хедер «всередині» (як Allbirds) */
+.home-hero-stage {
+  position: relative;
+  margin: 12px 18px 40px;
+  --home-header-overlap: 84px;
+}
+
+.home-hero-stage .header {
+  padding-left: 0;
+  padding-right: 0;
+}
+
+.home-hero-stage .hero-carousel {
+  margin-top: calc(-1 * var(--home-header-overlap));
+  padding-top: var(--home-header-overlap);
+  border-radius: 28px;
+  overflow: hidden;
+  border-bottom: none;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
+}
+
 .hero-carousel-track {
   position: relative;
   min-height: 420px;
@@ -786,9 +808,23 @@ a {
     right: 8px;
   }
 
+  .home-hero-stage {
+    margin: 10px 12px 28px;
+    --home-header-overlap: 100px;
+  }
+
+  .home-hero-stage .hero-carousel {
+    border-radius: 22px;
+  }
+
   .header {
     padding: 0 10px 6px;
     top: 8px;
+  }
+
+  .home-hero-stage .header {
+    padding-left: 0;
+    padding-right: 0;
   }
 
   .header-inner {
