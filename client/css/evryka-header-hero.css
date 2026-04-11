@@ -155,18 +155,18 @@ body {
 }
 
 .page-home .header.header--home-detached .auth-icon-btn {
-  width: 38px;
-  height: 38px;
+  width: 40px;
+  height: 40px;
 }
 
 .page-home .header.header--home-detached .auth-icon-btn svg {
-  width: 20px;
-  height: 20px;
+  width: 23px;
+  height: 23px;
 }
 
 .page-home .header.header--home-detached .cart-icon {
-  width: 22px;
-  height: 22px;
+  width: 27px;
+  height: 27px;
 }
 
 /* Hero Allbirds: справа по вертикалі, легкий overlay + панель з blur */
@@ -443,17 +443,19 @@ body {
 }
 
 .header .auth-icon-btn svg {
-  width: 22px;
-  height: 22px;
+  width: 24px;
+  height: 24px;
 }
 
 .header .auth-initials {
   color: var(--ev-ink);
+  font-size: 12px;
+  font-weight: 700;
 }
 
 .header .cart-icon {
-  width: 26px;
-  height: 26px;
+  width: 29px;
+  height: 29px;
 }
 
 .header .cart:hover .cart-icon {
@@ -465,17 +467,25 @@ body {
 .header #cartCount {
   background: var(--ev-ink);
   color: #fff;
-  font-size: 10px;
-  font-weight: 600;
-  min-width: 18px;
-  height: 18px;
-  padding: 0 5px;
+  font-size: 7.5px;
+  font-weight: 700;
+  line-height: 1;
+  min-width: 13px;
+  height: 13px;
+  padding: 0 3px;
+  box-sizing: border-box;
   display: inline-flex;
   align-items: center;
   justify-content: center;
   border-radius: 999px;
-  top: -4px;
-  right: -6px;
+  top: -2px;
+  right: -4px;
+}
+
+.header #favoritesBtn .heart-icon {
+  width: 17px;
+  height: 17px;
+  display: block;
 }
 
 .header #favoritesBtn .heart-icon path {
