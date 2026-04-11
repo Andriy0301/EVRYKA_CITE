@@ -247,20 +247,74 @@ body {
 /* Перший слайд: фон images/hero-banner-repair.png (url у HTML) */
 .hero-evryka--allbirds .hero-slide--repair .hero-evryka__overlay {
   background: linear-gradient(
-    92deg,
-    rgba(0, 0, 0, 0.38) 0%,
-    rgba(0, 0, 0, 0.14) 42%,
-    rgba(0, 0, 0, 0.22) 100%
+    95deg,
+    rgba(0, 0, 0, 0.5) 0%,
+    rgba(0, 0, 0, 0.18) 36%,
+    rgba(0, 0, 0, 0.06) 72%
   );
 }
 
-.hero-evryka--allbirds .hero-slide--repair .hero-evryka__title {
-  max-width: min(100%, 22rem);
-  font-size: clamp(1.55rem, 3.6vw, 2.55rem);
+/* Другий слайд: images/hero-banner-3d-print.png — світліший фон зліва, принтер справа */
+.hero-evryka--allbirds .hero-slide--3d-print .hero-evryka__overlay {
+  background: linear-gradient(
+    92deg,
+    rgba(0, 0, 0, 0.07) 0%,
+    rgba(0, 0, 0, 0.05) 42%,
+    rgba(0, 0, 0, 0.16) 100%
+  );
 }
 
-.hero-evryka--allbirds .hero-slide--repair .hero-evryka__lede {
-  max-width: min(100%, 32rem);
+.hero-evryka--allbirds .hero-slide--repair .hero-evryka__content,
+.hero-evryka--allbirds .hero-slide--3d-print .hero-evryka__content {
+  justify-content: flex-start;
+  align-items: center;
+  padding-left: clamp(20px, 3.5vw, 48px);
+  padding-right: clamp(20px, 4vw, 56px);
+}
+
+.hero-evryka--allbirds .hero-slide--repair .hero-evryka__panel,
+.hero-evryka--allbirds .hero-slide--3d-print .hero-evryka__panel {
+  max-width: 340px;
+  width: 100%;
+  padding: 20px 22px 22px;
+  text-align: left;
+  background: rgba(28, 28, 28, 0.38);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.18);
+  border-radius: clamp(16px, 2vw, 22px);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+}
+
+.hero-evryka--allbirds .hero-slide--repair .hero-evryka__title,
+.hero-evryka--allbirds .hero-slide--3d-print .hero-evryka__title {
+  max-width: none;
+  font-size: clamp(1.32rem, 2.9vw, 2rem);
+  line-height: 1.12;
+  letter-spacing: -0.025em;
+  margin: 0 0 10px;
+}
+
+.hero-evryka--allbirds .hero-slide--repair .hero-evryka__lede,
+.hero-evryka--allbirds .hero-slide--3d-print .hero-evryka__lede {
+  max-width: none;
+  font-size: clamp(0.88rem, 1.55vw, 0.98rem);
+  line-height: 1.45;
+  margin: 0 0 18px;
+  color: rgba(255, 255, 255, 0.86);
+}
+
+.hero-evryka--allbirds .hero-slide--repair .hero-evryka__actions,
+.hero-evryka--allbirds .hero-slide--3d-print .hero-evryka__actions {
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.hero-evryka--allbirds .hero-slide--repair .hero-evryka__btn,
+.hero-evryka--allbirds .hero-slide--3d-print .hero-evryka__btn {
+  padding: 11px 20px;
+  font-size: 11px;
+  letter-spacing: 0.09em;
 }
 
 .hero-evryka--allbirds .hero-slide--evryka .hero-evryka__overlay {
@@ -962,6 +1016,14 @@ body.header-nav-open {
     text-align: center;
   }
 
+  .hero-evryka--allbirds .hero-slide--repair .hero-evryka__content,
+  .hero-evryka--allbirds .hero-slide--3d-print .hero-evryka__content {
+    justify-content: flex-start;
+    align-items: stretch;
+    text-align: left;
+    padding: 92px 18px 48px 18px;
+  }
+
   .page-home .evryka-hero-stack .hero-evryka--allbirds .hero-evryka__content {
     padding-top: 92px;
   }
@@ -971,10 +1033,23 @@ body.header-nav-open {
     text-align: center;
   }
 
+  .hero-evryka--allbirds .hero-slide--repair .hero-evryka__panel,
+  .hero-evryka--allbirds .hero-slide--3d-print .hero-evryka__panel {
+    max-width: 100%;
+    text-align: left;
+    margin-right: auto;
+  }
+
   .hero-evryka--allbirds .hero-evryka__title {
     max-width: none;
     margin-left: auto;
     margin-right: auto;
+  }
+
+  .hero-evryka--allbirds .hero-slide--repair .hero-evryka__title,
+  .hero-evryka--allbirds .hero-slide--3d-print .hero-evryka__title {
+    margin-left: 0;
+    margin-right: 0;
   }
 
   .hero-evryka--allbirds .hero-evryka__actions {
