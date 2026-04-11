@@ -3495,7 +3495,14 @@ font-weight: bold;
 
 /* ——— сторінка товару (як головна: EVRYKA, капсули, світла «картка») ——— */
 .page-product .container {
+  max-width: none;
+  width: auto;
+  margin-left: var(--ev-stack-outer, clamp(0px, 0.65vw, 10px));
+  margin-right: var(--ev-stack-outer, clamp(0px, 0.65vw, 10px));
+  padding-left: 0;
+  padding-right: 0;
   padding-bottom: clamp(32px, 5vw, 56px);
+  box-sizing: border-box;
 }
 
 .page-product .product-nav {
@@ -3541,7 +3548,7 @@ font-weight: bold;
 .page-product .product-page {
   display: flex;
   flex-wrap: wrap;
-  margin: 0 auto clamp(28px, 4vw, 48px);
+  margin: 0 0 clamp(28px, 4vw, 48px);
   padding: clamp(20px, 3vw, 28px);
   column-gap: clamp(28px, 4vw, 48px);
   row-gap: clamp(16px, 2.5vw, 28px);
@@ -3549,7 +3556,8 @@ font-weight: bold;
   border-radius: var(--ev-shell-radius, clamp(18px, 2.3vw, 26px));
   border: 1px solid rgba(0, 0, 0, 0.06);
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08), 0 2px 8px rgba(0, 0, 0, 0.04);
-  max-width: 1200px;
+  max-width: none;
+  width: 100%;
   box-sizing: border-box;
 }
 
