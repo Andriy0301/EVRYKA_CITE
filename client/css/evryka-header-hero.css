@@ -18,7 +18,9 @@ body {
 /* ——— Allbirds-style «карточка»: головна ——— */
 .page-home {
   background: #d6d3d1;
-  --ev-header-float-inset: clamp(10px, 2vw, 16px);
+  /* Вужча «рамка» від краю вікна — менше порожнього по боках */
+  --ev-shell-margin: clamp(0px, 0.65vw, 10px);
+  --ev-header-float-inset: clamp(6px, 1.4vw, 12px);
   /* Вкладений радіус: R_картки − відступ (+1px трохи м’якше) */
   --ev-header-bar-radius: max(
     9px,
@@ -239,8 +241,8 @@ body {
   inset: 0;
   z-index: 0;
   background-image: url("../images/hero.png");
-  background-size: contain;
-  /* Низ фото біля низу картки — менше враження «обрізано»; поля зверху */
+  /* cover: заповнює ширину без сірих смуг по боках (легкий кроп зверху/знизу можливий) */
+  background-size: cover;
   background-position: center bottom;
   background-repeat: no-repeat;
   background-color: #d6d3d1;
@@ -707,7 +709,8 @@ body.header-nav-open {
 
 @media (max-width: 768px) {
   .page-home {
-    --ev-stack-outer: clamp(8px, 2.5vw, 14px);
+    --ev-shell-margin: clamp(0px, 1.5vw, 10px);
+    --ev-stack-outer: var(--ev-shell-margin);
   }
 
   .header-inner {

@@ -242,34 +242,6 @@ async function submitAuthForm(e) {
 // =========================
 // 🔹 РЕНДЕР
 // =========================
-/** Сітка головної: 12 колонок; великий тайл = 6, два малих по 3 (разом як один ряд). */
-function buildHomeMosaicLayout(count) {
-  const items = [];
-  let i = 0;
-  while (i < count) {
-    const left = count - i;
-    const r = Math.random();
-    if (left >= 3 && r < 0.52) {
-      const flip = Math.random() < 0.5;
-      const triple = flip ? [6, 3, 3] : [3, 3, 6];
-      triple.forEach((w) => {
-        items.push({ w, tall: w === 6 && Math.random() < 0.62 });
-      });
-      i += 3;
-    } else if (left >= 3 && r < 0.78) {
-      [4, 4, 4].forEach((w) => items.push({ w, tall: false }));
-      i += 3;
-    } else if (left >= 2) {
-      [6, 6].forEach((w) => items.push({ w, tall: w === 6 && Math.random() < 0.38 }));
-      i += 2;
-    } else {
-      items.push({ w: 12, tall: Math.random() < 0.25 });
-      i += 1;
-    }
-  }
-  return items;
-}
-
 function renderProducts(products) {
   const container = document.getElementById("products");
 
@@ -277,19 +249,9 @@ function renderProducts(products) {
 
   container.innerHTML = "";
 
-  const isHomeMosaic = container.classList.contains("products-grid-home");
-  const slice = products.slice(0, visibleCount);
-  const mosaicLayout = isHomeMosaic ? buildHomeMosaicLayout(slice.length) : null;
-
-  slice.forEach((p, idx) => {
+  products.slice(0, visibleCount).forEach((p) => {
     const div = document.createElement("div");
     div.className = "product";
-
-    if (mosaicLayout && mosaicLayout[idx]) {
-      const { w, tall } = mosaicLayout[idx];
-      div.classList.add(`product-tile--w${w}`);
-      if (tall) div.classList.add("product-tile--tall");
-    }
 
     div.onclick = () => goToProduct(p.id);
 

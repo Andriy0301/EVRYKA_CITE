@@ -3,7 +3,7 @@ body {
   color: #111;
   margin: 0;
   padding-top: 0;
-  background: #fddbc6;
+  background: #feece1;
 }
 
 a {
@@ -438,114 +438,6 @@ a {
   gap: 30px;
   padding: 20px 100px; /* 🔥 ВІДСТУПИ ЗЛІВА/СПРАВА */
 }
-
-/* Головна: мозаїка 12 колонок (6 + 3 + 3, рівні трійки 4+4+4, дві половини 6+6) */
-#products.products-grid-home {
-  grid-template-columns: repeat(12, minmax(0, 1fr));
-  gap: clamp(16px, 2.2vw, 28px);
-  grid-auto-flow: dense;
-  /* start: кожна картка по висоті контенту — «Купити» лишається під своїм товаром */
-  align-items: start;
-}
-
-#products.products-grid-home .product {
-  min-width: 0;
-  align-self: start;
-  width: 100%;
-}
-
-#products.products-grid-home .product-tile--w3 {
-  grid-column: span 3;
-}
-
-#products.products-grid-home .product-tile--w4 {
-  grid-column: span 4;
-}
-
-#products.products-grid-home .product-tile--w6 {
-  grid-column: span 6;
-}
-
-#products.products-grid-home .product-tile--w12 {
-  grid-column: span 12;
-}
-
-#products.products-grid-home .product-tile--tall {
-  grid-row: span 2;
-}
-
-#products.products-grid-home .product img {
-  object-fit: contain;
-  background: #eceae7;
-}
-
-#products.products-grid-home .product-tile--tall img {
-  aspect-ratio: 4 / 3;
-  min-height: clamp(180px, 22vw, 280px);
-}
-
-#products.products-grid-home .product-tile--w3 img,
-#products.products-grid-home .product-tile--w4 img {
-  aspect-ratio: 1 / 1;
-}
-
-#products.products-grid-home .product-tile--w6:not(.product-tile--tall) img {
-  aspect-ratio: 1 / 1;
-}
-
-#products.products-grid-home .product-tile--w12 img {
-  aspect-ratio: 21 / 9;
-  max-height: 320px;
-}
-
-@media (max-width: 900px) {
-  #products.products-grid-home {
-    grid-template-columns: repeat(6, minmax(0, 1fr));
-  }
-
-  #products.products-grid-home .product-tile--w3 {
-    grid-column: span 3;
-  }
-
-  #products.products-grid-home .product-tile--w4 {
-    grid-column: span 3;
-  }
-
-  #products.products-grid-home .product-tile--w6 {
-    grid-column: span 6;
-  }
-
-  #products.products-grid-home .product-tile--w12 {
-    grid-column: span 6;
-  }
-
-  #products.products-grid-home .product-tile--tall {
-    grid-row: span 1;
-  }
-
-  #products.products-grid-home .product-tile--tall img,
-  #products.products-grid-home .product-tile--w12 img {
-    aspect-ratio: 1 / 1;
-    max-height: none;
-    min-height: 0;
-  }
-}
-
-@media (max-width: 520px) {
-  #products.products-grid-home {
-    grid-template-columns: 1fr;
-    padding-left: 16px;
-    padding-right: 16px;
-  }
-
-  #products.products-grid-home .product-tile--w3,
-  #products.products-grid-home .product-tile--w4,
-  #products.products-grid-home .product-tile--w6,
-  #products.products-grid-home .product-tile--w12 {
-    grid-column: 1 / -1;
-  }
-}
-
 
 
 
