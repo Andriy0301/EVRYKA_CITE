@@ -6,10 +6,194 @@
   --ev-muted: #5c5c5c;
   --ev-line: rgba(0, 0, 0, 0.08);
   --ev-header-h: 60px;
+  --ev-shell-radius: clamp(20px, 2.5vw, 28px);
+  --ev-shell-margin: clamp(10px, 1.8vw, 20px);
+  --ev-shell-bg: #f5f5f5;
 }
 
 body {
   font-family: var(--ev-font);
+}
+
+/* ——— Allbirds-style «карточка»: головна ——— */
+.page-home {
+  background: #ebebeb;
+  --ev-header-h: 76px;
+}
+
+.page-home #catalog {
+  scroll-margin-top: calc(var(--ev-shell-margin) + var(--ev-header-h) + 8px);
+}
+
+.evryka-shell {
+  margin: var(--ev-shell-margin);
+  border-radius: var(--ev-shell-radius);
+  background: var(--ev-shell-bg);
+  box-shadow: none;
+}
+
+/* Кути «карточки»: без overflow:hidden на обгортці — sticky header лишається коректним */
+.evryka-shell .header--in-shell {
+  border-radius: var(--ev-shell-radius) var(--ev-shell-radius) 0 0;
+}
+
+.evryka-shell .hero-evryka--allbirds {
+  border-radius: 0 0 var(--ev-shell-radius) var(--ev-shell-radius);
+}
+
+/* Header усередині shell: без окремого фону й ліній */
+.header.header--in-shell {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  background: transparent;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  border: none;
+  box-shadow: none;
+}
+
+.header.header--in-shell .header-inner {
+  max-width: none;
+  padding: clamp(14px, 2vw, 22px) clamp(16px, 3vw, 36px);
+  min-height: 56px;
+}
+
+.header.header--in-shell nav a {
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 10px 16px;
+  border-radius: 999px;
+  background: transparent;
+}
+
+.header.header--in-shell nav a:hover {
+  background: rgba(0, 0, 0, 0.06);
+}
+
+.header.header--in-shell nav a.active {
+  background: rgba(0, 0, 0, 0.08);
+}
+
+.header.header--in-shell #search {
+  background-color: rgba(255, 255, 255, 0.65);
+  border: 1px solid rgba(0, 0, 0, 0.06);
+}
+
+.header.header--in-shell #search:focus {
+  background-color: #fff;
+}
+
+/* Hero Allbirds: справа по вертикалі, легкий overlay + панель з blur */
+.hero-evryka--allbirds {
+  min-height: min(86vh, 900px);
+  align-items: center;
+  justify-content: flex-end;
+  background: #e0e0dc;
+}
+
+.hero-evryka--allbirds .hero-evryka__overlay {
+  background: linear-gradient(
+    90deg,
+    rgba(0, 0, 0, 0.12) 0%,
+    rgba(0, 0, 0, 0.08) 35%,
+    rgba(0, 0, 0, 0.18) 100%
+  );
+}
+
+.hero-evryka--allbirds .hero-evryka__content {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  max-width: 1440px;
+  margin: 0 auto;
+  padding: clamp(32px, 6vh, 72px) clamp(20px, 4vw, 56px);
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.hero-evryka__panel {
+  max-width: 420px;
+  width: 100%;
+  padding: clamp(24px, 4vw, 36px) clamp(24px, 4vw, 40px);
+  border-radius: 24px;
+  background: rgba(0, 0, 0, 0.14);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  box-shadow: none;
+}
+
+.hero-evryka--allbirds .hero-evryka__eyebrow {
+  margin-bottom: 12px;
+  color: rgba(255, 255, 255, 0.92);
+}
+
+.hero-evryka--allbirds .hero-evryka__title {
+  font-size: clamp(2.25rem, 5.5vw, 3.5rem);
+  font-weight: 700;
+  line-height: 1.05;
+  letter-spacing: -0.03em;
+  max-width: 14ch;
+  margin: 0 0 28px;
+  color: #fff;
+}
+
+.hero-evryka--allbirds .hero-evryka__actions {
+  gap: 14px;
+}
+
+.hero-evryka--allbirds .hero-evryka__btn {
+  border-radius: 50px;
+  padding: 16px 28px;
+  font-size: 12px;
+  letter-spacing: 0.1em;
+}
+
+.hero-evryka--allbirds .hero-evryka__btn--primary {
+  background: #fff;
+  color: var(--ev-ink) !important;
+}
+
+.hero-evryka--allbirds .hero-evryka__btn--primary:hover {
+  background: #ececec;
+  transform: scale(1.02);
+}
+
+.hero-evryka--allbirds .hero-evryka__btn--ghost {
+  background: rgba(255, 255, 255, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.45);
+  color: #fff !important;
+}
+
+.hero-evryka--allbirds .hero-evryka__btn--ghost:hover {
+  background: rgba(255, 255, 255, 0.3);
+  transform: scale(1.02);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-evryka--allbirds .hero-evryka__btn--primary:hover,
+  .hero-evryka--allbirds .hero-evryka__btn--ghost:hover {
+    transform: none;
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .hero-evryka__panel .hero-evryka__eyebrow {
+    animation: evHeroIn 0.75s ease backwards;
+    animation-delay: 0.05s;
+  }
+
+  .hero-evryka__panel .hero-evryka__title {
+    animation: evHeroIn 0.8s ease backwards;
+    animation-delay: 0.12s;
+  }
+
+  .hero-evryka__panel .hero-evryka__actions {
+    animation: evHeroIn 0.85s ease backwards;
+    animation-delay: 0.22s;
+  }
 }
 
 /* ——— Header ——— */
@@ -253,6 +437,10 @@ body.header-nav-open {
 }
 
 @media (max-width: 768px) {
+  .evryka-shell {
+    margin: clamp(8px, 2.5vw, 14px);
+  }
+
   .header-inner {
     grid-template-columns: auto 1fr auto;
     padding: 10px 16px;
@@ -292,6 +480,11 @@ body.header-nav-open {
     overflow-y: auto;
   }
 
+  .page-home .header .header-nav {
+    background: var(--ev-shell-bg);
+    border-top: none;
+  }
+
   .header .header-nav.is-open {
     transform: translateX(0);
   }
@@ -300,6 +493,12 @@ body.header-nav-open {
     padding: 14px 16px;
     border-radius: 10px;
     font-size: 16px;
+  }
+
+  .header.header--in-shell nav a {
+    text-align: center;
+    font-size: 13px;
+    letter-spacing: 0.08em;
   }
 
   body.header-nav-open::after {
@@ -508,5 +707,41 @@ body.header-nav-open {
 
   .hero-evryka__btn {
     width: 100%;
+  }
+
+  /* Allbirds home: центр, кнопки стовпчиком */
+  .hero-evryka--allbirds {
+    min-height: min(88vh, 820px);
+    justify-content: center;
+    align-items: center;
+  }
+
+  .hero-evryka--allbirds .hero-evryka__overlay {
+    background: linear-gradient(
+      180deg,
+      rgba(0, 0, 0, 0.2) 0%,
+      rgba(0, 0, 0, 0.45) 100%
+    );
+  }
+
+  .hero-evryka--allbirds .hero-evryka__content {
+    justify-content: center;
+    padding: 28px 18px 48px;
+    text-align: center;
+  }
+
+  .hero-evryka--allbirds .hero-evryka__panel {
+    max-width: none;
+    text-align: center;
+  }
+
+  .hero-evryka--allbirds .hero-evryka__title {
+    max-width: none;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .hero-evryka--allbirds .hero-evryka__actions {
+    align-items: stretch;
   }
 }
