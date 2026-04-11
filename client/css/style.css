@@ -3499,16 +3499,20 @@ font-weight: bold;
   width: auto;
   margin-left: var(--ev-stack-outer, clamp(0px, 0.65vw, 10px));
   margin-right: var(--ev-stack-outer, clamp(0px, 0.65vw, 10px));
-  padding-left: 0;
-  padding-right: 0;
-  padding-bottom: clamp(32px, 5vw, 56px);
+  padding: 0 0 clamp(32px, 5vw, 56px);
   box-sizing: border-box;
 }
 
 .page-product .product-nav {
-  margin-top: clamp(8px, 2vw, 16px);
-  margin-bottom: clamp(16px, 2.5vw, 24px);
+  flex: 1 1 100%;
+  width: 100%;
+  min-width: 100%;
+  margin: 0;
+  padding-bottom: clamp(12px, 2vw, 20px);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.06);
   flex-wrap: wrap;
+  align-items: center;
+  gap: 12px 20px;
 }
 
 .page-product .back-btn {
@@ -3549,7 +3553,7 @@ font-weight: bold;
   display: flex;
   flex-wrap: wrap;
   margin: 0 0 clamp(28px, 4vw, 48px);
-  padding: clamp(20px, 3vw, 28px);
+  padding: clamp(16px, 2.5vw, 24px) clamp(20px, 3vw, 28px) clamp(20px, 3vw, 28px);
   column-gap: clamp(28px, 4vw, 48px);
   row-gap: clamp(16px, 2.5vw, 28px);
   background: #fff;
