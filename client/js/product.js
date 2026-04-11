@@ -17,11 +17,17 @@ async function loadProduct() {
     document.getElementById("breadcrumbTitle").innerText = product.name;
     document.getElementById("productCategory").innerText = product.category || "Товари";
     document.getElementById("price").innerText = product.price + " грн";
-    document.getElementById("description").innerHTML = product.description || "";
+    const descHtml = product.description || "";
+    document.getElementById("description").innerHTML = descHtml;
+    const descAccordion = document.getElementById("productDescAccordion");
+    if (descAccordion) {
+      descAccordion.style.display = descHtml.trim() ? "" : "none";
+    }
 
     renderGallery(product);
     renderSimilarProducts(product, products);
     setupProductFavorite(product);
+    setupDescriptionToggle();
 
 document.getElementById("buyBtn").onclick = () => {
   const qty = document.getElementById("qty").value;
@@ -72,6 +78,24 @@ function isFavorite(productId) {
   return getFavorites().some((item) => Number(item.id) === Number(productId));
 }
 
+function setupDescriptionToggle() {
+  const btn = document.getElementById("productDescToggle");
+  const panel = document.getElementById("productDescPanel");
+  if (!btn || !panel || btn.dataset.descBound) return;
+  btn.dataset.descBound = "1";
+
+  btn.addEventListener("click", () => {
+    const open = btn.getAttribute("aria-expanded") === "true";
+    const next = !open;
+    btn.setAttribute("aria-expanded", String(next));
+    if (next) {
+      panel.removeAttribute("hidden");
+    } else {
+      panel.setAttribute("hidden", "");
+    }
+  });
+}
+
 function setupProductFavorite(product) {
   const btn = document.getElementById("productFavoriteBtn");
   if (!btn) return;
@@ -113,7 +137,7 @@ function renderGallery(product) {
     el.src = `${API_URL}${img}`;
 
     if (i === 0) {
-      el.style.border = "2px solid #2c4a6b";
+      el.style.border = "2px solid #111";
     }
 
     el.onclick = () => {
@@ -123,7 +147,7 @@ function renderGallery(product) {
         t.style.border = "2px solid transparent";
       });
 
-      el.style.border = "2px solid #2c4a6b";
+      el.style.border = "2px solid #111";
     };
 
     thumbnails.appendChild(el);

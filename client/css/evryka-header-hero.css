@@ -42,7 +42,7 @@ body.evryka-site:not(.page-home) {
 
 /* Відступ між банером і контентом головної (категорії + каталог) */
 .page-home {
-  --home-hero-to-content-gap: clamp(20px, 3.2vw, 40px);
+  --home-hero-to-content-gap: clamp(28px, 4vw, 52px);
 }
 
 .page-home .evryka-hero-stack + .container {
