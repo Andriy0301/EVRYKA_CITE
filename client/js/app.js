@@ -687,6 +687,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   }
   updateCartCount();
   scrollToCatalogFromHash();
+  initHeroCarousel();
 });
 
 // =========================

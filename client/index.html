@@ -61,17 +61,46 @@
 
 <div class="evryka-shell">
 <section class="hero-evryka hero-evryka--allbirds" aria-label="EVRYKA — головний банер">
-  <div class="hero-evryka__media" role="img" aria-label="Продукція EVRYKA, 3D-друк"></div>
-  <div class="hero-evryka__overlay" aria-hidden="true"></div>
-  <div class="hero-evryka__content">
-    <div class="hero-evryka__panel">
-      <p class="hero-evryka__eyebrow">Нова колекція</p>
-      <h1 class="hero-evryka__title">Якість у кожній лінії</h1>
-      <div class="hero-evryka__actions">
-        <a class="hero-evryka__btn hero-evryka__btn--primary" href="catalog.html">Купити зараз</a>
-        <a class="hero-evryka__btn hero-evryka__btn--ghost" href="#catalog">Дивитись каталог</a>
-      </div>
+  <div class="hero-carousel hero-evryka-carousel" aria-roledescription="карусель">
+    <div class="hero-carousel-track">
+      <article class="hero-slide hero-slide--evryka is-active">
+        <div class="hero-slide__bg" style="background-position: center 38%;" role="img" aria-hidden="true"></div>
+        <div class="hero-evryka__overlay" aria-hidden="true"></div>
+        <div class="hero-evryka__content">
+          <div class="hero-evryka__panel">
+            <p class="hero-evryka__eyebrow">EVRYKA · 3D-друк</p>
+            <h1 class="hero-evryka__title">Втілюємо ваші ідеї в реальність</h1>
+            <p class="hero-evryka__lede">Від ескізу до готової деталі — точно та надійно.</p>
+            <div class="hero-evryka__actions">
+              <a class="hero-evryka__btn hero-evryka__btn--primary" href="#catalog">До каталогу</a>
+              <a class="hero-evryka__btn hero-evryka__btn--ghost" href="#contacts">Зв’язатися</a>
+            </div>
+          </div>
+        </div>
+      </article>
+      <article class="hero-slide hero-slide--evryka">
+        <div class="hero-slide__bg" style="background-position: center 55%;" role="img" aria-hidden="true"></div>
+        <div class="hero-evryka__overlay" aria-hidden="true"></div>
+        <div class="hero-evryka__content">
+          <div class="hero-evryka__panel">
+            <p class="hero-evryka__eyebrow">Під замовлення</p>
+            <h1 class="hero-evryka__title">Потрібен проект?</h1>
+            <p class="hero-evryka__lede">Замовляйте 3D-друк: корпуси, деталі та прототипи під ваші задачі.</p>
+            <div class="hero-evryka__actions">
+              <a class="hero-evryka__btn hero-evryka__btn--primary" href="#">Замовити 3D друк</a>
+              <a class="hero-evryka__btn hero-evryka__btn--ghost" href="#contacts">Контакти</a>
+            </div>
+          </div>
+        </div>
+      </article>
     </div>
+    <button type="button" class="hero-carousel-prev" aria-label="Попередній слайд">
+      <svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true"><path d="M15 6l-6 6 6 6"></path></svg>
+    </button>
+    <button type="button" class="hero-carousel-next" aria-label="Наступний слайд">
+      <svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true"><path d="M9 6l6 6-6 6"></path></svg>
+    </button>
+    <div class="hero-carousel-dots" role="tablist" aria-label="Слайди банера"></div>
   </div>
 </section>
 </div>

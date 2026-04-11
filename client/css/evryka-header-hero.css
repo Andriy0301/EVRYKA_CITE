@@ -6,7 +6,7 @@
   --ev-muted: #5c5c5c;
   --ev-line: rgba(0, 0, 0, 0.08);
   --ev-header-h: 60px;
-  --ev-shell-radius: clamp(16px, 2vw, 22px);
+  --ev-shell-radius: clamp(18px, 2.3vw, 26px);
   --ev-shell-margin: clamp(10px, 1.8vw, 20px);
   --ev-shell-bg: #f5f5f5;
 }
@@ -19,10 +19,10 @@ body {
 .page-home {
   background: #ebebeb;
   --ev-header-float-inset: clamp(10px, 2vw, 16px);
-  /* Вкладений радіус: R_внутрішній �� R_картки − відступ (узгоджено з кутом банера) */
+  /* Вкладений радіус: R_картки − відступ (+1px трохи м’якше) */
   --ev-header-bar-radius: max(
-    8px,
-    calc(var(--ev-shell-radius) - var(--ev-header-float-inset))
+    9px,
+    calc(var(--ev-shell-radius) - var(--ev-header-float-inset) + 1px)
   );
   /* Зовнішній відступ «картки» = від краю вікна до шапки/банера (для fixed header) */
   --ev-stack-outer: var(--ev-shell-margin);
@@ -66,10 +66,10 @@ body {
   width: auto;
   max-width: none;
   border-radius: var(--ev-header-bar-radius);
-  background: rgba(245, 245, 245, 0.55);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  border: 1px solid rgba(255, 255, 255, 0.35);
+  background: rgba(255, 253, 248, 0.94);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.7);
   box-sizing: border-box;
   box-shadow: 0 4px 24px rgba(0, 0, 0, 0.06);
 }
@@ -155,8 +155,18 @@ body {
 .page-home .header.header--home-detached #search {
   padding: 7px 12px 7px 34px;
   font-size: 13px;
-  background-color: rgba(255, 255, 255, 0.75);
+  background-color: #fff;
   background-position: 10px 50%;
+  border: 1px solid rgba(0, 0, 0, 0.12);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.page-home .header.header--home-detached #search:focus {
+  outline: none;
+  background-color: #fff;
+  border-color: rgba(0, 0, 0, 0.2);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
 }
 
 .page-home .header.header--home-detached .auth-icon-btn {
@@ -202,11 +212,97 @@ body {
   box-sizing: border-box;
 }
 
+/* Карусель у банері (текст + фон, як раніше) */
+.hero-evryka--allbirds .hero-evryka-carousel {
+  position: absolute;
+  inset: 0;
+  margin: 0;
+  border: none;
+  background: transparent;
+}
+
+.hero-evryka--allbirds .hero-evryka-carousel .hero-carousel-track {
+  position: relative;
+  min-height: min(86vh, 900px);
+  max-width: none;
+  margin: 0;
+}
+
+.hero-evryka--allbirds .hero-slide--evryka {
+  display: block;
+  padding: 0;
+  align-items: unset;
+  justify-content: unset;
+}
+
+.hero-evryka--allbirds .hero-slide__bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background-image: url("../images/hero.png");
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+
+.hero-evryka--allbirds .hero-slide--evryka .hero-evryka__overlay {
+  z-index: 1;
+}
+
+.hero-evryka--allbirds .hero-slide--evryka .hero-evryka__content {
+  position: relative;
+  z-index: 2;
+  min-height: min(86vh, 900px);
+  height: auto;
+}
+
+.hero-evryka--allbirds .hero-evryka__lede {
+  font-family: var(--ev-font);
+  font-size: clamp(0.95rem, 1.8vw, 1.1rem);
+  line-height: 1.5;
+  color: rgba(255, 255, 255, 0.88);
+  margin: 0 0 22px;
+  max-width: 28rem;
+}
+
+.hero-evryka--allbirds .hero-evryka-carousel .hero-carousel-prev,
+.hero-evryka--allbirds .hero-evryka-carousel .hero-carousel-next {
+  background: rgba(255, 255, 255, 0.92);
+  border-color: rgba(0, 0, 0, 0.08);
+  z-index: 5;
+}
+
+.hero-evryka--allbirds .hero-evryka-carousel .hero-carousel-prev:hover,
+.hero-evryka--allbirds .hero-evryka-carousel .hero-carousel-next:hover {
+  background: #fff;
+}
+
+.hero-evryka--allbirds .hero-evryka-carousel .hero-carousel-prev svg path,
+.hero-evryka--allbirds .hero-evryka-carousel .hero-carousel-next svg path {
+  fill: none;
+  stroke: #111;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.hero-evryka--allbirds .hero-evryka-carousel .hero-carousel-dots {
+  z-index: 5;
+  bottom: 22px;
+}
+
+.hero-evryka--allbirds .hero-evryka-carousel .hero-carousel-dot {
+  background: rgba(255, 255, 255, 0.38);
+}
+
+.hero-evryka--allbirds .hero-evryka-carousel .hero-carousel-dot.is-active {
+  background: #fff;
+}
+
 .hero-evryka__panel {
   max-width: 420px;
   width: 100%;
   padding: clamp(24px, 4vw, 36px) clamp(24px, 4vw, 40px);
-  border-radius: clamp(16px, 2vw, 20px);
+  border-radius: clamp(18px, 2.2vw, 24px);
   background: rgba(0, 0, 0, 0.14);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
@@ -223,8 +319,8 @@ body {
   font-weight: 700;
   line-height: 1.05;
   letter-spacing: -0.03em;
-  max-width: 14ch;
-  margin: 0 0 28px;
+  max-width: 18ch;
+  margin: 0 0 12px;
   color: #fff;
 }
 
@@ -823,6 +919,14 @@ body.header-nav-open {
     min-height: min(88vh, 820px);
     justify-content: center;
     align-items: center;
+  }
+
+  .hero-evryka--allbirds .hero-evryka-carousel .hero-carousel-track {
+    min-height: min(88vh, 820px);
+  }
+
+  .hero-evryka--allbirds .hero-slide--evryka .hero-evryka__content {
+    min-height: min(88vh, 820px);
   }
 
   .hero-evryka--allbirds .hero-evryka__overlay {
