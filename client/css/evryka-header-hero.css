@@ -18,33 +18,52 @@ body {
 /* ——— Allbirds-style «карточка»: головна ——— */
 .page-home {
   background: #ebebeb;
-  --ev-header-h: 76px;
+  --ev-header-h: 56px;
+  --ev-header-float-inset: clamp(10px, 2vw, 16px);
 }
 
 .page-home #catalog {
-  scroll-margin-top: calc(var(--ev-shell-margin) + var(--ev-header-h) + 8px);
+  scroll-margin-top: calc(var(--ev-shell-margin) + 24px);
 }
 
-/* Хедер окремий у DOM, візуально — верхня частина тієї ж «картки», що й hero */
-.page-home .header.header--in-shell.header--home-detached {
-  margin: var(--ev-shell-margin) var(--ev-shell-margin) 0;
-  border-radius: var(--ev-shell-radius) var(--ev-shell-radius) 0 0;
-  background: var(--ev-shell-bg);
-  box-sizing: border-box;
+/* Одна «картка» з банером (усі кути) + компактна шапка поверх банера */
+.page-home .evryka-hero-stack {
+  position: relative;
+  margin: var(--ev-shell-margin);
 }
 
 .page-home .evryka-shell {
-  margin: 0 var(--ev-shell-margin) var(--ev-shell-margin);
-  border-radius: 0 0 var(--ev-shell-radius) var(--ev-shell-radius);
+  margin: 0;
+  border-radius: var(--ev-shell-radius);
   background: transparent;
   box-shadow: none;
 }
 
-.page-home .evryka-shell .hero-evryka--allbirds {
-  border-radius: 0 0 var(--ev-shell-radius) var(--ev-shell-radius);
+.page-home .evryka-shell .hero-evryka--allbirds,
+.page-home .evryka-hero-stack .hero-evryka--allbirds {
+  border-radius: var(--ev-shell-radius);
 }
 
-/* Header: без ліній; фон задає лише .header--home-detached на головній */
+/* Плаваюча шапка: менша, скло, банер видно ззаду; усі кути заокруглені */
+.page-home .header.header--in-shell.header--home-detached {
+  position: absolute;
+  top: var(--ev-header-float-inset);
+  left: var(--ev-header-float-inset);
+  right: var(--ev-header-float-inset);
+  z-index: 20;
+  margin: 0;
+  width: auto;
+  max-width: none;
+  border-radius: 999px;
+  background: rgba(245, 245, 245, 0.55);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  box-sizing: border-box;
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.06);
+}
+
+/* Header: без ліній; на головній позицію й фон задає .header--home-detached */
 .header.header--in-shell {
   position: sticky;
   top: 0;
@@ -62,6 +81,18 @@ body {
   min-height: 56px;
 }
 
+.page-home .header.header--home-detached .header-inner {
+  padding: 6px 12px 6px 16px;
+  min-height: 44px;
+  gap: 12px 20px;
+}
+
+.page-home .header.header--home-detached .header-logo-img {
+  max-height: 30px;
+  width: auto;
+  display: block;
+}
+
 .header.header--in-shell nav a {
   font-size: 13px;
   font-weight: 600;
@@ -70,6 +101,12 @@ body {
   padding: 10px 16px;
   border-radius: 999px;
   background: transparent;
+}
+
+.page-home .header.header--home-detached nav a {
+  font-size: 11px;
+  padding: 7px 12px;
+  letter-spacing: 0.09em;
 }
 
 .header.header--in-shell nav a:hover {
@@ -87,6 +124,33 @@ body {
 
 .header.header--in-shell #search:focus {
   background-color: #fff;
+}
+
+.page-home .header.header--home-detached .search-box {
+  flex: 0 1 160px;
+  max-width: 180px;
+}
+
+.page-home .header.header--home-detached #search {
+  padding: 7px 12px 7px 34px;
+  font-size: 13px;
+  background-color: rgba(255, 255, 255, 0.75);
+  background-position: 10px 50%;
+}
+
+.page-home .header.header--home-detached .auth-icon-btn {
+  width: 38px;
+  height: 38px;
+}
+
+.page-home .header.header--home-detached .auth-icon-btn svg {
+  width: 20px;
+  height: 20px;
+}
+
+.page-home .header.header--home-detached .cart-icon {
+  width: 22px;
+  height: 22px;
 }
 
 /* Hero Allbirds: справа по вертикалі, легкий overlay + панель з blur */
@@ -440,12 +504,15 @@ body.header-nav-open {
 }
 
 @media (max-width: 768px) {
-  .page-home .header.header--in-shell.header--home-detached {
-    margin: clamp(8px, 2.5vw, 14px) clamp(8px, 2.5vw, 14px) 0;
+  .page-home .evryka-hero-stack {
+    margin: clamp(8px, 2.5vw, 14px);
   }
 
-  .page-home .evryka-shell {
-    margin: 0 clamp(8px, 2.5vw, 14px) clamp(8px, 2.5vw, 14px);
+  .page-home .header.header--in-shell.header--home-detached {
+    top: 10px;
+    left: 10px;
+    right: 10px;
+    border-radius: 22px;
   }
 
   .header-inner {
@@ -735,6 +802,10 @@ body.header-nav-open {
     justify-content: center;
     padding: 28px 18px 48px;
     text-align: center;
+  }
+
+  .page-home .evryka-hero-stack .hero-evryka--allbirds .hero-evryka__content {
+    padding-top: 92px;
   }
 
   .hero-evryka--allbirds .hero-evryka__panel {
