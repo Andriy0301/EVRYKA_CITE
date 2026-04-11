@@ -3577,6 +3577,7 @@ body.evryka-site.page-product .header.header--in-shell.header--home-detached {
   z-index: 0;
   display: flex;
   flex-wrap: wrap;
+  align-items: stretch;
   margin: 0 0 clamp(28px, 4vw, 48px);
   padding: calc(
       clamp(16px, 2.5vw, 24px) + var(--ev-header-h) + 12px - var(--ev-stack-outer)
@@ -3594,17 +3595,47 @@ body.evryka-site.page-product .header.header--in-shell.header--home-detached {
   box-sizing: border-box;
 }
 
+/* Галерея + інфо в одному рядку: без переносу «інфо під галерею» (інакше sticky накладається на опис) */
+.page-product .product-main-columns {
+  display: flex;
+  flex-flow: row nowrap;
+  align-items: flex-start;
+  gap: clamp(28px, 4vw, 48px);
+  width: 100%;
+  flex: 1 1 100%;
+  min-width: 0;
+  box-sizing: border-box;
+}
+
 .page-product .product-gallery {
+  position: sticky;
   top: calc(var(--ev-header-h, 72px) + 16px);
+  flex: 0 1 auto;
+  min-width: 0;
+  max-width: min(560px, 52%);
+  z-index: 1;
+}
+
+.page-product .product-gallery .main-image {
+  max-width: 100%;
 }
 
 .page-product .main-image img {
+  max-width: 100%;
+  height: auto;
   box-shadow: var(--ev-p-shadow-sm, 0 5px 22px rgba(38, 34, 30, 0.11));
   border: 1px solid var(--ev-p-line, rgba(38, 34, 30, 0.14));
 }
 
 .page-product .product-info {
+  position: relative;
+  z-index: 2;
+  flex: 1 1 0;
+  min-width: 0;
   max-width: 460px;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
 }
 
 .page-product .product-info h2 {
@@ -3629,32 +3660,33 @@ body.evryka-site.page-product .header.header--in-shell.header--home-detached {
 }
 
 .page-product .product-desc-accordion {
-  flex: 1 1 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
   width: 100%;
-  min-width: 100%;
-  margin: 0;
-  margin-top: clamp(12px, 2.5vw, 24px);
-  padding-top: clamp(16px, 2.8vw, 26px);
-  border-top: 1px solid var(--ev-p-line, rgba(38, 34, 30, 0.14));
+  margin: clamp(6px, 1.5vw, 10px) 0 0;
+  padding: 0;
+  border: none;
   box-sizing: border-box;
 }
 
 .page-product .product-desc-toggle {
-  display: flex;
+  display: inline-flex;
   align-items: center;
-  gap: 10px;
-  width: 100%;
+  align-self: flex-end;
+  gap: 6px;
+  width: auto;
   max-width: 100%;
-  justify-content: space-between;
-  padding: 15px 24px;
+  justify-content: center;
+  padding: 8px 14px;
   border: 2px solid var(--ev-p-toggle-border, rgba(32, 28, 24, 0.35));
   border-radius: 999px;
   background: var(--ev-p-toggle-bg, linear-gradient(180deg, #d1c4b2 0%, #c0b3a1 100%));
   color: #1c1916;
   font-family: var(--ev-font, "Inter", system-ui, sans-serif);
-  font-size: 12px;
+  font-size: 11px;
   font-weight: 700;
-  letter-spacing: 0.08em;
+  letter-spacing: 0.07em;
   text-transform: uppercase;
   cursor: pointer;
   box-shadow: var(--ev-p-toggle-shadow, 0 2px 0 rgba(255, 255, 255, 0.35) inset, 0 4px 14px rgba(38, 34, 30, 0.18));
@@ -3668,8 +3700,8 @@ body.evryka-site.page-product .header.header--in-shell.header--home-detached {
 }
 
 .page-product .product-desc-chevron {
-  width: 18px;
-  height: 18px;
+  width: 14px;
+  height: 14px;
   flex-shrink: 0;
   transition: transform 0.25s ease;
 }
@@ -3680,7 +3712,9 @@ body.evryka-site.page-product .header.header--in-shell.header--home-detached {
 
 .page-product .product-desc-panel {
   margin-top: 12px;
-  padding: 0 2px 2px;
+  padding: 0;
+  width: 100%;
+  align-self: stretch;
 }
 
 .page-product .product-desc-panel[hidden] {
@@ -3729,7 +3763,7 @@ body.evryka-site.page-product .header.header--in-shell.header--home-detached {
 }
 
 @media (max-width: 900px) {
-  .page-product .product-page {
+  .page-product .product-main-columns {
     flex-direction: column;
     align-items: stretch;
   }
@@ -3737,9 +3771,16 @@ body.evryka-site.page-product .header.header--in-shell.header--home-detached {
   .page-product .product-gallery {
     position: relative;
     top: auto;
+    max-width: none;
     width: 100%;
     flex-direction: column-reverse;
     align-items: center;
+  }
+
+  .page-product .product-info {
+    flex: none;
+    max-width: none;
+    width: 100%;
   }
 
   .page-product .thumbnails {
