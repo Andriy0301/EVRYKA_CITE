@@ -105,13 +105,13 @@ body.evryka-site:not(.page-home) {
 }
 
 .evryka-site .header.header--home-detached .header-inner {
-  padding: 5px 20px 5px 16px;
+  padding: 5px 20px 5px 5px;
   min-height: 44px;
   gap: 12px 20px;
 }
 
 .evryka-site .header.header--home-detached .header-logo {
-  margin-left: -10px;
+  margin-left: 0;
 }
 
 .evryka-site .header.header--home-detached .header-logo-img {
