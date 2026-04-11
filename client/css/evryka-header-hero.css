@@ -2,13 +2,27 @@
 
 :root {
   --ev-font: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
-  --ev-ink: #1a1a1a;
-  --ev-muted: #5c5c5c;
-  --ev-line: rgba(0, 0, 0, 0.08);
+  /* Палітра: прохолодний сланець + бірюза на м’якому блакитно-сірому тлі */
+  --ev-rgb: 12, 31, 38;
+  --ev-shell-bg: #d4e2e6;
+  --ev-surface: #ffffff;
+  --ev-surface-muted: #e8f1f4;
+  --ev-surface-elevated: #f0f7f9;
+  --ev-ink: #0c1f26;
+  --ev-muted: #5a737c;
+  --ev-muted-nav: #8aa3ab;
+  --ev-line: rgba(var(--ev-rgb), 0.1);
+  --ev-line-strong: rgba(var(--ev-rgb), 0.16);
+  --ev-accent: #127a8c;
+  --ev-accent-hover: #0e6574;
+  --ev-accent-soft: rgba(18, 122, 140, 0.14);
+  --ev-header-surface: rgba(255, 255, 255, 0.94);
+  --ev-border-hair: #d5e1e6;
+  --ev-border-mid: #b8cad1;
+  --ev-heart: #b83252;
   --ev-header-h: 60px;
   --ev-shell-radius: clamp(18px, 2.3vw, 26px);
   --ev-shell-margin: clamp(10px, 1.8vw, 20px);
-  --ev-shell-bg: #ece9e2;
 }
 
 body {
@@ -17,7 +31,8 @@ body {
 
 /* Фон і змінні шапки (плаваюча) — усі сторінки з body.evryka-site */
 body.evryka-site {
-  background: #ece9e2;
+  background: var(--ev-shell-bg);
+  color: var(--ev-ink);
   --ev-shell-margin: clamp(0px, 0.65vw, 10px);
   --ev-header-float-inset: clamp(6px, 1.4vw, 12px);
   --ev-header-bar-radius: max(
@@ -83,15 +98,14 @@ body.evryka-site.page-product {
   width: auto;
   max-width: none;
   border-radius: var(--ev-header-bar-radius);
-  background: rgba(255, 253, 248, 0.97);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border: 1px solid rgba(255, 255, 255, 0.75);
-  border-bottom-color: rgba(0, 0, 0, 0.07);
+  background: var(--ev-header-surface);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border: 1px solid rgba(255, 255, 255, 0.82);
+  border-bottom-color: rgba(var(--ev-rgb), 0.11);
   box-sizing: border-box;
-  /* нижня «сходинка» + м’яка тінь — шапка не зливається з білим контентом */
-  box-shadow: 0 1px 0 rgba(0, 0, 0, 0.05), 0 10px 32px rgba(0, 0, 0, 0.08),
-    0 2px 8px rgba(0, 0, 0, 0.04);
+  box-shadow: 0 1px 0 rgba(var(--ev-rgb), 0.06), 0 10px 32px rgba(var(--ev-rgb), 0.1),
+    0 2px 8px rgba(var(--ev-rgb), 0.05);
 }
 
 /* Header: без ліній; на головній позицію й фон задає .header--home-detached */
@@ -137,7 +151,7 @@ body.evryka-site.page-product {
   margin: 0;
   border-radius: 0;
   background: transparent;
-  color: #0a0a0a;
+  color: var(--ev-ink);
   position: relative;
   text-decoration: none;
   transition: color 0.2s ease;
@@ -150,7 +164,7 @@ body.evryka-site.page-product {
   right: 10px;
   bottom: 3px;
   height: 2px;
-  background: #0a0a0a;
+  background: var(--ev-ink);
   transform: scaleX(0);
   transform-origin: center;
   transition: transform 0.32s cubic-bezier(0.4, 0, 0.2, 1);
@@ -191,11 +205,11 @@ body.evryka-site.page-product {
 
 /* Без «капсули»: при наведенні на меню інші пункти сіріють, активний — чорний */
 .header.header--in-shell .header-nav:hover a {
-  color: #9a9a9a;
+  color: var(--ev-muted-nav);
 }
 
 .header.header--in-shell .header-nav:hover a:hover {
-  color: #0a0a0a;
+  color: var(--ev-ink);
 }
 
 .header.header--in-shell nav a:hover,
@@ -205,7 +219,7 @@ body.evryka-site.page-product {
 
 .header.header--in-shell nav a.active {
   background: transparent;
-  color: #0a0a0a;
+  color: var(--ev-ink);
   font-weight: 700;
 }
 
@@ -259,7 +273,7 @@ body.evryka-site.page-product {
 .hero-evryka--allbirds {
   align-items: center;
   justify-content: flex-end;
-  background: #ece9e2;
+  background: var(--ev-shell-bg);
 }
 
 .hero-evryka--allbirds .hero-evryka__overlay {
@@ -314,7 +328,7 @@ body.evryka-site.page-product {
   background-size: cover;
   background-position: center bottom;
   background-repeat: no-repeat;
-  background-color: #ece9e2;
+  background-color: var(--ev-shell-bg);
 }
 
 /* Перший слайд: фон images/hero-banner-repair.png (url у HTML) */
@@ -425,7 +439,7 @@ body.evryka-site.page-product {
 .hero-evryka--allbirds .hero-evryka-carousel .hero-carousel-prev svg path,
 .hero-evryka--allbirds .hero-evryka-carousel .hero-carousel-next svg path {
   fill: none;
-  stroke: #111;
+  stroke: var(--ev-ink);
   stroke-width: 2;
   stroke-linecap: round;
   stroke-linejoin: round;
@@ -487,7 +501,7 @@ body.evryka-site.page-product {
 }
 
 .hero-evryka--allbirds .hero-evryka__btn--primary:hover {
-  background: #ececec;
+  background: var(--ev-surface-muted);
   transform: scale(1.02);
 }
 
@@ -639,7 +653,7 @@ body.evryka-site.page-product {
   padding: 10px 14px 10px 38px;
   border-radius: 999px;
   border: 1px solid var(--ev-line);
-  background-color: #f7f7f7;
+  background-color: var(--ev-surface-muted);
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='none' stroke='%23777' stroke-width='2' stroke-linecap='round' viewBox='0 0 24 24'%3E%3Ccircle cx='11' cy='11' r='7'/%3E%3Cpath d='M21 21l-4.3-4.3'/%3E%3C/svg%3E");
   background-repeat: no-repeat;
   background-position: 12px 50%;
@@ -652,7 +666,7 @@ body.evryka-site.page-product {
 }
 
 .header #search::placeholder {
-  color: #888;
+  color: var(--ev-muted);
   font-weight: 400;
 }
 
@@ -736,12 +750,12 @@ body.evryka-site.page-product {
 }
 
 .header #favoritesBtn .heart-icon path {
-  stroke: #d10035;
+  stroke: var(--ev-heart);
 }
 
 .header #favoritesBtn:hover .heart-icon path {
-  fill: #d10035;
-  stroke: #d10035;
+  fill: var(--ev-heart);
+  stroke: var(--ev-heart);
   opacity: 1;
 }
 
@@ -842,15 +856,15 @@ body.header-nav-open {
     letter-spacing: 0.07em;
     border-radius: 0;
     font-weight: 700;
-    color: #0a0a0a;
+    color: var(--ev-ink);
   }
 
   .header.header--in-shell .header-nav:hover a {
-    color: #9a9a9a;
+    color: var(--ev-muted-nav);
   }
 
   .header.header--in-shell .header-nav:hover a:hover {
-    color: #0a0a0a;
+    color: var(--ev-ink);
   }
 
   .header.header--in-shell nav a::after {
@@ -879,7 +893,7 @@ body.header-nav-open {
   align-items: flex-end;
   justify-content: flex-start;
   overflow: hidden;
-  background: #ece9e2;
+  background: var(--ev-shell-bg);
 }
 
 /* Перекриває .hero-evryka min-height (порядок у файлі): трек і контент не вищі за секцію — без обрізання низу */
@@ -978,7 +992,7 @@ body.header-nav-open {
 
 .hero-evryka__btn--primary:hover {
   transform: scale(1.02);
-  background: #f5f5f5;
+  background: var(--ev-surface-elevated);
 }
 
 .hero-evryka__btn--ghost {
