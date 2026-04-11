@@ -35,6 +35,11 @@ body.evryka-site:not(.page-home) {
   padding-top: calc(var(--ev-header-h) + 12px);
 }
 
+/* Сторінка товару: контент / біла картка піднімаються, шапка візуально «лежить» на картці */
+body.evryka-site.page-product {
+  padding-top: calc(var(--ev-header-h) - clamp(22px, 4.5vw, 38px));
+}
+
 .evryka-site #catalog,
 .evryka-site #contacts {
   scroll-margin-top: calc(var(--ev-header-h) + 8px);
