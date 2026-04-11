@@ -101,26 +101,37 @@ body {
 
 .header.header--in-shell nav a {
   font-size: 13px;
-  font-weight: 600;
-  letter-spacing: 0.08em;
+  font-weight: 700;
+  letter-spacing: 0.06em;
   text-transform: uppercase;
-  padding: 10px 16px;
-  border-radius: 999px;
+  padding: 8px 10px;
+  margin: 0;
+  border-radius: 0;
   background: transparent;
+  color: #0a0a0a;
+  transition: color 0.2s ease;
 }
 
 .page-home .header.header--home-detached nav a {
   font-size: 11px;
-  padding: 7px 12px;
-  letter-spacing: 0.09em;
+  padding: 6px 8px;
+  letter-spacing: 0.07em;
 }
 
-.header.header--in-shell nav a:hover {
-  background: rgba(0, 0, 0, 0.06);
+/* Без «капсули»: при наведенні на меню інші пункти сіріють, активний — чорний */
+.header.header--in-shell .header-nav:hover a {
+  color: #9a9a9a;
+}
+
+.header.header--in-shell .header-nav:hover a:hover,
+.header.header--in-shell .header-nav:hover a.active {
+  color: #0a0a0a;
 }
 
 .header.header--in-shell nav a.active {
-  background: rgba(0, 0, 0, 0.08);
+  background: transparent;
+  color: #0a0a0a;
+  font-weight: 700;
 }
 
 .header.header--in-shell #search {
@@ -575,7 +586,19 @@ body.header-nav-open {
   .header.header--in-shell nav a {
     text-align: center;
     font-size: 13px;
-    letter-spacing: 0.08em;
+    letter-spacing: 0.07em;
+    border-radius: 0;
+    font-weight: 700;
+    color: #0a0a0a;
+  }
+
+  .header.header--in-shell .header-nav:hover a {
+    color: #9a9a9a;
+  }
+
+  .header.header--in-shell .header-nav:hover a:hover,
+  .header.header--in-shell .header-nav:hover a.active {
+    color: #0a0a0a;
   }
 
   body.header-nav-open::after {
