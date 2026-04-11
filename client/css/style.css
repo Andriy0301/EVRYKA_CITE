@@ -3493,7 +3493,26 @@ font-weight: bold;
   color: #b00020;
 }
 
-/* ——— сторінка товару (як головна: EVRYKA, капсули, світла «картка») ——— */
+/* ——— сторінка товару: палітра з чітким розділенням шарів (полотно / картки / вкладені блоки) ——— */
+body.evryka-site.page-product {
+  background: #d8d2c8;
+  --ev-p-ink: #141210;
+  --ev-p-muted: #4a4540;
+  --ev-p-line: rgba(38, 34, 30, 0.14);
+  --ev-p-line-soft: rgba(38, 34, 30, 0.1);
+  --ev-p-card: #fffefb;
+  --ev-p-tier2: #f3efe6;
+  --ev-p-well: #e8e3d8;
+  --ev-p-shadow: 0 12px 40px rgba(38, 34, 30, 0.14), 0 2px 10px rgba(38, 34, 30, 0.07);
+  --ev-p-shadow-sm: 0 5px 22px rgba(38, 34, 30, 0.11);
+}
+
+body.evryka-site.page-product .header.header--in-shell.header--home-detached {
+  background: rgba(252, 250, 246, 0.97);
+  border-color: rgba(38, 34, 30, 0.16);
+  box-shadow: 0 8px 30px rgba(38, 34, 30, 0.14);
+}
+
 .page-product .container {
   max-width: none;
   width: auto;
@@ -3509,39 +3528,39 @@ font-weight: bold;
   min-width: 100%;
   margin: 0;
   padding-bottom: clamp(12px, 2vw, 20px);
-  border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+  border-bottom: 1px solid var(--ev-p-line-soft, rgba(38, 34, 30, 0.1));
   flex-wrap: wrap;
   align-items: center;
   gap: 12px 20px;
 }
 
 .page-product .back-btn {
-  background: #fff;
-  color: #0a0a0a;
-  border: 1px solid rgba(0, 0, 0, 0.1);
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
+  background: var(--ev-p-tier2, #f3efe6);
+  color: var(--ev-p-ink, #141210);
+  border: 1px solid var(--ev-p-line, rgba(38, 34, 30, 0.14));
+  box-shadow: var(--ev-p-shadow-sm, 0 5px 22px rgba(38, 34, 30, 0.11));
 }
 
 .page-product .back-btn:hover {
-  background: #f8f7f4;
-  color: #0a0a0a;
+  background: var(--ev-p-well, #e8e3d8);
+  color: var(--ev-p-ink, #141210);
 }
 
 .page-product .back-icon {
-  stroke: #0a0a0a;
+  stroke: var(--ev-p-ink, #141210);
 }
 
 .page-product .back-btn:hover .back-icon {
-  stroke: #0a0a0a;
+  stroke: var(--ev-p-ink, #141210);
 }
 
 .page-product .breadcrumbs {
-  color: #5c5c5c;
+  color: var(--ev-p-muted, #4a4540);
   font-weight: 500;
 }
 
 .page-product .breadcrumbs a {
-  color: #0a0a0a;
+  color: var(--ev-p-ink, #141210);
   text-decoration: none;
 }
 
@@ -3562,10 +3581,10 @@ font-weight: bold;
     clamp(20px, 3vw, 28px);
   column-gap: clamp(28px, 4vw, 48px);
   row-gap: clamp(16px, 2.5vw, 28px);
-  background: #fff;
+  background: var(--ev-p-card, #fffefb);
   border-radius: var(--ev-shell-radius, clamp(18px, 2.3vw, 26px));
-  border: 1px solid rgba(0, 0, 0, 0.06);
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08), 0 2px 8px rgba(0, 0, 0, 0.04);
+  border: 1px solid var(--ev-p-line, rgba(38, 34, 30, 0.14));
+  box-shadow: var(--ev-p-shadow, 0 12px 40px rgba(38, 34, 30, 0.14), 0 2px 10px rgba(38, 34, 30, 0.07));
   max-width: none;
   width: 100%;
   box-sizing: border-box;
@@ -3576,8 +3595,8 @@ font-weight: bold;
 }
 
 .page-product .main-image img {
-  box-shadow: none;
-  border: 1px solid rgba(0, 0, 0, 0.06);
+  box-shadow: var(--ev-p-shadow-sm, 0 5px 22px rgba(38, 34, 30, 0.11));
+  border: 1px solid var(--ev-p-line, rgba(38, 34, 30, 0.14));
 }
 
 .page-product .product-info {
@@ -3588,16 +3607,21 @@ font-weight: bold;
   font-family: var(--ev-font, "Inter", system-ui, sans-serif);
   font-size: clamp(22px, 2.5vw, 28px);
   font-weight: 700;
-  color: #0a0a0a;
+  color: var(--ev-p-ink, #141210);
   letter-spacing: -0.02em;
 }
 
 .page-product .price {
-  color: #0a0a0a;
+  color: var(--ev-p-ink, #141210);
+}
+
+.page-product .thumbnails img {
+  border: 2px solid var(--ev-p-line-soft, rgba(38, 34, 30, 0.1));
+  box-sizing: border-box;
 }
 
 .page-product .thumbnails img:hover {
-  border-color: #111;
+  border-color: #2c4a6b;
 }
 
 .page-product .product-desc-accordion {
@@ -3616,24 +3640,24 @@ font-weight: bold;
   max-width: 100%;
   justify-content: space-between;
   padding: 14px 22px;
-  border: 1px solid rgba(0, 0, 0, 0.1);
+  border: 1px solid var(--ev-p-line, rgba(38, 34, 30, 0.14));
   border-radius: var(--ev-shell-radius, clamp(18px, 2.3vw, 26px));
-  background: #fff;
-  color: #0a0a0a;
+  background: var(--ev-p-tier2, #f3efe6);
+  color: var(--ev-p-ink, #141210);
   font-family: var(--ev-font, "Inter", system-ui, sans-serif);
   font-size: 12px;
   font-weight: 700;
   letter-spacing: 0.08em;
   text-transform: uppercase;
   cursor: pointer;
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
+  box-shadow: var(--ev-p-shadow-sm, 0 5px 22px rgba(38, 34, 30, 0.11));
   box-sizing: border-box;
   transition: background 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
 }
 
 .page-product .product-desc-toggle:hover {
-  background: #f8f7f4;
-  border-color: rgba(0, 0, 0, 0.14);
+  background: var(--ev-p-well, #e8e3d8);
+  border-color: rgba(38, 34, 30, 0.2);
 }
 
 .page-product .product-desc-chevron {
@@ -3658,28 +3682,28 @@ font-weight: bold;
 
 .page-product .product-desc-content.desc {
   margin-top: 0;
-  background: #f8f7f4;
-  border: 1px solid rgba(0, 0, 0, 0.06);
+  background: var(--ev-p-well, #e8e3d8);
+  border: 1px solid var(--ev-p-line-soft, rgba(38, 34, 30, 0.1));
   border-radius: var(--ev-shell-radius, clamp(18px, 2.3vw, 26px));
   padding: 18px 22px;
-  box-shadow: none;
-  color: #1a1a1a;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.45);
+  color: #242220;
   font-size: 15px;
   line-height: 1.65;
   box-sizing: border-box;
 }
 
 .page-product .product-desc-content.desc b {
-  color: #0a0a0a;
+  color: var(--ev-p-ink, #141210);
 }
 
 .page-product .similar-section {
   margin-top: clamp(24px, 4vw, 40px);
   padding: clamp(20px, 3vw, 28px);
-  background: #fff;
+  background: var(--ev-p-tier2, #f3efe6);
   border-radius: clamp(18px, 2.3vw, 26px);
-  border: 1px solid rgba(0, 0, 0, 0.06);
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08), 0 2px 8px rgba(0, 0, 0, 0.04);
+  border: 1px solid var(--ev-p-line, rgba(38, 34, 30, 0.14));
+  box-shadow: var(--ev-p-shadow-sm, 0 5px 22px rgba(38, 34, 30, 0.11));
 }
 
 .page-product .similar-section h3 {
@@ -3688,12 +3712,13 @@ font-weight: bold;
   font-weight: 700;
   letter-spacing: 0.07em;
   text-transform: uppercase;
-  color: #0a0a0a;
+  color: var(--ev-p-ink, #141210);
 }
 
 .page-product .similar-card {
-  border: 1px solid rgba(0, 0, 0, 0.08);
-  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.04);
+  background: var(--ev-p-card, #fffefb);
+  border: 1px solid var(--ev-p-line-soft, rgba(38, 34, 30, 0.1));
+  box-shadow: 0 3px 14px rgba(38, 34, 30, 0.08);
 }
 
 @media (max-width: 900px) {
