@@ -458,40 +458,92 @@ a {
 }
 .category-tabs {
   display: flex;
-  justify-content: center; /* 🔥 центр по горизонталі */
+  justify-content: center;
   align-items: center;
-
-  gap: 20px;
-  max-width: 1200px;
-  margin: 15px auto 0px; /* 🔥 центр через auto */
-
+  gap: 4px;
+  width: fit-content;
+  max-width: 100%;
+  margin: 15px auto 0;
+  padding: 8px 14px;
   flex-wrap: wrap;
+  box-sizing: border-box;
+
+  background: #fff;
+  border-radius: 999px;
+  border: 1px solid rgba(0, 0, 0, 0.06);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08), 0 2px 8px rgba(0, 0, 0, 0.04);
 }
 
 .tab {
-  padding: 10px 18px;
-  border-radius: 999px;
+  padding: 6px 10px 7px;
+  margin: 0;
+  border-radius: 0;
   border: none;
+  background: transparent;
+  color: #0a0a0a;
 
-  background: #f2f2f2;
-  color: #333;
-
-  font-size: 16px;
-  font-weight: 700;
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
 
   cursor: pointer;
-  transition: all 0.2s ease;
+  position: relative;
+  transition: color 0.2s ease;
 }
 
-/* hover */
-.tab:hover {
-  background: #e5e5e5;
+.tab::after {
+  content: "";
+  position: absolute;
+  left: 8px;
+  right: 8px;
+  bottom: 2px;
+  height: 2px;
+  background: #0a0a0a;
+  transform: scaleX(0);
+  transform-origin: center;
+  transition: transform 0.32s cubic-bezier(0.4, 0, 0.2, 1);
+  pointer-events: none;
 }
 
-/* активна */
+.tab.active::after {
+  transform: scaleX(1);
+}
+
+.category-tabs:hover .tab::after {
+  transform: scaleX(0);
+}
+
+.category-tabs:hover .tab:hover::after {
+  transform: scaleX(1);
+}
+
+.tab:focus-visible {
+  outline: 2px solid #0a0a0a;
+  outline-offset: 2px;
+}
+
+.tab:focus-visible::after {
+  transform: scaleX(1);
+}
+
+.category-tabs:hover .tab:focus-visible:not(:hover)::after {
+  transform: scaleX(0);
+}
+
+/* Як у хедері: при наведенні на рядок інші пункти сіріють */
+.category-tabs:hover .tab {
+  color: #9a9a9a;
+}
+
+.category-tabs:hover .tab:hover {
+  color: #0a0a0a;
+}
+
 .tab.active {
-  background: #000;
-  color: #fff;
+  background: transparent;
+  color: #0a0a0a;
+  font-weight: 700;
 }
 .products h2 {
   text-align: center;
@@ -1033,13 +1085,13 @@ a {
 }
 
 .header #favoritesBtn .heart-icon path {
-  stroke: #111;
+  stroke: #d10035;
 }
 
 .header #favoritesBtn:hover .heart-icon path {
-  fill: transparent;
-  stroke: #111;
-  opacity: 0.55;
+  fill: #d10035;
+  stroke: #d10035;
+  opacity: 1;
 }
 
 .auth-icon-btn {

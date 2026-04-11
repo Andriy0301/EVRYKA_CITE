@@ -101,34 +101,76 @@ body.evryka-site:not(.page-home) {
 }
 
 .evryka-site .header.header--home-detached .header-inner {
-  padding: 6px 20px 6px 16px;
+  padding: 5px 20px 5px 16px;
   min-height: 44px;
   gap: 12px 20px;
 }
 
 .evryka-site .header.header--home-detached .header-logo-img {
-  max-height: 30px;
+  max-height: 34px;
   width: auto;
   display: block;
 }
 
 .header.header--in-shell nav a {
-  font-size: 13px;
+  font-size: 14px;
   font-weight: 700;
   letter-spacing: 0.06em;
   text-transform: uppercase;
-  padding: 8px 10px;
+  padding: 8px 10px 7px;
   margin: 0;
   border-radius: 0;
   background: transparent;
   color: #0a0a0a;
+  position: relative;
+  text-decoration: none;
   transition: color 0.2s ease;
 }
 
+.header.header--in-shell nav a::after {
+  content: "";
+  position: absolute;
+  left: 10px;
+  right: 10px;
+  bottom: 3px;
+  height: 2px;
+  background: #0a0a0a;
+  transform: scaleX(0);
+  transform-origin: center;
+  transition: transform 0.32s cubic-bezier(0.4, 0, 0.2, 1);
+  pointer-events: none;
+}
+
+.header.header--in-shell nav a.active::after {
+  transform: scaleX(1);
+}
+
+.header.header--in-shell .header-nav:hover a::after {
+  transform: scaleX(0);
+}
+
+.header.header--in-shell .header-nav:hover a:hover::after {
+  transform: scaleX(1);
+}
+
+.header.header--in-shell nav a:focus-visible::after {
+  transform: scaleX(1);
+}
+
+.header.header--in-shell .header-nav:hover a:focus-visible:not(:hover)::after {
+  transform: scaleX(0);
+}
+
 .evryka-site .header.header--home-detached nav a {
-  font-size: 11px;
-  padding: 6px 8px;
+  font-size: 12px;
+  padding: 5px 8px 6px;
   letter-spacing: 0.07em;
+}
+
+.evryka-site .header.header--home-detached nav a::after {
+  left: 8px;
+  right: 8px;
+  bottom: 2px;
 }
 
 /* Без «капсули»: при наведенні на меню інші пункти сіріють, активний — чорний */
@@ -678,13 +720,13 @@ body.evryka-site:not(.page-home) {
 }
 
 .header #favoritesBtn .heart-icon path {
-  stroke: var(--ev-ink);
+  stroke: #d10035;
 }
 
 .header #favoritesBtn:hover .heart-icon path {
-  fill: transparent;
-  stroke: var(--ev-ink);
-  opacity: 0.65;
+  fill: #d10035;
+  stroke: #d10035;
+  opacity: 1;
 }
 
 .header nav a {
@@ -780,7 +822,7 @@ body.header-nav-open {
 
   .header.header--in-shell nav a {
     text-align: center;
-    font-size: 13px;
+    font-size: 14px;
     letter-spacing: 0.07em;
     border-radius: 0;
     font-weight: 700;
@@ -793,6 +835,13 @@ body.header-nav-open {
 
   .header.header--in-shell .header-nav:hover a:hover {
     color: #0a0a0a;
+  }
+
+  .header.header--in-shell nav a::after {
+    left: 16px;
+    right: 16px;
+    bottom: 8px;
+    height: 2px;
   }
 
   body.header-nav-open::after {
