@@ -8,35 +8,41 @@
   --ev-header-h: 60px;
   --ev-shell-radius: clamp(18px, 2.3vw, 26px);
   --ev-shell-margin: clamp(10px, 1.8vw, 20px);
-  --ev-shell-bg: #f5f5f5;
+  --ev-shell-bg: #ece9e2;
 }
 
 body {
   font-family: var(--ev-font);
 }
 
-/* ——— Allbirds-style «карточка»: головна ——— */
-.page-home {
-  background: #d6d3d1;
-  /* Вужча «рамка» від краю вікна — менше порожнього по боках */
+/* Фон і змінні шапки (плаваюча) — усі сторінки з body.evryka-site */
+body.evryka-site {
+  background: #ece9e2;
   --ev-shell-margin: clamp(0px, 0.65vw, 10px);
   --ev-header-float-inset: clamp(6px, 1.4vw, 12px);
-  /* Вкладений радіус: R_картки − відступ (+1px трохи м’якше) */
   --ev-header-bar-radius: max(
     9px,
     calc(var(--ev-shell-radius) - var(--ev-header-float-inset) + 1px)
   );
-  /* Зовнішній відступ «картки» = від краю вікна до шапки/банера (для fixed header) */
   --ev-stack-outer: var(--ev-shell-margin);
-  /* Висота зони під фіксовану плашку (оверлей меню, scroll-margin) */
   --ev-header-h: calc(
     var(--ev-stack-outer) + var(--ev-header-float-inset) + 52px + env(safe-area-inset-top, 0px)
   );
 }
 
-.page-home #catalog,
-.page-home #contacts {
+/* Під фіксовану шапку — контент не ховається під нею (крім головної з героєм) */
+body.evryka-site:not(.page-home) {
+  padding-top: calc(var(--ev-header-h) + 12px);
+}
+
+.evryka-site #catalog,
+.evryka-site #contacts {
   scroll-margin-top: calc(var(--ev-header-h) + 8px);
+}
+
+/* Відступ між банером і рядком категорій */
+.page-home .evryka-hero-stack + .container {
+  margin-top: clamp(20px, 3.2vw, 40px);
 }
 
 /* Одна «картка» з банером (усі кути) + компактна шапка поверх банера */
@@ -58,7 +64,7 @@ body {
 }
 
 /* Плаваюча шапка: fixed — завжди видима при скролі; вирівняна з «карткою» */
-.page-home .header.header--in-shell.header--home-detached {
+.evryka-site .header.header--in-shell.header--home-detached {
   position: fixed;
   top: calc(var(--ev-stack-outer) + var(--ev-header-float-inset) + env(safe-area-inset-top, 0px));
   left: calc(var(--ev-stack-outer) + var(--ev-header-float-inset) + env(safe-area-inset-left, 0px));
@@ -94,13 +100,13 @@ body {
   min-height: 56px;
 }
 
-.page-home .header.header--home-detached .header-inner {
+.evryka-site .header.header--home-detached .header-inner {
   padding: 6px 20px 6px 16px;
   min-height: 44px;
   gap: 12px 20px;
 }
 
-.page-home .header.header--home-detached .header-logo-img {
+.evryka-site .header.header--home-detached .header-logo-img {
   max-height: 30px;
   width: auto;
   display: block;
@@ -119,7 +125,7 @@ body {
   transition: color 0.2s ease;
 }
 
-.page-home .header.header--home-detached nav a {
+.evryka-site .header.header--home-detached nav a {
   font-size: 11px;
   padding: 6px 8px;
   letter-spacing: 0.07em;
@@ -132,6 +138,11 @@ body {
 
 .header.header--in-shell .header-nav:hover a:hover {
   color: #0a0a0a;
+}
+
+.header.header--in-shell nav a:hover,
+.header.header--in-shell nav a:focus-visible {
+  background: transparent;
 }
 
 .header.header--in-shell nav a.active {
@@ -149,12 +160,12 @@ body {
   background-color: #fff;
 }
 
-.page-home .header.header--home-detached .search-box {
+.evryka-site .header.header--home-detached .search-box {
   flex: 0 1 160px;
   max-width: 180px;
 }
 
-.page-home .header.header--home-detached #search {
+.evryka-site .header.header--home-detached #search {
   padding: 7px 12px 7px 34px;
   font-size: 13px;
   background-color: #fff;
@@ -164,24 +175,24 @@ body {
   transition: border-color 0.2s ease, box-shadow 0.2s ease;
 }
 
-.page-home .header.header--home-detached #search:focus {
+.evryka-site .header.header--home-detached #search:focus {
   outline: none;
   background-color: #fff;
   border-color: rgba(0, 0, 0, 0.2);
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
 }
 
-.page-home .header.header--home-detached .auth-icon-btn {
+.evryka-site .header.header--home-detached .auth-icon-btn {
   width: 40px;
   height: 40px;
 }
 
-.page-home .header.header--home-detached .auth-icon-btn svg {
+.evryka-site .header.header--home-detached .auth-icon-btn svg {
   width: 23px;
   height: 23px;
 }
 
-.page-home .header.header--home-detached .cart-icon {
+.evryka-site .header.header--home-detached .cart-icon {
   width: 27px;
   height: 27px;
 }
@@ -190,7 +201,7 @@ body {
 .hero-evryka--allbirds {
   align-items: center;
   justify-content: flex-end;
-  background: #e0e0dc;
+  background: #ece9e2;
 }
 
 .hero-evryka--allbirds .hero-evryka__overlay {
@@ -245,7 +256,7 @@ body {
   background-size: cover;
   background-position: center bottom;
   background-repeat: no-repeat;
-  background-color: #d6d3d1;
+  background-color: #ece9e2;
 }
 
 /* Перший слайд: фон images/hero-banner-repair.png (url у HTML) */
@@ -687,13 +698,13 @@ body {
   padding: 10px 14px;
   margin: 0;
   border-radius: 8px;
-  transition: background 0.2s ease, color 0.2s ease;
+  transition: color 0.2s ease;
   white-space: nowrap;
 }
 
 .header nav a:hover {
   opacity: 1;
-  background: rgba(0, 0, 0, 0.05);
+  background: transparent;
   color: var(--ev-ink);
 }
 
@@ -708,7 +719,7 @@ body.header-nav-open {
 }
 
 @media (max-width: 768px) {
-  .page-home {
+  body.evryka-site {
     --ev-shell-margin: clamp(0px, 1.5vw, 10px);
     --ev-stack-outer: var(--ev-shell-margin);
   }
@@ -752,7 +763,7 @@ body.header-nav-open {
     overflow-y: auto;
   }
 
-  .page-home .header .header-nav {
+  .evryka-site .header .header-nav {
     background: var(--ev-shell-bg);
     border-top: none;
   }
@@ -803,7 +814,7 @@ body.header-nav-open {
   align-items: flex-end;
   justify-content: flex-start;
   overflow: hidden;
-  background: #e8e8e4;
+  background: #ece9e2;
 }
 
 /* Перекриває .hero-evryka min-height (порядок у файлі): трек і контент не вищі за секцію — без обрізання низу */
