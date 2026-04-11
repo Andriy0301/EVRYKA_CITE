@@ -2,36 +2,43 @@
 <html lang="uk">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>EVRYKA</title>
   <link rel="icon" href="images/favicon.png" type="image/png">
   <link rel="apple-touch-icon" href="images/favicon.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/style.css">
-<link href="https://fonts.googleapis.com/css2?family=PT+Sans+Caption:wght@400;700&display=swap" rel="stylesheet">
-<script src="https://accounts.google.com/gsi/client" async defer></script>
+  <link rel="stylesheet" href="css/evryka-header-hero.css">
+  <script src="https://accounts.google.com/gsi/client" async defer></script>
 </head>
 
 <body>
 
-<!-- HEADER -->
 <header class="header">
   <div class="header-inner">
     <a href="index.html" class="logo header-logo">
       <img src="images/text_logo.png" alt="EVRYKA" class="header-logo-img">
     </a>
-
-    <nav class="nav header-nav" aria-label="Головна навігація">
+    <button type="button" class="header-burger" id="navToggle" aria-label="Відкрити меню" aria-expanded="false" aria-controls="headerNavPanel">
+      <span class="header-burger__line"></span>
+      <span class="header-burger__line"></span>
+      <span class="header-burger__line"></span>
+    </button>
+    <nav class="nav header-nav" id="headerNavPanel" aria-label="Головна навігація">
       <a href="index.html" class="active">Головна</a>
       <a href="catalog.html">Каталог</a>
-      <a href="#">Замовити 3D друк</a>
+      <a href="#">Про нас</a>
       <a href="#">Контакти</a>
     </nav>
     <div class="header-utilities">
       <div class="search-box">
-        <input type="text" placeholder="Пошук товарів..." id="search" autocomplete="off">
+        <input type="search" placeholder="Пошук" id="search" name="q" autocomplete="off">
         <div id="searchResults" class="search-results"></div>
       </div>
       <div class="header-actions">
-        <button type="button" id="authBtn" class="auth-icon-btn" title="Особистий кабінет">
+        <button type="button" id="authBtn" class="auth-icon-btn" title="Профіль">
           <svg id="authIcon" viewBox="0 0 24 24" aria-hidden="true">
             <path d="M12 12c2.8 0 5-2.2 5-5s-2.2-5-5-5-5 2.2-5 5 2.2 5 5 5Zm0 2c-4.4 0-8 2.7-8 6v2h16v-2c0-3.3-3.6-6-8-6Z"></path>
           </svg>
@@ -51,58 +58,19 @@
   </div>
 </header>
 
-<div class="home-banner-shell">
-<section class="hero-carousel" aria-label="Головні пропозиції">
-  <div class="hero-carousel-track">
-    <article class="hero-slide is-active">
-      <div class="hero-slide-inner">
-        <div class="hero-slide-text">
-          <p class="hero-kicker">EVRYKA · 3D-друк</p>
-          <h2 class="hero-title">Втілюємо ідеї в реальність</h2>
-          <p class="hero-sub">Корпуси, циклони, інструменти та декор — друкуємо надійно й акуратно.</p>
-          <a href="catalog.html" class="hero-cta">До каталогу</a>
-        </div>
-        <div class="hero-slide-visual">
-          <img src="images/hero.png" alt="" class="hero-slide-img" width="420" height="420">
-        </div>
-      </div>
-    </article>
-    <article class="hero-slide">
-      <div class="hero-slide-inner">
-        <div class="hero-slide-text">
-          <p class="hero-kicker">Якість і деталі</p>
-          <h2 class="hero-title">Готові рішення для майстерні</h2>
-          <p class="hero-sub">Підберіть категорію або напишіть нам для індивідуального замовлення.</p>
-          <a href="catalog.html" class="hero-cta">Переглянути товари</a>
-        </div>
-        <div class="hero-slide-visual">
-          <img src="images/hero.png" alt="" class="hero-slide-img" width="420" height="420">
-        </div>
-      </div>
-    </article>
-    <article class="hero-slide hero-slide--tint">
-      <div class="hero-slide-inner">
-        <div class="hero-slide-text">
-          <p class="hero-kicker">Замовлення</p>
-          <h2 class="hero-title">Потрібен свій проєкт?</h2>
-          <p class="hero-sub">Залиште заявку на 3D-друк — підкажемо матеріал і терміни.</p>
-          <a href="#" class="hero-cta">Замовити друк</a>
-        </div>
-        <div class="hero-slide-visual">
-          <img src="images/hero.png" alt="" class="hero-slide-img" width="420" height="420">
-        </div>
-      </div>
-    </article>
+<section class="hero-evryka" aria-label="EVRYKA — головний банер">
+  <div class="hero-evryka__media" role="img" aria-label="Продукція EVRYKA, 3D-друк"></div>
+  <div class="hero-evryka__overlay" aria-hidden="true"></div>
+  <div class="hero-evryka__content">
+    <p class="hero-evryka__eyebrow">EVRYKA · 3D-друк на замовлення</p>
+    <h1 class="hero-evryka__title">Якість, яку видно в кожній деталі</h1>
+    <p class="hero-evryka__lede">Корпуси, циклони, інструменти та унікальні вироби — від ідеї до готової деталі.</p>
+    <div class="hero-evryka__actions">
+      <a class="hero-evryka__btn hero-evryka__btn--primary" href="catalog.html">Купити зараз</a>
+      <a class="hero-evryka__btn hero-evryka__btn--ghost" href="#catalog">Переглянути каталог</a>
+    </div>
   </div>
-  <button type="button" class="hero-carousel-prev" aria-label="Попередній слайд">
-    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 6l-6 6 6 6"></path></svg>
-  </button>
-  <button type="button" class="hero-carousel-next" aria-label="Наступний слайд">
-    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6l6 6-6 6"></path></svg>
-  </button>
-  <div class="hero-carousel-dots" role="tablist" aria-label="Слайди"></div>
 </section>
-</div>
 
 <!-- 🔥 ОСНОВНИЙ КОНТЕНТ -->
 <div class="container">
@@ -293,6 +261,7 @@
 <!-- 🔥 JS -->
 <script src="js/api.js?v=20260426"></script>
 <script src="js/cart.js?v=20260430"></script>
+<script src="js/header-nav.js?v=1"></script>
 <script src="js/app.js?v=20260409"></script>
 <script src="js/chat-widget.js?v=20260502"></script>
 

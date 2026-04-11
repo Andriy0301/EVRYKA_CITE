@@ -658,7 +658,6 @@ function initHeroCarousel() {
 // 🔹 СТАРТ
 // =========================
 document.addEventListener("DOMContentLoaded", async () => {
-  initHeroCarousel();
   initCategoryTabs();
   const authBtn = document.getElementById("authBtn");
   const authForm = document.getElementById("registerForm");

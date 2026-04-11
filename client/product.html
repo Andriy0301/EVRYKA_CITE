@@ -6,32 +6,38 @@
   <title>Товар - EVRYKA</title>
   <link rel="icon" href="images/favicon.png" type="image/png">
   <link rel="apple-touch-icon" href="images/favicon.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/style.css">
-  <link href="https://fonts.googleapis.com/css2?family=PT+Sans+Caption:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/evryka-header-hero.css">
   <script src="https://accounts.google.com/gsi/client" async defer></script>
 </head>
 <body>
 
-<!-- 🔥 HEADER -->
 <header class="header">
   <div class="header-inner">
     <a href="index.html" class="logo header-logo">
       <img src="images/text_logo.png" alt="EVRYKA" class="header-logo-img">
     </a>
-
-    <nav class="nav header-nav" aria-label="Головна навігація">
+    <button type="button" class="header-burger" id="navToggle" aria-label="Відкрити меню" aria-expanded="false" aria-controls="headerNavPanel">
+      <span class="header-burger__line"></span>
+      <span class="header-burger__line"></span>
+      <span class="header-burger__line"></span>
+    </button>
+    <nav class="nav header-nav" id="headerNavPanel" aria-label="Головна навігація">
       <a href="index.html">Головна</a>
       <a href="catalog.html" class="active">Каталог</a>
-      <a href="#">Замовити 3D друк</a>
+      <a href="#">Про нас</a>
       <a href="#">Контакти</a>
     </nav>
     <div class="header-utilities">
       <div class="search-box">
-        <input type="text" placeholder="Пошук товарів..." id="search" autocomplete="off">
+        <input type="search" placeholder="Пошук" id="search" name="q" autocomplete="off">
         <div id="searchResults" class="search-results"></div>
       </div>
       <div class="header-actions">
-        <button type="button" id="authBtn" class="auth-icon-btn" title="Особистий кабінет">
+        <button type="button" id="authBtn" class="auth-icon-btn" title="Профіль">
           <svg id="authIcon" viewBox="0 0 24 24" aria-hidden="true">
             <path d="M12 12c2.8 0 5-2.2 5-5s-2.2-5-5-5-5 2.2-5 5 2.2 5 5 5Zm0 2c-4.4 0-8 2.7-8 6v2h16v-2c0-3.3-3.6-6-8-6Z"></path>
           </svg>
@@ -296,6 +302,7 @@
 <script src="js/api.js?v=20260423"></script>
 <script src="js/product.js?v=20260423"></script>
 <script src="js/cart.js?v=20260430"></script>
+<script src="js/header-nav.js?v=1"></script>
 <script src="js/app.js?v=20260426"></script>
 <script src="js/chat-widget.js?v=20260502"></script>
 
