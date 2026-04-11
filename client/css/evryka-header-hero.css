@@ -186,7 +186,6 @@ body {
 
 /* Hero Allbirds: справа по вертикалі, легкий overlay + панель з blur */
 .hero-evryka--allbirds {
-  min-height: min(86vh, 900px);
   align-items: center;
   justify-content: flex-end;
   background: #e0e0dc;
@@ -223,7 +222,7 @@ body {
 
 .hero-evryka--allbirds .hero-evryka-carousel .hero-carousel-track {
   position: relative;
-  min-height: min(86vh, 900px);
+  min-height: min(92vh, 980px);
   max-width: none;
   margin: 0;
 }
@@ -241,7 +240,8 @@ body {
   z-index: 0;
   background-image: url("../images/hero.png");
   background-size: contain;
-  background-position: center;
+  /* Низ фото біля низу картки — менше враження «обрізано»; поля зверху */
+  background-position: center bottom;
   background-repeat: no-repeat;
   background-color: #d6d3d1;
 }
@@ -326,7 +326,7 @@ body {
 .hero-evryka--allbirds .hero-slide--evryka .hero-evryka__content {
   position: relative;
   z-index: 2;
-  min-height: min(86vh, 900px);
+  min-height: min(92vh, 980px);
   height: auto;
 }
 
@@ -362,7 +362,7 @@ body {
 
 .hero-evryka--allbirds .hero-evryka-carousel .hero-carousel-dots {
   z-index: 5;
-  bottom: 22px;
+  bottom: clamp(20px, 3.2vh, 36px);
 }
 
 .hero-evryka--allbirds .hero-evryka-carousel .hero-carousel-dot {
@@ -803,6 +803,11 @@ body.header-nav-open {
   background: #e8e8e4;
 }
 
+/* Перекриває .hero-evryka min-height (порядок у файлі): трек і контент не вищі за секцію — без обрізання низу */
+.hero-evryka.hero-evryka--allbirds {
+  min-height: min(92vh, 980px);
+}
+
 .hero-evryka__media {
   position: absolute;
   inset: 0;
@@ -990,18 +995,21 @@ body.header-nav-open {
   }
 
   /* Allbirds home: центр, кнопки стовпчиком */
+  .hero-evryka.hero-evryka--allbirds {
+    min-height: min(94vh, 860px);
+  }
+
   .hero-evryka--allbirds {
-    min-height: min(88vh, 820px);
     justify-content: center;
     align-items: center;
   }
 
   .hero-evryka--allbirds .hero-evryka-carousel .hero-carousel-track {
-    min-height: min(88vh, 820px);
+    min-height: min(94vh, 860px);
   }
 
   .hero-evryka--allbirds .hero-slide--evryka .hero-evryka__content {
-    min-height: min(88vh, 820px);
+    min-height: min(94vh, 860px);
   }
 
   .hero-evryka--allbirds .hero-evryka__overlay {

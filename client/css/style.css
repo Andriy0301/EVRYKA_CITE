@@ -444,11 +444,14 @@ a {
   grid-template-columns: repeat(12, minmax(0, 1fr));
   gap: clamp(16px, 2.2vw, 28px);
   grid-auto-flow: dense;
-  align-items: stretch;
+  /* start: кожна картка по висоті контенту — «Купити» лишається під своїм товаром */
+  align-items: start;
 }
 
 #products.products-grid-home .product {
   min-width: 0;
+  align-self: start;
+  width: 100%;
 }
 
 #products.products-grid-home .product-tile--w3 {
@@ -469,6 +472,11 @@ a {
 
 #products.products-grid-home .product-tile--tall {
   grid-row: span 2;
+}
+
+#products.products-grid-home .product img {
+  object-fit: contain;
+  background: #eceae7;
 }
 
 #products.products-grid-home .product-tile--tall img {
