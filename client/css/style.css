@@ -5,6 +5,85 @@ body {
   padding-top: 0;
 }
 
+body.layout-framed {
+  background: #4a4a4a;
+  padding: clamp(12px, 2.2vw, 26px);
+  box-sizing: border-box;
+  min-height: 100vh;
+}
+
+.site-frame {
+  max-width: 1520px;
+  margin: 0 auto;
+  background: #fff;
+  border-radius: 28px;
+  border: 10px solid #fff;
+  box-sizing: border-box;
+  overflow: hidden;
+  box-shadow: 0 28px 90px rgba(0, 0, 0, 0.38);
+}
+
+.layout-framed .hero-carousel {
+  background: #a64d3e;
+  border-bottom: none;
+}
+
+.layout-framed .hero-kicker {
+  color: rgba(255, 255, 255, 0.88);
+}
+
+.layout-framed .hero-title {
+  color: #fff;
+}
+
+.layout-framed .hero-sub {
+  color: rgba(255, 255, 255, 0.92);
+}
+
+.layout-framed .hero-cta {
+  background: #fff;
+  color: #111 !important;
+}
+
+.layout-framed .hero-cta:hover {
+  opacity: 0.9;
+}
+
+.layout-framed .hero-carousel-dot {
+  background: rgba(255, 255, 255, 0.38);
+}
+
+.layout-framed .hero-carousel-dot.is-active {
+  background: #fff;
+}
+
+.layout-framed .hero-carousel-prev,
+.layout-framed .hero-carousel-next {
+  background: rgba(255, 255, 255, 0.96);
+  border-color: rgba(0, 0, 0, 0.07);
+}
+
+.layout-framed .hero-slide--tint .hero-slide-visual::after {
+  background: linear-gradient(
+    120deg,
+    rgba(166, 77, 62, 0.94) 18%,
+    rgba(166, 77, 62, 0.4) 52%,
+    transparent 72%
+  );
+}
+
+.layout-framed .container {
+  background: #f7f6f4;
+}
+
+.layout-framed .load-more {
+  background: #f7f6f4;
+}
+
+.layout-framed .footer {
+  margin-top: 0;
+}
+
 a {
   color: white;
   margin-left: 15px;
@@ -857,29 +936,29 @@ a {
   margin: 0 auto;
   padding: 0 28px;
   display: grid;
-  grid-template-columns: 1fr auto 1fr;
+  grid-template-columns: auto 1fr auto;
   align-items: center;
-  column-gap: 24px;
+  column-gap: 20px;
   min-height: 56px;
   width: 100%;
   box-sizing: border-box;
 }
 
-.header .header-nav {
+.header .header-logo {
   grid-column: 1;
   justify-self: start;
+  margin: 0;
+}
+
+.header .header-nav {
+  grid-column: 2;
+  justify-self: center;
   display: flex;
   align-items: center;
   flex-wrap: nowrap;
   gap: 2px;
   margin: 0;
   min-width: 0;
-}
-
-.header .header-logo {
-  grid-column: 2;
-  justify-self: center;
-  margin: 0;
 }
 
 .header-utilities {

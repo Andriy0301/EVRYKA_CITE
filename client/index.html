@@ -10,20 +10,22 @@
 <script src="https://accounts.google.com/gsi/client" async defer></script>
 </head>
 
-<body>
+<body class="layout-framed">
+
+<div class="site-frame">
 
 <!-- HEADER -->
 <header class="header">
   <div class="header-inner">
+    <a href="index.html" class="logo header-logo">
+      <img src="images/text_logo.png" alt="EVRYKA" class="header-logo-img">
+    </a>
     <nav class="nav header-nav" aria-label="Головна навігація">
       <a href="index.html" class="active">Головна</a>
       <a href="catalog.html">Каталог</a>
       <a href="#">Замовити 3D друк</a>
       <a href="#">Контакти</a>
     </nav>
-    <a href="index.html" class="logo header-logo">
-      <img src="images/text_logo.png" alt="EVRYKA" class="header-logo-img">
-    </a>
     <div class="header-utilities">
       <div class="search-box">
         <input type="text" placeholder="Пошук товарів..." id="search" autocomplete="off">
@@ -125,6 +127,68 @@
 
 </div>
 
+<div class="load-more">
+  <button type="button" onclick="window.location.href='catalog.html'">
+    Відкрити каталог
+  </button>
+</div>
+
+<footer class="footer">
+
+  <div class="footer-container">
+
+    <!-- 🔹 МЕНЮ -->
+    <div class="footer-col">
+      <h4>Меню</h4>
+      <a href="index.html">Головна</a>
+      <a href="catalog.html">Магазин</a>
+      <a href="#">Покупцям</a>
+      <a href="#">Контакти</a>
+    </div>
+
+    <!-- 🔹 КАБІНЕТ -->
+    <div class="footer-col">
+      <h4>Особистий кабінет</h4>
+      <a href="#">Історія замовлень</a>
+      <a href="#">Мої дані</a>
+      <a href="#">Обране</a>
+    </div>
+
+    <!-- 🔹 КОНТАКТИ -->
+    <div class="footer-col">
+      <h4>Контакти</h4>
+      <p>Є питання? Зателефонуйте:</p>
+      <a href="tel:+380955222911" class="phone">+38 (050) 166 22 71</a>
+    </div>
+
+    <!-- 🔹 СОЦІАЛКИ -->
+    <div class="footer-col">
+      <h4>Ми в соцмережах</h4>
+
+      <div class="socials">
+        <a href="#">📷</a>
+        <a href="#">💬</a>
+      </div>
+
+      <p class="pay-text">Оплата</p>
+      <div class="payments">
+        <span>VISA</span>
+        <span>MasterCard</span>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- 🔻 НИЖНЯ ЧАСТИНА -->
+  <div class="footer-bottom">
+    <p>© 2026 EVRYKA</p>
+    <span>Українська</span>
+  </div>
+
+</footer>
+
+</div>
+
 <!-- 🔥 КОШИК -->
 <div id="cartOverlay" class="cart-overlay" onclick="toggleCart(false)"></div>
 
@@ -204,66 +268,6 @@
     </form>
   </div>
 </div>
-
-<div class="load-more">
-  <button type="button" onclick="window.location.href='catalog.html'">
-    Відкрити каталог
-  </button>
-</div>
-
-<footer class="footer">
-
-  <div class="footer-container">
-
-    <!-- 🔹 МЕНЮ -->
-    <div class="footer-col">
-      <h4>Меню</h4>
-      <a href="index.html">Головна</a>
-      <a href="catalog.html">Магазин</a>
-      <a href="#">Покупцям</a>
-      <a href="#">Контакти</a>
-    </div>
-
-    <!-- 🔹 КАБІНЕТ -->
-    <div class="footer-col">
-      <h4>Особистий кабінет</h4>
-      <a href="#">Історія замовлень</a>
-      <a href="#">Мої дані</a>
-      <a href="#">Обране</a>
-    </div>
-
-    <!-- 🔹 КОНТАКТИ -->
-    <div class="footer-col">
-      <h4>Контакти</h4>
-      <p>Є питання? Зателефонуйте:</p>
-      <a href="tel:+380955222911" class="phone">+38 (050) 166 22 71</a>
-    </div>
-
-    <!-- 🔹 СОЦІАЛКИ -->
-    <div class="footer-col">
-      <h4>Ми в соцмережах</h4>
-
-      <div class="socials">
-        <a href="#">📷</a>
-        <a href="#">💬</a>
-      </div>
-
-      <p class="pay-text">Оплата</p>
-      <div class="payments">
-        <span>VISA</span>
-        <span>MasterCard</span>
-      </div>
-    </div>
-
-  </div>
-
-  <!-- 🔻 НИЖНЯ ЧАСТИНА -->
-  <div class="footer-bottom">
-    <p>© 2026 EVRYKA</p>
-    <span>Українська</span>
-  </div>
-
-</footer>
 
 <div id="chatWidgetRoot" class="chat-widget-root">
   <button type="button" id="chatWidgetToggle" class="chat-widget-toggle" aria-expanded="false" aria-controls="chatWidgetPanel" title="Написати нам">
