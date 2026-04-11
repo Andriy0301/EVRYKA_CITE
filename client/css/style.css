@@ -365,8 +365,10 @@ a {
   transform: translateY(-3px);
 }
 .product {
-  background: #d1d1d15d;
+  background: #fffdf8;
+  border: 1px solid rgba(0, 0, 0, 0.07);
   border-radius: 18px;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.05);
 
   padding: 16px;
 
@@ -378,7 +380,7 @@ a {
 
 .product:hover {
   transform: translateY(-5px);
-  box-shadow: 0 10px 25px rgba(97, 97, 97, 0.32);
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.12);
 }
 
 /* картинка */
