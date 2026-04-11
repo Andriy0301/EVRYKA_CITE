@@ -1333,10 +1333,14 @@ a {
   display: flex;
   gap: 14px;
   overflow-x: auto;
-  padding-bottom: 8px;
+  padding: 4px 2px 12px;
   scroll-behavior: smooth;
   -ms-overflow-style: none;
   scrollbar-width: none;
+  flex: 1;
+  min-width: 0;
+  align-items: stretch;
+  scroll-snap-type: x proximity;
 }
 
 .similar-list::-webkit-scrollbar {
@@ -1344,42 +1348,63 @@ a {
 }
 
 .similar-wrap {
-  display: flex;
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
   align-items: center;
-  gap: 10px;
+  gap: clamp(10px, 2vw, 16px);
 }
 
 .similar-arrow {
-  width: 38px;
-  height: 38px;
-  border: none;
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  border: 1px solid rgba(38, 34, 30, 0.14);
   border-radius: 50%;
-  background: #f7f7f7;
-  color: #242424;
+  background: linear-gradient(180deg, #fffefb 0%, #f5f1ea 100%);
+  color: #141210;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 20px;
-  font-weight: 700;
-  font-family: "Segoe UI Symbol", "Arial Unicode MS", sans-serif;
-  line-height: 1;
+  line-height: 0;
   cursor: pointer;
   flex-shrink: 0;
-  transition: background 0.2s ease, color 0.2s ease, transform 0.2s ease;
+  box-shadow: 0 2px 0 rgba(255, 255, 255, 0.65) inset, 0 4px 14px rgba(38, 34, 30, 0.1),
+    0 1px 3px rgba(38, 34, 30, 0.08);
+  transition: background 0.2s ease, color 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease,
+    transform 0.2s ease;
+  -webkit-tap-highlight-color: transparent;
 }
 
-.similar-arrow:hover {
-  background: #111;
-  color: #fff;
+.similar-arrow__icon {
+  display: block;
+  flex-shrink: 0;
+  pointer-events: none;
+}
+
+.similar-arrow:not(:disabled):hover {
+  background: #141210;
+  color: #fffefb;
+  border-color: #141210;
+  box-shadow: 0 6px 20px rgba(38, 34, 30, 0.18);
   transform: translateY(-1px);
 }
 
+.similar-arrow:not(:disabled):active {
+  transform: translateY(0);
+  box-shadow: 0 2px 8px rgba(38, 34, 30, 0.12);
+}
+
+.similar-arrow:focus-visible {
+  outline: 2px solid #2c4a6b;
+  outline-offset: 3px;
+}
+
 .similar-arrow:disabled {
-  background: #f7f7f7;
-  color: #242424;
-  cursor: pointer;
-  opacity: 1;
+  opacity: 0.38;
+  cursor: not-allowed;
   transform: none;
+  box-shadow: 0 1px 3px rgba(38, 34, 30, 0.06);
+  color: rgba(38, 34, 30, 0.45);
 }
 
 .similar-card {
@@ -1390,6 +1415,7 @@ a {
   border-radius: 12px;
   padding: 10px;
   cursor: pointer;
+  scroll-snap-align: start;
 }
 
 .similar-card img {
@@ -1397,6 +1423,7 @@ a {
   aspect-ratio: 1 / 1;
   object-fit: cover;
   border-radius: 10px;
+  background: #f0ebe3;
 }
 
 .similar-card h4 {
@@ -3754,12 +3781,44 @@ body.evryka-site.page-product .header.header--in-shell.header--home-detached {
   letter-spacing: 0.07em;
   text-transform: uppercase;
   color: var(--ev-p-ink, #141210);
+  margin-bottom: clamp(14px, 2.5vw, 20px);
+}
+
+.page-product .similar-wrap {
+  gap: clamp(12px, 2.2vw, 18px);
+}
+
+.page-product .similar-arrow {
+  width: 46px;
+  height: 46px;
+  border-color: var(--ev-p-line, rgba(38, 34, 30, 0.14));
+  background: linear-gradient(180deg, #fffefb 0%, var(--ev-p-tier2, #f3efe6) 100%);
+  color: var(--ev-p-ink, #141210);
+  box-shadow: 0 2px 0 rgba(255, 255, 255, 0.55) inset, var(--ev-p-shadow-sm, 0 5px 22px rgba(38, 34, 30, 0.11));
+}
+
+.page-product .similar-arrow:not(:disabled):hover {
+  background: var(--ev-p-ink, #141210);
+  color: #fffefb;
+  border-color: var(--ev-p-ink, #141210);
 }
 
 .page-product .similar-card {
   background: var(--ev-p-card, #fffefb);
   border: 1px solid var(--ev-p-line-soft, rgba(38, 34, 30, 0.1));
   box-shadow: 0 3px 14px rgba(38, 34, 30, 0.08);
+  border-radius: var(--ev-shell-radius, clamp(14px, 2vw, 18px));
+  transition: box-shadow 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
+}
+
+.page-product .similar-card:hover {
+  border-color: var(--ev-p-line, rgba(38, 34, 30, 0.14));
+  box-shadow: 0 8px 24px rgba(38, 34, 30, 0.12);
+  transform: translateY(-2px);
+}
+
+.page-product .similar-card img {
+  border-radius: clamp(10px, 1.5vw, 14px);
 }
 
 @media (max-width: 900px) {

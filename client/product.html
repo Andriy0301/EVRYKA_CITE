@@ -230,9 +230,17 @@
   <section class="similar-section">
     <h3>Схожі товари</h3>
     <div class="similar-wrap">
-      <button id="similarPrev" class="similar-arrow" type="button" aria-label="Попередні товари">❮</button>
+      <button id="similarPrev" class="similar-arrow similar-arrow--prev" type="button" aria-label="Попередні товари">
+        <svg class="similar-arrow__icon" viewBox="0 0 24 24" width="22" height="22" aria-hidden="true">
+          <path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M15 6l-6 6 6 6"></path>
+        </svg>
+      </button>
       <div id="similarProducts" class="similar-list"></div>
-      <button id="similarNext" class="similar-arrow" type="button" aria-label="Наступні товари">❯</button>
+      <button id="similarNext" class="similar-arrow similar-arrow--next" type="button" aria-label="Наступні товари">
+        <svg class="similar-arrow__icon" viewBox="0 0 24 24" width="22" height="22" aria-hidden="true">
+          <path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M9 6l6 6-6 6"></path>
+        </svg>
+      </button>
     </div>
   </section>
 </div>
