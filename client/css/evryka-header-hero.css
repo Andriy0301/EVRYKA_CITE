@@ -17,7 +17,7 @@ body {
 
 /* ——— Allbirds-style «карточка»: головна ——— */
 .page-home {
-  background: #ebebeb;
+  background: #d6d3d1;
   --ev-header-float-inset: clamp(10px, 2vw, 16px);
   /* Вкладений радіус: R_картки − відступ (+1px трохи м’якше) */
   --ev-header-bar-radius: max(
@@ -242,6 +242,25 @@ body {
   background-image: url("../images/hero.png");
   background-size: cover;
   background-repeat: no-repeat;
+}
+
+/* Перший слайд: фон images/hero-banner-repair.png (url у HTML) */
+.hero-evryka--allbirds .hero-slide--repair .hero-evryka__overlay {
+  background: linear-gradient(
+    92deg,
+    rgba(0, 0, 0, 0.38) 0%,
+    rgba(0, 0, 0, 0.14) 42%,
+    rgba(0, 0, 0, 0.22) 100%
+  );
+}
+
+.hero-evryka--allbirds .hero-slide--repair .hero-evryka__title {
+  max-width: min(100%, 22rem);
+  font-size: clamp(1.55rem, 3.6vw, 2.55rem);
+}
+
+.hero-evryka--allbirds .hero-slide--repair .hero-evryka__lede {
+  max-width: min(100%, 32rem);
 }
 
 .hero-evryka--allbirds .hero-slide--evryka .hero-evryka__overlay {
