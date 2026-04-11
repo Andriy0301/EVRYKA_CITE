@@ -8,9 +8,45 @@
   const statusEl = document.getElementById("chatWidgetStatus");
   const messagesEl = document.getElementById("chatWidgetMessages");
 
-  const WELCOME_TEXT = "Добрий день, можете задавати будь які запитання";
+  const WELCOME_LOGGED_IN = "Добрий день, можете задавати будь які запитання";
+  const WELCOME_GUEST =
+    "Добрий день, можете задавати будь які запитання, але спершу увійдіть або зареєструйтесь, щоб ми могли з вами зв'язатися.";
+  const PROFILE_KEY = "userProfile";
 
   if (!toggle || !panel || !root) return;
+
+  function isLoggedIn() {
+    try {
+      const raw = localStorage.getItem(PROFILE_KEY);
+      if (!raw) return false;
+      const p = JSON.parse(raw);
+      return Boolean(p?.id);
+    } catch {
+      return false;
+    }
+  }
+
+  function getWelcomeText() {
+    return isLoggedIn() ? WELCOME_LOGGED_IN : WELCOME_GUEST;
+  }
+
+  function getProfileContacts() {
+    try {
+      const raw = localStorage.getItem(PROFILE_KEY);
+      if (!raw) return {};
+      const p = JSON.parse(raw);
+      const email = String(p?.email || "").trim();
+      const phone = String(p?.phone || "").trim();
+      const name = [p?.name, p?.lastName].filter(Boolean).join(" ").trim();
+      return {
+        ...(email ? { email } : {}),
+        ...(phone ? { phone } : {}),
+        ...(name ? { name } : {})
+      };
+    } catch {
+      return {};
+    }
+  }
 
   function appendBubble(kind, text) {
     if (!messagesEl) return;
@@ -24,8 +60,19 @@
 
   function seedWelcome() {
     if (!messagesEl || messagesEl.dataset.welcomePlaced === "1") return;
-    appendBubble("bot", WELCOME_TEXT);
+    appendBubble("bot", getWelcomeText());
     messagesEl.dataset.welcomePlaced = "1";
+    messagesEl.dataset.welcomeFor = isLoggedIn() ? "in" : "out";
+  }
+
+  function syncWelcomeIfOnlyGreeting() {
+    if (!messagesEl || messagesEl.dataset.welcomePlaced !== "1") return;
+    const kids = messagesEl.querySelectorAll(".chat-widget-msg");
+    if (kids.length !== 1 || !kids[0].classList.contains("chat-widget-msg-bot")) return;
+    const want = isLoggedIn() ? "in" : "out";
+    if (messagesEl.dataset.welcomeFor === want) return;
+    kids[0].textContent = getWelcomeText();
+    messagesEl.dataset.welcomeFor = want;
   }
 
   function setOpen(open) {
@@ -34,6 +81,7 @@
     panel.setAttribute("aria-hidden", open ? "false" : "true");
     if (open) {
       seedWelcome();
+      syncWelcomeIfOnlyGreeting();
       textEl?.focus();
     }
   }
@@ -88,7 +136,8 @@
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           message,
-          page: typeof location !== "undefined" ? location.href : ""
+          page: typeof location !== "undefined" ? location.href : "",
+          ...getProfileContacts()
         })
       });
       const data = await res.json().catch(() => ({}));

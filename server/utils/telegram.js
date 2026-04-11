@@ -63,9 +63,10 @@ function formatInquiry(entry) {
     "",
     entry.message,
     "",
-    entry.page ? `Сторінка: ${entry.page}` : null,
+    entry.phone ? `Телефон: ${entry.phone}` : null,
     entry.email ? `Email: ${entry.email}` : null,
-    entry.name ? `Ім'я: ${entry.name}` : null
+    entry.name ? `Ім'я: ${entry.name}` : null,
+    entry.page ? `Сторінка: ${entry.page}` : null
   ].filter(Boolean);
   return lines.join("\n");
 }

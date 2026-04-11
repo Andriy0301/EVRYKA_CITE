@@ -26,6 +26,7 @@ function writeInquiries(list) {
 router.post("/", (req, res) => {
   const message = String(req.body?.message || "").trim();
   const email = String(req.body?.email || "").trim().slice(0, 200);
+  const phone = String(req.body?.phone || "").trim().slice(0, 40);
   const name = String(req.body?.name || "").trim().slice(0, 120);
   const page = String(req.body?.page || "").trim().slice(0, 500);
 
@@ -42,6 +43,7 @@ router.post("/", (req, res) => {
     createdAt: new Date().toISOString(),
     message,
     email: email || null,
+    phone: phone || null,
     name: name || null,
     page: page || null
   };
