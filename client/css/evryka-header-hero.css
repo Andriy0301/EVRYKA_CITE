@@ -40,9 +40,13 @@ body.evryka-site:not(.page-home) {
   scroll-margin-top: calc(var(--ev-header-h) + 8px);
 }
 
-/* Відступ між банером і рядком категорій */
+/* Відступ між банером і контентом головної (категорії + каталог) */
+.page-home {
+  --home-hero-to-content-gap: clamp(20px, 3.2vw, 40px);
+}
+
 .page-home .evryka-hero-stack + .container {
-  margin-top: clamp(20px, 3.2vw, 40px);
+  margin-top: var(--home-hero-to-content-gap);
 }
 
 /* Одна «картка» з банером (усі кути) + компактна шапка поверх банера */
@@ -104,6 +108,10 @@ body.evryka-site:not(.page-home) {
   padding: 5px 20px 5px 16px;
   min-height: 44px;
   gap: 12px 20px;
+}
+
+.evryka-site .header.header--home-detached .header-logo {
+  margin-left: -10px;
 }
 
 .evryka-site .header.header--home-detached .header-logo-img {
