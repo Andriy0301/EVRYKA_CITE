@@ -123,8 +123,7 @@ body {
   color: #9a9a9a;
 }
 
-.header.header--in-shell .header-nav:hover a:hover,
-.header.header--in-shell .header-nav:hover a.active {
+.header.header--in-shell .header-nav:hover a:hover {
   color: #0a0a0a;
 }
 
@@ -596,8 +595,7 @@ body.header-nav-open {
     color: #9a9a9a;
   }
 
-  .header.header--in-shell .header-nav:hover a:hover,
-  .header.header--in-shell .header-nav:hover a.active {
+  .header.header--in-shell .header-nav:hover a:hover {
     color: #0a0a0a;
   }
 
