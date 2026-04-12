@@ -1470,6 +1470,83 @@ a {
   margin-bottom: 14px;
 }
 
+.product-price-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-shrink: 0;
+}
+
+.product .product-price-actions .favorite-btn {
+  transform: none;
+}
+
+.product-cart-btn {
+  width: 28px;
+  height: 28px;
+  padding: 0;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--ev-ink);
+  transition: color 0.2s, transform 0.2s;
+  border-radius: 0;
+  box-shadow: none;
+}
+
+.product .product-cart-btn {
+  width: 22px;
+  height: 22px;
+}
+
+.product-cart-btn:hover {
+  color: var(--ev-accent);
+}
+
+.product-cart-btn:focus-visible {
+  outline: 2px solid var(--ev-accent);
+  outline-offset: 2px;
+}
+
+.cart-add-icon {
+  width: 20px;
+  height: 20px;
+  display: block;
+}
+
+.product .product-cart-btn .cart-add-icon {
+  width: 20px;
+  height: 20px;
+}
+
+@keyframes product-cart-added-pop {
+  0% {
+    transform: scale(1);
+  }
+  35% {
+    transform: scale(1.28);
+  }
+  65% {
+    transform: scale(0.94);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+.product-cart-btn.product-cart-btn--added {
+  animation: product-cart-added-pop 0.75s ease;
+  color: #1f8a4a;
+}
+
+.product-cart-btn.product-cart-btn--added .cart-add-icon path {
+  stroke: currentColor;
+}
+
 .order-layout {
   display: grid;
   gap: 18px;
@@ -3611,13 +3688,54 @@ body.evryka-site.page-product {
   font-weight: 500;
 }
 
+/* Як у хедері: при наведенні на рядок інші пункти сіріють; лінія знизу через ::after */
 .page-product .breadcrumbs a {
+  position: relative;
+  display: inline-block;
+  padding: 5px 8px 6px;
+  margin: 0;
+  border-radius: 0;
   color: var(--ev-p-ink);
   text-decoration: none;
+  transition: color 0.2s ease;
 }
 
-.page-product .breadcrumbs a:hover {
-  text-decoration: underline;
+.page-product .breadcrumbs a::after {
+  content: "";
+  position: absolute;
+  left: 8px;
+  right: 8px;
+  bottom: 2px;
+  height: 2px;
+  background: var(--ev-p-ink);
+  transform: scaleX(0);
+  transform-origin: center;
+  transition: transform 0.32s cubic-bezier(0.4, 0, 0.2, 1);
+  pointer-events: none;
+}
+
+.page-product .breadcrumbs:hover a {
+  color: var(--ev-muted-nav);
+}
+
+.page-product .breadcrumbs:hover a:hover {
+  color: var(--ev-p-ink);
+}
+
+.page-product .breadcrumbs:hover a::after {
+  transform: scaleX(0);
+}
+
+.page-product .breadcrumbs:hover a:hover::after {
+  transform: scaleX(1);
+}
+
+.page-product .breadcrumbs a:focus-visible::after {
+  transform: scaleX(1);
+}
+
+.page-product .breadcrumbs:hover a:focus-visible:not(:hover)::after {
+  transform: scaleX(0);
 }
 
 .page-product .product-page {
@@ -3660,7 +3778,7 @@ body.evryka-site.page-product {
   top: calc(var(--ev-header-h, 72px) + 16px);
   flex: 0 1 auto;
   min-width: 0;
-  max-width: min(640px, 58%);
+  max-width: min(700px, 62%);
   z-index: 1;
 }
 
@@ -3709,19 +3827,113 @@ body.evryka-site.page-product {
   border-color: var(--ev-accent);
 }
 
-.page-product .buy-btn,
-.page-product .quick-checkout-btn {
+/* Кількість на сторінці товару — окремий степпер (кошик/замовлення без змін) */
+.page-product .product-qty {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 8px;
+  width: 100%;
+  max-width: 280px;
+  margin-bottom: clamp(12px, 2.2vw, 16px);
+}
+
+.page-product .product-qty-label {
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  color: var(--ev-muted);
+}
+
+.page-product .product-qty .qty-wrapper {
+  display: flex;
+  align-items: stretch;
+  width: 100%;
+  max-width: 240px;
+  gap: 0;
+  padding: 0;
+  margin-bottom: 0;
+  background: var(--ev-surface);
+  border: 1px solid var(--ev-border-hair);
   border-radius: var(--ev-header-bar-radius, clamp(12px, 1.4vw, 18px));
+  box-shadow: 0 1px 3px rgba(var(--ev-rgb), 0.08);
+  overflow: hidden;
+}
+
+.page-product .product-qty .qty-btn {
+  width: 48px;
+  min-width: 48px;
+  height: auto;
   min-height: 48px;
-  padding: 14px 22px;
-  font-size: 16px;
-  line-height: 1.25;
-  box-sizing: border-box;
+  border-radius: 0;
+  background: var(--ev-surface-muted);
+  flex-shrink: 0;
+  transition: background 0.2s, color 0.2s, transform 0.12s ease;
+}
+
+.page-product .product-qty .qty-btn:first-of-type {
+  border-right: 1px solid var(--ev-border-hair);
+}
+
+.page-product .product-qty .qty-btn:last-of-type {
+  border-left: 1px solid var(--ev-border-hair);
+}
+
+.page-product .product-qty .qty-btn:hover {
+  background: var(--ev-accent-soft);
+}
+
+.page-product .product-qty .qty-btn:active {
+  transform: scale(0.96);
+}
+
+.page-product .product-qty .qty-btn:focus-visible {
+  outline: 2px solid var(--ev-accent);
+  outline-offset: -2px;
+  z-index: 1;
+}
+
+.page-product .product-qty .qty-btn:hover svg {
+  stroke: var(--ev-accent);
+}
+
+.page-product .product-qty .qty-btn svg {
+  width: 18px;
+  height: 18px;
+  stroke-width: 2.25;
+}
+
+.page-product .product-qty .qty-input {
+  flex: 1;
+  min-width: 0;
+  width: auto;
+  max-width: none;
+  min-height: 48px;
+  padding: 8px 4px;
+  font-size: 17px;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  color: var(--ev-ink);
+  background: var(--ev-surface);
+  border: none;
+  border-radius: 0;
+}
+
+.page-product .product-qty .qty-input:focus {
+  outline: none;
+  box-shadow: inset 0 0 0 2px var(--ev-accent-soft);
 }
 
 .page-product .quick-checkout-btn {
+  margin-top: 0;
+  margin-bottom: clamp(12px, 2.2vw, 16px);
+  border-radius: var(--ev-header-bar-radius, clamp(12px, 1.4vw, 18px));
+  min-height: 48px;
+  padding: 14px 22px;
   font-size: 15px;
   font-weight: 700;
+  line-height: 1.25;
+  box-sizing: border-box;
 }
 
 .page-product .product-desc-accordion {

@@ -27,21 +27,8 @@ async function loadProduct() {
     renderGallery(product);
     renderSimilarProducts(product, products);
     setupProductFavorite(product);
+    setupProductAddToCart(product);
     setupDescriptionToggle();
-
-document.getElementById("buyBtn").onclick = () => {
-  const qty = document.getElementById("qty").value;
-
-  addToCart(product, qty);
-  toggleCart(true);
-
-  const btn = document.getElementById("buyBtn");
-  btn.innerText = "Додано ✓";
-
-  setTimeout(() => {
-    btn.innerText = "КУПИТИ";
-  }, 1500);
-};
 
 document.getElementById("quickCheckoutBtn").onclick = () => {
   const qty = Number(document.getElementById("qty").value || 1);
@@ -121,6 +108,24 @@ function setupProductFavorite(product) {
   syncState();
 }
 
+function setupProductAddToCart(product) {
+  const btn = document.getElementById("productAddToCartBtn");
+  if (!btn) return;
+
+  btn.onclick = () => {
+    const qty = Math.max(1, Number(document.getElementById("qty").value || 1));
+    addToCart(product, qty);
+    toggleCart(true);
+    btn.classList.remove("product-cart-btn--added");
+    void btn.offsetWidth;
+    btn.classList.add("product-cart-btn--added");
+    clearTimeout(btn._addedTimer);
+    btn._addedTimer = setTimeout(() => {
+      btn.classList.remove("product-cart-btn--added");
+    }, 900);
+  };
+}
+
 // 🔥 галерея
 function renderGallery(product) {
   const mainImage = document.getElementById("mainImage");
@@ -152,27 +157,6 @@ function renderGallery(product) {
 
     thumbnails.appendChild(el);
   });
-}
-
-
-// 🛒 кошик
-function addToCart(product, qty = 1) {
-  let cart = JSON.parse(localStorage.getItem("cart")) || [];
-
-  const existing = cart.find(item => item.id === product.id);
-
-  if (existing) {
-    existing.qty += qty;
-  } else {
-    cart.push({
-      id: product.id,
-      name: product.name,
-      price: product.price,
-      qty: qty
-    });
-  }
-
-  localStorage.setItem("cart", JSON.stringify(cart));
 }
 
 // ➕➖ кількість
