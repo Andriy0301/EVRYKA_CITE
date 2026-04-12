@@ -3515,13 +3515,17 @@ font-weight: bold;
   min-width: 0;
 }
 
-/* Заголовок + сітка — у тій самій ширині, що й головний .container (1200px) */
+/* Заголовок + сітка — у тій самій ширині, що й головний .container (1200px), фон як у body (shell-bg) */
 .page-catalog .catalog-products-inner {
   max-width: 1200px;
   margin-left: auto;
   margin-right: auto;
   width: 100%;
   box-sizing: border-box;
+  background: var(--ev-shell-bg);
+  border-radius: var(--ev-shell-radius, clamp(14px, 2vw, 22px));
+  padding: clamp(18px, 2.4vw, 28px);
+  border: 1px solid rgba(var(--ev-rgb), 0.06);
 }
 
 .catalog-products-section.products {
@@ -4041,8 +4045,8 @@ body.evryka-site.page-catalog {
 .page-product .product-main-columns {
   container-type: inline-size;
   container-name: product-main;
-  /* Відступ між прев’ю у стовпчику; зазор «фото → інфо» окремо, щоб не тягнути великий rhythm */
-  --product-thumb-stack-gap: var(--product-rhythm);
+  /* Відступ між прев’ю у стовпчику (менший за rhythm — щільніший стек) */
+  --product-thumb-stack-gap: clamp(6px, 1vw, 10px);
   /* Зазор фото ↔ інфо = той самий, що внутрішній відступ картки */
   display: flex;
   flex-flow: row nowrap;
@@ -4128,6 +4132,10 @@ body.evryka-site.page-catalog {
 }
 
 .page-product .thumbnails img {
+  width: clamp(80px, 10cqi, 96px);
+  height: clamp(80px, 10cqi, 96px);
+  object-fit: cover;
+  border-radius: clamp(10px, 1.2cqi, 14px);
   border: 2px solid var(--ev-p-line-soft, rgba(0, 0, 0, 0.06));
   box-sizing: border-box;
 }
@@ -4153,6 +4161,7 @@ body.evryka-site.page-catalog {
   align-items: center;
   flex-wrap: wrap;
   gap: 12px 16px;
+  width: 100%;
 }
 
 .page-product .product-qty-label {
@@ -4185,6 +4194,7 @@ body.evryka-site.page-catalog {
   align-items: center;
   gap: 10px;
   flex-shrink: 0;
+  margin-left: auto;
 }
 
 /* Кнопки ±: більше повітря навколо іконки; кути зовні узгоджені з оболонкою */
@@ -4500,7 +4510,7 @@ body.evryka-site.page-catalog {
     box-shadow: none;
     border-radius: 0;
     overflow: visible;
-    gap: 10px;
+    gap: 7px;
   }
 
   .page-product .main-image img {
