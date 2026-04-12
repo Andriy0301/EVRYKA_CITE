@@ -26,6 +26,7 @@ async function loadProduct() {
 
     renderGallery(product);
     renderSimilarProducts(product, products);
+    renderDiscoverProducts(product, products);
     setupProductFavorite(product);
     setupProductAddToCart(product);
     setupDescriptionToggle();
@@ -179,27 +180,19 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 });
 
-function renderSimilarProducts(currentProduct, allProducts) {
-  const container = document.getElementById("similarProducts");
-  const prevBtn = document.getElementById("similarPrev");
-  const nextBtn = document.getElementById("similarNext");
-  if (!container) return;
+const SIMILAR_RAIL_SCROLL_STEP = 260;
 
-  const sameCategory = allProducts.filter((p) => {
-    return p.id !== currentProduct.id && p.category === currentProduct.category;
-  });
-
-  const mixed = sameCategory.sort(() => Math.random() - 0.5).slice(0, 8);
-  container.innerHTML = "";
-
-  if (!mixed.length) {
-    container.innerHTML = "<p>Схожих товарів поки немає</p>";
-    if (prevBtn) prevBtn.style.display = "none";
-    if (nextBtn) nextBtn.style.display = "none";
-    return;
+function shuffleInPlace(arr) {
+  const a = [...arr];
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
   }
+  return a;
+}
 
-  mixed.forEach((p) => {
+function renderSimilarProductCards(container, items) {
+  items.forEach((p) => {
     const card = document.createElement("div");
     card.className = "similar-card";
     card.innerHTML = `
@@ -212,8 +205,11 @@ function renderSimilarProducts(currentProduct, allProducts) {
     });
     container.appendChild(card);
   });
+}
 
-  const scrollStep = 260;
+function bindSimilarRailScroll(container, prevBtn, nextBtn) {
+  if (!container) return;
+
   const updateArrowState = () => {
     if (!prevBtn || !nextBtn) return;
     const maxScroll = Math.max(0, container.scrollWidth - container.clientWidth);
@@ -225,17 +221,73 @@ function renderSimilarProducts(currentProduct, allProducts) {
     prevBtn.style.display = "flex";
     prevBtn.disabled = true;
     prevBtn.onclick = () => {
-      container.scrollBy({ left: -scrollStep, behavior: "smooth" });
+      container.scrollBy({ left: -SIMILAR_RAIL_SCROLL_STEP, behavior: "smooth" });
     };
   }
   if (nextBtn) {
     nextBtn.style.display = "flex";
     nextBtn.onclick = () => {
-      container.scrollBy({ left: scrollStep, behavior: "smooth" });
+      container.scrollBy({ left: SIMILAR_RAIL_SCROLL_STEP, behavior: "smooth" });
     };
   }
 
   container.addEventListener("scroll", updateArrowState, { passive: true });
   window.addEventListener("resize", updateArrowState);
   setTimeout(updateArrowState, 0);
+}
+
+function renderSimilarProducts(currentProduct, allProducts) {
+  const container = document.getElementById("similarProducts");
+  const prevBtn = document.getElementById("similarPrev");
+  const nextBtn = document.getElementById("similarNext");
+  if (!container) return;
+
+  const sameCategory = allProducts.filter((p) => {
+    return p.id !== currentProduct.id && p.category === currentProduct.category;
+  });
+
+  const mixed = shuffleInPlace(sameCategory).slice(0, 8);
+  container.innerHTML = "";
+
+  if (!mixed.length) {
+    container.innerHTML = "<p>Схожих товарів поки немає</p>";
+    if (prevBtn) prevBtn.style.display = "none";
+    if (nextBtn) nextBtn.style.display = "none";
+    return;
+  }
+
+  renderSimilarProductCards(container, mixed);
+  bindSimilarRailScroll(container, prevBtn, nextBtn);
+}
+
+function renderDiscoverProducts(currentProduct, allProducts) {
+  const section = document.getElementById("discoverSection");
+  const container = document.getElementById("discoverProducts");
+  const prevBtn = document.getElementById("discoverPrev");
+  const nextBtn = document.getElementById("discoverNext");
+  if (!section || !container) return;
+
+  const currentCat = String(currentProduct.category || "").trim();
+  const fromOtherCategories = allProducts.filter((p) => {
+    if (p.id === currentProduct.id) return false;
+    return String(p.category || "").trim() !== currentCat;
+  });
+
+  const otherCategoryLabels = [
+    ...new Set(fromOtherCategories.map((p) => String(p.category || "").trim()).filter(Boolean))
+  ];
+
+  if (!otherCategoryLabels.length) {
+    section.setAttribute("hidden", "");
+    return;
+  }
+
+  const pickCat = otherCategoryLabels[Math.floor(Math.random() * otherCategoryLabels.length)];
+  const pool = fromOtherCategories.filter((p) => String(p.category || "").trim() === pickCat);
+  const items = shuffleInPlace(pool).slice(0, 8);
+
+  container.innerHTML = "";
+  section.removeAttribute("hidden");
+  renderSimilarProductCards(container, items);
+  bindSimilarRailScroll(container, prevBtn, nextBtn);
 }

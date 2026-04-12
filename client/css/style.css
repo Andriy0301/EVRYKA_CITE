@@ -2668,10 +2668,11 @@ body.cart-open .header .cart {
   width: auto;
   min-width: 160px;
   margin-top: 0;
+  /* Як у карток товарів (.product) */
   box-shadow:
-    0 8px 22px rgba(251, 146, 60, 0.32),
-    0 3px 10px rgba(0, 0, 0, 0.14);
-  transition: transform 0.2s ease, background 0.2s ease, box-shadow 0.2s ease;
+    0 12px 40px rgba(0, 0, 0, 0.12),
+    0 4px 16px rgba(0, 0, 0, 0.06);
+  transition: transform 0.2s ease, background 0.2s ease, box-shadow 0.25s ease;
 }
 
 /* «Відкрити каталог» — той самий світліший hover, що й у «Купити» */
@@ -2680,16 +2681,16 @@ body.cart-open .header .cart {
   transform: translateY(-1px);
   filter: none;
   box-shadow:
-    0 12px 28px rgba(251, 146, 60, 0.38),
-    0 4px 12px rgba(0, 0, 0, 0.16);
+    0 24px 56px rgba(0, 0, 0, 0.16),
+    0 10px 24px rgba(0, 0, 0, 0.1);
 }
 
 .load-more .buy-btn:active {
   transform: translateY(0);
   filter: brightness(0.98);
   box-shadow:
-    0 4px 14px rgba(251, 146, 60, 0.28),
-    0 2px 6px rgba(0, 0, 0, 0.12);
+    0 8px 24px rgba(0, 0, 0, 0.1),
+    0 3px 12px rgba(0, 0, 0, 0.06);
 }
 
 /* ================= */
@@ -4839,9 +4840,9 @@ body.evryka-site.page-cabinet {
   flex-direction: column;
   gap: var(--product-thumb-stack-gap, var(--product-rhythm));
   flex-shrink: 0;
-  /* Вирівнюємо зазор зліва від картки до прев’ю і справа між прев’ю та головним фото (лише колонка прев’ю) */
-  margin-left: clamp(12px, 2.2vw, 22px);
-  margin-right: clamp(-18px, -2.2vw, -10px);
+  /* Зліва: padding .product-page (12px) + margin = зазору між прев’ю й головним фото (gap у .product-gallery) */
+  margin-left: max(0px, calc(var(--product-gallery-gutter, var(--product-rhythm)) - 12px));
+  margin-right: 0;
   padding: 0;
   /* Вирівнювання з головним фото: без зайвого зазору над першим прев’ю */
   padding-top: 0;
@@ -5166,6 +5167,11 @@ body.evryka-site.page-cabinet {
   overflow: visible;
 }
 
+/* Другий блок ряду — додатковий зазор між картками (перебиває margin-top вище) */
+.page-product .container > .similar-section + .similar-section {
+  margin-top: clamp(16px, 2.2vw, 26px);
+}
+
 .page-product .similar-section h3 {
   font-family: var(--ev-font, "Inter", system-ui, sans-serif);
   font-size: clamp(22px, 2.8vw, 30px);
@@ -5303,15 +5309,17 @@ body.evryka-site.page-cabinet {
   box-shadow: 0 2px 10px rgba(249, 115, 22, 0.25);
 }
 
+/* Неактивні стрілки виглядають як активні (немає гортання), щоб обидві були однакові */
 .page-product .similar-arrow:disabled,
 .page-product .similar-arrow:disabled:hover {
   cursor: default;
   background: var(--ev-p-card);
-  color: rgba(var(--ev-rgb), 0.34);
-  border-color: rgba(var(--ev-rgb), 0.12);
-  box-shadow: 0 2px 8px rgba(var(--ev-rgb), 0.05);
+  color: var(--ev-p-ink);
+  border-color: rgba(var(--ev-rgb), 0.14);
+  box-shadow:
+    0 4px 14px rgba(var(--ev-rgb), 0.1),
+    0 1px 3px rgba(var(--ev-rgb), 0.08);
   opacity: 1;
-  transform: none;
 }
 
 .page-product .similar-arrow--prev:disabled,
