@@ -397,7 +397,8 @@ a:hover {
 .cart-sidebar .cart-item {
   border-bottom: none;
   margin-bottom: 8px;
-  padding: 12px 40px 12px 12px;
+  /* Місце під кнопку закриття; відступи симетричні до лівого краю картки */
+  padding: 14px 52px 14px 14px;
   background: var(--bg-section);
   border-radius: 12px;
 }
@@ -2375,21 +2376,26 @@ body.cart-open .header .cart {
 
 .remove-btn {
   position: absolute;
-  right: 1px;
-  top: 10px;
+  right: 12px;
+  top: 14px;
 
-  width: 28px;
-  height: 28px;
+  width: 34px;
+  height: 34px;
 
   display: flex;
   align-items: center;
   justify-content: center;
 
-  border-radius: 8px;
+  border-radius: 10px;
   border: none;
 
   background: #f5f5f5;
   color: var(--ev-muted);
+
+  font-size: 15px;
+  line-height: 1;
+  padding: 0;
+  box-sizing: border-box;
 
   cursor: pointer;
   transition: 0.2s;
