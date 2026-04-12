@@ -2029,7 +2029,7 @@ a {
 }
 
 
-/* кількість у кошику — той самий вигляд, що qty-wrapper на сторінці товару */
+/* кількість у кошику — див. також .qty-wrapper.cart-qty-wrapper */
 .cart-qty-wrapper {
   margin-bottom: 0;
 }
@@ -2705,6 +2705,11 @@ font-weight: bold;
   padding: 5px;
 
   margin-bottom: 25px;
+}
+
+/* У кошику та там, де два класи — без зайвого нижнього відступу (перебиває правило вище) */
+.qty-wrapper.cart-qty-wrapper {
+  margin-bottom: 0;
 }
 
 /* 🔘 кнопки */
@@ -3827,7 +3832,7 @@ body.evryka-site.page-product {
   border-color: var(--ev-accent);
 }
 
-/* Кількість на сторінці товару — єдиний спокійний блок без контрастних «боків» */
+/* Кількість на сторінці товару — ті самі класи, що в кошику: .qty-wrapper.cart-qty-wrapper */
 .page-product .product-qty {
   display: flex;
   flex-direction: column;
@@ -3846,84 +3851,7 @@ body.evryka-site.page-product {
 }
 
 .page-product .product-qty .qty-wrapper {
-  display: flex;
-  align-items: stretch;
-  width: 100%;
-  max-width: 220px;
-  gap: 0;
-  padding: 0;
-  margin-bottom: 0;
-  background: var(--ev-p-card);
-  border: 1px solid var(--ev-p-line-soft);
-  border-radius: var(--ev-header-bar-radius, clamp(12px, 1.4vw, 18px));
-  box-shadow: var(--ev-p-shadow-sm);
-  overflow: hidden;
-}
-
-.page-product .product-qty .qty-btn {
-  width: 44px;
-  min-width: 44px;
-  height: auto;
-  min-height: 44px;
-  border-radius: 0;
-  background: transparent;
-  flex-shrink: 0;
-  transition: background 0.2s ease, transform 0.12s ease;
-}
-
-.page-product .product-qty .qty-btn:first-of-type {
-  border-right: 1px solid var(--ev-p-line-soft);
-}
-
-.page-product .product-qty .qty-btn:last-of-type {
-  border-left: 1px solid var(--ev-p-line-soft);
-}
-
-.page-product .product-qty .qty-btn:hover {
-  background: rgba(var(--ev-rgb), 0.05);
-}
-
-.page-product .product-qty .qty-btn:active {
-  transform: scale(0.97);
-  background: rgba(var(--ev-rgb), 0.08);
-}
-
-.page-product .product-qty .qty-btn:focus-visible {
-  outline: 2px solid var(--ev-accent);
-  outline-offset: -2px;
-  z-index: 1;
-}
-
-.page-product .product-qty .qty-btn svg {
-  width: 17px;
-  height: 17px;
-  stroke: var(--ev-p-ink);
-  stroke-width: 2.25;
-}
-
-.page-product .product-qty .qty-btn:hover svg {
-  stroke: var(--ev-p-ink);
-}
-
-.page-product .product-qty .qty-input {
-  flex: 1;
-  min-width: 0;
-  width: auto;
-  max-width: none;
-  min-height: 44px;
-  padding: 8px 6px;
-  font-size: 16px;
-  font-weight: 700;
-  font-variant-numeric: tabular-nums;
-  color: var(--ev-p-ink);
-  background: transparent;
-  border: none;
-  border-radius: 0;
-}
-
-.page-product .product-qty .qty-input:focus {
-  outline: none;
-  box-shadow: inset 0 0 0 1px rgba(var(--ev-rgb), 0.12);
+  align-self: flex-start;
 }
 
 .page-product .quick-checkout-btn {
