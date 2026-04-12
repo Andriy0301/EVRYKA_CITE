@@ -22,7 +22,7 @@
   --ev-accent: #fb923c;
   --ev-accent-hover: #f97316;
   --ev-accent-soft: rgba(251, 146, 60, 0.22);
-  --ev-header-surface: rgba(17, 17, 17, 0.92);
+  --ev-header-surface: var(--ev-milk);
   --ev-border-hair: rgba(255, 255, 255, 0.08);
   --ev-border-mid: rgba(255, 255, 255, 0.14);
   --ev-heart: #fb7185;
@@ -115,13 +115,13 @@ body.evryka-site.page-cabinet {
   background: var(--ev-header-surface);
   backdrop-filter: blur(14px);
   -webkit-backdrop-filter: blur(14px);
-  border: 1px solid var(--ev-line-strong);
-  border-bottom-color: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(17, 17, 17, 0.1);
+  border-bottom-color: rgba(17, 17, 17, 0.08);
   box-sizing: border-box;
   box-shadow:
-    0 1px 0 rgba(0, 0, 0, 0.35),
-    0 14px 44px rgba(0, 0, 0, 0.45),
-    0 5px 16px rgba(0, 0, 0, 0.28);
+    0 1px 0 rgba(17, 17, 17, 0.04),
+    0 14px 44px rgba(0, 0, 0, 0.1),
+    0 5px 16px rgba(0, 0, 0, 0.06);
 }
 
 /* Header: без ліній; на головній позицію й фон задає .header--home-detached */
@@ -179,7 +179,7 @@ body.evryka-site.page-cabinet {
   margin: 0;
   border-radius: 0;
   background: transparent;
-  color: var(--ev-ink);
+  color: var(--ev-black);
   position: relative;
   text-decoration: none;
   transition: color 0.2s ease;
@@ -237,7 +237,7 @@ body.evryka-site.page-cabinet {
 }
 
 .header.header--in-shell .header-nav:hover a:hover {
-  color: var(--ev-ink);
+  color: var(--ev-black);
 }
 
 .header.header--in-shell nav a:hover,
@@ -247,18 +247,18 @@ body.evryka-site.page-cabinet {
 
 .header.header--in-shell nav a.active {
   background: transparent;
-  color: var(--ev-ink);
+  color: var(--ev-black);
   font-weight: 700;
 }
 
 .header.header--in-shell #search {
-  background-color: rgba(255, 255, 255, 0.06);
-  border: 1px solid var(--ev-line);
-  color: var(--ev-ink);
+  background-color: rgba(255, 255, 255, 0.75);
+  border: 1px solid rgba(17, 17, 17, 0.12);
+  color: var(--ev-black);
 }
 
 .header.header--in-shell #search:focus {
-  background-color: rgba(255, 255, 255, 0.1);
+  background-color: #fff;
   border-color: var(--ev-accent-soft);
   outline: none;
 }
@@ -271,17 +271,17 @@ body.evryka-site.page-cabinet {
 .evryka-site .header.header--home-detached #search {
   padding: 7px 12px 7px 34px;
   font-size: 13px;
-  color: var(--ev-ink);
-  background-color: rgba(255, 255, 255, 0.06);
+  color: var(--ev-black);
+  background-color: rgba(255, 255, 255, 0.75);
   background-position: 10px 50%;
-  border: 1px solid var(--ev-line);
+  border: 1px solid rgba(17, 17, 17, 0.12);
   box-shadow: none;
   transition: border-color 0.2s ease, background-color 0.2s ease;
 }
 
 .evryka-site .header.header--home-detached #search:focus {
   outline: none;
-  background-color: rgba(255, 255, 255, 0.1);
+  background-color: #fff;
   border-color: var(--ev-accent-soft);
   box-shadow: 0 0 0 1px rgba(251, 146, 60, 0.25);
 }
@@ -383,7 +383,11 @@ body.evryka-site.page-cabinet {
   );
 }
 
-/* Третій слайд: images/hero-banner-gift-toys.png — текст зліва, фото з фігурками */
+/* Третій слайд: images/hero-banner-gift-toys.png — текст зліва, персонажі справа на фото */
+.hero-evryka--allbirds .hero-slide--gift .hero-slide__bg {
+  background-position: right center;
+}
+
 .hero-evryka--allbirds .hero-slide--gift .hero-evryka__overlay {
   background: linear-gradient(
     95deg,
@@ -599,7 +603,7 @@ body.evryka-site.page-cabinet {
   backdrop-filter: blur(14px);
   -webkit-backdrop-filter: blur(14px);
   border: none;
-  border-bottom: 1px solid var(--ev-line);
+  border-bottom: 1px solid rgba(17, 17, 17, 0.08);
   box-shadow: none;
 }
 
@@ -642,7 +646,7 @@ body.evryka-site.page-cabinet {
 }
 
 .header-burger:hover {
-  background: rgba(255, 255, 255, 0.08);
+  background: rgba(17, 17, 17, 0.06);
 }
 
 .header-burger__line {
@@ -650,7 +654,7 @@ body.evryka-site.page-cabinet {
   width: 22px;
   height: 2px;
   margin: 0 auto;
-  background: var(--ev-ink);
+  background: var(--ev-black);
   border-radius: 1px;
   transition: transform 0.25s ease, opacity 0.2s ease;
 }
@@ -700,16 +704,16 @@ body.evryka-site.page-cabinet {
   box-sizing: border-box;
   padding: 10px 14px 10px 38px;
   border-radius: 999px;
-  border: 1px solid var(--ev-line);
-  background-color: rgba(255, 255, 255, 0.06);
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='none' stroke='%239ca3af' stroke-width='2' stroke-linecap='round' viewBox='0 0 24 24'%3E%3Ccircle cx='11' cy='11' r='7'/%3E%3Cpath d='M21 21l-4.3-4.3'/%3E%3C/svg%3E");
+  border: 1px solid rgba(17, 17, 17, 0.12);
+  background-color: rgba(255, 255, 255, 0.75);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='none' stroke='%236b7280' stroke-width='2' stroke-linecap='round' viewBox='0 0 24 24'%3E%3Ccircle cx='11' cy='11' r='7'/%3E%3Cpath d='M21 21l-4.3-4.3'/%3E%3C/svg%3E");
   background-repeat: no-repeat;
   background-position: 12px 50%;
   background-size: 16px 16px;
   font-family: var(--ev-font);
   font-weight: 400;
   font-size: 14px;
-  color: var(--ev-ink);
+  color: var(--ev-black);
   transition: border-color 0.2s ease, background-color 0.2s ease;
 }
 
@@ -721,7 +725,7 @@ body.evryka-site.page-cabinet {
 .header #search:focus {
   outline: none;
   border-color: var(--ev-accent-soft);
-  background-color: rgba(255, 255, 255, 0.1);
+  background-color: #fff;
   box-shadow: none;
 }
 
@@ -737,13 +741,13 @@ body.evryka-site.page-cabinet {
   height: 44px;
   border-radius: 10px;
   background: transparent;
-  color: var(--ev-ink);
+  color: var(--ev-black);
   transition: background 0.2s ease, transform 0.2s ease;
 }
 
 .header .auth-icon-btn:hover {
-  background: rgba(255, 255, 255, 0.08);
-  color: var(--ev-ink);
+  background: rgba(17, 17, 17, 0.06);
+  color: var(--ev-black);
   transform: none;
 }
 
@@ -757,7 +761,7 @@ body.evryka-site.page-cabinet {
 }
 
 .header .auth-initials {
-  color: var(--ev-ink);
+  color: var(--ev-black);
   font-size: 12px;
   font-weight: 700;
 }
@@ -816,7 +820,7 @@ body.cart-open .header .cart {
 
 .header nav a {
   font-family: var(--ev-font);
-  color: var(--ev-ink);
+  color: var(--ev-black);
   text-decoration: none;
   font-weight: 500;
   font-size: 14px;
@@ -832,12 +836,12 @@ body.cart-open .header .cart {
 .header nav a:hover {
   opacity: 1;
   background: transparent;
-  color: var(--ev-ink);
+  color: var(--ev-black);
 }
 
 .header nav a.active {
   font-weight: 600;
-  color: var(--ev-ink);
+  color: var(--ev-black);
   background: var(--ev-accent-soft);
 }
 
@@ -882,8 +886,8 @@ body.header-nav-open {
     align-items: stretch;
     padding: 20px;
     gap: 4px;
-    background: var(--ev-surface);
-    border-top: 1px solid var(--ev-line);
+    background: var(--ev-milk);
+    border-top: 1px solid rgba(17, 17, 17, 0.08);
     transform: translateX(100%);
     transition: transform 0.28s ease;
     z-index: 1001;
@@ -891,7 +895,7 @@ body.header-nav-open {
   }
 
   .evryka-site .header .header-nav {
-    background: var(--ev-shell-bg);
+    background: var(--ev-milk);
     border-top: none;
   }
 
@@ -911,7 +915,7 @@ body.header-nav-open {
     letter-spacing: 0.07em;
     border-radius: 0;
     font-weight: 700;
-    color: var(--ev-ink);
+    color: var(--ev-black);
   }
 
   .header.header--in-shell .header-nav:hover a {
@@ -919,7 +923,7 @@ body.header-nav-open {
   }
 
   .header.header--in-shell .header-nav:hover a:hover {
-    color: var(--ev-ink);
+    color: var(--ev-black);
   }
 
   .header.header--in-shell nav a::after {

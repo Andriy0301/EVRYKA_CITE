@@ -21,7 +21,7 @@
   --ev-accent: #fb923c;
   --ev-accent-hover: #f97316;
   --ev-accent-soft: rgba(251, 146, 60, 0.22);
-  --ev-header-surface: rgba(17, 17, 17, 0.92);
+  --ev-header-surface: var(--ev-milk);
   --ev-border-hair: rgba(255, 255, 255, 0.08);
   --ev-border-mid: rgba(255, 255, 255, 0.14);
   --ev-heart: #fb7185;
@@ -446,12 +446,12 @@ a:hover {
 .product {
   --product-card-radius: 18px;
   --product-buy-btn-radius: 13px;
-  background: var(--ev-surface);
-  border: 1px solid var(--ev-line);
+  background: var(--ev-milk);
+  border: 1px solid rgba(17, 17, 17, 0.08);
   border-radius: var(--product-card-radius);
   box-shadow:
-    0 12px 40px rgba(0, 0, 0, 0.35),
-    0 4px 16px rgba(0, 0, 0, 0.22);
+    0 12px 40px rgba(0, 0, 0, 0.12),
+    0 4px 16px rgba(0, 0, 0, 0.06);
 
   padding: 12px;
 
@@ -464,8 +464,8 @@ a:hover {
 .product:hover {
   transform: translateY(-5px);
   box-shadow:
-    0 24px 56px rgba(0, 0, 0, 0.45),
-    0 10px 24px rgba(0, 0, 0, 0.3);
+    0 24px 56px rgba(0, 0, 0, 0.16),
+    0 10px 24px rgba(0, 0, 0, 0.1);
 }
 
 /* картинка */
@@ -482,7 +482,7 @@ a:hover {
   font-size: 16px;
   font-weight: 500;
 
-  color: var(--ev-ink);
+  color: var(--ev-black);
 
   margin-bottom: 10px;
 
@@ -1062,8 +1062,8 @@ a:hover {
   box-sizing: border-box;
   background: var(--ev-header-surface);
   border-radius: 999px;
-  border: 1px solid var(--ev-line);
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.35), 0 2px 8px rgba(0, 0, 0, 0.2);
+  border: 1px solid rgba(17, 17, 17, 0.1);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1), 0 2px 8px rgba(0, 0, 0, 0.06);
 }
 
 .header .header-logo {
@@ -1105,15 +1105,15 @@ a:hover {
   box-sizing: border-box;
   padding: 10px 16px 10px 40px;
   border-radius: 999px;
-  border: 1px solid var(--ev-line);
-  background-color: rgba(255, 255, 255, 0.06);
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='18' height='18' fill='none' stroke='%239ca3af' stroke-width='2' stroke-linecap='round' viewBox='0 0 24 24'%3E%3Ccircle cx='11' cy='11' r='7'/%3E%3Cpath d='M21 21l-4.3-4.3'/%3E%3C/svg%3E");
+  border: 1px solid rgba(17, 17, 17, 0.12);
+  background-color: rgba(255, 255, 255, 0.75);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='18' height='18' fill='none' stroke='%236b7280' stroke-width='2' stroke-linecap='round' viewBox='0 0 24 24'%3E%3Ccircle cx='11' cy='11' r='7'/%3E%3Cpath d='M21 21l-4.3-4.3'/%3E%3C/svg%3E");
   background-repeat: no-repeat;
   background-position: 14px 50%;
   background-size: 18px 18px;
   font-weight: 400;
   font-size: 13px;
-  color: var(--ev-ink);
+  color: var(--ev-black);
 }
 
 .header #search::placeholder {
@@ -1123,7 +1123,7 @@ a:hover {
 
 .header #search:focus {
   outline: none;
-  background-color: rgba(255, 255, 255, 0.1);
+  background-color: #fff;
   border-color: var(--ev-accent-soft);
   box-shadow: 0 0 0 1px rgba(251, 146, 60, 0.25);
 }
@@ -1165,12 +1165,12 @@ a:hover {
   height: 40px;
   border-radius: 0;
   background: transparent;
-  color: var(--ev-ink);
+  color: var(--ev-black);
 }
 
 .header .auth-icon-btn:hover {
-  background: rgba(255, 255, 255, 0.08);
-  color: var(--ev-ink);
+  background: rgba(17, 17, 17, 0.06);
+  color: var(--ev-black);
 }
 
 .header .auth-icon-btn svg {
@@ -1179,7 +1179,7 @@ a:hover {
 }
 
 .header .auth-initials {
-  color: var(--ev-ink);
+  color: var(--ev-black);
 }
 
 .header .cart-icon {
@@ -2266,7 +2266,7 @@ body.cart-open .header .cart {
   border-radius: 50%;
 }
 .header nav a {
-  color: var(--ev-ink);
+  color: var(--ev-black);
   text-decoration: none;
   font-weight: 500;
   font-size: 11px;
@@ -2284,13 +2284,13 @@ body.cart-open .header .cart {
 
 .header nav a:hover {
   background: transparent;
-  color: #212121;
+  color: var(--ev-black);
   opacity: 0.55;
 }
 
 .header nav a.active {
   background: transparent;
-  color: #212121;
+  color: var(--ev-black);
   box-shadow: none;
   opacity: 1;
   font-weight: 600;
@@ -3878,25 +3878,26 @@ body.cart-open .header .cart {
   --product-card-radius: var(--ev-shell-radius, clamp(14px, 2vw, 18px));
   --product-buy-btn-radius: var(--ev-header-bar-radius, 13px);
   padding: 15px;
-  background: var(--ev-p-card, var(--ev-surface));
-  border: 1px solid var(--ev-p-line-soft, rgba(var(--ev-rgb), 0.06));
+  background: var(--ev-p-card, var(--ev-milk));
+  border: 1px solid var(--ev-p-line-soft, rgba(17, 17, 17, 0.08));
   box-shadow:
-    0 12px 40px rgba(var(--ev-rgb), 0.11),
-    0 4px 16px rgba(var(--ev-rgb), 0.06);
+    0 12px 40px rgba(0, 0, 0, 0.1),
+    0 4px 16px rgba(0, 0, 0, 0.05);
 }
 
 .page-catalog .catalog-products-grid .product h3 {
   font-size: 17px;
   min-height: 44px;
+  color: var(--ev-black);
 }
 
 .page-catalog .catalog-products-grid .product:hover {
   transform: translateY(-4px);
   box-shadow:
-    0 22px 48px rgba(var(--ev-rgb), 0.16),
-    0 10px 24px rgba(var(--ev-rgb), 0.1),
-    0 4px 12px rgba(var(--ev-rgb), 0.06);
-  border-color: rgba(var(--ev-rgb), 0.1);
+    0 22px 48px rgba(0, 0, 0, 0.14),
+    0 10px 24px rgba(0, 0, 0, 0.08),
+    0 4px 12px rgba(0, 0, 0, 0.05);
+  border-color: rgba(17, 17, 17, 0.12);
 }
 
 .page-catalog .catalog-products-grid .product img {
