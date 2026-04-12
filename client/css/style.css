@@ -423,6 +423,15 @@ a:hover {
 .cart-sidebar .remove-btn:hover {
   background: var(--ev-btn-dark);
   color: var(--ev-ink);
+  transform: scale(1.07);
+  box-shadow:
+    0 6px 16px rgba(0, 0, 0, 0.12),
+    0 0 0 1px rgba(251, 146, 60, 0.22);
+}
+
+.cart-sidebar .remove-btn:active {
+  transform: scale(0.96);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
 }
 
 .cart-sidebar .cart-footer {
@@ -2398,12 +2407,30 @@ body.cart-open .header .cart {
   box-sizing: border-box;
 
   cursor: pointer;
-  transition: 0.2s;
+  transition:
+    background 0.2s ease,
+    color 0.2s ease,
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
 }
 
 .remove-btn:hover {
   background: var(--ev-btn-dark);
   color: var(--text-primary);
+  transform: scale(1.07);
+  box-shadow:
+    0 6px 16px rgba(0, 0, 0, 0.12),
+    0 0 0 1px rgba(251, 146, 60, 0.22);
+}
+
+.remove-btn:active {
+  transform: scale(0.96);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+}
+
+.remove-btn:focus-visible {
+  outline: 2px solid var(--ev-accent);
+  outline-offset: 2px;
 }
 
 .cart-footer button {
@@ -4052,6 +4079,11 @@ body.cart-open .header .cart {
   padding-right: var(--catalog-heading-gap);
   padding-bottom: clamp(12px, 1.8vw, 18px);
   padding-left: var(--catalog-heading-gap);
+  /* Дві картки в колонці: зазор лише між видимими (display:none не в flex — без зайвого відступу зверху «Мої замовлення») */
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: var(--catalog-heading-gap);
 }
 
 .catalog-products-section.products {
@@ -4458,7 +4490,8 @@ body.cart-open .chat-widget-root {
 /* ——— товар / каталог / кабінет: фон body — як у body.evryka-site (--ev-bg-gradient); темні панелі — лише через --catalog-panel-bg / окремі блоки ——— */
 body.evryka-site.page-product,
 body.evryka-site.page-catalog,
-body.evryka-site.page-cabinet {
+body.evryka-site.page-cabinet,
+body.evryka-site.page-about {
   --product-rhythm: clamp(24px, 3.5vw, 40px);
   --catalog-panel-bg: var(--ev-panel-chrome);
   --ev-p-ink: var(--ev-ink);
@@ -4482,7 +4515,8 @@ body.evryka-site.page-cabinet {
 */
 .page-product .container,
 .page-catalog .container,
-.page-cabinet .container {
+.page-cabinet .container,
+.page-about .container {
   max-width: none;
   width: auto;
   margin-left: calc(
@@ -4497,7 +4531,8 @@ body.evryka-site.page-cabinet {
 
 /* Каталог і кабінет: одна велика картка (як на сторінці товару) */
 .page-catalog .catalog-shell,
-.page-cabinet .catalog-shell {
+.page-cabinet .catalog-shell,
+.page-about .catalog-shell {
   --product-rhythm: clamp(24px, 3.5vw, 40px);
   /* Для зазору фільтри↔сітка (як «край→шапка») */
   --ev-header-screen-inset-l: calc(
@@ -4546,10 +4581,6 @@ body.evryka-site.page-cabinet {
   --cabinet-field-radius: 12px;
 }
 
-.page-cabinet .catalog-products-inner > .cabinet-card + .cabinet-card {
-  margin-top: var(--catalog-heading-gap, clamp(9px, 1.1vw, 12px));
-}
-
 .page-cabinet .catalog-products-inner .products.cabinet-card > h2 {
   text-align: left;
   margin-top: 0;
@@ -4573,8 +4604,23 @@ body.evryka-site.page-cabinet {
   color: var(--ev-p-ink, var(--ev-ink));
 }
 
+.page-about .about-page-title {
+  flex: 1 1 100%;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: var(--ev-font, "Inter", system-ui, sans-serif);
+  font-size: clamp(26px, 3vw, 34px);
+  font-weight: 700;
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+  color: var(--ev-p-ink, var(--ev-ink));
+}
+
 .page-catalog .catalog-page-nav.product-nav,
-.page-cabinet .catalog-shell > .product-nav.catalog-page-nav {
+.page-cabinet .catalog-shell > .product-nav.catalog-page-nav,
+.page-about .catalog-shell > .product-nav.catalog-page-nav {
   flex: 1 1 100%;
   width: 100%;
   min-width: 100%;
@@ -4590,13 +4636,15 @@ body.evryka-site.page-cabinet {
 
 /* Без додаткового зсуву — ряд «Назад» збігається з лівим паддінгом shell */
 .page-catalog .catalog-page-nav.product-nav,
-.page-cabinet .catalog-shell > .product-nav.catalog-page-nav {
+.page-cabinet .catalog-shell > .product-nav.catalog-page-nav,
+.page-about .catalog-shell > .product-nav.catalog-page-nav {
   margin-inline: 0;
   padding-inline: 0;
 }
 
 .page-catalog .back-btn,
-.page-cabinet .catalog-shell .back-btn {
+.page-cabinet .catalog-shell .back-btn,
+.page-about .catalog-shell .back-btn {
   background: var(--ev-surface);
   color: var(--ev-p-ink);
   border: 1px solid var(--ev-p-line);
@@ -4611,29 +4659,34 @@ body.evryka-site.page-cabinet {
 }
 
 .page-catalog .back-btn:hover,
-.page-cabinet .catalog-shell .back-btn:hover {
+.page-cabinet .catalog-shell .back-btn:hover,
+.page-about .catalog-shell .back-btn:hover {
   background: var(--ev-p-tier2);
   color: var(--ev-p-ink);
 }
 
 .page-catalog .back-icon,
-.page-cabinet .catalog-shell .back-icon {
+.page-cabinet .catalog-shell .back-icon,
+.page-about .catalog-shell .back-icon {
   stroke: var(--ev-p-ink);
 }
 
 .page-catalog .back-btn:hover .back-icon,
-.page-cabinet .catalog-shell .back-btn:hover .back-icon {
+.page-cabinet .catalog-shell .back-btn:hover .back-icon,
+.page-about .catalog-shell .back-btn:hover .back-icon {
   stroke: var(--ev-p-ink);
 }
 
 .page-catalog .breadcrumbs,
-.page-cabinet .catalog-shell .breadcrumbs {
+.page-cabinet .catalog-shell .breadcrumbs,
+.page-about .catalog-shell .breadcrumbs {
   color: var(--ev-p-muted);
   font-weight: 500;
 }
 
 .page-catalog .breadcrumbs a,
-.page-cabinet .catalog-shell .breadcrumbs a {
+.page-cabinet .catalog-shell .breadcrumbs a,
+.page-about .catalog-shell .breadcrumbs a {
   position: relative;
   display: inline-block;
   padding: 5px 8px 6px;
@@ -4646,22 +4699,26 @@ body.evryka-site.page-cabinet {
 }
 
 .page-catalog .breadcrumbs a:hover,
-.page-cabinet .catalog-shell .breadcrumbs a:hover {
+.page-cabinet .catalog-shell .breadcrumbs a:hover,
+.page-about .catalog-shell .breadcrumbs a:hover {
   font-weight: 500;
 }
 
 .page-catalog .breadcrumbs a::after,
-.page-cabinet .catalog-shell .breadcrumbs a::after {
+.page-cabinet .catalog-shell .breadcrumbs a::after,
+.page-about .catalog-shell .breadcrumbs a::after {
   content: none;
 }
 
 .page-catalog .breadcrumbs:hover a,
-.page-cabinet .catalog-shell .breadcrumbs:hover a {
+.page-cabinet .catalog-shell .breadcrumbs:hover a,
+.page-about .catalog-shell .breadcrumbs:hover a {
   color: var(--ev-muted-nav);
 }
 
 .page-catalog .breadcrumbs:hover a:hover,
-.page-cabinet .catalog-shell .breadcrumbs:hover a:hover {
+.page-cabinet .catalog-shell .breadcrumbs:hover a:hover,
+.page-about .catalog-shell .breadcrumbs:hover a:hover {
   color: var(--ev-p-ink);
 }
 
@@ -5415,4 +5472,278 @@ body.evryka-site.page-cabinet {
     max-width: 100%;
     width: 100%;
   }
+}
+
+/* ——— сторінка «Про нас» ——— */
+.page-about .about-page {
+  flex: 1 1 100%;
+  width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
+}
+
+.page-about .about-page__grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--product-rhythm, clamp(24px, 3.5vw, 40px));
+  margin-top: clamp(6px, 1vw, 14px);
+}
+
+@media (max-width: 820px) {
+  .page-about .about-page__grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.page-about .about-card {
+  --about-card-r: clamp(16px, 2vw, 20px);
+  margin: 0;
+  padding: clamp(20px, 2.5vw, 28px);
+  background: var(--ev-p-well, var(--surface-secondary));
+  border: 1px solid var(--ev-p-line-soft, rgba(17, 17, 17, 0.06));
+  border-radius: var(--about-card-r);
+  box-shadow: var(--ev-p-shadow-sm, 0 4px 16px rgba(0, 0, 0, 0.06));
+  box-sizing: border-box;
+  transition:
+    transform 0.22s ease,
+    box-shadow 0.22s ease,
+    border-color 0.22s ease;
+}
+
+.page-about .about-card:hover {
+  transform: translateY(-3px);
+  box-shadow:
+    0 14px 36px rgba(0, 0, 0, 0.1),
+    0 4px 14px rgba(0, 0, 0, 0.05);
+  border-color: rgba(17, 17, 17, 0.1);
+}
+
+.page-about .about-card__head {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 0 0 14px;
+}
+
+.page-about .about-card__icon {
+  flex: 0 0 auto;
+  width: 44px;
+  height: 44px;
+  display: grid;
+  place-items: center;
+  border-radius: 12px;
+  background: var(--ev-p-tier2, var(--bg-section));
+  border: 1px solid var(--ev-p-line, var(--border-light));
+  color: var(--ev-p-ink, var(--ev-ink));
+  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.9) inset;
+}
+
+.page-about .about-card__icon svg {
+  width: 22px;
+  height: 22px;
+}
+
+.page-about .about-card h2 {
+  margin: 0;
+  font-size: clamp(18px, 2vw, 22px);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: var(--ev-p-ink, var(--ev-ink));
+  line-height: 1.25;
+}
+
+.page-about .about-card__body {
+  font-size: clamp(15px, 1.35vw, 16px);
+  line-height: 1.65;
+  color: var(--ev-p-ink, var(--ev-ink));
+}
+
+.page-about .about-card__body p {
+  margin: 0 0 0.85em;
+}
+
+.page-about .about-card__body p:last-child {
+  margin-bottom: 0;
+}
+
+.page-about .about-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.page-about .about-list li {
+  position: relative;
+  padding: 10px 0 10px 1.35em;
+  border-bottom: 1px solid var(--ev-p-line-soft, rgba(17, 17, 17, 0.06));
+  font-size: clamp(15px, 1.35vw, 16px);
+  line-height: 1.55;
+  color: var(--ev-p-ink, var(--ev-ink));
+}
+
+.page-about .about-list li:last-child {
+  border-bottom: none;
+  padding-bottom: 0;
+}
+
+.page-about .about-list li::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 1.15em;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--ev-p-ink, var(--ev-ink));
+  opacity: 0.35;
+  transform: translateY(-50%);
+}
+
+.page-about .about-card--contacts {
+  grid-column: 1 / -1;
+}
+
+.page-about .about-contact-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: clamp(14px, 2vw, 18px);
+}
+
+.page-about .about-contact-tile {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  min-height: 100%;
+  padding: clamp(16px, 2vw, 20px);
+  background: var(--ev-p-card, var(--surface-primary));
+  border: 1px solid var(--ev-p-line-soft, rgba(17, 17, 17, 0.06));
+  border-radius: clamp(12px, 1.5vw, 16px);
+  box-sizing: border-box;
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.page-about .about-contact-tile:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.08);
+}
+
+.page-about .about-contact-tile__row {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.page-about .about-contact-tile__icon {
+  flex: 0 0 auto;
+  width: 40px;
+  height: 40px;
+  display: grid;
+  place-items: center;
+  border-radius: 10px;
+  background: var(--ev-p-tier2, var(--bg-section));
+  color: var(--ev-p-ink, var(--ev-ink));
+}
+
+.page-about .about-contact-tile__icon svg {
+  width: 20px;
+  height: 20px;
+}
+
+.page-about .about-contact-tile__label {
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--ev-p-muted, var(--ev-muted));
+  margin-bottom: 4px;
+}
+
+.page-about .about-contact-tile__value {
+  font-size: 15px;
+  font-weight: 600;
+  line-height: 1.4;
+  word-break: break-word;
+}
+
+.page-about .about-contact-tile__value a {
+  color: inherit;
+  text-decoration: none;
+  border-bottom: 1px solid transparent;
+  transition: border-color 0.2s ease, color 0.2s ease;
+}
+
+.page-about .about-contact-tile__value a:hover {
+  border-bottom-color: currentColor;
+}
+
+.page-about .about-messenger-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: auto;
+  padding-top: 4px;
+}
+
+.page-about .about-msg-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 42px;
+  padding: 0 16px;
+  border-radius: var(--ev-header-bar-radius, clamp(12px, 1.4vw, 18px));
+  font-size: 14px;
+  font-weight: 600;
+  text-decoration: none;
+  border: 1px solid transparent;
+  cursor: pointer;
+  box-sizing: border-box;
+  transition:
+    transform 0.18s ease,
+    filter 0.18s ease,
+    box-shadow 0.18s ease;
+}
+
+.page-about .about-msg-btn:hover {
+  transform: translateY(-1px);
+  filter: brightness(1.03);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+}
+
+.page-about .about-msg-btn:active {
+  transform: translateY(0);
+}
+
+.page-about .about-msg-btn--telegram {
+  background: #229ed9;
+  color: #fff;
+  border-color: rgba(0, 0, 0, 0.06);
+}
+
+.page-about .about-msg-btn--viber {
+  background: #7360f2;
+  color: #fff;
+  border-color: rgba(0, 0, 0, 0.06);
+}
+
+.page-about .about-msg-btn svg {
+  width: 18px;
+  height: 18px;
+  flex-shrink: 0;
+}
+
+.page-about .about-hours-highlight {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 4px;
+  padding: 12px 16px;
+  border-radius: 12px;
+  background: var(--ev-p-card, var(--surface-primary));
+  border: 1px solid var(--ev-p-line-soft, rgba(17, 17, 17, 0.06));
+  font-weight: 600;
+  font-size: clamp(15px, 1.4vw, 17px);
+  letter-spacing: -0.01em;
 }

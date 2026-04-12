@@ -82,7 +82,8 @@ body.evryka-site:not(.page-home) {
 /* Сторінка товару / каталог / кабінет: контент зверху лише на --ev-stack-outer; біла картка під плаваючою шапкою */
 body.evryka-site.page-product,
 body.evryka-site.page-catalog,
-body.evryka-site.page-cabinet {
+body.evryka-site.page-cabinet,
+body.evryka-site.page-about {
   padding-top: var(--ev-stack-outer);
 }
 
