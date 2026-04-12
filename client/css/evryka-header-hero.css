@@ -744,6 +744,13 @@ body.evryka-site.page-product {
   opacity: 0.7;
 }
 
+/* Кошик відкритий — іконка в шапці не показується (колізії з кешем / специфічністю) */
+body.cart-open .header .header-actions .cart,
+body.cart-open .header .cart {
+  visibility: hidden !important;
+  pointer-events: none !important;
+}
+
 .header #cartCount {
   background: var(--ev-ink);
   color: #fff;
