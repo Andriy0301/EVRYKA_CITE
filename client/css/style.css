@@ -3748,6 +3748,7 @@ body.evryka-site.page-product {
 }
 
 .page-product .product-page {
+  --product-rhythm: clamp(24px, 3.5vw, 40px);
   position: relative;
   z-index: 0;
   display: flex;
@@ -3757,10 +3758,10 @@ body.evryka-site.page-product {
   padding: calc(
       clamp(16px, 2.5vw, 24px) + var(--ev-header-h) + 12px - var(--ev-stack-outer)
     )
-    clamp(20px, 3vw, 28px)
-    clamp(20px, 3vw, 28px);
-  column-gap: clamp(28px, 4vw, 48px);
-  row-gap: clamp(16px, 2.5vw, 28px);
+    var(--product-rhythm)
+    var(--product-rhythm);
+  column-gap: var(--product-rhythm);
+  row-gap: var(--product-rhythm);
   background: var(--ev-p-card);
   border-radius: var(--ev-shell-radius, clamp(18px, 2.3vw, 26px));
   border: 1px solid var(--ev-p-line-soft);
@@ -3772,7 +3773,7 @@ body.evryka-site.page-product {
 
 /* Галерея + інфо в одному рядку: без переносу «інфо під галерею» (інакше sticky накладається на опис) */
 .page-product .product-main-columns {
-  --product-gallery-gap: clamp(28px, 4vw, 48px);
+  --product-gallery-gap: var(--product-rhythm);
   display: flex;
   flex-flow: row nowrap;
   align-items: flex-start;
@@ -3786,9 +3787,9 @@ body.evryka-site.page-product {
 .page-product .product-gallery {
   position: sticky;
   top: calc(var(--ev-header-h, 72px) + 16px);
-  flex: 0 1 auto;
+  flex: 1 1 auto;
   min-width: 0;
-  max-width: min(700px, 62%);
+  max-width: none;
   z-index: 1;
   display: flex;
   align-items: flex-start;
@@ -3796,6 +3797,8 @@ body.evryka-site.page-product {
 }
 
 .page-product .product-gallery .main-image {
+  flex: 1 1 auto;
+  min-width: 0;
   max-width: 100%;
 }
 
@@ -3811,10 +3814,10 @@ body.evryka-site.page-product {
 .page-product .product-info {
   position: relative;
   z-index: 2;
-  flex: 1 1 0;
+  flex: 0 0 auto;
   min-width: 0;
+  width: min(460px, 100%);
   max-width: 460px;
-  margin-left: auto;
   display: flex;
   flex-direction: column;
   align-items: stretch;
@@ -3830,6 +3833,10 @@ body.evryka-site.page-product {
 
 .page-product .price {
   color: var(--ev-p-ink, var(--ev-ink));
+}
+
+.page-product .thumbnails {
+  flex-shrink: 0;
 }
 
 .page-product .thumbnails img {
