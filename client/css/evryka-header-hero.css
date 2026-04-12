@@ -13,9 +13,9 @@
   --ev-muted-nav: #8aa3ab;
   --ev-line: rgba(var(--ev-rgb), 0.1);
   --ev-line-strong: rgba(var(--ev-rgb), 0.16);
-  --ev-accent: #127a8c;
-  --ev-accent-hover: #0e6574;
-  --ev-accent-soft: rgba(18, 122, 140, 0.14);
+  --ev-accent: #2563eb;
+  --ev-accent-hover: #1d4ed8;
+  --ev-accent-soft: rgba(37, 99, 235, 0.14);
   --ev-header-surface: rgba(255, 255, 255, 0.94);
   --ev-border-hair: #d5e1e6;
   --ev-border-mid: #b8cad1;
@@ -54,9 +54,10 @@ body.evryka-site:not(.page-home) {
   padding-top: calc(var(--ev-header-h) + 12px);
 }
 
-/* Сторінка товару / каталог: верх картки збігається з банером (той самий «виступ», що .evryka-hero-stack margin) */
+/* Сторінка товару / каталог / кабінет: контент зверху лише на --ev-stack-outer; біла картка під плаваючою шапкою */
 body.evryka-site.page-product,
-body.evryka-site.page-catalog {
+body.evryka-site.page-catalog,
+body.evryka-site.page-cabinet {
   padding-top: var(--ev-stack-outer);
 }
 

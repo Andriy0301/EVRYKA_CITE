@@ -10,9 +10,9 @@
   --ev-muted-nav: #8aa3ab;
   --ev-line: rgba(var(--ev-rgb), 0.1);
   --ev-line-strong: rgba(var(--ev-rgb), 0.16);
-  --ev-accent: #127a8c;
-  --ev-accent-hover: #0e6574;
-  --ev-accent-soft: rgba(18, 122, 140, 0.14);
+  --ev-accent: #2563eb;
+  --ev-accent-hover: #1d4ed8;
+  --ev-accent-soft: rgba(37, 99, 235, 0.14);
   --ev-header-surface: rgba(255, 255, 255, 0.94);
   --ev-border-hair: #d5e1e6;
   --ev-border-mid: #b8cad1;
@@ -306,17 +306,17 @@ a {
   pointer-events: all;
 }
 
-/* 🔥 items */
+/* 🔥 items — без окремого контейнера, на білому фоні картки кошика */
 #cartItems {
   flex: 1;
   min-height: 0;
   overflow-y: auto;
-  padding: 12px 14px;
+  padding: 0;
   margin: 0;
-  background: var(--ev-surface-muted);
-  border-radius: 10px;
-  border: 1px solid var(--ev-border-hair);
-  box-shadow: 0 1px 3px rgba(var(--ev-rgb), 0.05);
+  background: transparent;
+  border: none;
+  border-radius: 0;
+  box-shadow: none;
   box-sizing: border-box;
 }
 
@@ -2489,6 +2489,11 @@ body.cart-open .header .cart {
   margin-top: 8px;
 }
 
+/* Кнопки й ряд «Разом» на всю ширину контенту кошика (як смуга заголовка), без додаткових бокових полів */
+.cart-sidebar .cart-footer {
+  padding: 16px 0;
+}
+
 .cart-total {
   display: flex;
   justify-content: space-between;
@@ -3816,8 +3821,10 @@ font-weight: bold;
 
 .page-catalog .catalog-products-inner {
   --catalog-heading-gap: clamp(14px, 1.6vw, 20px);
+  --catalog-products-inline-pad: clamp(20px, 2.8vw, 32px);
   border-radius: clamp(16px, 2.2vw, 24px);
-  padding: var(--catalog-heading-gap) clamp(20px, 2.8vw, 32px) clamp(16px, 2.2vw, 24px);
+  /* Низ = ті самі відступи, що зліва/справа */
+  padding: var(--catalog-heading-gap) var(--catalog-products-inline-pad) var(--catalog-products-inline-pad);
   max-width: none;
   margin-left: 0;
   margin-right: 0;
@@ -3825,9 +3832,12 @@ font-weight: bold;
 
 /* Кабінет: блок контенту не ширший за колонку (без 1200px по центру) */
 .page-cabinet .catalog-products-inner {
+  --catalog-heading-gap: clamp(14px, 2vw, 22px);
   max-width: none;
   margin-left: 0;
   margin-right: 0;
+  /* Верхній відступ = бічним (у спільному правилі зверху був менший --catalog-heading-gap) */
+  padding: clamp(14px, 2vw, 22px) clamp(14px, 2vw, 22px) clamp(12px, 1.8vw, 18px);
 }
 
 .catalog-products-section.products {
@@ -3863,7 +3873,8 @@ font-weight: bold;
 .page-catalog .catalog-products-grid {
   grid-template-columns: repeat(3, 1fr);
   gap: clamp(10px, 1.3vw, 16px);
-  padding-bottom: clamp(8px, 2vw, 16px);
+  /* Нижній відступ дає .catalog-products-inner — без подвійного «повітря» */
+  padding: 0;
 }
 
 .page-catalog .catalog-products-grid .product {
@@ -3923,6 +3934,45 @@ font-weight: bold;
   .catalog-filters {
     position: static;
   }
+}
+
+/* ——— кнопка «вгору» (над чатом) ——— */
+.scroll-to-top-btn {
+  position: fixed;
+  right: calc(18px + env(safe-area-inset-right, 0px));
+  bottom: calc(18px + 52px + 12px + env(safe-area-inset-bottom, 0px));
+  z-index: 10049;
+  width: 52px;
+  height: 52px;
+  padding: 0;
+  border-radius: 50%;
+  border: 1px solid var(--ev-border-hair);
+  background: var(--ev-surface);
+  color: var(--ev-ink);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 6px 22px rgba(var(--ev-rgb), 0.14), 0 2px 6px rgba(var(--ev-rgb), 0.06);
+  transition: background 0.2s, transform 0.15s, border-color 0.2s;
+  font-family: var(--ev-font);
+}
+
+.scroll-to-top-btn:hover {
+  background: var(--ev-surface-muted);
+  border-color: var(--ev-border-mid);
+  transform: scale(1.04);
+}
+
+.scroll-to-top-btn:focus-visible {
+  outline: 2px solid var(--ev-accent);
+  outline-offset: 2px;
+}
+
+body.cart-open .scroll-to-top-btn {
+  opacity: 0 !important;
+  visibility: hidden !important;
+  pointer-events: none !important;
 }
 
 /* ——— плаваючий чат (палітра --ev-*) ——— */
@@ -4059,6 +4109,7 @@ body.cart-open .chat-widget-root {
   box-shadow: none;
 }
 
+/* Без окремого «ящика» навколо історії — лише бульбашки на фоні картки */
 .chat-widget-messages {
   flex: 1;
   min-height: 0;
@@ -4066,11 +4117,11 @@ body.cart-open .chat-widget-root {
   display: flex;
   flex-direction: column;
   gap: 8px;
-  padding: 12px 14px;
-  background: var(--ev-surface-muted);
-  border-radius: 10px;
-  border: 1px solid var(--ev-border-hair);
-  box-shadow: 0 1px 3px rgba(var(--ev-rgb), 0.05);
+  padding: 0;
+  background: transparent;
+  border: none;
+  border-radius: 0;
+  box-shadow: none;
 }
 
 /* Плаваючий блок вводу знизу (як смуга «Напишіть нам») */
@@ -4132,7 +4183,7 @@ body.cart-open .chat-widget-root {
   min-width: 0;
   box-sizing: border-box;
   border: 1px solid var(--ev-border-hair);
-  border-radius: 10px;
+  border-radius: 7px;
   padding: 8px 11px;
   font-size: 14px;
   font-family: inherit;
@@ -4147,7 +4198,7 @@ body.cart-open .chat-widget-root {
 .chat-widget-send {
   flex-shrink: 0;
   border: none;
-  border-radius: 10px;
+  border-radius: 7px;
   padding: 8px 12px;
   background: var(--ev-accent);
   color: var(--ev-surface);
@@ -4220,6 +4271,20 @@ body.evryka-site.page-cabinet {
   box-sizing: border-box;
 }
 
+/*
+  Кабінет: той самий горизонтальний відступ від краю вікна, що й у .header--home-detached
+  (left/right = --ev-stack-outer + safe-area + --ev-header-float-inset). Внутрішній паддінг shell
+  тоді не дублює цей зсув — край картки збігається з краєм шапки, меню й контент лишаються на місці.
+*/
+.page-cabinet .container {
+  margin-left: calc(
+    var(--ev-stack-outer) + env(safe-area-inset-left, 0px) + var(--ev-header-float-inset)
+  );
+  margin-right: calc(
+    var(--ev-stack-outer) + env(safe-area-inset-right, 0px) + var(--ev-header-float-inset)
+  );
+}
+
 /* Каталог і кабінет: одна велика картка (як на сторінці товару) */
 .page-catalog .catalog-shell,
 .page-cabinet .catalog-shell {
@@ -4260,12 +4325,10 @@ body.evryka-site.page-cabinet {
   box-sizing: border-box;
 }
 
-/* Кабінет: основний shell одразу під плаваючим хедером — менший верхній внутрішній відступ */
+/* Кабінет: без додаткового body padding — верхній паддінг shell як у каталозі (шапка поверх картки) */
 .page-cabinet .catalog-shell {
-  padding-top: max(
-    env(safe-area-inset-top, 0px),
-    calc(var(--ev-header-h, 72px) + 2px - var(--ev-stack-outer, 0px))
-  );
+  padding-left: 0;
+  padding-right: 0;
 }
 
 .page-cabinet .catalog-products-inner > .cabinet-card {
@@ -4293,7 +4356,8 @@ body.evryka-site.page-cabinet {
   flex: 1 1 100%;
   width: 100%;
   margin: 0;
-  padding: 0;
+  padding: 0 clamp(14px, 2vw, 22px);
+  box-sizing: border-box;
   font-family: var(--ev-font, "Inter", system-ui, sans-serif);
   font-size: clamp(26px, 3vw, 34px);
   font-weight: 700;
@@ -4321,6 +4385,10 @@ body.evryka-site.page-cabinet {
 .page-catalog .catalog-page-nav.product-nav {
   margin-inline: 0;
   padding-inline: 0;
+}
+
+.page-cabinet .catalog-shell > .product-nav.catalog-page-nav {
+  padding-inline: clamp(14px, 2vw, 22px);
 }
 
 .page-catalog .back-btn,
