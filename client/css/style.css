@@ -1394,18 +1394,29 @@ body.cart-open .header .cart {
   font-size: 24px;
 }
 
+.similar-rail {
+  min-width: 0;
+  width: 100%;
+  overflow: visible;
+}
+
 .similar-list {
   display: flex;
+  width: 100%;
   gap: 14px;
   overflow-x: auto;
-  padding: 4px 2px 12px;
+  /* Місце під тінь карток і з боків — інакше overflow обрізає тінь і крайні картки */
+  padding: 10px 16px 28px;
   scroll-behavior: smooth;
   -ms-overflow-style: none;
   scrollbar-width: none;
-  flex: 1;
   min-width: 0;
   align-items: stretch;
   scroll-snap-type: x proximity;
+  scroll-padding-inline: 12px;
+  box-sizing: border-box;
+  /* Горизонтальний скрол без вертикального кліпу тіней (сучасні браузери) */
+  overflow-y: clip;
 }
 
 .similar-list::-webkit-scrollbar {
@@ -1465,7 +1476,7 @@ body.cart-open .header .cart {
 
 .similar-arrow:disabled {
   opacity: 1;
-  cursor: not-allowed;
+  cursor: default;
   transform: none;
   background: var(--ev-surface);
   color: var(--ev-ink);
@@ -1474,6 +1485,7 @@ body.cart-open .header .cart {
 }
 
 .similar-arrow:disabled:hover {
+  cursor: default;
   background: var(--ev-surface);
   color: var(--ev-ink);
   border-color: rgba(var(--ev-rgb), 0.14);
@@ -1916,6 +1928,9 @@ body.cart-open .header .cart {
 .cabinet-form {
   display: grid;
   gap: 12px;
+  width: 100%;
+  min-width: 0;
+  --cabinet-field-radius: var(--ev-header-bar-radius, clamp(12px, 1.4vw, 18px));
 }
 
 .cabinet-form label {
@@ -1924,19 +1939,58 @@ body.cart-open .header .cart {
   font-weight: 600;
 }
 
-.cabinet-form input,
+.cabinet-form input:not([type="hidden"]),
 .cabinet-form select {
   width: 100%;
   max-width: 100%;
   box-sizing: border-box;
-  padding: 10px 12px;
+  min-height: 48px;
+  padding: 12px 14px;
   border: 1px solid var(--ev-border-hair);
-  border-radius: 8px;
+  border-radius: var(--cabinet-field-radius);
+  font: inherit;
+  font-size: 15px;
+  font-weight: 500;
+  line-height: 1.3;
+  color: var(--ev-ink);
+  background-color: var(--ev-surface);
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
 }
 
-.cabinet-form {
-  width: 100%;
-  min-width: 0;
+.cabinet-form select {
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  padding-right: 44px;
+  cursor: pointer;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='20' viewBox='0 0 24 24' fill='none' stroke='%235a737c' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 14px center;
+  background-size: 18px;
+}
+
+.cabinet-form select::-ms-expand {
+  display: none;
+}
+
+.cabinet-form input:not([type="hidden"])::placeholder {
+  color: var(--ev-muted);
+  opacity: 0.9;
+}
+
+.cabinet-form input:not([type="hidden"]):focus,
+.cabinet-form select:focus {
+  outline: none;
+  border-color: var(--ev-accent);
+  box-shadow: 0 0 0 3px var(--ev-accent-soft);
+}
+
+.cabinet-form input:not([type="hidden"]):disabled,
+.cabinet-form select:disabled {
+  opacity: 0.72;
+  cursor: not-allowed;
+  background-color: var(--ev-surface-muted);
+  box-shadow: none;
 }
 
 .cabinet-actions-row {
@@ -3280,7 +3334,7 @@ font-weight: bold;
   position: sticky;
   top: calc(var(--ev-header-h, 72px) + 12px);
   padding: clamp(18px, 2.2vw, 24px);
-  background: var(--ev-surface);
+  background: var(--catalog-panel-bg, var(--ev-surface-muted));
   border: 1px solid var(--ev-p-line-soft, rgba(var(--ev-rgb), 0.06));
   border-radius: var(--ev-shell-radius, clamp(14px, 2vw, 20px));
   box-shadow: var(--ev-p-shadow-sm, 0 4px 16px rgba(var(--ev-rgb), 0.07));
@@ -3515,14 +3569,14 @@ font-weight: bold;
   min-width: 0;
 }
 
-/* Заголовок + сітка — у тій самій ширині, що й головний .container (1200px), фон як у body (shell-bg) */
+/* Заголовок + сітка — у тій самій ширині, що й головний .container (1200px); фон як у фільтрів */
 .page-catalog .catalog-products-inner {
   max-width: 1200px;
   margin-left: auto;
   margin-right: auto;
   width: 100%;
   box-sizing: border-box;
-  background: var(--ev-shell-bg);
+  background: var(--catalog-panel-bg, var(--ev-surface-muted));
   border-radius: var(--ev-shell-radius, clamp(14px, 2vw, 22px));
   padding: clamp(18px, 2.4vw, 28px);
   border: 1px solid rgba(var(--ev-rgb), 0.06);
@@ -3664,27 +3718,72 @@ body.cart-open .chat-widget-root {
   display: none;
   flex-direction: column;
   flex-wrap: nowrap;
-  background: #fff;
-  border-radius: 14px;
-  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.18);
-  border: 1px solid #e8e8e8;
-  overflow: hidden;
+  gap: 10px;
+  background: transparent;
+  border: none;
+  box-shadow: none;
+  overflow: visible;
+  transform-origin: bottom right;
 }
 
 .chat-widget-panel.is-open {
   display: flex;
+  animation: chat-widget-panel-in 0.42s cubic-bezier(0.22, 1, 0.36, 1) both;
 }
 
-.chat-widget-head {
+@keyframes chat-widget-panel-in {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 20px, 0) scale(0.96);
+  }
+
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .chat-widget-panel.is-open {
+    animation: chat-widget-panel-in-reduced 0.18s ease-out both;
+  }
+
+  @keyframes chat-widget-panel-in-reduced {
+    from {
+      opacity: 0;
+    }
+
+    to {
+      opacity: 1;
+    }
+  }
+}
+
+/* Окремий плаваючий блок заголовка (Напишіть нам + закрити) */
+.chat-widget-head-float {
   flex-shrink: 0;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 12px 14px;
-  background: var(--ev-ink);
+  padding: 14px 16px;
+  background: #0f1d23;
   color: #fff;
   font-weight: 700;
   font-size: 15px;
+  border-radius: 15px;
+  box-shadow: 0 8px 28px rgba(0, 0, 0, 0.22);
+}
+
+.chat-widget-sheet {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  background: #fff;
+  border-radius: 14px;
+  border: 1px solid #e8e8e8;
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.18);
+  overflow: hidden;
 }
 
 .chat-widget-close {
@@ -3827,6 +3926,11 @@ body.evryka-site.page-catalog {
   --ev-p-toggle-bg: linear-gradient(180deg, var(--ev-surface) 0%, var(--ev-surface-muted) 100%);
   --ev-p-toggle-border: rgba(var(--ev-rgb), 0.12);
   --ev-p-toggle-shadow: 0 2px 0 rgba(255, 255, 255, 0.85) inset, 0 4px 16px rgba(var(--ev-rgb), 0.07);
+}
+
+/* Єдиний фон для сайдбару фільтрів і блоку «Каталог товарів» (не shell-bg і не чисто білий) */
+body.evryka-site.page-catalog {
+  --catalog-panel-bg: var(--ev-surface-muted);
 }
 
 .page-product .container,
@@ -4384,9 +4488,10 @@ body.evryka-site.page-catalog {
   margin-top: 0;
   background: var(--ev-p-well);
   border: 1px solid var(--ev-p-line-soft);
-  border-radius: var(--ev-shell-radius, clamp(18px, 2.3vw, 26px));
+  border-radius: var(--ev-header-bar-radius, clamp(12px, 1.4vw, 18px));
   padding: 18px 22px;
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.75);
+  box-shadow: var(--ev-p-shadow-sm, 0 4px 16px rgba(0, 0, 0, 0.06)),
+    inset 0 1px 0 rgba(255, 255, 255, 0.75);
   color: var(--ev-ink);
   font-size: 15px;
   line-height: 1.65;
@@ -4399,11 +4504,14 @@ body.evryka-site.page-catalog {
 
 .page-product .similar-section {
   margin-top: var(--ev-stack-outer, clamp(0px, 0.65vw, 10px));
-  padding: var(--product-rhythm);
+  /* Додатковий низ, щоб власна тінь секції не «різалась» у межах потоку */
+  padding: var(--product-rhythm) var(--product-rhythm)
+    calc(var(--product-rhythm) + 10px);
   background: var(--ev-p-card);
   border-radius: clamp(18px, 2.3vw, 26px);
   border: 1px solid var(--ev-p-line-soft);
   box-shadow: var(--ev-p-shadow-sm);
+  overflow: visible;
 }
 
 .page-product .similar-section h3 {
@@ -4417,7 +4525,19 @@ body.evryka-site.page-catalog {
 }
 
 .page-product .similar-wrap {
-  gap: clamp(12px, 2.2vw, 18px);
+  gap: clamp(10px, 1.8vw, 14px);
+  align-items: stretch;
+}
+
+.page-product .similar-rail {
+  margin: -4px 0;
+  padding: 4px 0 8px;
+}
+
+.page-product .similar-list {
+  gap: clamp(12px, 2vw, 16px);
+  padding: 12px 18px 32px;
+  scroll-padding-inline: 14px;
 }
 
 .page-product .similar-arrow {
@@ -4438,6 +4558,7 @@ body.evryka-site.page-catalog {
 
 .page-product .similar-arrow:disabled,
 .page-product .similar-arrow:disabled:hover {
+  cursor: default;
   background: var(--ev-p-card);
   color: var(--ev-p-ink);
   border-color: var(--ev-p-line);
