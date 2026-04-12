@@ -3833,7 +3833,7 @@ body.evryka-site.page-product {
   box-sizing: border-box;
 }
 
-/* Галерея: обмежена ширина, щоб не роздувати «дірку» до блоку інфо; фото на всю ширину колонки */
+/* Галерея: прев’ю зліва в колонці, головне фото праворуч (без накладання) */
 .page-product .product-gallery {
   position: sticky;
   top: calc(var(--ev-header-h, 72px) + 16px);
@@ -3843,13 +3843,17 @@ body.evryka-site.page-product {
   max-width: min(520px, 58cqi);
   min-width: 0;
   z-index: 1;
-  display: block;
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  gap: clamp(10px, 1.5vw, 16px);
 }
 
 .page-product .product-gallery .main-image {
-  width: 100%;
-  max-width: none;
+  flex: 1 1 0;
   min-width: 0;
+  width: auto;
+  max-width: none;
   margin: 0;
 }
 
@@ -3889,24 +3893,16 @@ body.evryka-site.page-product {
 }
 
 .page-product .thumbnails {
-  position: absolute;
-  left: 0;
-  top: 0;
-  z-index: 2;
+  position: static;
   display: flex;
   flex-direction: column;
   gap: var(--product-thumb-stack-gap, var(--product-rhythm));
   flex-shrink: 0;
-  margin: clamp(8px, 1.2vw, 14px);
-  padding: 6px;
-  max-height: calc(100% - clamp(16px, 2.4vw, 28px));
-  overflow-y: auto;
+  margin: 0;
+  padding: 0;
+  max-height: none;
+  overflow: visible;
   box-sizing: border-box;
-  border-radius: var(--ev-shell-radius, clamp(14px, 2vw, 20px));
-  background: rgba(255, 255, 255, 0.78);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  box-shadow: var(--ev-p-shadow-sm, 0 4px 16px rgba(0, 0, 0, 0.07));
 }
 
 .page-product .thumbnails img {
