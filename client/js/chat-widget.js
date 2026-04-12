@@ -77,6 +77,7 @@
 
   function setOpen(open) {
     panel.classList.toggle("is-open", open);
+    root.classList.toggle("chat-widget-open", open);
     toggle.setAttribute("aria-expanded", open ? "true" : "false");
     panel.setAttribute("aria-hidden", open ? "false" : "true");
     if (open) {

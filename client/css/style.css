@@ -1199,6 +1199,23 @@ a:hover {
   box-shadow: 0 0 0 1px rgba(251, 146, 60, 0.25);
 }
 
+/* Хрестик очищення (type=search) — чорний, як текст поля */
+#search::-webkit-search-cancel-button {
+  -webkit-appearance: none;
+  width: 18px;
+  height: 18px;
+  margin-right: 4px;
+  cursor: pointer;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23111111' stroke-width='2.25' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M18 6 6 18M6 6l12 12'/%3E%3C/svg%3E")
+    center / 14px 14px no-repeat;
+}
+
+#search::-moz-search-clear-button {
+  filter: brightness(0);
+  opacity: 0.85;
+  cursor: pointer;
+}
+
 .header #cartCount {
   background: var(--ev-accent);
   color: var(--ev-text-on-accent);
@@ -1385,6 +1402,29 @@ body.cart-open .header .cart {
 #favoritesBtn .heart-icon {
   width: 26px;
   height: 26px;
+}
+
+@keyframes favorites-header-heart-pulse {
+  0% {
+    transform: scale(1);
+  }
+  35% {
+    transform: scale(1.2);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+#favoritesBtn .heart-icon.favorites-heart--pulse {
+  animation: favorites-header-heart-pulse 0.42s cubic-bezier(0.33, 1.45, 0.55, 1) both;
+  transform-origin: center center;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  #favoritesBtn .heart-icon.favorites-heart--pulse {
+    animation: none;
+  }
 }
 
 .heart-icon path {
@@ -3168,6 +3208,22 @@ body.cart-open .header .cart {
   width: max(100%, min(440px, calc(100vw - 24px)));
   max-width: min(560px, calc(100vw - 16px));
   box-sizing: border-box;
+  /* Як плаваюча шапка: той самий фон, blur і обводка */
+  margin-top: clamp(16px, 2.2vw, 26px);
+  background: var(--ev-header-surface);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border: 1px solid rgba(17, 17, 17, 0.1);
+  border-bottom-color: rgba(17, 17, 17, 0.08);
+  border-radius: var(--ev-header-bar-radius, clamp(12px, 1.4vw, 18px));
+  box-shadow:
+    0 1px 0 rgba(17, 17, 17, 0.04),
+    0 14px 44px rgba(0, 0, 0, 0.1),
+    0 5px 16px rgba(0, 0, 0, 0.06);
+}
+
+.header .search-results .search-item:hover {
+  background: rgba(17, 17, 17, 0.055);
 }
 
 /* 🔹 товар */
@@ -3205,14 +3261,50 @@ body.cart-open .header .cart {
 
 /* 🔻 кнопка */
 .search-more {
-  padding: 10px;
+  position: relative;
+  display: block;
+  padding: 10px 12px 12px;
+  margin: 0 -2px;
   text-align: center;
   font-weight: 600;
+  font-size: 14px;
+  letter-spacing: 0.02em;
   cursor: pointer;
+  text-decoration: none;
+  color: var(--ev-black);
+  transition: color 0.2s ease;
+  box-sizing: border-box;
+}
+
+.search-more::after {
+  content: "";
+  position: absolute;
+  left: 14px;
+  right: 14px;
+  bottom: 6px;
+  height: 2px;
+  background: var(--ev-accent);
+  transform: scaleX(0);
+  transform-origin: center;
+  transition: transform 0.32s cubic-bezier(0.4, 0, 0.2, 1);
+  pointer-events: none;
 }
 
 .search-more:hover {
-  text-decoration: underline;
+  color: var(--ev-black);
+}
+
+.search-more:hover::after {
+  transform: scaleX(1);
+}
+
+.search-more:focus-visible {
+  outline: none;
+  color: var(--ev-black);
+}
+
+.search-more:focus-visible::after {
+  transform: scaleX(1);
 }
 .footer {
   background: var(--footer-bg);
@@ -4255,13 +4347,27 @@ body.cart-open .chat-widget-root {
   align-items: center;
   justify-content: center;
   box-shadow: 0 6px 22px rgba(var(--ev-rgb), 0.14), 0 2px 6px rgba(var(--ev-rgb), 0.06);
-  transition: background 0.2s, transform 0.15s, border-color 0.2s;
+  transition:
+    background 0.2s,
+    border-color 0.2s,
+    opacity 0.32s cubic-bezier(0.32, 0.72, 0, 1),
+    transform 0.36s cubic-bezier(0.32, 0.72, 0, 1);
+}
+
+.chat-widget-root.chat-widget-open .chat-widget-toggle {
+  opacity: 0;
+  transform: scale(0.45);
+  pointer-events: none;
 }
 
 .chat-widget-toggle:hover {
   background: var(--ev-surface-muted);
   border-color: var(--ev-border-mid);
   transform: scale(1.04);
+}
+
+.chat-widget-root.chat-widget-open .chat-widget-toggle:hover {
+  transform: scale(0.45);
 }
 
 .chat-widget-panel {
@@ -4279,15 +4385,16 @@ body.cart-open .chat-widget-root {
   border: none;
   box-shadow: none;
   overflow: visible;
-  transform-origin: bottom right;
+  /* «Виростає» з того ж кута, що й кругла кнопка (морф з FAB) */
+  transform-origin: calc(100% - 26px) calc(100% + 31px);
   opacity: 0;
   visibility: hidden;
   pointer-events: none;
-  transform: translate3d(0, 14px, 0) scale(0.98);
+  transform: translate3d(0, 0, 0) scale(0.14);
   transition:
-    opacity 0.3s cubic-bezier(0.4, 0, 0.2, 1),
-    transform 0.34s cubic-bezier(0.4, 0, 0.2, 1),
-    visibility 0s linear 0.34s;
+    opacity 0.28s cubic-bezier(0.32, 0.72, 0, 1),
+    transform 0.4s cubic-bezier(0.32, 0.72, 0, 1),
+    visibility 0s linear 0.4s;
 }
 
 /* Корпус вікна чату: підкладка + «плаваючий» заголовок + картка повідомлень */
@@ -4304,6 +4411,13 @@ body.cart-open .chat-widget-root {
   border: 1px solid var(--ev-border-hair);
   box-shadow: 0 16px 44px rgba(0, 0, 0, 0.1), 0 6px 16px rgba(0, 0, 0, 0.06);
   color: var(--ev-ink);
+  opacity: 0;
+  transition: opacity 0.22s ease;
+}
+
+.chat-widget-panel.is-open .chat-widget-card {
+  opacity: 1;
+  transition: opacity 0.28s ease 0.07s;
 }
 
 .chat-widget-panel.is-open {
@@ -4312,19 +4426,31 @@ body.cart-open .chat-widget-root {
   pointer-events: auto;
   transform: translate3d(0, 0, 0) scale(1);
   transition:
-    opacity 0.32s cubic-bezier(0.25, 0.85, 0.35, 1),
-    transform 0.38s cubic-bezier(0.25, 0.85, 0.35, 1),
+    opacity 0.3s cubic-bezier(0.32, 0.72, 0, 1),
+    transform 0.42s cubic-bezier(0.32, 0.72, 0, 1),
     visibility 0s;
 }
 
 @media (prefers-reduced-motion: reduce) {
   .chat-widget-panel {
     transform: none;
+    transform-origin: bottom right;
     transition: opacity 0.2s ease, visibility 0s linear 0.2s;
   }
 
   .chat-widget-panel.is-open {
     transition: opacity 0.2s ease, visibility 0s;
+  }
+
+  .chat-widget-panel.is-open .chat-widget-card,
+  .chat-widget-card {
+    opacity: 1;
+    transition: none;
+  }
+
+  .chat-widget-root.chat-widget-open .chat-widget-toggle {
+    opacity: 0;
+    transform: none;
   }
 }
 

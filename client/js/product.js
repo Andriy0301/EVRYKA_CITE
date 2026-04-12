@@ -104,6 +104,9 @@ function setupProductFavorite(product) {
 
     saveFavorites(favorites);
     syncState();
+    if (typeof window.pulseHeaderFavoritesBtn === "function") {
+      window.pulseHeaderFavoritesBtn();
+    }
   };
 
   syncState();

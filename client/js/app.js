@@ -262,7 +262,7 @@ function renderProducts(products) {
         <h3>${p.name || "Без назви"}</h3>
         <div class="price-row">
           <p class="price">${p.price || 0} грн</p>
-          <button class="favorite-btn ${isFavorite(p.id) ? "active" : ""}" onclick='toggleFavorite(event, ${JSON.stringify(p)})'>
+          <button class="favorite-btn ${isFavorite(p.id) ? "active" : ""}" onclick='toggleFavorite(event, ${JSON.stringify(p)}, true)'>
             <svg class="heart-icon" viewBox="0 0 512 512" aria-hidden="true">
               <path d="M257 88L255 88C248.355 74.9828 235.475 63.8415 224 55.1304C173.114 16.5016 99.2988 19.267 51 61.2894C-1.26738 106.765 -12.8083 185.773 13.0116 248C25.4527 277.984 45.9981 303.467 67.9105 327C103.494 365.215 144.281 398.581 184 432.421C198.063 444.402 211.938 456.598 226 468.579C233.971 475.37 241.993 483.022 253 483.907C268.121 485.122 278.342 475.197 289 466C306.641 450.778 324.263 435.533 342 420.421C356.437 408.121 370.854 395.797 385 383.166C443.359 331.055 512 269.827 512 185C512 178.072 512.538 170.886 511.715 164C506.476 120.199 486.854 78.636 450 52.7207C401.715 18.7669 334.983 19.4645 288 55.1304C276.525 63.8415 263.645 74.9828 257 88z"></path>
             </svg>
@@ -346,7 +346,24 @@ function isFavorite(productId) {
   return getFavorites().some((item) => Number(item.id) === Number(productId));
 }
 
-function toggleFavorite(e, product) {
+function pulseHeaderFavoritesBtn() {
+  const icon = document.querySelector("#favoritesBtn .heart-icon");
+  if (!icon) return;
+  clearTimeout(icon._favPulseTimer);
+  icon.classList.remove("favorites-heart--pulse");
+  void icon.offsetWidth;
+  icon.classList.add("favorites-heart--pulse");
+  const cleanup = () => {
+    clearTimeout(icon._favPulseTimer);
+    icon._favPulseTimer = 0;
+    icon.classList.remove("favorites-heart--pulse");
+  };
+  icon.addEventListener("animationend", cleanup, { once: true });
+  icon._favPulseTimer = setTimeout(cleanup, 480);
+}
+window.pulseHeaderFavoritesBtn = pulseHeaderFavoritesBtn;
+
+function toggleFavorite(e, product, pulseHeader) {
   e.stopPropagation();
   let favorites = getFavorites();
   const exists = favorites.some((item) => Number(item.id) === Number(product.id));
@@ -367,6 +384,9 @@ function toggleFavorite(e, product) {
   renderFavoritesList();
   if (typeof applyCatalogFilters === "function") {
     void applyCatalogFilters();
+  }
+  if (pulseHeader) {
+    pulseHeaderFavoritesBtn();
   }
 }
 
@@ -505,37 +525,10 @@ function renderSearchResults(products, query) {
     searchResults.appendChild(div);
   });
 
-  const more = document.createElement("div");
+  const more = document.createElement("a");
   more.className = "search-more";
-  more.innerText = "Дивитися всі результати →";
-
-more.onclick = () => {
-  const filtered = searchProducts(allProducts, query);
-
-  currentFiltered = filtered;
-  visibleCount = filtered.length; // 🔥 показати всі
-
-  renderProducts(filtered);
-
-  searchResults.style.display = "none";
-
-  // 🔥 СКРОЛ ДО КАТАЛОГУ
-  const catalog = document.getElementById("catalog");
-
-  if (catalog) {
-    catalog.scrollIntoView({
-      behavior: "smooth",
-      block: "start"
-    });
-  } else if (document.getElementById("catalogPageGrid")) {
-    document.querySelector(".catalog-page-layout")?.scrollIntoView({
-      behavior: "smooth",
-      block: "start"
-    });
-  } else {
-    window.location.href = "catalog.html";
-  }
-};
+  more.href = `catalog.html?q=${encodeURIComponent(query.trim())}`;
+  more.textContent = "Дивитися всі результати →";
 
   searchResults.appendChild(more);
 
