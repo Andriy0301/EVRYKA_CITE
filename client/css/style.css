@@ -3821,25 +3821,27 @@ body.evryka-site.page-product {
   container-name: product-main;
   /* Відступ між прев’ю у стовпчику; зазор «фото → інфо» окремо, щоб не тягнути великий rhythm */
   --product-thumb-stack-gap: var(--product-rhythm);
-  /* Зазор фото → інфо: fallback по vw, у браузерах з cq — частка ширини рядка (колонка з фото) */
+  /* Зазор між колонками — компактніший; ширини колонок балансуємо окремо */
   display: flex;
   flex-flow: row nowrap;
   align-items: flex-start;
-  gap: clamp(10px, 2.5vw, 22px);
-  gap: clamp(10px, 2.2cqw, 22px);
+  gap: clamp(10px, 2vw, 18px);
+  gap: clamp(10px, 1.6cqw, 18px);
   width: 100%;
   flex: 1 1 100%;
   min-width: 0;
   box-sizing: border-box;
 }
 
-/* Головне фото на всю ширину колонки галереї; мініатюри — поверх лівого краю */
+/* Галерея: обмежена ширина, щоб не роздувати «дірку» до блоку інфо; фото на всю ширину колонки */
 .page-product .product-gallery {
   position: sticky;
   top: calc(var(--ev-header-h, 72px) + 16px);
-  flex: 1 1 0;
+  flex: 0 1 auto;
+  width: 100%;
+  max-width: min(520px, 100%);
+  max-width: min(520px, 58cqi);
   min-width: 0;
-  max-width: none;
   z-index: 1;
   display: block;
 }
@@ -3864,13 +3866,14 @@ body.evryka-site.page-product {
 .page-product .product-info {
   position: relative;
   z-index: 2;
-  flex: 0 0 auto;
-  min-width: 0;
-  width: min(340px, 100%);
-  max-width: 340px;
+  flex: 1 1 280px;
+  min-width: min(100%, 260px);
+  width: auto;
+  max-width: min(460px, 100%);
   display: flex;
   flex-direction: column;
   align-items: stretch;
+  align-self: stretch;
 }
 
 .page-product .product-info h2 {
