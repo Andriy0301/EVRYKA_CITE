@@ -2661,7 +2661,6 @@ font-weight: bold;
 
 .breadcrumbs a:hover {
   color: var(--ev-ink);
-  font-weight: bold;
 }
 
 .breadcrumbs span {
@@ -3702,7 +3701,12 @@ body.evryka-site.page-product {
   border-radius: 0;
   color: var(--ev-p-ink);
   text-decoration: none;
+  font-weight: 500;
   transition: color 0.2s ease;
+}
+
+.page-product .breadcrumbs a:hover {
+  font-weight: 500;
 }
 
 .page-product .breadcrumbs a::after {
@@ -3768,10 +3772,11 @@ body.evryka-site.page-product {
 
 /* Галерея + інфо в одному рядку: без переносу «інфо під галерею» (інакше sticky накладається на опис) */
 .page-product .product-main-columns {
+  --product-gallery-gap: clamp(28px, 4vw, 48px);
   display: flex;
   flex-flow: row nowrap;
   align-items: flex-start;
-  gap: clamp(28px, 4vw, 48px);
+  gap: var(--product-gallery-gap);
   width: 100%;
   flex: 1 1 100%;
   min-width: 0;
@@ -3785,6 +3790,9 @@ body.evryka-site.page-product {
   min-width: 0;
   max-width: min(700px, 62%);
   z-index: 1;
+  display: flex;
+  align-items: flex-start;
+  gap: var(--product-gallery-gap);
 }
 
 .page-product .product-gallery .main-image {
