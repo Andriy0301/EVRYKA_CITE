@@ -2,26 +2,32 @@
 
 :root {
   --ev-font: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
-  /* Палітра: прохолодний сланець + бірюза на м’якому блакитно-сірому тлі */
-  --ev-rgb: 12, 31, 38;
-  --ev-shell-bg: #d4e2e6;
-  --ev-surface: #ffffff;
-  --ev-surface-muted: #e8f1f4;
-  --ev-surface-elevated: #f0f7f9;
-  --ev-ink: #0c1f26;
-  --ev-muted: #5a737c;
-  --ev-muted-nav: #8aa3ab;
-  --ev-line: rgba(var(--ev-rgb), 0.1);
-  --ev-line-strong: rgba(var(--ev-rgb), 0.16);
-  --ev-accent: #2563eb;
-  --ev-accent-hover: #1d4ed8;
-  --ev-accent-soft: rgba(37, 99, 235, 0.14);
-  --ev-header-surface: rgba(255, 255, 255, 0.94);
-  --ev-border-hair: #d5e1e6;
-  --ev-border-mid: #b8cad1;
-  --ev-heart: #b83252;
-  --ev-btn-dark: #111;
-  --ev-btn-dark-hover: #2d2d2d;
+  --ev-black: #111111;
+  --ev-surface-dark: #1f2937;
+  --ev-milk: #f8f5f2;
+  --ev-text-on-accent: #111111;
+
+  --ev-rgb: 31, 41, 55;
+  --ev-shell-bg: #111111;
+  --ev-bg-gradient: linear-gradient(180deg, #111111 0%, #1f2937 100%);
+  --ev-accent-gradient: linear-gradient(135deg, #fb923c 0%, #f97316 100%);
+  --ev-surface: #1f2937;
+  --ev-surface-muted: #252b3a;
+  --ev-surface-elevated: #374151;
+  --ev-ink: #f8f5f2;
+  --ev-muted: #6b7280;
+  --ev-muted-nav: #9ca3af;
+  --ev-line: rgba(255, 255, 255, 0.08);
+  --ev-line-strong: rgba(255, 255, 255, 0.14);
+  --ev-accent: #fb923c;
+  --ev-accent-hover: #f97316;
+  --ev-accent-soft: rgba(251, 146, 60, 0.22);
+  --ev-header-surface: rgba(17, 17, 17, 0.92);
+  --ev-border-hair: rgba(255, 255, 255, 0.08);
+  --ev-border-mid: rgba(255, 255, 255, 0.14);
+  --ev-heart: #fb7185;
+  --ev-btn-dark: #1f2937;
+  --ev-btn-dark-hover: #374151;
   --ev-header-h: 60px;
   --ev-shell-radius: clamp(18px, 2.3vw, 26px);
   --ev-shell-margin: clamp(10px, 1.8vw, 20px);
@@ -33,7 +39,7 @@ body {
 
 /* Фон і змінні шапки (плаваюча) — усі сторінки з body.evryka-site */
 body.evryka-site {
-  background: var(--ev-shell-bg);
+  background: var(--ev-bg-gradient);
   color: var(--ev-ink);
   --ev-shell-margin: clamp(0px, 0.65vw, 10px);
   --ev-header-float-inset: clamp(6px, 1.4vw, 12px);
@@ -109,14 +115,13 @@ body.evryka-site.page-cabinet {
   background: var(--ev-header-surface);
   backdrop-filter: blur(14px);
   -webkit-backdrop-filter: blur(14px);
-  border: 1px solid rgba(255, 255, 255, 0.82);
-  border-bottom-color: rgba(var(--ev-rgb), 0.11);
+  border: 1px solid var(--ev-line-strong);
+  border-bottom-color: rgba(255, 255, 255, 0.06);
   box-sizing: border-box;
   box-shadow:
-    0 1px 0 rgba(var(--ev-rgb), 0.07),
-    0 14px 44px rgba(var(--ev-rgb), 0.16),
-    0 5px 16px rgba(var(--ev-rgb), 0.1),
-    0 1px 4px rgba(0, 0, 0, 0.05);
+    0 1px 0 rgba(0, 0, 0, 0.35),
+    0 14px 44px rgba(0, 0, 0, 0.45),
+    0 5px 16px rgba(0, 0, 0, 0.28);
 }
 
 /* Header: без ліній; на головній позицію й фон задає .header--home-detached */
@@ -187,7 +192,7 @@ body.evryka-site.page-cabinet {
   right: 10px;
   bottom: 3px;
   height: 2px;
-  background: var(--ev-ink);
+  background: var(--ev-accent);
   transform: scaleX(0);
   transform-origin: center;
   transition: transform 0.32s cubic-bezier(0.4, 0, 0.2, 1);
@@ -247,12 +252,15 @@ body.evryka-site.page-cabinet {
 }
 
 .header.header--in-shell #search {
-  background-color: rgba(255, 255, 255, 0.65);
-  border: 1px solid rgba(0, 0, 0, 0.06);
+  background-color: rgba(255, 255, 255, 0.06);
+  border: 1px solid var(--ev-line);
+  color: var(--ev-ink);
 }
 
 .header.header--in-shell #search:focus {
-  background-color: #fff;
+  background-color: rgba(255, 255, 255, 0.1);
+  border-color: var(--ev-accent-soft);
+  outline: none;
 }
 
 .evryka-site .header.header--home-detached .search-box {
@@ -263,18 +271,19 @@ body.evryka-site.page-cabinet {
 .evryka-site .header.header--home-detached #search {
   padding: 7px 12px 7px 34px;
   font-size: 13px;
-  background-color: #fff;
+  color: var(--ev-ink);
+  background-color: rgba(255, 255, 255, 0.06);
   background-position: 10px 50%;
-  border: 1px solid rgba(0, 0, 0, 0.12);
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
-  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  border: 1px solid var(--ev-line);
+  box-shadow: none;
+  transition: border-color 0.2s ease, background-color 0.2s ease;
 }
 
 .evryka-site .header.header--home-detached #search:focus {
   outline: none;
-  background-color: #fff;
-  border-color: rgba(0, 0, 0, 0.2);
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  background-color: rgba(255, 255, 255, 0.1);
+  border-color: var(--ev-accent-soft);
+  box-shadow: 0 0 0 1px rgba(251, 146, 60, 0.25);
 }
 
 .evryka-site .header.header--home-detached .auth-icon-btn {
@@ -296,7 +305,7 @@ body.evryka-site.page-cabinet {
 .hero-evryka--allbirds {
   align-items: center;
   justify-content: flex-end;
-  background: var(--ev-shell-bg);
+  background: var(--ev-bg-gradient);
 }
 
 .hero-evryka--allbirds .hero-evryka__overlay {
@@ -478,7 +487,7 @@ body.evryka-site.page-cabinet {
 .hero-evryka--allbirds .hero-evryka-carousel .hero-carousel-prev svg path,
 .hero-evryka--allbirds .hero-evryka-carousel .hero-carousel-next svg path {
   fill: none;
-  stroke: var(--ev-ink);
+  stroke: var(--ev-black);
   stroke-width: 2;
   stroke-linecap: round;
   stroke-linejoin: round;
@@ -494,7 +503,7 @@ body.evryka-site.page-cabinet {
 }
 
 .hero-evryka--allbirds .hero-evryka-carousel .hero-carousel-dot.is-active {
-  background: #fff;
+  background: var(--ev-accent);
 }
 
 .hero-evryka__panel {
@@ -535,12 +544,12 @@ body.evryka-site.page-cabinet {
 }
 
 .hero-evryka--allbirds .hero-evryka__btn--primary {
-  background: #fff;
-  color: var(--ev-ink) !important;
+  background: var(--ev-accent-gradient);
+  color: var(--ev-text-on-accent) !important;
 }
 
 .hero-evryka--allbirds .hero-evryka__btn--primary:hover {
-  background: var(--ev-surface-muted);
+  filter: brightness(1.06);
   transform: scale(1.02);
 }
 
@@ -586,7 +595,7 @@ body.evryka-site.page-cabinet {
   z-index: 1000;
   padding: 0;
   margin: 0;
-  background: rgba(255, 255, 255, 0.92);
+  background: var(--ev-header-surface);
   backdrop-filter: blur(14px);
   -webkit-backdrop-filter: blur(14px);
   border: none;
@@ -633,7 +642,7 @@ body.evryka-site.page-cabinet {
 }
 
 .header-burger:hover {
-  background: rgba(0, 0, 0, 0.05);
+  background: rgba(255, 255, 255, 0.08);
 }
 
 .header-burger__line {
@@ -692,8 +701,8 @@ body.evryka-site.page-cabinet {
   padding: 10px 14px 10px 38px;
   border-radius: 999px;
   border: 1px solid var(--ev-line);
-  background-color: var(--ev-surface-muted);
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='none' stroke='%23777' stroke-width='2' stroke-linecap='round' viewBox='0 0 24 24'%3E%3Ccircle cx='11' cy='11' r='7'/%3E%3Cpath d='M21 21l-4.3-4.3'/%3E%3C/svg%3E");
+  background-color: rgba(255, 255, 255, 0.06);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='none' stroke='%239ca3af' stroke-width='2' stroke-linecap='round' viewBox='0 0 24 24'%3E%3Ccircle cx='11' cy='11' r='7'/%3E%3Cpath d='M21 21l-4.3-4.3'/%3E%3C/svg%3E");
   background-repeat: no-repeat;
   background-position: 12px 50%;
   background-size: 16px 16px;
@@ -711,8 +720,8 @@ body.evryka-site.page-cabinet {
 
 .header #search:focus {
   outline: none;
-  border-color: rgba(0, 0, 0, 0.22);
-  background-color: #fff;
+  border-color: var(--ev-accent-soft);
+  background-color: rgba(255, 255, 255, 0.1);
   box-shadow: none;
 }
 
@@ -733,7 +742,7 @@ body.evryka-site.page-cabinet {
 }
 
 .header .auth-icon-btn:hover {
-  background: rgba(0, 0, 0, 0.06);
+  background: rgba(255, 255, 255, 0.08);
   color: var(--ev-ink);
   transform: none;
 }
@@ -772,8 +781,8 @@ body.cart-open .header .cart {
 }
 
 .header #cartCount {
-  background: var(--ev-btn-dark);
-  color: #fff;
+  background: var(--ev-accent);
+  color: var(--ev-text-on-accent);
   font-size: 9px;
   font-weight: 700;
   line-height: 1;
@@ -829,7 +838,7 @@ body.cart-open .header .cart {
 .header nav a.active {
   font-weight: 600;
   color: var(--ev-ink);
-  background: rgba(0, 0, 0, 0.06);
+  background: var(--ev-accent-soft);
 }
 
 body.header-nav-open {
@@ -873,7 +882,7 @@ body.header-nav-open {
     align-items: stretch;
     padding: 20px;
     gap: 4px;
-    background: #fff;
+    background: var(--ev-surface);
     border-top: 1px solid var(--ev-line);
     transform: translateX(100%);
     transition: transform 0.28s ease;
@@ -939,7 +948,7 @@ body.header-nav-open {
   align-items: flex-end;
   justify-content: flex-start;
   overflow: hidden;
-  background: var(--ev-shell-bg);
+  background: var(--ev-bg-gradient);
 }
 
 /* Перекриває .hero-evryka min-height (порядок у файлі): трек і контент не вищі за секцію — без обрізання низу */
@@ -1030,15 +1039,15 @@ body.header-nav-open {
 }
 
 .hero-evryka__btn--primary {
-  background: #fff;
-  color: var(--ev-ink) !important;
+  background: var(--ev-accent-gradient);
+  color: var(--ev-text-on-accent) !important;
   margin-left: 0;
   box-shadow: none;
 }
 
 .hero-evryka__btn--primary:hover {
   transform: scale(1.02);
-  background: var(--ev-surface-elevated);
+  filter: brightness(1.06);
 }
 
 .hero-evryka__btn--ghost {
