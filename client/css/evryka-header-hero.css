@@ -22,8 +22,8 @@
   --ev-text-on-accent: var(--text-primary);
   --ev-rgb: 17, 17, 17;
   --ev-shell-bg: var(--bg-main);
-  --ev-bg-gradient: linear-gradient(180deg, var(--bg-main) 0%, var(--bg-section) 100%);
-  --ev-accent-gradient: linear-gradient(135deg, var(--accent-main) 0%, var(--accent-hover) 100%);
+  --ev-bg-gradient: var(--bg-main);
+  --ev-accent-gradient: var(--accent-main);
   --ev-surface: var(--surface-primary);
   --ev-surface-dark: var(--bg-section);
   --ev-surface-muted: var(--bg-section);
@@ -323,12 +323,7 @@ body.evryka-site.page-cabinet {
 }
 
 .hero-evryka--allbirds .hero-evryka__overlay {
-  background: linear-gradient(
-    90deg,
-    rgba(0, 0, 0, 0.12) 0%,
-    rgba(0, 0, 0, 0.08) 35%,
-    rgba(0, 0, 0, 0.18) 100%
-  );
+  background: rgba(0, 0, 0, 0.14);
 }
 
 .hero-evryka--allbirds .hero-evryka__content {
@@ -379,22 +374,12 @@ body.evryka-site.page-cabinet {
 
 /* Перший слайд: фон images/hero-banner-repair.png (url у HTML) */
 .hero-evryka--allbirds .hero-slide--repair .hero-evryka__overlay {
-  background: linear-gradient(
-    95deg,
-    rgba(0, 0, 0, 0.5) 0%,
-    rgba(0, 0, 0, 0.18) 36%,
-    rgba(0, 0, 0, 0.06) 72%
-  );
+  background: rgba(0, 0, 0, 0.32);
 }
 
 /* Другий слайд: images/hero-banner-3d-print.png — світліший фон зліва, принтер справа */
 .hero-evryka--allbirds .hero-slide--3d-print .hero-evryka__overlay {
-  background: linear-gradient(
-    92deg,
-    rgba(0, 0, 0, 0.07) 0%,
-    rgba(0, 0, 0, 0.05) 42%,
-    rgba(0, 0, 0, 0.16) 100%
-  );
+  background: rgba(0, 0, 0, 0.11);
 }
 
 /* Третій слайд: images/hero-banner-gift-toys.png — текст зліва, персонажі справа на фото */
@@ -403,12 +388,7 @@ body.evryka-site.page-cabinet {
 }
 
 .hero-evryka--allbirds .hero-slide--gift .hero-evryka__overlay {
-  background: linear-gradient(
-    95deg,
-    rgba(0, 0, 0, 0.5) 0%,
-    rgba(0, 0, 0, 0.22) 38%,
-    rgba(0, 0, 0, 0.08) 100%
-  );
+  background: rgba(0, 0, 0, 0.3);
 }
 
 .hero-evryka--allbirds .hero-slide--repair .hero-evryka__content,
@@ -984,13 +964,7 @@ body.header-nav-open {
 .hero-evryka__overlay {
   position: absolute;
   inset: 0;
-  background: linear-gradient(
-    105deg,
-    rgba(0, 0, 0, 0.55) 0%,
-    rgba(0, 0, 0, 0.35) 38%,
-    rgba(0, 0, 0, 0.12) 65%,
-    transparent 85%
-  );
+  background: rgba(0, 0, 0, 0.38);
   pointer-events: none;
 }
 
@@ -1137,11 +1111,7 @@ body.header-nav-open {
   }
 
   .hero-evryka__overlay {
-    background: linear-gradient(
-      180deg,
-      rgba(0, 0, 0, 0.35) 0%,
-      rgba(0, 0, 0, 0.55) 100%
-    );
+    background: rgba(0, 0, 0, 0.45);
   }
 
   .hero-evryka__content {
@@ -1181,11 +1151,7 @@ body.header-nav-open {
   }
 
   .hero-evryka--allbirds .hero-evryka__overlay {
-    background: linear-gradient(
-      180deg,
-      rgba(0, 0, 0, 0.2) 0%,
-      rgba(0, 0, 0, 0.45) 100%
-    );
+    background: rgba(0, 0, 0, 0.34);
   }
 
   .hero-evryka--allbirds .hero-evryka__content {

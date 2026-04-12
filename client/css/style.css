@@ -7,6 +7,7 @@
   --border-light: #e5e7eb;
   --border-soft: #eeeae6;
   --text-primary: #111111;
+  --ev-price: #111;
   --text-secondary: #6b7280;
   --text-muted: #9ca3af;
   --accent-main: #fb923c;
@@ -20,8 +21,8 @@
   --ev-text-on-accent: var(--text-primary);
   --ev-rgb: 17, 17, 17;
   --ev-shell-bg: var(--bg-main);
-  --ev-bg-gradient: linear-gradient(180deg, var(--bg-main) 0%, var(--bg-section) 100%);
-  --ev-accent-gradient: linear-gradient(135deg, var(--accent-main) 0%, var(--accent-hover) 100%);
+  --ev-bg-gradient: var(--bg-main);
+  --ev-accent-gradient: var(--accent-main);
   --ev-surface: var(--surface-primary);
   --ev-surface-dark: var(--bg-section);
   --ev-surface-muted: var(--bg-section);
@@ -105,6 +106,7 @@ a:hover {
   font-size: 24px;
   font-weight: bold;
   margin: 20px 0;
+  color: var(--ev-price);
 }
 
 .buy-block {
@@ -235,19 +237,19 @@ a:hover {
   padding: 0 16px;
   border: none;
   border-radius: 12px;
-  font-size: 15px;
-  font-weight: 500;
+  font-size: 16px;
+  font-weight: 700;
   line-height: 1.2;
-  background: var(--ev-accent-gradient);
+  background: var(--accent-main);
   color: var(--ev-text-on-accent);
   cursor: pointer;
-  transition: transform 0.2s ease, filter 0.2s ease;
+  transition: transform 0.2s ease, background 0.2s ease;
 }
 
 .button:hover,
 .buy-btn:hover {
   transform: translateY(-1px);
-  filter: brightness(1.05);
+  background: var(--accent-hover);
 }
 
 /* 🔥 header */
@@ -494,13 +496,13 @@ a:hover {
 }
 
 /* ціна */
-.product p {
+.product .price {
   font-size: 20px;
   font-weight: 600;
 
   margin-bottom: 12px;
 
-  color: var(--ev-accent);
+  color: var(--ev-price);
 }
 
 /* Кнопка «Купити» на картці — компактна (наслідує .buy-btn) */
@@ -854,7 +856,7 @@ a:hover {
   content: "";
   position: absolute;
   inset: 0;
-  background: linear-gradient(120deg, rgba(246, 246, 244, 0.92) 20%, rgba(246, 246, 244, 0.4) 55%, transparent 75%);
+  background: rgba(246, 246, 244, 0.72);
   pointer-events: none;
 }
 
@@ -1487,6 +1489,7 @@ body.cart-open .header .cart {
 .similar-card p {
   margin: 0;
   font-weight: 700;
+  color: var(--ev-price);
 }
 
 .price-row {
@@ -1620,6 +1623,10 @@ body.cart-open .header .cart {
 
 .order-items-card .cart-item {
   padding-right: 12px;
+}
+
+.order-items-card .cart-item p {
+  color: var(--ev-price);
 }
 
 .order-items-card .order-remove-btn {
@@ -2285,6 +2292,7 @@ body.cart-open .header .cart {
 .cart-info p {
   margin: 0 0 8px;
   font-weight: 600;
+  color: var(--ev-price);
 }
 
 .cart-info span {
@@ -2344,7 +2352,7 @@ body.cart-open .header .cart {
   transition: 0.2s;
 }
 .cart-header button:hover {
-  background: var(--ev-btn-dark);
+  background: rgba(255, 255, 255, 0.2);
 }
 
 
@@ -2486,6 +2494,7 @@ body.cart-open .header .cart {
 
 .cart-total b {
   font-size: 20px;
+  color: var(--ev-price);
 }
 
 .cart-header {
@@ -2494,13 +2503,16 @@ body.cart-open .header .cart {
   align-items: center;
 
   padding: 12px 16px;
-  border-bottom: 1px solid var(--ev-border-hair);
+  background: var(--ev-ink);
+  color: var(--ev-surface);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.12);
   border-radius: var(--ev-header-bar-radius, 20px) var(--ev-header-bar-radius, 20px) 0 0;
 }
 
 .cart-header h3 {
   font-size: 18px;
   margin: 0;
+  color: inherit;
 }
 
 .cart-header button {
@@ -2510,7 +2522,8 @@ body.cart-open .header .cart {
   border-radius: 10px;
   border: none;
 
-  background: #f2f2f2;
+  background: rgba(255, 255, 255, 0.12);
+  color: var(--ev-surface);
   font-size: 16px;
 
   cursor: pointer;
@@ -2521,6 +2534,11 @@ body.cart-open .header .cart {
   font-size: 15px;
   font-weight: 700;
   letter-spacing: 0.02em;
+  color: inherit;
+}
+
+.chat-widget-head-float #chatWidgetTitle {
+  color: inherit;
 }
 
 .chat-widget-close,
@@ -2754,7 +2772,7 @@ body.cart-open .header .cart {
 .price-value {
   font-size: 30px;
   font-weight: 800;
-  color: var(--ev-accent);
+  color: var(--ev-price);
 }
 
 /* ================= */
@@ -3064,6 +3082,7 @@ body.cart-open .header .cart {
 .search-item p {
   margin: 4px 0 0;
   font-weight: 700;
+  color: var(--ev-price);
 }
 
 /* 🔻 кнопка */
@@ -3296,6 +3315,7 @@ body.cart-open .header .cart {
 .order-success-item-text {
   font-size: 14px;
   line-height: 1.35;
+  color: var(--ev-price);
 }
 
 .order-success-actions {
@@ -3370,6 +3390,7 @@ body.cart-open .header .cart {
   margin: 0 0 8px;
   font-size: 1.25rem;
   line-height: 1.2;
+  color: var(--ev-price);
 }
 
 .cab-order-thumbs {
@@ -3413,6 +3434,10 @@ body.cart-open .header .cart {
 
 .cab-order-item-row p {
   margin: 0;
+}
+
+.cab-order-item-row div p:last-of-type {
+  color: var(--ev-price);
 }
 
 .cab-order-item-image {
@@ -4036,7 +4061,7 @@ body.cart-open .chat-widget-root {
   }
 }
 
-/* Плаваюча смуга заголовка чату / кошика — однаковий вигляд */
+/* Плаваюча смуга заголовка чату / кошика / обраних — темна смуга у тон сайту, світлий текст */
 .chat-widget-head-float,
 .cart-head-float {
   flex-shrink: 0;
@@ -4046,14 +4071,15 @@ body.cart-open .chat-widget-root {
   align-items: center;
   justify-content: space-between;
   padding: 10px 12px;
-  background: var(--bg-section);
-  color: var(--text-primary);
+  background: var(--ev-ink);
+  color: var(--ev-surface);
   font-weight: 700;
   font-size: 15px;
   border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
   box-shadow:
-    0 4px 14px rgba(var(--ev-rgb), 0.2),
-    0 2px 6px rgba(var(--ev-rgb), 0.1);
+    0 4px 18px rgba(0, 0, 0, 0.22),
+    0 2px 8px rgba(0, 0, 0, 0.12);
 }
 
 /* Середня зона + нижній плаваючий блок; сам лист без рамки — рамки у повідомлень і compose-float */
@@ -4209,7 +4235,7 @@ body.evryka-site.page-cabinet {
   --ev-p-well: var(--surface-secondary);
   --ev-p-shadow: 0 8px 32px rgba(0, 0, 0, 0.08), 0 2px 8px rgba(0, 0, 0, 0.04);
   --ev-p-shadow-sm: 0 4px 16px rgba(0, 0, 0, 0.06);
-  --ev-p-toggle-bg: linear-gradient(180deg, var(--surface-primary) 0%, var(--bg-section) 100%);
+  --ev-p-toggle-bg: var(--surface-primary);
   --ev-p-toggle-border: var(--border-light);
   --ev-p-toggle-shadow: 0 1px 0 rgba(255, 255, 255, 0.95) inset, 0 4px 16px rgba(0, 0, 0, 0.05);
 }
@@ -4234,6 +4260,16 @@ body.evryka-site.page-cabinet {
   );
   padding: 0 0 clamp(32px, 5vw, 56px);
   box-sizing: border-box;
+}
+
+/* Кабінет: зовнішній відступ зліва/справа = як зверху (body: padding-top = --ev-stack-outer), без додаткового --ev-header-float-inset */
+.page-cabinet .container {
+  margin-left: calc(
+    var(--ev-stack-outer, clamp(0px, 0.65vw, 10px)) + env(safe-area-inset-left, 0px)
+  );
+  margin-right: calc(
+    var(--ev-stack-outer, clamp(0px, 0.65vw, 10px)) + env(safe-area-inset-right, 0px)
+  );
 }
 
 /* Каталог і кабінет: одна велика картка (як на сторінці товару) */
@@ -4288,7 +4324,7 @@ body.evryka-site.page-cabinet {
   );
 }
 
-/* Кабінет: зовнішній margin як у шапки; всередині — як padding .header-inner (логотип 12px, справа 20px) */
+/* Кабінет: внутрішні бокові паддінги shell без змін (як у .header-inner); зовнішні поля сторінки — .page-cabinet .container */
 .page-cabinet .catalog-shell {
   padding-left: 12px;
   padding-right: 20px;
@@ -4604,7 +4640,7 @@ body.evryka-site.page-cabinet {
 }
 
 .page-product .price {
-  color: var(--ev-p-ink, var(--ev-ink));
+  color: var(--ev-price);
 }
 
 .page-product .thumbnails {
@@ -4790,18 +4826,18 @@ body.evryka-site.page-cabinet {
   border-radius: var(--ev-header-bar-radius, clamp(12px, 1.4vw, 18px));
   min-height: 48px;
   padding: 14px 22px;
-  font-size: 15px;
+  font-size: 16px;
   font-weight: 700;
   line-height: 1.25;
   box-sizing: border-box;
-  background: var(--ev-accent-gradient);
+  background: var(--accent-main);
   color: var(--ev-text-on-accent);
   border: none;
-  transition: filter 0.2s ease, color 0.2s ease, transform 0.15s ease;
+  transition: background 0.2s ease, color 0.2s ease, transform 0.15s ease;
 }
 
 .page-product .quick-checkout-btn:hover {
-  filter: brightness(1.06);
+  background: var(--accent-hover);
   color: var(--ev-text-on-accent);
 }
 
@@ -4958,39 +4994,8 @@ body.evryka-site.page-cabinet {
   gap: clamp(10px, 1.5vw, 14px);
   padding: 10px clamp(16px, 2.4vw, 32px) 28px;
   scroll-padding-inline: clamp(16px, 2.4vw, 32px);
-  /* Довше м’яке розсієння по краях (ширша зона градієнта) */
-  -webkit-mask-image: linear-gradient(
-    to right,
-    transparent 0%,
-    rgba(0, 0, 0, 0.2) 5%,
-    rgba(0, 0, 0, 0.45) 10%,
-    rgba(0, 0, 0, 0.72) 16%,
-    rgba(0, 0, 0, 0.92) 22%,
-    #000 28%,
-    #000 72%,
-    rgba(0, 0, 0, 0.92) 78%,
-    rgba(0, 0, 0, 0.72) 84%,
-    rgba(0, 0, 0, 0.45) 90%,
-    rgba(0, 0, 0, 0.2) 95%,
-    transparent 100%
-  );
-  mask-image: linear-gradient(
-    to right,
-    transparent 0%,
-    rgba(0, 0, 0, 0.2) 5%,
-    rgba(0, 0, 0, 0.45) 10%,
-    rgba(0, 0, 0, 0.72) 16%,
-    rgba(0, 0, 0, 0.92) 22%,
-    #000 28%,
-    #000 72%,
-    rgba(0, 0, 0, 0.92) 78%,
-    rgba(0, 0, 0, 0.72) 84%,
-    rgba(0, 0, 0, 0.45) 90%,
-    rgba(0, 0, 0, 0.2) 95%,
-    transparent 100%
-  );
-  mask-size: 100% 100%;
-  -webkit-mask-size: 100% 100%;
+  -webkit-mask-image: none;
+  mask-image: none;
   scroll-snap-type: x proximity;
 }
 
