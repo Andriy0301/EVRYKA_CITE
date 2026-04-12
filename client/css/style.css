@@ -3806,6 +3806,7 @@ body.evryka-site.page-product {
   flex: 1 1 0;
   min-width: 0;
   max-width: 460px;
+  margin-left: auto;
   display: flex;
   flex-direction: column;
   align-items: stretch;
@@ -4036,6 +4037,7 @@ body.evryka-site.page-product {
     flex: none;
     max-width: none;
     width: 100%;
+    margin-left: 0;
   }
 
   .page-product .thumbnails {

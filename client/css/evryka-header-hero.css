@@ -354,8 +354,19 @@ body.evryka-site.page-product {
   );
 }
 
+/* Третій слайд: images/hero-banner-gift-toys.png — текст зліва, фото з фігурками */
+.hero-evryka--allbirds .hero-slide--gift .hero-evryka__overlay {
+  background: linear-gradient(
+    95deg,
+    rgba(0, 0, 0, 0.5) 0%,
+    rgba(0, 0, 0, 0.22) 38%,
+    rgba(0, 0, 0, 0.08) 100%
+  );
+}
+
 .hero-evryka--allbirds .hero-slide--repair .hero-evryka__content,
-.hero-evryka--allbirds .hero-slide--3d-print .hero-evryka__content {
+.hero-evryka--allbirds .hero-slide--3d-print .hero-evryka__content,
+.hero-evryka--allbirds .hero-slide--gift .hero-evryka__content {
   justify-content: flex-start;
   align-items: center;
   padding-left: clamp(20px, 3.5vw, 48px);
@@ -363,7 +374,8 @@ body.evryka-site.page-product {
 }
 
 .hero-evryka--allbirds .hero-slide--repair .hero-evryka__panel,
-.hero-evryka--allbirds .hero-slide--3d-print .hero-evryka__panel {
+.hero-evryka--allbirds .hero-slide--3d-print .hero-evryka__panel,
+.hero-evryka--allbirds .hero-slide--gift .hero-evryka__panel {
   max-width: 340px;
   width: 100%;
   padding: 20px 22px 22px;
@@ -377,7 +389,8 @@ body.evryka-site.page-product {
 }
 
 .hero-evryka--allbirds .hero-slide--repair .hero-evryka__title,
-.hero-evryka--allbirds .hero-slide--3d-print .hero-evryka__title {
+.hero-evryka--allbirds .hero-slide--3d-print .hero-evryka__title,
+.hero-evryka--allbirds .hero-slide--gift .hero-evryka__title {
   max-width: none;
   font-size: clamp(1.32rem, 2.9vw, 2rem);
   line-height: 1.12;
@@ -386,7 +399,8 @@ body.evryka-site.page-product {
 }
 
 .hero-evryka--allbirds .hero-slide--repair .hero-evryka__lede,
-.hero-evryka--allbirds .hero-slide--3d-print .hero-evryka__lede {
+.hero-evryka--allbirds .hero-slide--3d-print .hero-evryka__lede,
+.hero-evryka--allbirds .hero-slide--gift .hero-evryka__lede {
   max-width: none;
   font-size: clamp(0.88rem, 1.55vw, 0.98rem);
   line-height: 1.45;
@@ -395,13 +409,15 @@ body.evryka-site.page-product {
 }
 
 .hero-evryka--allbirds .hero-slide--repair .hero-evryka__actions,
-.hero-evryka--allbirds .hero-slide--3d-print .hero-evryka__actions {
+.hero-evryka--allbirds .hero-slide--3d-print .hero-evryka__actions,
+.hero-evryka--allbirds .hero-slide--gift .hero-evryka__actions {
   gap: 10px;
   flex-wrap: wrap;
 }
 
 .hero-evryka--allbirds .hero-slide--repair .hero-evryka__btn,
-.hero-evryka--allbirds .hero-slide--3d-print .hero-evryka__btn {
+.hero-evryka--allbirds .hero-slide--3d-print .hero-evryka__btn,
+.hero-evryka--allbirds .hero-slide--gift .hero-evryka__btn {
   padding: 11px 20px;
   font-size: 11px;
   letter-spacing: 0.09em;
@@ -1123,7 +1139,8 @@ body.header-nav-open {
   }
 
   .hero-evryka--allbirds .hero-slide--repair .hero-evryka__content,
-  .hero-evryka--allbirds .hero-slide--3d-print .hero-evryka__content {
+  .hero-evryka--allbirds .hero-slide--3d-print .hero-evryka__content,
+  .hero-evryka--allbirds .hero-slide--gift .hero-evryka__content {
     justify-content: flex-start;
     align-items: stretch;
     text-align: left;
@@ -1140,7 +1157,8 @@ body.header-nav-open {
   }
 
   .hero-evryka--allbirds .hero-slide--repair .hero-evryka__panel,
-  .hero-evryka--allbirds .hero-slide--3d-print .hero-evryka__panel {
+  .hero-evryka--allbirds .hero-slide--3d-print .hero-evryka__panel,
+  .hero-evryka--allbirds .hero-slide--gift .hero-evryka__panel {
     max-width: 100%;
     text-align: left;
     margin-right: auto;
@@ -1153,7 +1171,8 @@ body.header-nav-open {
   }
 
   .hero-evryka--allbirds .hero-slide--repair .hero-evryka__title,
-  .hero-evryka--allbirds .hero-slide--3d-print .hero-evryka__title {
+  .hero-evryka--allbirds .hero-slide--3d-print .hero-evryka__title,
+  .hero-evryka--allbirds .hero-slide--gift .hero-evryka__title {
     margin-left: 0;
     margin-right: 0;
   }

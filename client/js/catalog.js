@@ -1,4 +1,6 @@
 let catalogPopularList = null;
+/** Якщо задано (з URL ?cats=...), показуємо товари з кількох категорій одночасно */
+let catalogMultiCats = null;
 
 function closeAllCatalogSelects() {
   document.querySelectorAll(".catalog-select-wrap.is-open").forEach((wrap) => {
@@ -182,7 +184,14 @@ async function applyCatalogFilters() {
   }
 
   const cat = catEl?.value || "all";
-  if (cat && cat !== "all") {
+  if (cat === "__multi__" && catalogMultiCats && catalogMultiCats.length > 0) {
+    list = list.filter((p) =>
+      catalogMultiCats.some(
+        (c) =>
+          String(p?.category || "").toLowerCase().trim() === String(c).toLowerCase().trim()
+      )
+    );
+  } else if (cat && cat !== "all") {
     list = list.filter(
       (p) => String(p?.category || "").toLowerCase().trim() === String(cat).toLowerCase().trim()
     );
@@ -219,11 +228,26 @@ function initCatalogFilterControls() {
   if (resetBtn) {
     resetBtn.addEventListener("click", () => {
       if (sortEl) sortEl.value = "default";
-      if (catEl) catEl.value = "all";
+      if (catEl) {
+        catEl.querySelector('option[value="__multi__"]')?.remove();
+        catEl.value = "all";
+        catalogMultiCats = null;
+      }
       if (minEl) minEl.value = "";
       if (maxEl) maxEl.value = "";
       document.querySelectorAll(".catalog-select-wrap").forEach((w) => syncCatalogSelectUI(w));
       applyCatalogFilters();
+    });
+  }
+
+  if (catEl) {
+    catEl.addEventListener("change", () => {
+      if (catEl.value !== "__multi__") {
+        catalogMultiCats = null;
+        catEl.querySelector('option[value="__multi__"]')?.remove();
+        const wrap = catEl.closest(".catalog-select-wrap");
+        if (wrap) syncCatalogSelectUI(wrap);
+      }
     });
   }
 }
@@ -234,6 +258,14 @@ function initCatalogPage() {
   initCatalogCustomSelect("catalogSort");
 
   const products = Array.isArray(allProducts) ? allProducts : [];
+  const params = new URLSearchParams(window.location.search);
+  const catsParam = params.get("cats");
+  if (catsParam) {
+    catalogMultiCats = catsParam.split(",").map((s) => s.trim()).filter(Boolean);
+  } else {
+    catalogMultiCats = null;
+  }
+
   const catSelect = document.getElementById("catalogFilterCategory");
   if (catSelect) {
     const categories = getCatalogCategories(products);
@@ -244,6 +276,13 @@ function initCatalogPage() {
       opt.textContent = c;
       catSelect.appendChild(opt);
     });
+    if (catalogMultiCats && catalogMultiCats.length > 0) {
+      const opt = document.createElement("option");
+      opt.value = "__multi__";
+      opt.textContent = "Іграшки та брелоки";
+      catSelect.appendChild(opt);
+      catSelect.value = "__multi__";
+    }
   }
 
   initCatalogCustomSelect("catalogFilterCategory");
