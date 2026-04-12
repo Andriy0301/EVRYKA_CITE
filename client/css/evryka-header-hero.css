@@ -3,6 +3,7 @@
 :root {
   --bg-main: #f8f5f2;
   --bg-section: #f1ece7;
+  /* застарілий акцент; кошик/чат — світлі панелі в style.css */
   --ev-panel-chrome: #635d5a;
   --surface-primary: #ffffff;
   --surface-secondary: #fdfcfb;

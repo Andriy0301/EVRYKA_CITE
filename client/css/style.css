@@ -3,7 +3,7 @@
   --bg-main: #f8f5f2;
   --bg-section: #f1ece7;
   --footer-bg: #e8e9ec;
-  /* Кошик, обрані, вікно «Напишіть нам» */
+  /* Резерв (панелі за замовчуванням світлі; темний не використовуємо для кошика/чату) */
   --ev-panel-chrome: #635d5a;
   --surface-primary: #ffffff;
   --surface-secondary: #fdfcfb;
@@ -309,13 +309,13 @@ a:hover {
     calc(100vw - var(--ev-header-bar-top, 16px) - var(--ev-cart-side-inset))
   );
 
-  background: var(--ev-panel-chrome);
-  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: var(--ev-surface);
+  border: 1px solid var(--ev-line);
   /* Той самий радіус, що й у плаваючої шапки (.header--home-detached) */
   border-radius: var(--ev-header-bar-radius, 20px);
   box-shadow:
-    0 24px 48px rgba(0, 0, 0, 0.28),
-    0 8px 20px rgba(0, 0, 0, 0.18);
+    0 24px 48px rgba(0, 0, 0, 0.1),
+    0 8px 20px rgba(0, 0, 0, 0.06);
 
   transform: translateX(calc(100% + var(--ev-cart-side-inset)));
   transition: transform 0.3s ease;
@@ -327,7 +327,7 @@ a:hover {
   padding: 12px;
   box-sizing: border-box;
   overflow: hidden;
-  color: rgba(255, 255, 255, 0.92);
+  color: var(--ev-ink);
 }
 
 /* 🔥 активний */
@@ -379,7 +379,7 @@ a:hover {
 .cart-sidebar #cartItems > p,
 .cart-sidebar #favoritesItems > p {
   margin: 16px 8px;
-  color: rgba(255, 255, 255, 0.78);
+  color: var(--ev-muted);
   font-size: 14px;
 }
 
@@ -387,55 +387,48 @@ a:hover {
   box-shadow: none;
 }
 
+/* Малий контейнер під текстом рядка — молочний фон */
 .cart-sidebar .cart-item {
-  border-bottom-color: rgba(255, 255, 255, 0.14);
+  border-bottom: none;
+  margin-bottom: 8px;
+  padding: 12px 40px 12px 12px;
+  background: var(--bg-section);
+  border-radius: 12px;
 }
 
 .cart-sidebar .cart-info h4 {
-  color: rgba(255, 255, 255, 0.96);
+  color: var(--ev-ink);
 }
 
 .cart-sidebar .cart-info p {
-  color: rgba(255, 255, 255, 0.92);
+  color: var(--ev-ink);
 }
 
 .cart-sidebar .cart-info span {
-  color: rgba(255, 255, 255, 0.62);
+  color: var(--ev-muted);
 }
 
 .cart-sidebar .remove-btn {
-  background: rgba(255, 255, 255, 0.12);
-  color: rgba(255, 255, 255, 0.9);
+  background: var(--ev-surface-muted);
+  color: var(--ev-ink);
 }
 
 .cart-sidebar .remove-btn:hover {
-  background: rgba(255, 255, 255, 0.2);
-  color: #fff;
+  background: var(--ev-btn-dark);
+  color: var(--ev-ink);
 }
 
 .cart-sidebar .cart-footer {
   background: transparent;
-  border-top-color: rgba(255, 255, 255, 0.14);
+  border-top-color: var(--ev-border-hair);
 }
 
 .cart-sidebar .cart-total {
-  color: rgba(255, 255, 255, 0.88);
+  color: var(--ev-ink);
 }
 
 .cart-sidebar .cart-total b {
-  color: rgba(255, 255, 255, 0.98);
-}
-
-.cart-sidebar .cart-footer .clear-btn {
-  background: rgba(255, 255, 255, 0.08);
-  color: rgba(255, 255, 255, 0.92);
-  border: 1px solid rgba(255, 255, 255, 0.22);
-}
-
-.cart-sidebar .cart-footer .clear-btn:hover {
-  background: rgba(255, 255, 255, 0.14);
-  border-color: rgba(255, 255, 255, 0.32);
-  color: #fff;
+  color: var(--ev-price);
 }
 
 
@@ -599,11 +592,11 @@ a:hover {
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: 4px;
+  gap: 8px;
   width: fit-content;
   max-width: 100%;
   margin: 15px auto 0;
-  padding: 8px 14px;
+  padding: 11px 20px;
   flex-wrap: wrap;
   box-sizing: border-box;
 
@@ -614,16 +607,16 @@ a:hover {
 }
 
 .tab {
-  padding: 6px 10px 7px;
+  padding: 8px 14px 10px;
   margin: 0;
   border-radius: 0;
   border: none;
   background: transparent;
   color: var(--ev-ink);
 
-  font-size: 12px;
+  font-size: 13px;
   font-weight: 600;
-  letter-spacing: 0.07em;
+  letter-spacing: 0.08em;
   text-transform: uppercase;
 
   cursor: pointer;
@@ -634,9 +627,9 @@ a:hover {
 .tab::after {
   content: "";
   position: absolute;
-  left: 8px;
-  right: 8px;
-  bottom: 2px;
+  left: 10px;
+  right: 10px;
+  bottom: 3px;
   height: 2px;
   background: var(--ev-accent);
   transform: scaleX(0);
@@ -2618,7 +2611,7 @@ body.cart-open .header .cart {
   border: none;
   border-radius: 6px;
   background: transparent;
-  color: var(--ev-surface);
+  color: var(--ev-ink);
   font-size: 22px;
   line-height: 1;
   cursor: pointer;
@@ -2630,7 +2623,7 @@ body.cart-open .header .cart {
 
 .chat-widget-close:hover,
 .cart-head-float-close:hover {
-  background: rgba(255, 255, 255, 0.14);
+  background: var(--ev-surface-muted);
 }
 .close-btn {
   width: 28px;
@@ -3555,17 +3548,17 @@ body.cart-open .header .cart {
   position: sticky;
   top: calc(var(--ev-header-h, 72px) + 12px);
   padding: clamp(18px, 2.2vw, 24px);
-  background: var(--catalog-panel-bg, var(--ev-panel-chrome));
-  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: var(--catalog-panel-bg, var(--bg-section));
+  border: 1px solid var(--ev-border-hair);
   border-radius: clamp(8px, 1vw, 12px);
-  box-shadow: 0 8px 28px rgba(0, 0, 0, 0.22), 0 2px 8px rgba(0, 0, 0, 0.14);
+  box-shadow: 0 8px 28px rgba(0, 0, 0, 0.08), 0 2px 8px rgba(0, 0, 0, 0.04);
   font-size: 15px;
 }
 
 .page-catalog .catalog-filters {
   border-radius: clamp(16px, 2.2vw, 24px);
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  box-shadow: 0 10px 32px rgba(0, 0, 0, 0.26), 0 3px 10px rgba(0, 0, 0, 0.16);
+  border: 1px solid var(--ev-border-hair);
+  box-shadow: 0 10px 32px rgba(0, 0, 0, 0.08), 0 3px 10px rgba(0, 0, 0, 0.05);
 }
 
 /* Поля та кнопки всередині панелі — білий фон і чіткіша межа, щоб не зливались з --catalog-panel-bg */
@@ -3887,10 +3880,10 @@ body.cart-open .header .cart {
   width: 100%;
   min-width: 0;
   box-sizing: border-box;
-  background: var(--catalog-panel-bg, var(--ev-panel-chrome));
+  background: var(--catalog-panel-bg, var(--bg-section));
   border-radius: clamp(8px, 1vw, 14px);
   padding: var(--catalog-heading-gap) clamp(14px, 2vw, 22px) clamp(12px, 1.8vw, 18px);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  border: 1px solid var(--ev-border-hair);
 }
 
 .page-catalog .catalog-products-inner {
@@ -4130,10 +4123,10 @@ body.cart-open .chat-widget-root {
   padding: 10px 10px 10px;
   border-radius: 14px;
   overflow: visible;
-  background: var(--ev-panel-chrome);
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  box-shadow: 0 16px 44px rgba(0, 0, 0, 0.28), 0 6px 16px rgba(0, 0, 0, 0.18);
-  color: rgba(255, 255, 255, 0.88);
+  background: var(--ev-surface);
+  border: 1px solid var(--ev-border-hair);
+  box-shadow: 0 16px 44px rgba(0, 0, 0, 0.1), 0 6px 16px rgba(0, 0, 0, 0.06);
+  color: var(--ev-ink);
 }
 
 .chat-widget-panel.is-open {
@@ -4158,7 +4151,7 @@ body.cart-open .chat-widget-root {
   }
 }
 
-/* Плаваюча смуга заголовка чату / кошика / обраних — той самий корпус #635d5a, світлий текст */
+/* Плаваюча смуга заголовка чату / кошика / обраних — світла, як шапка-картка */
 .chat-widget-head-float,
 .cart-head-float {
   flex-shrink: 0;
@@ -4168,14 +4161,14 @@ body.cart-open .chat-widget-root {
   align-items: center;
   justify-content: space-between;
   padding: 10px 12px;
-  background: var(--ev-panel-chrome);
-  color: var(--ev-surface);
+  background: var(--ev-surface);
+  color: var(--ev-ink);
   font-weight: 700;
   font-size: 15px;
   border-radius: 10px;
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.12);
+  border: 1px solid var(--ev-border-hair);
+  border-bottom: 1px solid var(--ev-border-hair);
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
 }
 
 /* Середня зона + нижній плаваючий блок; сам лист без рамки — рамки у повідомлень і compose-float */
@@ -4234,7 +4227,7 @@ body.cart-open .chat-widget-root {
   max-width: 92%;
   padding: 10px 12px;
   border-radius: 12px 12px 12px 4px;
-  background: var(--ev-surface);
+  background: var(--bg-section);
   border: 1px solid var(--ev-border-hair);
   color: var(--ev-ink);
   box-shadow: 0 1px 3px rgba(var(--ev-rgb), 0.06);
@@ -4245,8 +4238,8 @@ body.cart-open .chat-widget-root {
   max-width: 92%;
   padding: 10px 12px;
   border-radius: 12px 12px 4px 12px;
-  background: var(--ev-surface-elevated);
-  border: 1px solid var(--ev-line);
+  background: var(--bg-section);
+  border: 1px solid var(--ev-border-mid);
   color: var(--ev-ink);
 }
 
@@ -4283,7 +4276,7 @@ body.cart-open .chat-widget-root {
   border-radius: 7px;
   padding: 8px 12px;
   background: var(--ev-accent);
-  color: var(--ev-surface);
+  color: var(--ev-text-on-accent);
   font-weight: 700;
   font-size: 13px;
   cursor: pointer;
@@ -4336,17 +4329,10 @@ body.evryka-site.page-cabinet {
   --ev-p-toggle-shadow: 0 1px 0 rgba(255, 255, 255, 0.95) inset, 0 4px 16px rgba(0, 0, 0, 0.05);
 }
 
-/* Панелі фільтрів / «Каталог товарів» / контент кабінету — той самий #635d5a, що кошик */
+/* Панелі фільтрів / блок каталогу: секційний молочний фон */
 body.evryka-site.page-catalog,
 body.evryka-site.page-cabinet {
-  --catalog-panel-bg: var(--ev-panel-chrome);
-}
-
-/* Фон за межами білої «картки» shell / product-page (поля сторінки) */
-body.evryka-site.page-product,
-body.evryka-site.page-catalog,
-body.evryka-site.page-cabinet {
-  background: var(--ev-panel-chrome);
+  --catalog-panel-bg: var(--bg-section);
 }
 
 /*
@@ -5013,10 +4999,10 @@ body.evryka-site.page-cabinet {
   /* Додатковий низ, щоб власна тінь секції не «різалась» у межах потоку; боки — як у .product-page */
   padding: var(--product-rhythm) var(--similar-h-pad-r) calc(var(--product-rhythm) + 10px)
     var(--similar-h-pad-l);
-  background: var(--ev-panel-chrome);
+  background: var(--ev-p-card);
   border-radius: clamp(18px, 2.3vw, 26px);
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  box-shadow: 0 10px 32px rgba(0, 0, 0, 0.22), 0 3px 10px rgba(0, 0, 0, 0.14);
+  border: 1px solid var(--ev-p-line-soft);
+  box-shadow: var(--ev-p-shadow-sm);
   overflow: visible;
 }
 
@@ -5026,7 +5012,7 @@ body.evryka-site.page-cabinet {
   font-weight: 700;
   letter-spacing: 0.07em;
   text-transform: uppercase;
-  color: rgba(255, 255, 255, 0.9);
+  color: var(--ev-p-ink);
   margin-bottom: clamp(14px, 2.5vw, 20px);
 }
 
@@ -5060,10 +5046,12 @@ body.evryka-site.page-cabinet {
 .page-product .similar-arrow {
   width: 46px;
   height: 46px;
-  border: 1px solid rgba(255, 255, 255, 0.22);
-  background: rgba(255, 255, 255, 0.12);
-  color: rgba(255, 255, 255, 0.95);
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.15);
+  border: 1px solid rgba(var(--ev-rgb), 0.2);
+  background: var(--ev-p-card);
+  color: var(--ev-p-ink);
+  box-shadow:
+    var(--ev-p-shadow-sm),
+    0 0 0 1px rgba(255, 255, 255, 0.95) inset;
 }
 
 .page-product .similar-arrow.similar-arrow--prev,
@@ -5104,10 +5092,12 @@ body.evryka-site.page-cabinet {
 .page-product .similar-arrow:disabled,
 .page-product .similar-arrow:disabled:hover {
   cursor: default;
-  background: rgba(255, 255, 255, 0.06);
-  color: rgba(255, 255, 255, 0.35);
-  border-color: rgba(255, 255, 255, 0.1);
-  box-shadow: none;
+  background: var(--ev-p-card);
+  color: var(--ev-p-ink);
+  border-color: rgba(var(--ev-rgb), 0.18);
+  box-shadow:
+    var(--ev-p-shadow-sm),
+    0 0 0 1px rgba(255, 255, 255, 0.95) inset;
   opacity: 1;
   transform: none;
 }
