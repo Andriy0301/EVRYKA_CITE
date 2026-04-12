@@ -92,12 +92,14 @@ function toggleCart(open) {
   const overlay = document.getElementById("cartOverlay");
 
   if (open) {
-    sidebar.classList.add("active");
-    overlay.classList.add("active");
+    if (sidebar) sidebar.classList.add("active");
+    if (overlay) overlay.classList.add("active");
+    if (sidebar) document.body.classList.add("cart-open");
     renderCart();
   } else {
-    sidebar.classList.remove("active");
-    overlay.classList.remove("active");
+    if (sidebar) sidebar.classList.remove("active");
+    if (overlay) overlay.classList.remove("active");
+    document.body.classList.remove("cart-open");
   }
 }
 
