@@ -89,11 +89,11 @@ function renderItems(items) {
       <div style="flex:1;">
         <h4 style="margin:0 0 4px;">${item.name}</h4>
         <p style="margin:0 0 8px;">${item.price} грн x ${qty}</p>
-        <div class="qty-wrapper order-qty-wrapper">
+        <div class="qty-wrapper cart-qty-wrapper">
           <button type="button" class="qty-btn order-qty-minus" data-id="${item.id}" aria-label="Зменшити кількість">
             <svg viewBox="0 0 24 24"><path d="M5 12h14"/></svg>
           </button>
-          <span class="order-qty-value">${qty}</span>
+          <input type="number" class="qty-input" value="${qty}" min="1" max="99" data-id="${item.id}" aria-label="Кількість" />
           <button type="button" class="qty-btn order-qty-plus" data-id="${item.id}" aria-label="Збільшити кількість">
             <svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>
           </button>
@@ -112,6 +112,9 @@ function renderItems(items) {
   container.querySelectorAll(".order-qty-plus").forEach((btn) => {
     btn.addEventListener("click", () => changeOrderItemQty(btn.dataset.id, 1));
   });
+  container.querySelectorAll("#orderItems .qty-input").forEach((input) => {
+    input.addEventListener("change", () => setOrderItemQtyFromInput(input.dataset.id, input.value));
+  });
   container.querySelectorAll(".order-remove-btn").forEach((btn) => {
     btn.addEventListener("click", () => removeOrderItem(btn.dataset.id));
   });
@@ -129,6 +132,18 @@ function changeOrderItemQty(itemId, delta) {
     items[index].qty = nextQty;
   }
 
+  const updated = saveCheckoutItems(items);
+  renderItems(updated);
+}
+
+function setOrderItemQtyFromInput(itemId, value) {
+  let qty = parseInt(String(value), 10);
+  if (Number.isNaN(qty) || qty < 1) qty = 1;
+  if (qty > 99) qty = 99;
+  const items = getCheckoutItems();
+  const index = items.findIndex((item) => String(item.id) === String(itemId));
+  if (index < 0) return;
+  items[index].qty = qty;
   const updated = saveCheckoutItems(items);
   renderItems(updated);
 }
