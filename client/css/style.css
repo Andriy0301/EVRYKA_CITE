@@ -1,33 +1,46 @@
-/* Глобальна палітра EVRYKA — темна база + теплий помаранчевий акцент (синхронно з evryka-header-hero.css) */
+/* Глобальна палітра EVRYKA — світла база + акцент (синхронно з evryka-header-hero.css) */
 :root {
-  --ev-black: #111111;
-  --ev-surface-dark: #1f2937;
-  --ev-gray: #6b7280;
-  --ev-milk: #f8f5f2;
-  --ev-text-on-accent: #111111;
+  --bg-main: #f8f5f2;
+  --bg-section: #f1ece7;
+  --surface-primary: #ffffff;
+  --surface-secondary: #fdfcfb;
+  --border-light: #e5e7eb;
+  --border-soft: #eeeae6;
+  --text-primary: #111111;
+  --text-secondary: #6b7280;
+  --text-muted: #9ca3af;
+  --accent-main: #fb923c;
+  --accent-hover: #f97316;
+  --accent-soft: #fed7aa;
+  --icon-default: #6b7280;
+  --icon-active: #fb923c;
 
-  --ev-rgb: 31, 41, 55;
-  --ev-shell-bg: #111111;
-  --ev-bg-gradient: linear-gradient(180deg, #111111 0%, #1f2937 100%);
-  --ev-accent-gradient: linear-gradient(135deg, #fb923c 0%, #f97316 100%);
-  --ev-surface: #1f2937;
-  --ev-surface-muted: #252b3a;
-  --ev-surface-elevated: #374151;
-  --ev-ink: #f8f5f2;
-  --ev-muted: #6b7280;
-  --ev-muted-nav: #9ca3af;
-  --ev-line: rgba(255, 255, 255, 0.08);
-  --ev-line-strong: rgba(255, 255, 255, 0.14);
-  --ev-accent: #fb923c;
-  --ev-accent-hover: #f97316;
-  --ev-accent-soft: rgba(251, 146, 60, 0.22);
-  --ev-header-surface: var(--ev-milk);
-  --ev-border-hair: rgba(255, 255, 255, 0.08);
-  --ev-border-mid: rgba(255, 255, 255, 0.14);
-  --ev-heart: #fb7185;
-  /* Другорядні темні кнопки / панелі */
-  --ev-btn-dark: #1f2937;
-  --ev-btn-dark-hover: #374151;
+  --ev-black: var(--text-primary);
+  --ev-milk: var(--bg-main);
+  --ev-text-on-accent: var(--text-primary);
+  --ev-rgb: 17, 17, 17;
+  --ev-shell-bg: var(--bg-main);
+  --ev-bg-gradient: linear-gradient(180deg, var(--bg-main) 0%, var(--bg-section) 100%);
+  --ev-accent-gradient: linear-gradient(135deg, var(--accent-main) 0%, var(--accent-hover) 100%);
+  --ev-surface: var(--surface-primary);
+  --ev-surface-dark: var(--bg-section);
+  --ev-surface-muted: var(--bg-section);
+  --ev-surface-elevated: var(--surface-secondary);
+  --ev-ink: var(--text-primary);
+  --ev-muted: var(--text-secondary);
+  --ev-muted-nav: var(--text-muted);
+  --ev-line: var(--border-soft);
+  --ev-line-strong: var(--border-light);
+  --ev-accent: var(--accent-main);
+  --ev-accent-hover: var(--accent-hover);
+  --ev-accent-soft: var(--accent-soft);
+  --ev-header-surface: var(--surface-primary);
+  --ev-border-hair: var(--border-light);
+  --ev-border-mid: var(--border-soft);
+  --ev-heart: var(--accent-main);
+  --ev-btn-dark: var(--bg-section);
+  --ev-btn-dark-hover: var(--surface-secondary);
+  --ev-gray: var(--text-secondary);
   --ev-font: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, "PT Sans Caption", sans-serif;
 }
 
@@ -57,14 +70,14 @@ a:hover {
 #search {
   width: 300px;
   padding: 10px;
-  color: var(--ev-milk);
+  color: var(--text-primary);
   border-radius: 10px;
-  border: 1px solid var(--ev-line-strong);
-  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid var(--border-light);
+  background: var(--surface-primary);
 }
 .print {
-  background: var(--ev-surface-dark);
-  color: var(--ev-milk);
+  background: var(--bg-section);
+  color: var(--text-primary);
   padding: 40px;
   text-align: center;
 }
@@ -283,8 +296,8 @@ a:hover {
   /* Той самий радіус, що й у плаваючої шапки (.header--home-detached) */
   border-radius: var(--ev-header-bar-radius, 20px);
   box-shadow:
-    0 24px 48px rgba(0, 0, 0, 0.45),
-    0 8px 20px rgba(0, 0, 0, 0.28);
+    0 24px 48px rgba(0, 0, 0, 0.1),
+    0 8px 20px rgba(0, 0, 0, 0.06);
 
   transform: translateX(calc(100% + var(--ev-cart-side-inset)));
   transition: transform 0.3s ease;
@@ -446,8 +459,8 @@ a:hover {
 .product {
   --product-card-radius: 18px;
   --product-buy-btn-radius: 13px;
-  background: var(--ev-milk);
-  border: 1px solid rgba(17, 17, 17, 0.08);
+  background: var(--surface-primary);
+  border: 1px solid var(--border-light);
   border-radius: var(--product-card-radius);
   box-shadow:
     0 12px 40px rgba(0, 0, 0, 0.12),
@@ -482,7 +495,7 @@ a:hover {
   font-size: 16px;
   font-weight: 500;
 
-  color: var(--ev-black);
+  color: var(--text-primary);
 
   margin-bottom: 10px;
 
@@ -561,7 +574,7 @@ a:hover {
   background: var(--ev-surface);
   border-radius: 999px;
   border: 1px solid var(--ev-line);
-  box-shadow: 0 12px 36px rgba(0, 0, 0, 0.35), 0 4px 12px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 12px 36px rgba(0, 0, 0, 0.1), 0 4px 12px rgba(0, 0, 0, 0.05);
 }
 
 .tab {
@@ -623,7 +636,7 @@ a:hover {
 
 /* Як у хедері: при наведенні на рядок інші пункти сіріють */
 .category-tabs:hover .tab {
-  color: #9a9a9a;
+  color: var(--text-muted);
 }
 
 .category-tabs:hover .tab:hover {
@@ -890,18 +903,18 @@ a:hover {
   height: 44px;
   border-radius: 50%;
   border: 1px solid rgba(255, 255, 255, 0.12);
-  background: var(--ev-milk);
+  background: var(--surface-primary);
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
   transition: background 0.2s, border-color 0.2s;
 }
 
 .hero-carousel-prev:hover,
 .hero-carousel-next:hover {
-  background: #ece8e3;
+  background: var(--surface-secondary);
 }
 
 .hero-carousel-prev {
@@ -1498,7 +1511,7 @@ body.cart-open .header .cart {
   aspect-ratio: 1 / 1;
   object-fit: cover;
   border-radius: 10px;
-  background: #f0ebe3;
+  background: var(--bg-section);
 }
 
 .similar-card h4 {
@@ -1687,8 +1700,8 @@ body.cart-open .header .cart {
   right: 0;
   max-height: 220px;
   overflow-y: auto;
-  background: var(--ev-milk);
-  border: 1px solid var(--ev-line-strong);
+  background: var(--surface-primary);
+  border: 1px solid var(--border-light);
   border-radius: 10px;
   box-shadow: 0 12px 28px rgba(0, 0, 0, 0.35);
   z-index: 30;
@@ -1704,7 +1717,7 @@ body.cart-open .header .cart {
   border-radius: 8px;
   padding: 10px 12px;
   font-size: 14px;
-  color: var(--ev-black);
+  color: var(--text-primary);
   cursor: pointer;
 }
 
@@ -1741,11 +1754,11 @@ body.cart-open .header .cart {
 
 .auth-modal-content {
   width: min(440px, 92vw);
-  background: var(--ev-milk);
-  color: var(--ev-black);
+  background: var(--surface-primary);
+  color: var(--text-primary);
   border-radius: 14px;
   padding: 20px;
-  border: 1px solid var(--ev-line-strong);
+  border: 1px solid var(--border-light);
 }
 
 #registerForm {
@@ -1755,12 +1768,12 @@ body.cart-open .header .cart {
 
 .auth-light {
   width: min(520px, 92vw);
-  background: var(--ev-milk);
-  color: var(--ev-black);
+  background: var(--surface-primary);
+  color: var(--text-primary);
   border-radius: 14px;
   padding: 28px 30px 24px;
-  box-shadow: 0 14px 35px rgba(0, 0, 0, 0.45);
-  border: 1px solid var(--ev-line-strong);
+  box-shadow: 0 14px 35px rgba(0, 0, 0, 0.12);
+  border: 1px solid var(--border-light);
 }
 
 .auth-title {
@@ -1768,14 +1781,14 @@ body.cart-open .header .cart {
   font-size: 38px;
   font-weight: 600;
   margin: 0 0 20px;
-  color: var(--ev-black);
+  color: var(--text-primary);
 }
 
 .auth-input {
-  background: rgba(17, 17, 17, 0.04);
-  border: 1px solid var(--ev-border-mid);
+  background: var(--surface-secondary);
+  border: 1px solid var(--border-light);
   border-radius: 10px;
-  color: var(--ev-black);
+  color: var(--text-primary);
   padding: 12px 14px;
   font-size: 16px;
   outline: none;
@@ -1877,7 +1890,7 @@ body.cart-open .header .cart {
   background: var(--ev-surface);
   border: 1px solid var(--ev-line);
   border-radius: 14px;
-  box-shadow: 0 12px 36px rgba(0, 0, 0, 0.35);
+  box-shadow: 0 12px 36px rgba(0, 0, 0, 0.1);
   padding: 14px;
   display: grid;
   gap: 8px;
@@ -1912,13 +1925,13 @@ body.cart-open .header .cart {
 
 .cabinet-nav-btn.logout {
   margin-top: 10px;
-  background: #fff4f4;
-  border-color: #ffd2d2;
-  color: #b10000;
+  background: var(--surface-secondary);
+  border-color: var(--border-light);
+  color: var(--text-secondary);
 }
 
 .cabinet-nav-btn.logout:hover {
-  background: #ffe9e9;
+  background: var(--bg-section);
 }
 
 .cabinet-card {
@@ -1926,7 +1939,7 @@ body.cart-open .header .cart {
   background: var(--ev-surface);
   border: 1px solid var(--ev-line);
   border-radius: 14px;
-  box-shadow: 0 12px 36px rgba(0, 0, 0, 0.35);
+  box-shadow: 0 12px 36px rgba(0, 0, 0, 0.1);
   padding: 26px;
   --cabinet-field-stack: 12px;
 }
@@ -2344,7 +2357,7 @@ body.cart-open .header .cart {
 
 .remove-btn:hover {
   background: var(--ev-btn-dark);
-  color: white;
+  color: var(--text-primary);
 }
 
 .cart-footer button {
@@ -2589,7 +2602,7 @@ body.cart-open .header .cart {
 
 .close-btn:hover {
   background: var(--ev-btn-dark);
-  color: white;
+  color: var(--text-primary);
 }
 
 .buy-btn2 {
@@ -2724,7 +2737,7 @@ body.cart-open .header .cart {
 
 .qty-block button:hover {
   background: var(--ev-btn-dark);
-  color: white;
+  color: var(--text-primary);
 }
 
 .qty-block input {
@@ -3166,9 +3179,9 @@ body.cart-open .header .cart {
   text-decoration: underline;
 }
 .footer {
-  background: var(--ev-black);
-  color: var(--ev-milk);
-  border-top: 1px solid var(--ev-line);
+  background: var(--bg-section);
+  color: var(--text-primary);
+  border-top: 1px solid var(--border-light);
   margin-top: 60px;
 }
 
@@ -3206,7 +3219,7 @@ body.cart-open .header .cart {
 .phone {
   font-weight: 700;
   font-size: 16px;
-  color: var(--ev-milk);
+  color: var(--text-primary);
 }
 
 /* соц */
@@ -3220,7 +3233,8 @@ body.cart-open .header .cart {
   width: 36px;
   height: 36px;
 
-  background: rgba(255,255,255,0.1);
+  background: var(--surface-primary);
+  border: 1px solid var(--border-light);
   border-radius: 8px;
 
   display: flex;
@@ -3228,11 +3242,13 @@ body.cart-open .header .cart {
   justify-content: center;
 
   font-size: 16px;
+  color: var(--icon-default);
 }
 
 .socials a:hover {
-  background: var(--ev-accent-soft);
-  color: var(--ev-accent);
+  background: var(--accent-soft);
+  color: var(--accent-main);
+  border-color: var(--accent-soft);
 }
 
 /* оплата */
@@ -3249,7 +3265,8 @@ body.cart-open .header .cart {
 }
 
 .payments span {
-  background: rgba(255,255,255,0.1);
+  background: var(--surface-primary);
+  border: 1px solid var(--border-light);
   padding: 6px 10px;
   border-radius: 6px;
   font-size: 12px;
@@ -3257,7 +3274,7 @@ body.cart-open .header .cart {
 
 /* низ */
 .footer-bottom {
-  border-top: 1px solid rgba(255,255,255,0.1);
+  border-top: 1px solid var(--border-light);
 
   display: flex;
   justify-content: space-between;
@@ -3277,7 +3294,7 @@ body.cart-open .header .cart {
   border: 1px solid var(--ev-line);
   border-radius: 18px;
   padding: 24px;
-  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.45);
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.1);
 }
 
 .order-success-header {
@@ -3733,7 +3750,7 @@ body.cart-open .header .cart {
   background: var(--ev-surface);
   border: 1px solid var(--ev-line-strong);
   border-radius: 12px;
-  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.45);
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.12);
   max-height: 280px;
   overflow-y: auto;
 }
@@ -3833,8 +3850,14 @@ body.cart-open .header .cart {
   max-width: none;
   margin-left: 0;
   margin-right: 0;
-  /* Верхній відступ = бічним (у спільному правилі зверху був менший --catalog-heading-gap) */
-  padding: clamp(14px, 2vw, 22px) clamp(14px, 2vw, 22px) clamp(12px, 1.8vw, 18px);
+  padding-top: var(--catalog-heading-gap);
+  padding-right: clamp(14px, 2vw, 22px);
+  padding-bottom: clamp(12px, 1.8vw, 18px);
+  /* Зліва — та сама відстань від лівого краю вікна до контенту шапки, що й для логотипу */
+  padding-left: calc(
+    var(--ev-stack-outer, 0px) + env(safe-area-inset-left, 0px) + var(--ev-header-float-inset) +
+      var(--ev-logo-inset-left, 12px)
+  );
 }
 
 .catalog-products-section.products {
@@ -3878,8 +3901,8 @@ body.cart-open .header .cart {
   --product-card-radius: var(--ev-shell-radius, clamp(14px, 2vw, 18px));
   --product-buy-btn-radius: var(--ev-header-bar-radius, 13px);
   padding: 15px;
-  background: var(--ev-p-card, var(--ev-milk));
-  border: 1px solid var(--ev-p-line-soft, rgba(17, 17, 17, 0.08));
+  background: var(--ev-p-card, var(--surface-primary));
+  border: 1px solid var(--ev-p-line-soft, var(--border-light));
   box-shadow:
     0 12px 40px rgba(0, 0, 0, 0.1),
     0 4px 16px rgba(0, 0, 0, 0.05);
@@ -3888,7 +3911,7 @@ body.cart-open .header .cart {
 .page-catalog .catalog-products-grid .product h3 {
   font-size: 17px;
   min-height: 44px;
-  color: var(--ev-black);
+  color: var(--text-primary);
 }
 
 .page-catalog .catalog-products-grid .product:hover {
@@ -3897,7 +3920,7 @@ body.cart-open .header .cart {
     0 22px 48px rgba(0, 0, 0, 0.14),
     0 10px 24px rgba(0, 0, 0, 0.08),
     0 4px 12px rgba(0, 0, 0, 0.05);
-  border-color: rgba(17, 17, 17, 0.12);
+  border-color: var(--border-light);
 }
 
 .page-catalog .catalog-products-grid .product img {
@@ -4084,8 +4107,8 @@ body.cart-open .chat-widget-root {
   align-items: center;
   justify-content: space-between;
   padding: 10px 12px;
-  background: var(--ev-btn-dark);
-  color: var(--ev-surface);
+  background: var(--bg-section);
+  color: var(--text-primary);
   font-weight: 700;
   font-size: 15px;
   border-radius: 10px;
@@ -4240,16 +4263,16 @@ body.evryka-site.page-cabinet {
   --product-rhythm: clamp(24px, 3.5vw, 40px);
   --ev-p-ink: var(--ev-ink);
   --ev-p-muted: var(--ev-muted);
-  --ev-p-line: var(--ev-line);
-  --ev-p-line-soft: rgba(var(--ev-rgb), 0.06);
-  --ev-p-card: var(--ev-surface);
-  --ev-p-tier2: var(--ev-surface-muted);
-  --ev-p-well: var(--ev-surface-elevated);
-  --ev-p-shadow: 0 8px 32px rgba(var(--ev-rgb), 0.09), 0 2px 8px rgba(var(--ev-rgb), 0.05);
-  --ev-p-shadow-sm: 0 4px 16px rgba(var(--ev-rgb), 0.07);
-  --ev-p-toggle-bg: linear-gradient(180deg, var(--ev-surface) 0%, var(--ev-surface-muted) 100%);
-  --ev-p-toggle-border: rgba(var(--ev-rgb), 0.12);
-  --ev-p-toggle-shadow: 0 2px 0 rgba(255, 255, 255, 0.85) inset, 0 4px 16px rgba(var(--ev-rgb), 0.07);
+  --ev-p-line: var(--border-light);
+  --ev-p-line-soft: rgba(17, 17, 17, 0.06);
+  --ev-p-card: var(--surface-primary);
+  --ev-p-tier2: var(--bg-section);
+  --ev-p-well: var(--surface-secondary);
+  --ev-p-shadow: 0 8px 32px rgba(0, 0, 0, 0.08), 0 2px 8px rgba(0, 0, 0, 0.04);
+  --ev-p-shadow-sm: 0 4px 16px rgba(0, 0, 0, 0.06);
+  --ev-p-toggle-bg: linear-gradient(180deg, var(--surface-primary) 0%, var(--bg-section) 100%);
+  --ev-p-toggle-border: var(--border-light);
+  --ev-p-toggle-shadow: 0 1px 0 rgba(255, 255, 255, 0.95) inset, 0 4px 16px rgba(0, 0, 0, 0.05);
 }
 
 /* Єдиний фон для сайдбару фільтрів і блоку «Каталог товарів» (не shell-bg і не чисто білий) */
@@ -4315,10 +4338,14 @@ body.evryka-site.page-cabinet {
   --catalog-shell-pad-right: var(--product-rhythm);
 }
 
-/* Кабінет: без додаткового body padding — верхній паддінг shell як у каталозі (шапка поверх картки) */
+/* Кабінет: бічні відступи картки = як у .header--home-detached .header-inner (логотип / утиліти), не «впритул» до краю картки */
 .page-cabinet .catalog-shell {
-  padding-left: 0;
-  padding-right: 0;
+  padding-left: calc(
+    env(safe-area-inset-left, 0px) + var(--ev-header-float-inset) + var(--ev-logo-inset-left, 12px)
+  );
+  padding-right: calc(
+    env(safe-area-inset-right, 0px) + var(--ev-header-float-inset) + 20px
+  );
 }
 
 .page-cabinet .catalog-products-inner > .cabinet-card {
@@ -4346,7 +4373,7 @@ body.evryka-site.page-cabinet {
   flex: 1 1 100%;
   width: 100%;
   margin: 0;
-  padding: 0 clamp(14px, 2vw, 22px);
+  padding: 0;
   box-sizing: border-box;
   font-family: var(--ev-font, "Inter", system-ui, sans-serif);
   font-size: clamp(26px, 3vw, 34px);
@@ -4371,14 +4398,11 @@ body.evryka-site.page-cabinet {
   box-sizing: border-box;
 }
 
-/* Без додаткового зсуву — ряд «Назад» збігається з лівим паддінгом shell (як блок фільтрів) */
-.page-catalog .catalog-page-nav.product-nav {
+/* Без додаткового зсуву — ряд «Назад» збігається з лівим паддінгом shell */
+.page-catalog .catalog-page-nav.product-nav,
+.page-cabinet .catalog-shell > .product-nav.catalog-page-nav {
   margin-inline: 0;
   padding-inline: 0;
-}
-
-.page-cabinet .catalog-shell > .product-nav.catalog-page-nav {
-  padding-inline: clamp(14px, 2vw, 22px);
 }
 
 .page-catalog .back-btn,

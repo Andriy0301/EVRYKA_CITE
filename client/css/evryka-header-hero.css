@@ -1,33 +1,47 @@
 /* EVRYKA — header + hero (Allbirds-inspired, мінімалізм) */
 
 :root {
-  --ev-font: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
-  --ev-black: #111111;
-  --ev-surface-dark: #1f2937;
-  --ev-milk: #f8f5f2;
-  --ev-text-on-accent: #111111;
+  --bg-main: #f8f5f2;
+  --bg-section: #f1ece7;
+  --surface-primary: #ffffff;
+  --surface-secondary: #fdfcfb;
+  --border-light: #e5e7eb;
+  --border-soft: #eeeae6;
+  --text-primary: #111111;
+  --text-secondary: #6b7280;
+  --text-muted: #9ca3af;
+  --accent-main: #fb923c;
+  --accent-hover: #f97316;
+  --accent-soft: #fed7aa;
+  --icon-default: #6b7280;
+  --icon-active: #fb923c;
 
-  --ev-rgb: 31, 41, 55;
-  --ev-shell-bg: #111111;
-  --ev-bg-gradient: linear-gradient(180deg, #111111 0%, #1f2937 100%);
-  --ev-accent-gradient: linear-gradient(135deg, #fb923c 0%, #f97316 100%);
-  --ev-surface: #1f2937;
-  --ev-surface-muted: #252b3a;
-  --ev-surface-elevated: #374151;
-  --ev-ink: #f8f5f2;
-  --ev-muted: #6b7280;
-  --ev-muted-nav: #9ca3af;
-  --ev-line: rgba(255, 255, 255, 0.08);
-  --ev-line-strong: rgba(255, 255, 255, 0.14);
-  --ev-accent: #fb923c;
-  --ev-accent-hover: #f97316;
-  --ev-accent-soft: rgba(251, 146, 60, 0.22);
-  --ev-header-surface: var(--ev-milk);
-  --ev-border-hair: rgba(255, 255, 255, 0.08);
-  --ev-border-mid: rgba(255, 255, 255, 0.14);
-  --ev-heart: #fb7185;
-  --ev-btn-dark: #1f2937;
-  --ev-btn-dark-hover: #374151;
+  --ev-font: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --ev-black: var(--text-primary);
+  --ev-milk: var(--bg-main);
+  --ev-text-on-accent: var(--text-primary);
+  --ev-rgb: 17, 17, 17;
+  --ev-shell-bg: var(--bg-main);
+  --ev-bg-gradient: linear-gradient(180deg, var(--bg-main) 0%, var(--bg-section) 100%);
+  --ev-accent-gradient: linear-gradient(135deg, var(--accent-main) 0%, var(--accent-hover) 100%);
+  --ev-surface: var(--surface-primary);
+  --ev-surface-dark: var(--bg-section);
+  --ev-surface-muted: var(--bg-section);
+  --ev-surface-elevated: var(--surface-secondary);
+  --ev-ink: var(--text-primary);
+  --ev-muted: var(--text-secondary);
+  --ev-muted-nav: var(--text-muted);
+  --ev-line: var(--border-soft);
+  --ev-line-strong: var(--border-light);
+  --ev-accent: var(--accent-main);
+  --ev-accent-hover: var(--accent-hover);
+  --ev-accent-soft: var(--accent-soft);
+  --ev-header-surface: var(--surface-primary);
+  --ev-border-hair: var(--border-light);
+  --ev-border-mid: var(--border-soft);
+  --ev-heart: var(--accent-main);
+  --ev-btn-dark: var(--bg-section);
+  --ev-btn-dark-hover: var(--surface-secondary);
   --ev-header-h: 60px;
   --ev-shell-radius: clamp(18px, 2.3vw, 26px);
   --ev-shell-margin: clamp(10px, 1.8vw, 20px);
@@ -886,8 +900,8 @@ body.header-nav-open {
     align-items: stretch;
     padding: 20px;
     gap: 4px;
-    background: var(--ev-milk);
-    border-top: 1px solid rgba(17, 17, 17, 0.08);
+    background: var(--surface-primary);
+    border-top: 1px solid var(--border-light);
     transform: translateX(100%);
     transition: transform 0.28s ease;
     z-index: 1001;
@@ -895,7 +909,7 @@ body.header-nav-open {
   }
 
   .evryka-site .header .header-nav {
-    background: var(--ev-milk);
+    background: var(--surface-primary);
     border-top: none;
   }
 
