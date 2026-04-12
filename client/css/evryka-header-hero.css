@@ -40,6 +40,10 @@ body.evryka-site {
     calc(var(--ev-shell-radius) - var(--ev-header-float-inset) + 1px)
   );
   --ev-stack-outer: var(--ev-shell-margin);
+  /* Верх плаваючої смуги шапки (кошик вирівнюємо сюди — налягає на хедер, не вище його) */
+  --ev-header-bar-top: calc(
+    var(--ev-stack-outer) + var(--ev-header-float-inset) + env(safe-area-inset-top, 0px)
+  );
   --ev-header-h: calc(
     var(--ev-stack-outer) + var(--ev-header-float-inset) + 52px + env(safe-area-inset-top, 0px)
   );
@@ -90,7 +94,7 @@ body.evryka-site.page-product {
 /* Плаваюча шапка: fixed — завжди видима при скролі; вирівняна з «карткою» */
 .evryka-site .header.header--in-shell.header--home-detached {
   position: fixed;
-  top: calc(var(--ev-stack-outer) + var(--ev-header-float-inset) + env(safe-area-inset-top, 0px));
+  top: var(--ev-header-bar-top);
   left: calc(var(--ev-stack-outer) + var(--ev-header-float-inset) + env(safe-area-inset-left, 0px));
   right: calc(var(--ev-stack-outer) + var(--ev-header-float-inset) + env(safe-area-inset-right, 0px));
   z-index: 990;

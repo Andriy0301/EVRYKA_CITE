@@ -240,15 +240,16 @@ a {
 
 
 /* 🔥 sidebar — «плаваюча» картка з відступами від країв вікна */
-/* Верх не вище за зону під плаваючою шапкою (як --ev-header-h на evryka-site) */
+/* Верх збігається з верхом плаваючої шапки: кошик накладається на хедер, не заходить вище нього */
 .cart-sidebar {
   position: fixed;
-  top: max(
-    calc(var(--ev-header-h, 72px) + 12px),
-    calc(env(safe-area-inset-top, 0px) + 16px)
-  );
+  top: var(--ev-header-bar-top, max(16px, env(safe-area-inset-top, 0px)));
   right: max(16px, env(safe-area-inset-right));
-  bottom: max(16px, env(safe-area-inset-bottom));
+  /* Та сама відстань від краю, що й зверху (хедер); не менше за safe-area знизу */
+  bottom: max(
+    var(--ev-header-bar-top, 16px),
+    env(safe-area-inset-bottom, 0px)
+  );
   width: min(350px, calc(100vw - 32px));
 
   background: white;
@@ -1501,6 +1502,26 @@ body.cart-open .header .cart {
 
 .product .product-price-actions .favorite-btn {
   transform: none;
+}
+
+.page-product .product-price-actions .favorite-btn {
+  width: 32px;
+  height: 32px;
+}
+
+.page-product .product-price-actions .favorite-btn .heart-icon {
+  width: 28px;
+  height: 28px;
+}
+
+.page-product .product-price-actions .product-cart-btn {
+  width: 32px;
+  height: 32px;
+}
+
+.page-product .product-price-actions .cart-add-icon {
+  width: 28px;
+  height: 28px;
 }
 
 .product-cart-btn {
@@ -3676,11 +3697,13 @@ body.evryka-site.page-product {
   width: 100%;
   min-width: 100%;
   margin: 0;
-  padding-bottom: clamp(12px, 2vw, 20px);
+  padding-top: var(--product-rhythm);
+  padding-bottom: var(--product-rhythm);
   border-bottom: 1px solid var(--ev-p-line-soft, rgba(0, 0, 0, 0.06));
   flex-wrap: wrap;
   align-items: center;
   gap: 12px 20px;
+  box-sizing: border-box;
 }
 
 .page-product .back-btn {
@@ -3778,9 +3801,8 @@ body.evryka-site.page-product {
   flex-wrap: wrap;
   align-items: stretch;
   margin: 0 0 clamp(28px, 4vw, 48px);
-  padding: calc(
-      clamp(16px, 2.5vw, 24px) + var(--ev-header-h) + 12px - var(--ev-stack-outer)
-    )
+  /* Лише відступ під фіксовану шапку; однаковий «крок» знизу навігації — у .product-nav та row-gap */
+  padding: calc(var(--ev-header-h) + 12px - var(--ev-stack-outer))
     var(--product-rhythm)
     var(--product-rhythm);
   column-gap: var(--product-rhythm);
@@ -3842,8 +3864,8 @@ body.evryka-site.page-product {
   z-index: 2;
   flex: 0 0 auto;
   min-width: 0;
-  width: min(400px, 100%);
-  max-width: 400px;
+  width: min(340px, 100%);
+  max-width: 340px;
   display: flex;
   flex-direction: column;
   align-items: stretch;
@@ -3901,6 +3923,14 @@ body.evryka-site.page-product {
   padding: 4px 6px;
   gap: 6px;
   box-sizing: border-box;
+}
+
+/* Кнопки ±: не коло, а скруглений квадрат у тон зовнішньому радіусу .qty-wrapper */
+.page-product .product-qty .qty-btn {
+  border-radius: max(
+    5px,
+    calc(var(--ev-header-bar-radius, clamp(12px, 1.4vw, 18px)) - 4px)
+  );
 }
 
 .page-product .product-qty .qty-btn:hover {
