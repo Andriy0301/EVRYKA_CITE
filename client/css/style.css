@@ -5035,7 +5035,7 @@ body.evryka-site.page-cabinet {
 
 .page-product .similar-section {
   margin-top: var(--ev-stack-outer, clamp(0px, 0.65vw, 10px));
-  --similar-h-pad-l: 12px;
+  --similar-h-pad-l: clamp(16px, 2.4vw, 28px);
   --similar-h-pad-r: 20px;
   /* Додатковий низ, щоб власна тінь секції не «різалась» у межах потоку; боки — як у .product-page */
   padding: var(--product-rhythm) var(--similar-h-pad-r) calc(var(--product-rhythm) + 10px)
@@ -5054,8 +5054,8 @@ body.evryka-site.page-cabinet {
   letter-spacing: 0.07em;
   text-transform: uppercase;
   color: var(--ev-p-ink);
-  margin-bottom: clamp(14px, 2.5vw, 20px);
-  text-align: right;
+  margin: 0 0 clamp(14px, 2.5vw, 20px);
+  text-align: left;
 }
 
 .page-product .similar-wrap {
@@ -5077,7 +5077,7 @@ body.evryka-site.page-cabinet {
 }
 
 .page-product .similar-list {
-  --similar-edge-fade: clamp(28px, 5vw, 56px);
+  --similar-edge-fade: clamp(44px, 8vw, 96px);
   gap: clamp(10px, 1.5vw, 14px);
   padding: 10px clamp(16px, 2.4vw, 32px) 28px;
   scroll-padding-inline: clamp(16px, 2.4vw, 32px);
@@ -5123,11 +5123,11 @@ body.evryka-site.page-cabinet {
 }
 
 .page-product .similar-arrow--prev {
-  left: max(clamp(18px, 2.8vw, 32px), env(safe-area-inset-left, 0px));
+  left: max(clamp(32px, 4.8vw, 56px), env(safe-area-inset-left, 0px));
 }
 
 .page-product .similar-arrow--next {
-  right: max(clamp(18px, 2.8vw, 32px), env(safe-area-inset-right, 0px));
+  right: max(clamp(32px, 4.8vw, 56px), env(safe-area-inset-right, 0px));
 }
 
 .page-product .similar-arrow--prev:not(:disabled):hover,
