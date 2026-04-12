@@ -562,12 +562,13 @@ body.evryka-site.page-cabinet {
 }
 
 .hero-evryka--allbirds .hero-evryka__btn--primary {
-  background: var(--ev-accent-gradient);
+  background: var(--accent-main);
   color: var(--ev-text-on-accent) !important;
 }
 
 .hero-evryka--allbirds .hero-evryka__btn--primary:hover {
-  filter: brightness(1.06);
+  background: var(--accent-hover);
+  filter: none;
   transform: scale(1.02);
 }
 
@@ -1057,7 +1058,7 @@ body.header-nav-open {
 }
 
 .hero-evryka__btn--primary {
-  background: var(--ev-accent-gradient);
+  background: var(--accent-main);
   color: var(--ev-text-on-accent) !important;
   margin-left: 0;
   box-shadow: none;
@@ -1065,7 +1066,8 @@ body.header-nav-open {
 
 .hero-evryka__btn--primary:hover {
   transform: scale(1.02);
-  filter: brightness(1.06);
+  background: var(--accent-hover);
+  filter: none;
 }
 
 .hero-evryka__btn--ghost {

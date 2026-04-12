@@ -223,21 +223,31 @@ a:hover {
 
 
 
-/* 🔥 кнопка */
+/* Первинна кнопка дії (Купити тощо) */
+.button,
 .buy-btn {
+  height: 44px;
+  box-sizing: border-box;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   width: 100%;
-  padding: 12px;
+  padding: 0 16px;
+  border: none;
+  border-radius: 12px;
+  font-size: 15px;
+  font-weight: 500;
+  line-height: 1.2;
   background: var(--ev-accent-gradient);
   color: var(--ev-text-on-accent);
-  border: none;
-  border-radius: 8px;
-  font-size: 16px;
   cursor: pointer;
-  transition: filter 0.2s ease, transform 0.2s ease;
+  transition: transform 0.2s ease, filter 0.2s ease;
 }
 
+.button:hover,
 .buy-btn:hover {
-  filter: brightness(1.06);
+  transform: translateY(-1px);
+  filter: brightness(1.05);
 }
 
 /* 🔥 header */
@@ -358,25 +368,6 @@ a:hover {
 }
 
 
-
-
-.buy-btn {
-  width: 100%;
-  padding: 14px;
-  background: var(--ev-accent-gradient);
-  color: var(--ev-text-on-accent);
-  border: none;
-  border-radius: 12px;
-  font-size: 16px;
-  cursor: pointer;
-  transition: filter 0.2s ease, transform 0.2s;
-}
-
-.buy-btn:hover {
-  filter: brightness(1.06);
-  transform: translateY(-2px);
-}
-
 /* 🔥 опис */
 .desc {
   margin-top: 60px;
@@ -458,7 +449,7 @@ a:hover {
 }
 .product {
   --product-card-radius: 18px;
-  --product-buy-btn-radius: 13px;
+  --product-buy-btn-radius: 12px;
   background: var(--surface-primary);
   border: 1px solid var(--border-light);
   border-radius: var(--product-card-radius);
@@ -512,29 +503,9 @@ a:hover {
   color: var(--ev-accent);
 }
 
-/* кнопка */
-.product button {
-  margin-top: auto;
-
-  padding: 12px;
-
-  border-radius: 999px;
-  border: none;
-
-  background: var(--ev-accent-gradient);
-  color: var(--ev-text-on-accent);
-
-  
-  font-size: 16px;
-  font-weight: 800;
-
-  cursor: pointer;
-  transition: filter 0.2s ease, transform 0.2s ease;
-}
-
+/* Кнопка «Купити» на картці — компактна (наслідує .buy-btn) */
 .product .buy-btn {
-  border-radius: var(--product-buy-btn-radius);
-  padding: 10px 12px;
+  margin-top: auto;
 }
 
 #products {
@@ -542,12 +513,6 @@ a:hover {
   grid-template-columns: repeat(3, 1fr);
   gap: 30px;
   padding: 20px 100px; /* 🔥 ВІДСТУПИ ЗЛІВА/СПРАВА */
-}
-
-
-
-.product button:hover {
-  filter: brightness(1.07);
 }
 
 .product-content {
@@ -2619,30 +2584,16 @@ body.cart-open .header .cart {
   box-sizing: border-box;
 }
 
-/* Ті самі колір, радіус і падінги, що у .product .buy-btn на картці товару (перебиваємо глобальний .buy-btn) */
+/* «Завантажити ще» — той самий профіль кнопки, ширина за контентом */
 .load-more .buy-btn {
-  --product-buy-btn-radius: 13px;
   width: auto;
+  min-width: 160px;
   margin-top: 0;
-  padding: 16px 28px;
-  border-radius: var(--product-buy-btn-radius);
-  border: none;
-  background: var(--ev-accent-gradient);
-  color: var(--ev-text-on-accent);
-  font-size: 16px;
-  font-weight: 800;
-  letter-spacing: normal;
-  cursor: pointer;
-  display: inline-block;
-  transition: filter 0.2s ease, transform 0.2s ease;
-}
-
-.load-more .buy-btn:hover {
-  filter: brightness(1.06);
 }
 
 .load-more .buy-btn:active {
-  transform: scale(0.96);
+  transform: translateY(0);
+  filter: brightness(0.98);
 }
 
 /* ================= */
@@ -2755,32 +2706,6 @@ body.cart-open .header .cart {
 }
 
 /* ================= */
-/* 🔹 КНОПКА */
-/* ================= */
-
-.buy-btn {
-  width: 100%;
-  padding: 16px;
-
-  border-radius: 16px;
-  border: none;
-
-  background: var(--ev-accent-gradient);
-  color: var(--ev-text-on-accent);
-
-  font-size: 16px;
-  font-weight: 700;
-
-  cursor: pointer;
-  transition: filter 0.2s ease, transform 0.2s;
-}
-
-.buy-btn:hover {
-  transform: scale(1.02);
-  filter: brightness(1.06);
-}
-
-/* ================= */
 /* 🔹 ОПИС */
 /* ================= */
 
@@ -2865,32 +2790,6 @@ body.cart-open .header .cart {
 
   font-size: 16px;
   font-weight: 600;
-}
-
-/* ================= */
-/* 🔹 КНОПКА */
-/* ================= */
-
-.buy-btn {
-  width: 100%;
-  padding: 18px;
-
-  border-radius: 999px;
-  border: none;
-
-  background: var(--ev-accent-gradient);
-  color: var(--ev-text-on-accent);
-
-  font-size: 16px;
-  font-weight: 700;
-
-  cursor: pointer;
-  transition: filter 0.2s ease, transform 0.2s;
-}
-
-.buy-btn:hover {
-  transform: scale(1.02);
-  filter: brightness(1.06);
 }
 
 .back-link {
@@ -3564,6 +3463,42 @@ body.cart-open .header .cart {
 
 .page-catalog .catalog-filters {
   border-radius: clamp(16px, 2.2vw, 24px);
+  border: 1px solid rgba(var(--ev-rgb), 0.14);
+  box-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.9) inset,
+    0 6px 22px rgba(var(--ev-rgb), 0.1),
+    0 2px 6px rgba(var(--ev-rgb), 0.05);
+}
+
+/* Поля та кнопки всередині панелі — білий фон і чіткіша межа, щоб не зливались з --catalog-panel-bg */
+.page-catalog .catalog-filters .catalog-filter-input,
+.page-catalog .catalog-filters .catalog-select-trigger {
+  background: var(--ev-surface);
+  border: 1px solid rgba(var(--ev-rgb), 0.16);
+  box-shadow: 0 1px 3px rgba(var(--ev-rgb), 0.07);
+}
+
+.page-catalog .catalog-filters .catalog-filter-input:hover,
+.page-catalog .catalog-filters .catalog-select-trigger:hover {
+  border-color: rgba(var(--ev-rgb), 0.26);
+  box-shadow: 0 2px 8px rgba(var(--ev-rgb), 0.1);
+}
+
+.page-catalog .catalog-filters .catalog-filter-input:focus {
+  outline: none;
+  border-color: var(--ev-accent);
+  box-shadow: 0 0 0 2px rgba(18, 122, 140, 0.22);
+}
+
+.page-catalog .catalog-filters .catalog-filter-input:focus-visible {
+  outline: none;
+  border-color: var(--ev-accent);
+  box-shadow: 0 0 0 2px rgba(18, 122, 140, 0.22);
+}
+
+.page-catalog .catalog-filters .catalog-select-wrap.is-open .catalog-select-trigger {
+  border-color: var(--ev-accent);
+  box-shadow: 0 0 0 2px rgba(18, 122, 140, 0.2);
 }
 
 .catalog-filters-title {
@@ -3621,22 +3556,26 @@ body.cart-open .header .cart {
 }
 
 .page-catalog .catalog-select-panel {
-  border-color: var(--ev-p-line-soft, rgba(var(--ev-rgb), 0.08));
+  border: 1px solid rgba(var(--ev-rgb), 0.14);
   border-radius: clamp(11px, 1.2vw, 15px);
-  box-shadow: var(--ev-p-shadow-sm, 0 4px 16px rgba(var(--ev-rgb), 0.07));
+  box-shadow:
+    0 10px 36px rgba(var(--ev-rgb), 0.14),
+    0 2px 8px rgba(var(--ev-rgb), 0.06);
 }
 
 .page-catalog .catalog-reset-btn {
   border-radius: clamp(11px, 1.2vw, 15px);
-  border-color: var(--ev-p-line, var(--ev-line));
+  border: 1px solid rgba(var(--ev-rgb), 0.18);
   font-family: var(--ev-font, "Inter", system-ui, sans-serif);
   background: var(--ev-surface);
   color: var(--ev-p-ink);
+  box-shadow: 0 1px 4px rgba(var(--ev-rgb), 0.08);
 }
 
 .page-catalog .catalog-reset-btn:hover {
   background: var(--ev-p-tier2, var(--ev-surface-muted));
   border-color: var(--ev-border-mid);
+  box-shadow: 0 2px 10px rgba(var(--ev-rgb), 0.1);
 }
 
 .catalog-filter-block {
@@ -3899,7 +3838,7 @@ body.cart-open .header .cart {
 
 .page-catalog .catalog-products-grid .product {
   --product-card-radius: var(--ev-shell-radius, clamp(14px, 2vw, 18px));
-  --product-buy-btn-radius: var(--ev-header-bar-radius, 13px);
+  --product-buy-btn-radius: 12px;
   padding: 15px;
   background: var(--ev-p-card, var(--surface-primary));
   border: 1px solid var(--ev-p-line-soft, var(--border-light));
@@ -4286,8 +4225,13 @@ body.evryka-site.page-cabinet {
 .page-cabinet .container {
   max-width: none;
   width: auto;
-  margin-left: var(--ev-stack-outer, clamp(0px, 0.65vw, 10px));
-  margin-right: var(--ev-stack-outer, clamp(0px, 0.65vw, 10px));
+  /* Як у .header--home-detached: від краю вікна до бару шапки */
+  margin-left: calc(
+    var(--ev-stack-outer, clamp(0px, 0.65vw, 10px)) + var(--ev-header-float-inset) + env(safe-area-inset-left, 0px)
+  );
+  margin-right: calc(
+    var(--ev-stack-outer, clamp(0px, 0.65vw, 10px)) + var(--ev-header-float-inset) + env(safe-area-inset-right, 0px)
+  );
   padding: 0 0 clamp(32px, 5vw, 56px);
   box-sizing: border-box;
 }
@@ -4332,20 +4276,22 @@ body.evryka-site.page-cabinet {
   box-sizing: border-box;
 }
 
-/* Каталог: «Назад» і лівий край картки — той самий відступ від краю вікна, що на сторінці товару (.product-page бічний паддінг = --product-rhythm) */
+/* Каталог: зовнішній margin контейнера вже = як у шапки; внутрішній паддінг зменшуємо на float+safe, щоб зберегти попередній ритм контенту */
 .page-catalog .catalog-shell {
-  --catalog-shell-pad-left: var(--product-rhythm);
-  --catalog-shell-pad-right: var(--product-rhythm);
+  --catalog-shell-pad-left: max(
+    0px,
+    calc(var(--product-rhythm) - var(--ev-header-float-inset) - env(safe-area-inset-left, 0px))
+  );
+  --catalog-shell-pad-right: max(
+    0px,
+    calc(var(--product-rhythm) - var(--ev-header-float-inset) - env(safe-area-inset-right, 0px))
+  );
 }
 
-/* Кабінет: бічні відступи картки = як у .header--home-detached .header-inner (логотип / утиліти), не «впритул» до краю картки */
+/* Кабінет: зовнішній margin як у шапки; всередині — як padding .header-inner (логотип 12px, справа 20px) */
 .page-cabinet .catalog-shell {
-  padding-left: calc(
-    env(safe-area-inset-left, 0px) + var(--ev-header-float-inset) + var(--ev-logo-inset-left, 12px)
-  );
-  padding-right: calc(
-    env(safe-area-inset-right, 0px) + var(--ev-header-float-inset) + 20px
-  );
+  padding-left: 12px;
+  padding-right: 20px;
 }
 
 .page-cabinet .catalog-products-inner > .cabinet-card {
@@ -4562,9 +4508,17 @@ body.evryka-site.page-cabinet {
   /* Вертикальний зазор до «Схожі товари» задаємо у .similar-section — як бокові margin контейнера */
   margin: 0;
   /* Лише відступ під фіксовану шапку; +6px замість 12px — теж удвічі менший зазор під бар */
-  padding: calc(var(--ev-header-h) + 6px - var(--ev-stack-outer))
-    var(--product-card-pad)
-    var(--product-card-pad);
+  /* Бічні паддінги: зберегти попередній ритм після збільшення margin контейнера (як у шапки) */
+  padding-top: calc(var(--ev-header-h) + 6px - var(--ev-stack-outer));
+  padding-bottom: var(--product-card-pad);
+  padding-left: max(
+    0px,
+    calc(var(--product-card-pad) - var(--ev-header-float-inset) - env(safe-area-inset-left, 0px))
+  );
+  padding-right: max(
+    0px,
+    calc(var(--product-card-pad) - var(--ev-header-float-inset) - env(safe-area-inset-right, 0px))
+  );
   column-gap: var(--product-card-pad);
   row-gap: var(--product-card-pad);
   background: var(--ev-p-card);
@@ -4954,9 +4908,17 @@ body.evryka-site.page-cabinet {
 
 .page-product .similar-section {
   margin-top: var(--ev-stack-outer, clamp(0px, 0.65vw, 10px));
-  /* Додатковий низ, щоб власна тінь секції не «різалась» у межах потоку */
-  padding: var(--product-rhythm) var(--product-rhythm)
-    calc(var(--product-rhythm) + 10px);
+  --similar-h-pad-l: max(
+    0px,
+    calc(var(--product-rhythm) - var(--ev-header-float-inset) - env(safe-area-inset-left, 0px))
+  );
+  --similar-h-pad-r: max(
+    0px,
+    calc(var(--product-rhythm) - var(--ev-header-float-inset) - env(safe-area-inset-right, 0px))
+  );
+  /* Додатковий низ, щоб власна тінь секції не «різалась» у межах потоку; боки — як у .product-page */
+  padding: var(--product-rhythm) var(--similar-h-pad-r) calc(var(--product-rhythm) + 10px)
+    var(--similar-h-pad-l);
   background: var(--ev-p-card);
   border-radius: clamp(18px, 2.3vw, 26px);
   border: 1px solid var(--ev-p-line-soft);
@@ -4978,10 +4940,10 @@ body.evryka-site.page-cabinet {
   position: relative;
   display: block;
   align-items: unset;
-  width: calc(100% + 2 * var(--product-rhythm));
+  width: calc(100% + var(--similar-h-pad-l) + var(--similar-h-pad-r));
   max-width: none;
-  margin-left: calc(-1 * var(--product-rhythm));
-  margin-right: calc(-1 * var(--product-rhythm));
+  margin-left: calc(-1 * var(--similar-h-pad-l));
+  margin-right: calc(-1 * var(--similar-h-pad-r));
   box-sizing: border-box;
 }
 
