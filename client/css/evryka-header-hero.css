@@ -3,6 +3,7 @@
 :root {
   --bg-main: #f8f5f2;
   --bg-section: #f1ece7;
+  --ev-panel-chrome: #635d5a;
   --surface-primary: #ffffff;
   --surface-secondary: #fdfcfb;
   --border-light: #e5e7eb;
@@ -12,6 +13,7 @@
   --text-muted: #9ca3af;
   --accent-main: #fb923c;
   --accent-hover: #f97316;
+  --accent-btn-hover: #fdba74;
   --accent-soft: #fed7aa;
   --icon-default: #6b7280;
   --icon-active: #fb923c;
@@ -547,7 +549,8 @@ body.evryka-site.page-cabinet {
 }
 
 .hero-evryka--allbirds .hero-evryka__btn--primary:hover {
-  background: var(--accent-hover);
+  background: var(--accent-btn-hover);
+  color: var(--ev-text-on-accent) !important;
   filter: none;
   transform: scale(1.02);
 }
@@ -1040,7 +1043,8 @@ body.header-nav-open {
 
 .hero-evryka__btn--primary:hover {
   transform: scale(1.02);
-  background: var(--accent-hover);
+  background: var(--accent-btn-hover);
+  color: var(--ev-text-on-accent) !important;
   filter: none;
 }
 

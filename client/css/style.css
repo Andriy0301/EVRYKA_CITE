@@ -2,6 +2,9 @@
 :root {
   --bg-main: #f8f5f2;
   --bg-section: #f1ece7;
+  --footer-bg: #e8e9ec;
+  /* Кошик, обрані, вікно «Напишіть нам» */
+  --ev-panel-chrome: #635d5a;
   --surface-primary: #ffffff;
   --surface-secondary: #fdfcfb;
   --border-light: #e5e7eb;
@@ -12,6 +15,8 @@
   --text-muted: #9ca3af;
   --accent-main: #fb923c;
   --accent-hover: #f97316;
+  /* Світліший відтінок для CTA «Купити» (hover), на відміну від темнішого --accent-hover для посилань */
+  --accent-btn-hover: #fdba74;
   --accent-soft: #fed7aa;
   --icon-default: #6b7280;
   --icon-active: #fb923c;
@@ -238,7 +243,8 @@ a:hover {
   border: none;
   border-radius: 12px;
   font-size: 16px;
-  font-weight: 700;
+  font-weight: 800;
+  letter-spacing: 0.04em;
   line-height: 1.2;
   background: var(--accent-main);
   color: var(--ev-text-on-accent);
@@ -249,7 +255,7 @@ a:hover {
 .button:hover,
 .buy-btn:hover {
   transform: translateY(-1px);
-  background: var(--accent-hover);
+  background: var(--accent-btn-hover);
 }
 
 /* 🔥 header */
@@ -303,13 +309,13 @@ a:hover {
     calc(100vw - var(--ev-header-bar-top, 16px) - var(--ev-cart-side-inset))
   );
 
-  background: var(--ev-surface);
-  border: 1px solid var(--ev-line);
+  background: var(--ev-panel-chrome);
+  border: 1px solid rgba(255, 255, 255, 0.12);
   /* Той самий радіус, що й у плаваючої шапки (.header--home-detached) */
   border-radius: var(--ev-header-bar-radius, 20px);
   box-shadow:
-    0 24px 48px rgba(0, 0, 0, 0.1),
-    0 8px 20px rgba(0, 0, 0, 0.06);
+    0 24px 48px rgba(0, 0, 0, 0.28),
+    0 8px 20px rgba(0, 0, 0, 0.18);
 
   transform: translateX(calc(100% + var(--ev-cart-side-inset)));
   transition: transform 0.3s ease;
@@ -321,6 +327,7 @@ a:hover {
   padding: 12px;
   box-sizing: border-box;
   overflow: hidden;
+  color: rgba(255, 255, 255, 0.92);
 }
 
 /* 🔥 активний */
@@ -350,7 +357,7 @@ a:hover {
   pointer-events: all;
 }
 
-/* 🔥 items — без окремого контейнера, на білому фоні картки кошика / обраних */
+/* 🔥 items — скрол у межах панелі кошика / обраних */
 #cartItems,
 #favoritesItems {
   flex: 1;
@@ -367,6 +374,68 @@ a:hover {
 
 #favoritesItems .cart-item {
   cursor: pointer;
+}
+
+.cart-sidebar #cartItems > p,
+.cart-sidebar #favoritesItems > p {
+  margin: 16px 8px;
+  color: rgba(255, 255, 255, 0.78);
+  font-size: 14px;
+}
+
+.cart-sidebar .cart-head-float {
+  box-shadow: none;
+}
+
+.cart-sidebar .cart-item {
+  border-bottom-color: rgba(255, 255, 255, 0.14);
+}
+
+.cart-sidebar .cart-info h4 {
+  color: rgba(255, 255, 255, 0.96);
+}
+
+.cart-sidebar .cart-info p {
+  color: rgba(255, 255, 255, 0.92);
+}
+
+.cart-sidebar .cart-info span {
+  color: rgba(255, 255, 255, 0.62);
+}
+
+.cart-sidebar .remove-btn {
+  background: rgba(255, 255, 255, 0.12);
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.cart-sidebar .remove-btn:hover {
+  background: rgba(255, 255, 255, 0.2);
+  color: #fff;
+}
+
+.cart-sidebar .cart-footer {
+  background: transparent;
+  border-top-color: rgba(255, 255, 255, 0.14);
+}
+
+.cart-sidebar .cart-total {
+  color: rgba(255, 255, 255, 0.88);
+}
+
+.cart-sidebar .cart-total b {
+  color: rgba(255, 255, 255, 0.98);
+}
+
+.cart-sidebar .cart-footer .clear-btn {
+  background: rgba(255, 255, 255, 0.08);
+  color: rgba(255, 255, 255, 0.92);
+  border: 1px solid rgba(255, 255, 255, 0.22);
+}
+
+.cart-sidebar .cart-footer .clear-btn:hover {
+  background: rgba(255, 255, 255, 0.14);
+  border-color: rgba(255, 255, 255, 0.32);
+  color: #fff;
 }
 
 
@@ -2609,6 +2678,13 @@ body.cart-open .header .cart {
   margin-top: 0;
 }
 
+/* «Відкрити каталог» — той самий світліший hover, що й у «Купити» */
+.load-more .buy-btn:hover {
+  background: var(--accent-btn-hover);
+  transform: translateY(-1px);
+  filter: none;
+}
+
 .load-more .buy-btn:active {
   transform: translateY(0);
   filter: brightness(0.98);
@@ -3097,7 +3173,7 @@ body.cart-open .header .cart {
   text-decoration: underline;
 }
 .footer {
-  background: var(--bg-section);
+  background: var(--footer-bg);
   color: var(--text-primary);
   border-top: 1px solid var(--border-light);
   margin-top: 60px;
@@ -3479,20 +3555,17 @@ body.cart-open .header .cart {
   position: sticky;
   top: calc(var(--ev-header-h, 72px) + 12px);
   padding: clamp(18px, 2.2vw, 24px);
-  background: var(--catalog-panel-bg, var(--ev-surface-muted));
-  border: 1px solid var(--ev-p-line-soft, rgba(var(--ev-rgb), 0.06));
+  background: var(--catalog-panel-bg, var(--ev-panel-chrome));
+  border: 1px solid rgba(255, 255, 255, 0.12);
   border-radius: clamp(8px, 1vw, 12px);
-  box-shadow: var(--ev-p-shadow-sm, 0 4px 16px rgba(var(--ev-rgb), 0.07));
+  box-shadow: 0 8px 28px rgba(0, 0, 0, 0.22), 0 2px 8px rgba(0, 0, 0, 0.14);
   font-size: 15px;
 }
 
 .page-catalog .catalog-filters {
   border-radius: clamp(16px, 2.2vw, 24px);
-  border: 1px solid rgba(var(--ev-rgb), 0.14);
-  box-shadow:
-    0 1px 0 rgba(255, 255, 255, 0.9) inset,
-    0 6px 22px rgba(var(--ev-rgb), 0.1),
-    0 2px 6px rgba(var(--ev-rgb), 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  box-shadow: 0 10px 32px rgba(0, 0, 0, 0.26), 0 3px 10px rgba(0, 0, 0, 0.16);
 }
 
 /* Поля та кнопки всередині панелі — білий фон і чіткіша межа, щоб не зливались з --catalog-panel-bg */
@@ -3539,7 +3612,7 @@ body.cart-open .header .cart {
   font-weight: 700;
   letter-spacing: 0.08em;
   text-transform: uppercase;
-  color: var(--ev-p-ink, var(--ev-ink));
+  color: rgba(255, 255, 255, 0.92);
 }
 
 .page-cabinet .catalog-filters.cabinet-sidebar {
@@ -3562,8 +3635,27 @@ body.cart-open .header .cart {
   box-sizing: border-box;
 }
 
+.page-cabinet .catalog-filters.cabinet-sidebar .cabinet-nav-btn:not(.active):not(.logout) {
+  background: rgba(255, 255, 255, 0.1);
+  color: rgba(255, 255, 255, 0.92);
+  border-color: rgba(255, 255, 255, 0.18);
+}
+
+.page-cabinet .catalog-filters.cabinet-sidebar .cabinet-nav-btn:not(.active):not(.logout):hover {
+  background: rgba(255, 255, 255, 0.16);
+  color: #fff;
+}
+
 .page-cabinet .catalog-filters.cabinet-sidebar .cabinet-nav-btn.logout {
   margin-top: 8px;
+  background: rgba(0, 0, 0, 0.2);
+  border-color: rgba(255, 255, 255, 0.2);
+  color: rgba(255, 255, 255, 0.82);
+}
+
+.page-cabinet .catalog-filters.cabinet-sidebar .cabinet-nav-btn.logout:hover {
+  background: rgba(0, 0, 0, 0.28);
+  color: #fff;
 }
 
 .page-catalog .catalog-filter-label {
@@ -3571,7 +3663,7 @@ body.cart-open .header .cart {
   font-weight: 600;
   letter-spacing: 0.04em;
   text-transform: uppercase;
-  color: var(--ev-p-ink, var(--ev-ink));
+  color: rgba(255, 255, 255, 0.72);
 }
 
 .page-catalog .catalog-filter-input,
@@ -3760,6 +3852,10 @@ body.cart-open .header .cart {
   flex-shrink: 0;
 }
 
+.page-catalog .catalog-price-dash {
+  color: rgba(255, 255, 255, 0.45);
+}
+
 .catalog-reset-btn {
   width: 100%;
   margin-top: 4px;
@@ -3791,10 +3887,10 @@ body.cart-open .header .cart {
   width: 100%;
   min-width: 0;
   box-sizing: border-box;
-  background: var(--catalog-panel-bg, var(--ev-surface-muted));
+  background: var(--catalog-panel-bg, var(--ev-panel-chrome));
   border-radius: clamp(8px, 1vw, 14px);
   padding: var(--catalog-heading-gap) clamp(14px, 2vw, 22px) clamp(12px, 1.8vw, 18px);
-  border: 1px solid rgba(var(--ev-rgb), 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .page-catalog .catalog-products-inner {
@@ -3840,7 +3936,7 @@ body.cart-open .header .cart {
   font-size: clamp(22px, 2.4vw, 28px);
   font-weight: 700;
   letter-spacing: -0.02em;
-  color: var(--ev-p-ink, var(--ev-ink));
+  color: rgba(255, 255, 255, 0.94);
   text-align: left;
   margin-top: 0;
   /* Той самий зазор, що й padding-top контейнера — до заголовка і під ним до сітки */
@@ -4034,9 +4130,10 @@ body.cart-open .chat-widget-root {
   padding: 10px 10px 10px;
   border-radius: 14px;
   overflow: visible;
-  background: var(--ev-surface-muted);
-  border: 1px solid var(--ev-border-hair);
-  box-shadow: 0 12px 40px rgba(var(--ev-rgb), 0.14), 0 4px 12px rgba(var(--ev-rgb), 0.06);
+  background: var(--ev-panel-chrome);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  box-shadow: 0 16px 44px rgba(0, 0, 0, 0.28), 0 6px 16px rgba(0, 0, 0, 0.18);
+  color: rgba(255, 255, 255, 0.88);
 }
 
 .chat-widget-panel.is-open {
@@ -4061,7 +4158,7 @@ body.cart-open .chat-widget-root {
   }
 }
 
-/* Плаваюча смуга заголовка чату / кошика / обраних — темна смуга у тон сайту, світлий текст */
+/* Плаваюча смуга заголовка чату / кошика / обраних — той самий корпус #635d5a, світлий текст */
 .chat-widget-head-float,
 .cart-head-float {
   flex-shrink: 0;
@@ -4071,15 +4168,14 @@ body.cart-open .chat-widget-root {
   align-items: center;
   justify-content: space-between;
   padding: 10px 12px;
-  background: var(--ev-ink);
+  background: var(--ev-panel-chrome);
   color: var(--ev-surface);
   font-weight: 700;
   font-size: 15px;
   border-radius: 10px;
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  box-shadow:
-    0 4px 18px rgba(0, 0, 0, 0.22),
-    0 2px 8px rgba(0, 0, 0, 0.12);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.12);
 }
 
 /* Середня зона + нижній плаваючий блок; сам лист без рамки — рамки у повідомлень і compose-float */
@@ -4240,56 +4336,50 @@ body.evryka-site.page-cabinet {
   --ev-p-toggle-shadow: 0 1px 0 rgba(255, 255, 255, 0.95) inset, 0 4px 16px rgba(0, 0, 0, 0.05);
 }
 
-/* Єдиний фон для сайдбару фільтрів і блоку «Каталог товарів» (не shell-bg і не чисто білий) */
+/* Панелі фільтрів / «Каталог товарів» / контент кабінету — той самий #635d5a, що кошик */
 body.evryka-site.page-catalog,
 body.evryka-site.page-cabinet {
-  --catalog-panel-bg: var(--ev-surface-muted);
+  --catalog-panel-bg: var(--ev-panel-chrome);
 }
 
+/* Фон за межами білої «картки» shell / product-page (поля сторінки) */
+body.evryka-site.page-product,
+body.evryka-site.page-catalog,
+body.evryka-site.page-cabinet {
+  background: var(--ev-panel-chrome);
+}
+
+/*
+  Профіль / каталог / товар — зовнішній контейнер (як у кабінету):
+  margin .container = --ev-stack-outer + safe-area (без --ev-header-float-inset);
+  біла картка .catalog-shell: боки 12px зліва, 20px справа (як .header-inner); зверху/знизу — як нижче.
+*/
 .page-product .container,
 .page-catalog .container,
 .page-cabinet .container {
   max-width: none;
   width: auto;
-  /* Як у .header--home-detached: від краю вікна до бару шапки */
-  margin-left: calc(
-    var(--ev-stack-outer, clamp(0px, 0.65vw, 10px)) + var(--ev-header-float-inset) + env(safe-area-inset-left, 0px)
-  );
-  margin-right: calc(
-    var(--ev-stack-outer, clamp(0px, 0.65vw, 10px)) + var(--ev-header-float-inset) + env(safe-area-inset-right, 0px)
-  );
-  padding: 0 0 clamp(32px, 5vw, 56px);
-  box-sizing: border-box;
-}
-
-/* Кабінет: зовнішній відступ зліва/справа = як зверху (body: padding-top = --ev-stack-outer), без додаткового --ev-header-float-inset */
-.page-cabinet .container {
   margin-left: calc(
     var(--ev-stack-outer, clamp(0px, 0.65vw, 10px)) + env(safe-area-inset-left, 0px)
   );
   margin-right: calc(
     var(--ev-stack-outer, clamp(0px, 0.65vw, 10px)) + env(safe-area-inset-right, 0px)
   );
+  padding: 0 0 clamp(32px, 5vw, 56px);
+  box-sizing: border-box;
 }
 
 /* Каталог і кабінет: одна велика картка (як на сторінці товару) */
 .page-catalog .catalog-shell,
 .page-cabinet .catalog-shell {
   --product-rhythm: clamp(24px, 3.5vw, 40px);
-  /*
-    Три горизонтальні відступи (лівий зовнішній, зазор фільтри↔контент, правий зовнішній) =
-    тій самій величині, що й відстань від краю вікна до плаваючої шапки (.header--home-detached):
-    --ev-stack-outer + safe-area + --ev-header-float-inset
-    Внутрішні паддінги картки = ця величина мінус зовнішній margin контейнера (--ev-stack-outer).
-  */
+  /* Для зазору фільтри↔сітка (як «край→шапка») */
   --ev-header-screen-inset-l: calc(
     var(--ev-stack-outer) + env(safe-area-inset-left, 0px) + var(--ev-header-float-inset)
   );
   --ev-header-screen-inset-r: calc(
     var(--ev-stack-outer) + env(safe-area-inset-right, 0px) + var(--ev-header-float-inset)
   );
-  --catalog-shell-pad-left: calc(var(--ev-header-screen-inset-l) - var(--ev-stack-outer));
-  --catalog-shell-pad-right: calc(var(--ev-header-screen-inset-r) - var(--ev-stack-outer));
   --product-nav-y: var(--product-rhythm);
   position: relative;
   z-index: 0;
@@ -4297,10 +4387,7 @@ body.evryka-site.page-cabinet {
   flex-wrap: wrap;
   align-items: stretch;
   margin: 0;
-  padding: calc(var(--ev-header-h) + 6px - var(--ev-stack-outer))
-    var(--catalog-shell-pad-right)
-    var(--product-rhythm)
-    var(--catalog-shell-pad-left);
+  padding: calc(var(--ev-header-h) + 6px - var(--ev-stack-outer)) 20px var(--product-rhythm) 12px;
   column-gap: var(--product-rhythm);
   row-gap: var(--product-nav-y);
   background: var(--ev-p-card);
@@ -4310,24 +4397,6 @@ body.evryka-site.page-cabinet {
   max-width: none;
   width: 100%;
   box-sizing: border-box;
-}
-
-/* Каталог: зовнішній margin контейнера вже = як у шапки; внутрішній паддінг зменшуємо на float+safe, щоб зберегти попередній ритм контенту */
-.page-catalog .catalog-shell {
-  --catalog-shell-pad-left: max(
-    0px,
-    calc(var(--product-rhythm) - var(--ev-header-float-inset) - env(safe-area-inset-left, 0px))
-  );
-  --catalog-shell-pad-right: max(
-    0px,
-    calc(var(--product-rhythm) - var(--ev-header-float-inset) - env(safe-area-inset-right, 0px))
-  );
-}
-
-/* Кабінет: внутрішні бокові паддінги shell без змін (як у .header-inner); зовнішні поля сторінки — .page-cabinet .container */
-.page-cabinet .catalog-shell {
-  padding-left: 12px;
-  padding-right: 20px;
 }
 
 .page-cabinet .catalog-products-inner > .cabinet-card {
@@ -4547,14 +4616,8 @@ body.evryka-site.page-cabinet {
   /* Бічні паддінги: зберегти попередній ритм після збільшення margin контейнера (як у шапки) */
   padding-top: calc(var(--ev-header-h) + 6px - var(--ev-stack-outer));
   padding-bottom: var(--product-card-pad);
-  padding-left: max(
-    0px,
-    calc(var(--product-card-pad) - var(--ev-header-float-inset) - env(safe-area-inset-left, 0px))
-  );
-  padding-right: max(
-    0px,
-    calc(var(--product-card-pad) - var(--ev-header-float-inset) - env(safe-area-inset-right, 0px))
-  );
+  padding-left: 12px;
+  padding-right: 20px;
   column-gap: var(--product-card-pad);
   row-gap: var(--product-card-pad);
   background: var(--ev-p-card);
@@ -4827,7 +4890,8 @@ body.evryka-site.page-cabinet {
   min-height: 48px;
   padding: 14px 22px;
   font-size: 16px;
-  font-weight: 700;
+  font-weight: 800;
+  letter-spacing: 0.04em;
   line-height: 1.25;
   box-sizing: border-box;
   background: var(--accent-main);
@@ -4837,7 +4901,7 @@ body.evryka-site.page-cabinet {
 }
 
 .page-product .quick-checkout-btn:hover {
-  background: var(--accent-hover);
+  background: var(--accent-btn-hover);
   color: var(--ev-text-on-accent);
 }
 
@@ -4944,21 +5008,15 @@ body.evryka-site.page-cabinet {
 
 .page-product .similar-section {
   margin-top: var(--ev-stack-outer, clamp(0px, 0.65vw, 10px));
-  --similar-h-pad-l: max(
-    0px,
-    calc(var(--product-rhythm) - var(--ev-header-float-inset) - env(safe-area-inset-left, 0px))
-  );
-  --similar-h-pad-r: max(
-    0px,
-    calc(var(--product-rhythm) - var(--ev-header-float-inset) - env(safe-area-inset-right, 0px))
-  );
+  --similar-h-pad-l: 12px;
+  --similar-h-pad-r: 20px;
   /* Додатковий низ, щоб власна тінь секції не «різалась» у межах потоку; боки — як у .product-page */
   padding: var(--product-rhythm) var(--similar-h-pad-r) calc(var(--product-rhythm) + 10px)
     var(--similar-h-pad-l);
-  background: var(--ev-p-card);
+  background: var(--ev-panel-chrome);
   border-radius: clamp(18px, 2.3vw, 26px);
-  border: 1px solid var(--ev-p-line-soft);
-  box-shadow: var(--ev-p-shadow-sm);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  box-shadow: 0 10px 32px rgba(0, 0, 0, 0.22), 0 3px 10px rgba(0, 0, 0, 0.14);
   overflow: visible;
 }
 
@@ -4968,7 +5026,7 @@ body.evryka-site.page-cabinet {
   font-weight: 700;
   letter-spacing: 0.07em;
   text-transform: uppercase;
-  color: var(--ev-p-ink);
+  color: rgba(255, 255, 255, 0.9);
   margin-bottom: clamp(14px, 2.5vw, 20px);
 }
 
@@ -5002,12 +5060,10 @@ body.evryka-site.page-cabinet {
 .page-product .similar-arrow {
   width: 46px;
   height: 46px;
-  border: 1px solid rgba(var(--ev-rgb), 0.2);
-  background: var(--ev-p-card);
-  color: var(--ev-p-ink);
-  box-shadow:
-    var(--ev-p-shadow-sm),
-    0 0 0 1px rgba(255, 255, 255, 0.95) inset;
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  background: rgba(255, 255, 255, 0.12);
+  color: rgba(255, 255, 255, 0.95);
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.15);
 }
 
 .page-product .similar-arrow.similar-arrow--prev,
@@ -5048,12 +5104,10 @@ body.evryka-site.page-cabinet {
 .page-product .similar-arrow:disabled,
 .page-product .similar-arrow:disabled:hover {
   cursor: default;
-  background: var(--ev-p-card);
-  color: var(--ev-p-ink);
-  border-color: rgba(var(--ev-rgb), 0.18);
-  box-shadow:
-    var(--ev-p-shadow-sm),
-    0 0 0 1px rgba(255, 255, 255, 0.95) inset;
+  background: rgba(255, 255, 255, 0.06);
+  color: rgba(255, 255, 255, 0.35);
+  border-color: rgba(255, 255, 255, 0.1);
+  box-shadow: none;
   opacity: 1;
   transform: none;
 }
