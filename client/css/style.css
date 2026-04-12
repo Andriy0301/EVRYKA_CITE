@@ -599,38 +599,42 @@ a:hover {
   justify-content: center;
   align-items: center;
   /* Один зазор між усіма вкладками (без «фантомних» пробілів у розмітці) */
-  gap: 12px;
+  gap: clamp(14px, 2vw, 20px);
   width: fit-content;
   max-width: 100%;
   margin: 15px auto 0;
-  padding: 8px 18px;
+  padding: 12px clamp(20px, 3.2vw, 32px);
   flex-wrap: wrap;
   box-sizing: border-box;
   /* Пробіли/переноси між <button> не стають вузькими flex-елементами */
   font-size: 0;
 
   background: var(--ev-surface);
-  border-radius: 999px;
-  border: 1px solid var(--ev-line);
-  box-shadow: 0 8px 26px rgba(0, 0, 0, 0.09), 0 3px 10px rgba(0, 0, 0, 0.045);
+  /* Як у плаваючої смуги шапки — не «пігулка» */
+  border-radius: var(--ev-header-bar-radius, clamp(10px, 1.2vw, 14px));
+  border: 1px solid rgba(17, 17, 17, 0.1);
+  box-shadow:
+    0 1px 0 rgba(17, 17, 17, 0.04),
+    0 10px 36px rgba(0, 0, 0, 0.09),
+    0 4px 14px rgba(0, 0, 0, 0.05);
 }
 
 .tab {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  padding: 6px 0;
+  padding: 10px 4px;
   margin: 0;
   border-radius: 0;
   border: none;
   background: transparent;
   color: var(--ev-ink);
 
-  font-size: 12px;
+  font-size: clamp(12px, 1.15vw, 14px);
   font-weight: 600;
   letter-spacing: 0.07em;
   text-transform: uppercase;
-  line-height: 1.2;
+  line-height: 1.25;
 
   cursor: pointer;
   position: relative;
@@ -642,9 +646,10 @@ a:hover {
   position: absolute;
   left: 0;
   right: 0;
-  bottom: 3px;
-  height: 2px;
+  bottom: 5px;
+  height: 3px;
   background: var(--ev-accent);
+  border-radius: 2px;
   transform: scaleX(0);
   transform-origin: center;
   transition: transform 0.32s cubic-bezier(0.4, 0, 0.2, 1);
@@ -695,8 +700,9 @@ a:hover {
 .page-home .container > .category-tabs {
   margin: 0 auto var(--home-hero-to-content-gap, clamp(28px, 4vw, 52px));
   box-shadow:
-    0 10px 32px rgba(0, 0, 0, 0.32),
-    0 3px 11px rgba(0, 0, 0, 0.2);
+    0 1px 0 rgba(17, 17, 17, 0.04),
+    0 14px 44px rgba(0, 0, 0, 0.1),
+    0 5px 16px rgba(0, 0, 0, 0.06);
 }
 
 .page-home .container > section.products {
@@ -5183,8 +5189,6 @@ body.evryka-site.page-cabinet {
   margin: 0 0 clamp(16px, 2.4vw, 24px);
   text-align: left;
   max-width: 42ch;
-  padding-bottom: clamp(12px, 1.6vw, 18px);
-  border-bottom: 1px solid rgba(var(--ev-rgb), 0.14);
 }
 
 .page-product .similar-wrap {
