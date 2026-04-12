@@ -209,4 +209,11 @@ function initCatalogPage() {
 
   initCatalogFilterControls();
   applyCatalogFilters();
+
+  const backBtn = document.getElementById("catalogBackBtn");
+  if (backBtn) {
+    backBtn.addEventListener("click", () => {
+      window.history.back();
+    });
+  }
 }

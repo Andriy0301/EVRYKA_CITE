@@ -59,9 +59,9 @@
 
   <div id="cartOverlay" class="cart-overlay" onclick="toggleCart(false)"></div>
   <div id="cartSidebar" class="cart-sidebar">
-    <div class="cart-header">
-      <h3>Кошик</h3>
-      <button class="close-btn" onclick="toggleCart(false)">✖</button>
+    <div class="cart-head-float">
+      <h3 id="cartPanelTitle">Кошик</h3>
+      <button type="button" class="cart-head-float-close" onclick="toggleCart(false)" aria-label="Закрити кошик">×</button>
     </div>
     <div id="cartItems" class="cart-items"></div>
     <div class="cart-footer">
@@ -206,8 +206,8 @@
         <button type="button" class="chat-widget-close" aria-label="Закрити чат">×</button>
       </div>
       <div class="chat-widget-sheet">
-        <div class="chat-widget-body">
-          <div id="chatWidgetMessages" class="chat-widget-messages" aria-live="polite"></div>
+        <div id="chatWidgetMessages" class="chat-widget-messages" aria-live="polite"></div>
+        <div class="chat-widget-compose-float">
           <div class="chat-widget-compose">
             <input type="text" id="chatWidgetText" class="chat-widget-field" placeholder="Ваше запитання…" maxlength="2000" autocomplete="off">
             <button type="button" id="chatWidgetSend" class="chat-widget-send">Надіслати</button>

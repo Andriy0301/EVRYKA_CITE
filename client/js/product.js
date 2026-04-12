@@ -170,11 +170,14 @@ function changeProductQty(val) {
 document.addEventListener("DOMContentLoaded", () => {
   loadProduct();
   updateCartCount(); // 🔥 ось це виправляє проблему
-});
 
-function goBack() {
-  window.history.back();
-}
+  const backBtn = document.getElementById("productBackBtn");
+  if (backBtn) {
+    backBtn.addEventListener("click", () => {
+      window.history.back();
+    });
+  }
+});
 
 function renderSimilarProducts(currentProduct, allProducts) {
   const container = document.getElementById("similarProducts");

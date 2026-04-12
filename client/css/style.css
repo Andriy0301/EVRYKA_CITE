@@ -260,7 +260,7 @@ a {
     calc(100vw - var(--ev-header-bar-top, 16px) - var(--ev-cart-side-inset))
   );
 
-  background: white;
+  background: var(--ev-surface, #fff);
   /* Той самий радіус, що й у плаваючої шапки (.header--home-detached) */
   border-radius: var(--ev-header-bar-radius, 20px);
   box-shadow:
@@ -273,6 +273,9 @@ a {
 
   display: flex;
   flex-direction: column;
+  gap: 8px;
+  padding: 12px;
+  box-sizing: border-box;
   overflow: hidden;
 }
 
@@ -308,7 +311,13 @@ a {
   flex: 1;
   min-height: 0;
   overflow-y: auto;
-  padding: 15px;
+  padding: 12px 14px;
+  margin: 0;
+  background: var(--ev-surface-muted);
+  border-radius: 10px;
+  border: 1px solid var(--ev-border-hair);
+  box-shadow: 0 1px 3px rgba(var(--ev-rgb), 0.05);
+  box-sizing: border-box;
 }
 
 
@@ -1548,23 +1557,23 @@ body.cart-open .header .cart {
 }
 
 .page-product .product-price-actions .favorite-btn {
-  width: 32px;
-  height: 32px;
+  width: 26px;
+  height: 26px;
 }
 
 .page-product .product-price-actions .favorite-btn .heart-icon {
-  width: 28px;
-  height: 28px;
+  width: 22px;
+  height: 22px;
 }
 
 .page-product .product-price-actions .product-cart-btn {
-  width: 32px;
-  height: 32px;
+  width: 26px;
+  height: 26px;
 }
 
 .page-product .product-price-actions .cart-add-icon {
-  width: 28px;
-  height: 28px;
+  width: 22px;
+  height: 22px;
 }
 
 .product-cart-btn {
@@ -2124,7 +2133,7 @@ body.cart-open .header .cart {
 }
 
 /* Особистий кабінет: випадаючі списки не обрізаються карткою й не ховаються за сайдбаром */
-.page-cabinet .cabinet-main-inner .cabinet-card {
+.page-cabinet .catalog-products-inner .cabinet-card {
   overflow: visible;
 }
 
@@ -2195,7 +2204,7 @@ body.cart-open .header .cart {
     grid-template-columns: 1fr;
   }
 
-  .page-cabinet .cabinet-sidebar {
+  .page-cabinet .catalog-filters {
     position: static;
   }
 }
@@ -2414,6 +2423,7 @@ body.cart-open .header .cart {
 }
 
 .cart-footer {
+  flex-shrink: 0;
   padding: 16px;
   border-top: 1px solid var(--ev-border-hair);
 
@@ -2468,6 +2478,17 @@ body.cart-open .header .cart {
   color: #d10000;
 }
 
+.cart-sidebar .cart-footer button {
+  padding: 10px 14px;
+  min-height: 42px;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.cart-sidebar .cart-footer .clear-btn {
+  margin-top: 8px;
+}
+
 .cart-total {
   display: flex;
   justify-content: space-between;
@@ -2494,7 +2515,7 @@ body.cart-open .header .cart {
   justify-content: space-between;
   align-items: center;
 
-  padding: 12px 16px;   /* 🔥 було завелике */
+  padding: 12px 16px;
   border-bottom: 1px solid var(--ev-border-hair);
   border-radius: var(--ev-header-bar-radius, 20px) var(--ev-header-bar-radius, 20px) 0 0;
 }
@@ -2515,6 +2536,36 @@ body.cart-open .header .cart {
   font-size: 16px;
 
   cursor: pointer;
+}
+
+.cart-head-float h3 {
+  margin: 0;
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+}
+
+.chat-widget-close,
+.cart-head-float-close {
+  width: 32px;
+  height: 32px;
+  flex-shrink: 0;
+  border: none;
+  border-radius: 6px;
+  background: transparent;
+  color: var(--ev-surface);
+  font-size: 22px;
+  line-height: 1;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.2s ease;
+}
+
+.chat-widget-close:hover,
+.cart-head-float-close:hover {
+  background: rgba(255, 255, 255, 0.14);
 }
 .close-btn {
   width: 28px;
@@ -2555,41 +2606,30 @@ body.cart-open .header .cart {
   box-sizing: border-box;
 }
 
-.load-more button {
-  padding: 14px 32px;
-
-  border-radius: 999px;
+/* Ті самі колір, радіус і падінги, що у .product .buy-btn на картці товару (перебиваємо глобальний .buy-btn) */
+.load-more .buy-btn {
+  --product-buy-btn-radius: 13px;
+  width: auto;
+  margin-top: 0;
+  padding: 10px 12px;
+  border-radius: var(--product-buy-btn-radius);
   border: none;
-
-  background: var(--ev-ink);
+  background: rgba(0, 0, 0, 0.852);
   color: #fff;
-
-  font-size: 17px;
-  font-weight: 600;
-  letter-spacing: 0.5px;
-
+  font-size: 16px;
+  font-weight: 800;
+  letter-spacing: normal;
   cursor: pointer;
-
   display: inline-block;
-
-  transition: background 0.25s ease, transform 0.25s ease, box-shadow 0.25s ease;
+  transition: background 0.2s ease, transform 0.2s ease;
 }
 
-
-/* 🔥 hover ефект */
-.load-more button:hover {
-  transform: translateY(-2px) scale(1.03);
-
-  background: #000;
-
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.25);
+.load-more .buy-btn:hover {
+  background: var(--ev-ink);
 }
 
-
-/* 🔥 натиск */
-.load-more button:active {
+.load-more .buy-btn:active {
   transform: scale(0.96);
-  box-shadow: none;
 }
 
 /* ================= */
@@ -2882,13 +2922,16 @@ body.cart-open .header .cart {
   padding: 10px 15px;
 
   background: var(--ev-ink);
+  border: none;
   border-radius: 999px;
 
   text-decoration: none;
   color: white;
 
+  font: inherit;
   font-size: 15px;
   font-weight: 600;
+  cursor: pointer;
 
   transition: 0.2s;
 }
@@ -3486,7 +3529,8 @@ font-weight: bold;
   box-sizing: border-box;
 }
 
-.page-catalog .catalog-filters {
+.page-catalog .catalog-filters,
+.page-cabinet .catalog-filters {
   position: sticky;
   top: calc(var(--ev-header-h, 72px) + 12px);
   padding: clamp(18px, 2.2vw, 24px);
@@ -3497,13 +3541,18 @@ font-weight: bold;
   font-size: 15px;
 }
 
+.page-catalog .catalog-filters {
+  border-radius: clamp(16px, 2.2vw, 24px);
+}
+
 .catalog-filters-title {
   margin: 0 0 18px;
   font-size: 20px;
   font-weight: 700;
 }
 
-.page-catalog .catalog-filters-title {
+.page-catalog .catalog-filters-title,
+.page-cabinet .catalog-filters-title {
   font-family: var(--ev-font, "Inter", system-ui, sans-serif);
   font-size: clamp(14px, 1.15vw, 16px);
   font-weight: 700;
@@ -3528,12 +3577,12 @@ font-weight: bold;
 
 .page-catalog .catalog-select-panel {
   border-color: var(--ev-p-line-soft, rgba(var(--ev-rgb), 0.08));
-  border-radius: clamp(8px, 0.9vw, 11px);
+  border-radius: clamp(11px, 1.2vw, 15px);
   box-shadow: var(--ev-p-shadow-sm, 0 4px 16px rgba(var(--ev-rgb), 0.07));
 }
 
 .page-catalog .catalog-reset-btn {
-  border-radius: clamp(8px, 0.9vw, 12px);
+  border-radius: clamp(11px, 1.2vw, 15px);
   border-color: var(--ev-p-line, var(--ev-line));
   font-family: var(--ev-font, "Inter", system-ui, sans-serif);
   background: var(--ev-surface);
@@ -3726,7 +3775,8 @@ font-weight: bold;
 }
 
 /* Заголовок + сітка — у тій самій ширині, що й головний .container (1200px); фон як у фільтрів */
-.page-catalog .catalog-products-inner {
+.page-catalog .catalog-products-inner,
+.page-cabinet .catalog-products-inner {
   --catalog-heading-gap: clamp(9px, 1.1vw, 12px);
   max-width: 1200px;
   margin-left: auto;
@@ -3737,6 +3787,12 @@ font-weight: bold;
   border-radius: clamp(8px, 1vw, 14px);
   padding: var(--catalog-heading-gap) clamp(14px, 2vw, 22px) clamp(12px, 1.8vw, 18px);
   border: 1px solid rgba(var(--ev-rgb), 0.06);
+}
+
+.page-catalog .catalog-products-inner {
+  --catalog-heading-gap: clamp(14px, 1.6vw, 20px);
+  border-radius: clamp(16px, 2.2vw, 24px);
+  padding: var(--catalog-heading-gap) clamp(20px, 2.8vw, 32px) clamp(16px, 2.2vw, 24px);
 }
 
 .catalog-products-section.products {
@@ -3935,8 +3991,9 @@ body.cart-open .chat-widget-root {
   }
 }
 
-/* Плаваюча смуга «Напишіть нам» — всередині картки, зі своєю тінню та радіусом */
-.chat-widget-head-float {
+/* Плаваюча смуга заголовка чату / кошика — однаковий вигляд */
+.chat-widget-head-float,
+.cart-head-float {
   flex-shrink: 0;
   position: relative;
   z-index: 2;
@@ -3954,43 +4011,17 @@ body.cart-open .chat-widget-root {
     0 2px 6px rgba(var(--ev-rgb), 0.1);
 }
 
+/* Середня зона + нижній плаваючий блок; сам лист без рамки — рамки у повідомлень і compose-float */
 .chat-widget-sheet {
   flex: 1;
   min-height: 0;
   display: flex;
   flex-direction: column;
-  background: var(--ev-surface);
-  border-radius: 10px;
-  border: 1px solid var(--ev-border-hair);
-  box-shadow: 0 1px 3px rgba(var(--ev-rgb), 0.05);
-  overflow: hidden;
-}
-
-.chat-widget-close {
-  width: 32px;
-  height: 32px;
-  border: none;
-  border-radius: 6px;
+  gap: 8px;
+  overflow: visible;
   background: transparent;
-  color: var(--ev-surface);
-  font-size: 22px;
-  line-height: 1;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.chat-widget-close:hover {
-  background: rgba(255, 255, 255, 0.14);
-}
-
-.chat-widget-body {
-  padding: 0;
-  display: flex;
-  flex-direction: column;
-  flex: 1;
-  min-height: 0;
+  border: none;
+  box-shadow: none;
 }
 
 .chat-widget-messages {
@@ -4002,6 +4033,26 @@ body.cart-open .chat-widget-root {
   gap: 8px;
   padding: 12px 14px;
   background: var(--ev-surface-muted);
+  border-radius: 10px;
+  border: 1px solid var(--ev-border-hair);
+  box-shadow: 0 1px 3px rgba(var(--ev-rgb), 0.05);
+}
+
+/* Плаваючий блок вводу знизу (як смуга «Напишіть нам») */
+.chat-widget-compose-float {
+  flex-shrink: 0;
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  background: var(--ev-surface);
+  border-radius: 10px;
+  border: 1px solid var(--ev-border-hair);
+  box-shadow:
+    0 4px 14px rgba(var(--ev-rgb), 0.2),
+    0 2px 6px rgba(var(--ev-rgb), 0.1);
+  overflow: hidden;
 }
 
 .chat-widget-msg {
@@ -4036,8 +4087,8 @@ body.cart-open .chat-widget-root {
   align-items: center;
   gap: 8px;
   padding: 8px;
-  border-top: 1px solid var(--ev-border-hair);
-  background: var(--ev-surface);
+  border-top: none;
+  background: transparent;
   box-sizing: border-box;
 }
 
@@ -4090,7 +4141,7 @@ body.cart-open .chat-widget-root {
   box-sizing: border-box;
 }
 
-.chat-widget-status:empty {
+.chat-widget-compose-float .chat-widget-status:empty {
   padding: 0;
 }
 
@@ -4134,11 +4185,14 @@ body.evryka-site.page-cabinet {
   box-sizing: border-box;
 }
 
-/* Каталог: одна велика картка як на сторінці товару */
-.page-catalog .catalog-shell {
+/* Каталог і кабінет: одна велика картка (як на сторінці товару) */
+.page-catalog .catalog-shell,
+.page-cabinet .catalog-shell {
   --product-rhythm: clamp(24px, 3.5vw, 40px);
-  /* Зліва — як у плаваючого хедера: float-inset + внутрішній відступ під логотип (див. .header--home-detached .header-inner) */
-  --catalog-shell-pad-left: calc(var(--ev-header-float-inset) + 5px);
+  /* Як у .header--home-detached .header-inner: safe-area + float-inset + відступ під логотип */
+  --catalog-shell-pad-left: calc(
+    env(safe-area-inset-left, 0px) + var(--ev-header-float-inset) + var(--ev-logo-gutter, 5px)
+  );
   --product-nav-y: var(--product-rhythm);
   position: relative;
   z-index: 0;
@@ -4161,72 +4215,17 @@ body.evryka-site.page-cabinet {
   box-sizing: border-box;
 }
 
-/* Кабінет: одна велика картка як у каталозі, усередині — дві панелі (навігація + контент) */
-.page-cabinet .cabinet-shell {
-  --product-rhythm: clamp(24px, 3.5vw, 40px);
-  --catalog-shell-pad-left: calc(var(--ev-header-float-inset) + 5px);
-  --product-nav-y: var(--product-rhythm);
-  position: relative;
-  z-index: 0;
-  display: flex;
-  flex-wrap: wrap;
-  align-items: stretch;
-  margin: 0;
-  padding: calc(var(--ev-header-h) + 6px - var(--ev-stack-outer))
-    var(--product-rhythm)
-    var(--product-rhythm)
-    var(--catalog-shell-pad-left);
-  column-gap: var(--product-rhythm);
-  row-gap: var(--product-nav-y);
-  background: var(--ev-p-card);
-  border-radius: var(--ev-shell-radius, clamp(18px, 2.3vw, 26px));
-  border: 1px solid var(--ev-p-line-soft);
-  box-shadow: var(--ev-p-shadow);
-  max-width: none;
-  width: 100%;
-  box-sizing: border-box;
-}
-
-.page-cabinet .cabinet-shell-slogan {
-  flex: 1 1 100%;
-  width: 100%;
-  margin: 0;
-  padding: 0;
-  font-family: var(--ev-font, "Inter", system-ui, sans-serif);
-  font-size: clamp(18px, 2vw, 22px);
-  font-weight: 700;
-  letter-spacing: -0.02em;
-  color: var(--ev-p-ink, var(--ev-ink));
-}
-
-.page-cabinet .cabinet-main {
-  min-width: 0;
-}
-
-.page-cabinet .cabinet-main-inner {
-  --cabinet-heading-gap: clamp(9px, 1.1vw, 12px);
-  max-width: 1200px;
-  margin-left: auto;
-  margin-right: auto;
-  width: 100%;
-  box-sizing: border-box;
-  background: var(--catalog-panel-bg, var(--ev-surface-muted));
-  border-radius: clamp(8px, 1vw, 14px);
-  padding: var(--cabinet-heading-gap) clamp(14px, 2vw, 22px) clamp(12px, 1.8vw, 18px);
-  border: 1px solid rgba(var(--ev-rgb), 0.06);
-}
-
-.page-cabinet .cabinet-main-inner > .cabinet-card {
+.page-cabinet .catalog-products-inner > .cabinet-card {
   width: 100%;
   max-width: 100%;
   margin: 0;
 }
 
-.page-cabinet .cabinet-main-inner > .cabinet-card + .cabinet-card {
-  margin-top: var(--cabinet-heading-gap, 12px);
+.page-cabinet .catalog-products-inner > .cabinet-card + .cabinet-card {
+  margin-top: var(--catalog-heading-gap, clamp(9px, 1.1vw, 12px));
 }
 
-.page-cabinet .cabinet-main-inner .products.cabinet-card > h2 {
+.page-cabinet .catalog-products-inner .products.cabinet-card > h2 {
   text-align: left;
   margin-top: 0;
   margin-bottom: var(--cabinet-field-stack, 12px);
@@ -4235,24 +4234,8 @@ body.evryka-site.page-cabinet {
   color: var(--ev-p-ink, var(--ev-ink));
 }
 
-.page-cabinet .catalog-page-layout {
-  flex: 1 1 100%;
-  width: 100%;
-  min-width: 0;
-}
-
-.page-cabinet .cabinet-sidebar {
-  position: sticky;
-  top: calc(var(--ev-header-h, 72px) + 12px);
-  padding: clamp(18px, 2.2vw, 24px);
-  background: var(--catalog-panel-bg, var(--ev-surface-muted));
-  border: 1px solid var(--ev-p-line-soft, rgba(var(--ev-rgb), 0.06));
-  border-radius: clamp(8px, 1vw, 12px);
-  box-shadow: var(--ev-p-shadow-sm, 0 4px 16px rgba(var(--ev-rgb), 0.07));
-}
-
 .page-catalog .catalog-page-nav.product-nav,
-.page-cabinet .cabinet-shell > .product-nav.catalog-page-nav {
+.page-cabinet .catalog-shell > .product-nav.catalog-page-nav {
   flex: 1 1 100%;
   width: 100%;
   min-width: 100%;
@@ -4266,8 +4249,14 @@ body.evryka-site.page-cabinet {
   box-sizing: border-box;
 }
 
+/* Без додаткового зсуву — ряд «Назад» збігається з лівим паддінгом shell (як блок фільтрів) */
+.page-catalog .catalog-page-nav.product-nav {
+  margin-inline: 0;
+  padding-inline: 0;
+}
+
 .page-catalog .back-btn,
-.page-cabinet .cabinet-shell .back-btn {
+.page-cabinet .catalog-shell .back-btn {
   background: var(--ev-surface);
   color: var(--ev-p-ink);
   border: 1px solid var(--ev-p-line);
@@ -4282,29 +4271,29 @@ body.evryka-site.page-cabinet {
 }
 
 .page-catalog .back-btn:hover,
-.page-cabinet .cabinet-shell .back-btn:hover {
+.page-cabinet .catalog-shell .back-btn:hover {
   background: var(--ev-p-tier2);
   color: var(--ev-p-ink);
 }
 
 .page-catalog .back-icon,
-.page-cabinet .cabinet-shell .back-icon {
+.page-cabinet .catalog-shell .back-icon {
   stroke: var(--ev-p-ink);
 }
 
 .page-catalog .back-btn:hover .back-icon,
-.page-cabinet .cabinet-shell .back-btn:hover .back-icon {
+.page-cabinet .catalog-shell .back-btn:hover .back-icon {
   stroke: var(--ev-p-ink);
 }
 
 .page-catalog .breadcrumbs,
-.page-cabinet .cabinet-shell .breadcrumbs {
+.page-cabinet .catalog-shell .breadcrumbs {
   color: var(--ev-p-muted);
   font-weight: 500;
 }
 
 .page-catalog .breadcrumbs a,
-.page-cabinet .cabinet-shell .breadcrumbs a {
+.page-cabinet .catalog-shell .breadcrumbs a {
   position: relative;
   display: inline-block;
   padding: 5px 8px 6px;
@@ -4317,22 +4306,22 @@ body.evryka-site.page-cabinet {
 }
 
 .page-catalog .breadcrumbs a:hover,
-.page-cabinet .cabinet-shell .breadcrumbs a:hover {
+.page-cabinet .catalog-shell .breadcrumbs a:hover {
   font-weight: 500;
 }
 
 .page-catalog .breadcrumbs a::after,
-.page-cabinet .cabinet-shell .breadcrumbs a::after {
+.page-cabinet .catalog-shell .breadcrumbs a::after {
   content: none;
 }
 
 .page-catalog .breadcrumbs:hover a,
-.page-cabinet .cabinet-shell .breadcrumbs:hover a {
+.page-cabinet .catalog-shell .breadcrumbs:hover a {
   color: var(--ev-muted-nav);
 }
 
 .page-catalog .breadcrumbs:hover a:hover,
-.page-cabinet .cabinet-shell .breadcrumbs:hover a:hover {
+.page-cabinet .catalog-shell .breadcrumbs:hover a:hover {
   color: var(--ev-p-ink);
 }
 
@@ -4460,8 +4449,8 @@ body.evryka-site.page-cabinet {
   top: calc(var(--ev-header-h, 72px) + 16px);
   flex: 0 1 auto;
   width: 100%;
-  max-width: min(640px, 100%);
-  max-width: min(640px, 70cqi);
+  max-width: min(720px, 100%);
+  max-width: min(720px, 76cqi);
   min-width: 0;
   z-index: 1;
   display: flex;
@@ -4563,7 +4552,7 @@ body.evryka-site.page-cabinet {
   flex-direction: row;
   align-items: center;
   flex-wrap: wrap;
-  gap: 12px 16px;
+  gap: 8px 12px;
   width: 100%;
 }
 
@@ -4575,12 +4564,12 @@ body.evryka-site.page-cabinet {
 }
 
 .page-product .product-qty .qty-wrapper {
-  --ev-qty-outer-r: var(--ev-header-bar-radius, clamp(12px, 1.4vw, 18px));
-  --ev-qty-pad-y: 6px;
-  --ev-qty-pad-x: 8px;
+  --ev-qty-outer-r: var(--ev-header-bar-radius, clamp(10px, 1.2vw, 16px));
+  --ev-qty-pad-y: 4px;
+  --ev-qty-pad-x: 6px;
   /* Внутрішній радіус по краях = зовнішній мінус паддінг — збігається з вигином коробки */
-  --ev-qty-end-r: max(5px, calc(var(--ev-qty-outer-r) - var(--ev-qty-pad-x)));
-  --ev-qty-mid-r: 6px;
+  --ev-qty-end-r: max(4px, calc(var(--ev-qty-outer-r) - var(--ev-qty-pad-x)));
+  --ev-qty-mid-r: 5px;
 
   flex-shrink: 0;
   background: var(--ev-surface);
@@ -4588,25 +4577,37 @@ body.evryka-site.page-cabinet {
   border-radius: var(--ev-qty-outer-r);
   box-shadow: var(--ev-p-shadow-sm);
   padding: var(--ev-qty-pad-y) var(--ev-qty-pad-x);
-  gap: 8px;
+  gap: 4px;
   box-sizing: border-box;
 }
 
 .page-product .product-qty-controls-row .product-price-actions {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 6px;
   flex-shrink: 0;
   margin-left: auto;
 }
 
-/* Кнопки ±: більше повітря навколо іконки; кути зовні узгоджені з оболонкою */
+/* Кнопки ±: компактніше; кути зовні узгоджені з оболонкою */
 .page-product .product-qty .qty-btn {
   width: auto;
-  min-width: 44px;
-  height: 42px;
-  padding: 0 12px;
+  min-width: 34px;
+  height: 32px;
+  padding: 0 8px;
   box-sizing: border-box;
+}
+
+.page-product .product-qty .qty-btn svg {
+  width: 14px;
+  height: 14px;
+}
+
+.page-product .product-qty .qty-input {
+  width: 40px;
+  min-width: 36px;
+  font-size: 14px;
+  font-weight: 700;
 }
 
 .page-product .product-qty .qty-btn:first-child {
@@ -4836,36 +4837,44 @@ body.evryka-site.page-cabinet {
 
 .page-product .similar-rail {
   margin: 0;
-  padding: 0 clamp(10px, 1.8vw, 20px);
+  padding: 0 clamp(14px, 2.2vw, 28px);
   width: 100%;
   box-sizing: border-box;
 }
 
 .page-product .similar-list {
   gap: clamp(10px, 1.5vw, 14px);
-  padding: 10px clamp(12px, 2vw, 28px) 28px;
-  scroll-padding-inline: clamp(12px, 2vw, 24px);
-  /* Розсієння лише біля самих країв — повна видимість починається раніше з боків */
+  padding: 10px clamp(16px, 2.4vw, 32px) 28px;
+  scroll-padding-inline: clamp(16px, 2.4vw, 32px);
+  /* Довше м’яке розсієння по краях (ширша зона градієнта) */
   -webkit-mask-image: linear-gradient(
     to right,
     transparent 0%,
-    rgba(0, 0, 0, 0.45) 1.2%,
-    rgba(0, 0, 0, 0.92) 3.2%,
-    #000 5%,
-    #000 95%,
-    rgba(0, 0, 0, 0.92) 96.8%,
-    rgba(0, 0, 0, 0.45) 98.8%,
+    rgba(0, 0, 0, 0.2) 5%,
+    rgba(0, 0, 0, 0.45) 10%,
+    rgba(0, 0, 0, 0.72) 16%,
+    rgba(0, 0, 0, 0.92) 22%,
+    #000 28%,
+    #000 72%,
+    rgba(0, 0, 0, 0.92) 78%,
+    rgba(0, 0, 0, 0.72) 84%,
+    rgba(0, 0, 0, 0.45) 90%,
+    rgba(0, 0, 0, 0.2) 95%,
     transparent 100%
   );
   mask-image: linear-gradient(
     to right,
     transparent 0%,
-    rgba(0, 0, 0, 0.45) 1.2%,
-    rgba(0, 0, 0, 0.92) 3.2%,
-    #000 5%,
-    #000 95%,
-    rgba(0, 0, 0, 0.92) 96.8%,
-    rgba(0, 0, 0, 0.45) 98.8%,
+    rgba(0, 0, 0, 0.2) 5%,
+    rgba(0, 0, 0, 0.45) 10%,
+    rgba(0, 0, 0, 0.72) 16%,
+    rgba(0, 0, 0, 0.92) 22%,
+    #000 28%,
+    #000 72%,
+    rgba(0, 0, 0, 0.92) 78%,
+    rgba(0, 0, 0, 0.72) 84%,
+    rgba(0, 0, 0, 0.45) 90%,
+    rgba(0, 0, 0, 0.2) 95%,
     transparent 100%
   );
   mask-size: 100% 100%;
@@ -4893,11 +4902,11 @@ body.evryka-site.page-cabinet {
 }
 
 .page-product .similar-arrow--prev {
-  left: max(10px, env(safe-area-inset-left, 0px));
+  left: max(clamp(18px, 2.8vw, 32px), env(safe-area-inset-left, 0px));
 }
 
 .page-product .similar-arrow--next {
-  right: max(10px, env(safe-area-inset-right, 0px));
+  right: max(clamp(18px, 2.8vw, 32px), env(safe-area-inset-right, 0px));
 }
 
 .page-product .similar-arrow--prev:not(:disabled):hover,

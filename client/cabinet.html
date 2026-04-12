@@ -57,7 +57,7 @@
 </header>
 
   <main class="container">
-    <div class="cabinet-shell">
+    <div class="catalog-shell">
       <div class="product-nav catalog-page-nav">
         <a href="index.html" class="back-btn">
           <svg class="back-icon" viewBox="0 0 24 24" aria-hidden="true">
@@ -73,17 +73,17 @@
           <span>Особистий кабінет</span>
         </div>
       </div>
-      <p class="cabinet-shell-slogan">Особистий кабінет клієнта</p>
       <div class="catalog-page-layout">
-        <aside class="cabinet-sidebar">
+        <aside class="catalog-filters cabinet-sidebar" aria-label="Меню кабінету">
+          <h2 class="catalog-filters-title">Меню</h2>
           <button class="cabinet-nav-btn active" type="button" data-section="personal">Особисті дані</button>
           <button class="cabinet-nav-btn" type="button" data-section="orders">Мої замовлення</button>
           <button class="cabinet-nav-btn" type="button">Бонуси</button>
           <button class="cabinet-nav-btn" type="button">Обрані</button>
           <button id="logoutBtn" class="cabinet-nav-btn logout" type="button">Вийти</button>
         </aside>
-        <div class="cabinet-main">
-          <div class="cabinet-main-inner">
+        <div class="catalog-main">
+          <div class="catalog-products-inner">
     <section id="cabPersonalSection" class="products cabinet-card">
       <h2>Мої дані</h2>
       <form id="cabinetForm" class="cabinet-form">
@@ -202,8 +202,8 @@
         <button type="button" class="chat-widget-close" aria-label="Закрити чат">×</button>
       </div>
       <div class="chat-widget-sheet">
-        <div class="chat-widget-body">
-          <div id="chatWidgetMessages" class="chat-widget-messages" aria-live="polite"></div>
+        <div id="chatWidgetMessages" class="chat-widget-messages" aria-live="polite"></div>
+        <div class="chat-widget-compose-float">
           <div class="chat-widget-compose">
             <input type="text" id="chatWidgetText" class="chat-widget-field" placeholder="Ваше запитання…" maxlength="2000" autocomplete="off">
             <button type="button" id="chatWidgetSend" class="chat-widget-send">Надіслати</button>
