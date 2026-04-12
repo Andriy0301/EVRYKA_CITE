@@ -1,9 +1,14 @@
 (function () {
   "use strict";
 
+  if (!document.body.classList.contains("page-catalog")) return;
   if (document.getElementById("scrollToTopBtn")) return;
 
-  const SHOW_AFTER = 280;
+  /** Показувати лише після «суттєвої» прокрутки: ≈ одна висота екрана (мін. 560px). */
+  function scrollShowThreshold() {
+    return Math.max(560, Math.round(window.innerHeight * 0.85));
+  }
+
   const btn = document.createElement("button");
   btn.type = "button";
   btn.id = "scrollToTopBtn";
@@ -20,7 +25,7 @@
 
   function sync() {
     const y = window.scrollY || document.documentElement.scrollTop;
-    const show = y > SHOW_AFTER;
+    const show = y > scrollShowThreshold();
     btn.hidden = !show;
     btn.setAttribute("aria-hidden", show ? "false" : "true");
   }
@@ -36,6 +41,16 @@
     function () {
       if (t) window.clearTimeout(t);
       t = window.setTimeout(sync, 60);
+    },
+    { passive: true }
+  );
+
+  var rt;
+  window.addEventListener(
+    "resize",
+    function () {
+      if (rt) window.clearTimeout(rt);
+      rt = window.setTimeout(sync, 120);
     },
     { passive: true }
   );

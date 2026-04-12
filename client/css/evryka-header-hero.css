@@ -20,6 +20,8 @@
   --ev-border-hair: #d5e1e6;
   --ev-border-mid: #b8cad1;
   --ev-heart: #b83252;
+  --ev-btn-dark: #111;
+  --ev-btn-dark-hover: #2d2d2d;
   --ev-header-h: 60px;
   --ev-shell-radius: clamp(18px, 2.3vw, 26px);
   --ev-shell-margin: clamp(10px, 1.8vw, 20px);
@@ -770,7 +772,7 @@ body.cart-open .header .cart {
 }
 
 .header #cartCount {
-  background: var(--ev-ink);
+  background: var(--ev-btn-dark);
   color: #fff;
   font-size: 9px;
   font-weight: 700;

@@ -399,19 +399,21 @@ function renderFavoritesList() {
 
   favorites.forEach((item) => {
     const div = document.createElement("div");
-    div.className = "favorite-item";
+    div.className = "cart-item";
     const imageSrc = resolveProductImageSrc(item);
     div.innerHTML = `
       <img src="${imageSrc}" alt="${item.name}">
-      <div style="flex:1;">
-        <h4 style="margin:0 0 4px;">${item.name}</h4>
-        <p style="margin:0;">${item.price} грн</p>
+
+      <div class="cart-info">
+        <h4>${item.name}</h4>
+        <p>${item.price} грн</p>
       </div>
-      <button class="favorite-remove-btn" data-id="${item.id}">✖</button>
+
+      <button type="button" class="remove-btn" data-id="${item.id}" aria-label="Прибрати з обраного">✖</button>
     `;
 
     div.addEventListener("click", () => goToProduct(item.id));
-    const removeBtn = div.querySelector(".favorite-remove-btn");
+    const removeBtn = div.querySelector(".remove-btn");
     removeBtn.addEventListener("click", (event) => {
       event.stopPropagation();
       toggleFavorite(event, item);
