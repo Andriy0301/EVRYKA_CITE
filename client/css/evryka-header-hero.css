@@ -54,8 +54,9 @@ body.evryka-site:not(.page-home) {
   padding-top: calc(var(--ev-header-h) + 12px);
 }
 
-/* Сторінка товару: верх картки збігається з банером (той самий «виступ», що .evryka-hero-stack margin) */
-body.evryka-site.page-product {
+/* Сторінка товару / каталог: верх картки збігається з банером (той самий «виступ», що .evryka-hero-stack margin) */
+body.evryka-site.page-product,
+body.evryka-site.page-catalog {
   padding-top: var(--ev-stack-outer);
 }
 
