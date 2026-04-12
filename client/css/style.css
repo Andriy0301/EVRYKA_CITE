@@ -3507,9 +3507,12 @@ font-weight: bold;
 }
 
 /* ——— сторінка каталогу ——— */
-.page-catalog .catalog-page-layout {
+.page-catalog .catalog-page-layout,
+.page-cabinet .catalog-page-layout {
   margin-top: 0;
   margin-bottom: 0;
+  /* Зазор між фільтрами й сіткою = той самий, що й «край→шапка» */
+  gap: var(--ev-header-screen-inset-l, clamp(20px, 3vw, 32px));
 }
 
 .catalog-page-nav .breadcrumbs {
@@ -3559,6 +3562,30 @@ font-weight: bold;
   letter-spacing: 0.08em;
   text-transform: uppercase;
   color: var(--ev-p-ink, var(--ev-ink));
+}
+
+.page-cabinet .catalog-filters.cabinet-sidebar {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 12px;
+  padding: clamp(20px, 2.4vw, 28px);
+  box-sizing: border-box;
+}
+
+.page-cabinet .catalog-filters.cabinet-sidebar .catalog-filters-title {
+  margin: 0;
+}
+
+.page-cabinet .catalog-filters.cabinet-sidebar .cabinet-nav-btn {
+  width: 100%;
+  padding: 12px 14px;
+  min-height: 44px;
+  box-sizing: border-box;
+}
+
+.page-cabinet .catalog-filters.cabinet-sidebar .cabinet-nav-btn.logout {
+  margin-top: 8px;
 }
 
 .page-catalog .catalog-filter-label {
@@ -3774,14 +3801,12 @@ font-weight: bold;
   min-width: 0;
 }
 
-/* Заголовок + сітка — у тій самій ширині, що й головний .container (1200px); фон як у фільтрів */
+/* Заголовок + сітка; фон як у фільтрів */
 .page-catalog .catalog-products-inner,
 .page-cabinet .catalog-products-inner {
   --catalog-heading-gap: clamp(9px, 1.1vw, 12px);
-  max-width: 1200px;
-  margin-left: auto;
-  margin-right: auto;
   width: 100%;
+  min-width: 0;
   box-sizing: border-box;
   background: var(--catalog-panel-bg, var(--ev-surface-muted));
   border-radius: clamp(8px, 1vw, 14px);
@@ -3793,6 +3818,16 @@ font-weight: bold;
   --catalog-heading-gap: clamp(14px, 1.6vw, 20px);
   border-radius: clamp(16px, 2.2vw, 24px);
   padding: var(--catalog-heading-gap) clamp(20px, 2.8vw, 32px) clamp(16px, 2.2vw, 24px);
+  max-width: none;
+  margin-left: 0;
+  margin-right: 0;
+}
+
+/* Кабінет: блок контенту не ширший за колонку (без 1200px по центру) */
+.page-cabinet .catalog-products-inner {
+  max-width: none;
+  margin-left: 0;
+  margin-right: 0;
 }
 
 .catalog-products-section.products {
@@ -4189,10 +4224,20 @@ body.evryka-site.page-cabinet {
 .page-catalog .catalog-shell,
 .page-cabinet .catalog-shell {
   --product-rhythm: clamp(24px, 3.5vw, 40px);
-  /* Як у .header--home-detached .header-inner: safe-area + float-inset + відступ під логотип */
-  --catalog-shell-pad-left: calc(
-    env(safe-area-inset-left, 0px) + var(--ev-header-float-inset) + var(--ev-logo-gutter, 5px)
+  /*
+    Три горизонтальні відступи (лівий зовнішній, зазор фільтри↔контент, правий зовнішній) =
+    тій самій величині, що й відстань від краю вікна до плаваючої шапки (.header--home-detached):
+    --ev-stack-outer + safe-area + --ev-header-float-inset
+    Внутрішні паддінги картки = ця величина мінус зовнішній margin контейнера (--ev-stack-outer).
+  */
+  --ev-header-screen-inset-l: calc(
+    var(--ev-stack-outer) + env(safe-area-inset-left, 0px) + var(--ev-header-float-inset)
   );
+  --ev-header-screen-inset-r: calc(
+    var(--ev-stack-outer) + env(safe-area-inset-right, 0px) + var(--ev-header-float-inset)
+  );
+  --catalog-shell-pad-left: calc(var(--ev-header-screen-inset-l) - var(--ev-stack-outer));
+  --catalog-shell-pad-right: calc(var(--ev-header-screen-inset-r) - var(--ev-stack-outer));
   --product-nav-y: var(--product-rhythm);
   position: relative;
   z-index: 0;
@@ -4201,7 +4246,7 @@ body.evryka-site.page-cabinet {
   align-items: stretch;
   margin: 0;
   padding: calc(var(--ev-header-h) + 6px - var(--ev-stack-outer))
-    var(--product-rhythm)
+    var(--catalog-shell-pad-right)
     var(--product-rhythm)
     var(--catalog-shell-pad-left);
   column-gap: var(--product-rhythm);
@@ -4215,10 +4260,20 @@ body.evryka-site.page-cabinet {
   box-sizing: border-box;
 }
 
+/* Кабінет: основний shell одразу під плаваючим хедером — менший верхній внутрішній відступ */
+.page-cabinet .catalog-shell {
+  padding-top: max(
+    env(safe-area-inset-top, 0px),
+    calc(var(--ev-header-h, 72px) + 2px - var(--ev-stack-outer, 0px))
+  );
+}
+
 .page-cabinet .catalog-products-inner > .cabinet-card {
   width: 100%;
   max-width: 100%;
+  min-width: 0;
   margin: 0;
+  box-sizing: border-box;
 }
 
 .page-cabinet .catalog-products-inner > .cabinet-card + .cabinet-card {
@@ -4231,6 +4286,19 @@ body.evryka-site.page-cabinet {
   margin-bottom: var(--cabinet-field-stack, 12px);
   font-size: clamp(20px, 2.2vw, 26px);
   font-weight: 700;
+  color: var(--ev-p-ink, var(--ev-ink));
+}
+
+.page-cabinet .cabinet-page-title {
+  flex: 1 1 100%;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  font-family: var(--ev-font, "Inter", system-ui, sans-serif);
+  font-size: clamp(26px, 3vw, 34px);
+  font-weight: 700;
+  line-height: 1.2;
+  letter-spacing: -0.02em;
   color: var(--ev-p-ink, var(--ev-ink));
 }
 
