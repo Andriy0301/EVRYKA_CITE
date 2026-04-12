@@ -2177,14 +2177,15 @@ body.cart-open .header .cart {
 }
 
 .cabinet-form .catalog-select-option.is-selected {
-  background: var(--ev-accent-gradient);
-  color: var(--ev-text-on-accent);
+  background: rgba(18, 122, 140, 0.12);
+  color: var(--ev-ink);
   font-weight: 600;
+  box-shadow: inset 3px 0 0 0 #127a8c;
 }
 
 .cabinet-form .catalog-select-option.is-selected:hover {
-  filter: brightness(1.06);
-  color: var(--ev-text-on-accent);
+  background: rgba(18, 122, 140, 0.18);
+  color: var(--ev-ink);
 }
 
 /* Особистий кабінет: випадаючі списки не обрізаються карткою й не ховаються за сайдбаром */
@@ -3705,18 +3706,69 @@ body.cart-open .header .cart {
   color: rgba(255, 255, 255, 0.72);
 }
 
-.page-catalog .catalog-filter-input,
-.page-catalog .catalog-select-trigger,
-.page-catalog .catalog-select-option {
+.page-catalog .catalog-filters .catalog-filter-input,
+.page-catalog .catalog-filters .catalog-select-trigger,
+.page-catalog .catalog-filters .catalog-select-option {
   font-family: var(--ev-font, "Inter", system-ui, sans-serif);
 }
 
-.page-catalog .catalog-select-panel {
-  border: 1px solid rgba(var(--ev-rgb), 0.14);
+/* Сортування та категорія — один і той самий кастомний список; стилі явно під фільтри */
+.page-catalog .catalog-filters .catalog-select-panel {
+  border: 1px solid rgba(var(--ev-rgb), 0.12);
   border-radius: clamp(11px, 1.2vw, 15px);
   box-shadow:
-    0 10px 36px rgba(var(--ev-rgb), 0.14),
-    0 2px 8px rgba(var(--ev-rgb), 0.06);
+    0 10px 36px rgba(0, 0, 0, 0.12),
+    0 2px 10px rgba(0, 0, 0, 0.06);
+  background: #fff;
+  padding: 6px;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(var(--ev-rgb), 0.28) transparent;
+}
+
+.page-catalog .catalog-filters .catalog-select-panel::-webkit-scrollbar {
+  width: 8px;
+}
+
+.page-catalog .catalog-filters .catalog-select-panel::-webkit-scrollbar-track {
+  background: transparent;
+  margin: 4px 0;
+}
+
+.page-catalog .catalog-filters .catalog-select-panel::-webkit-scrollbar-thumb {
+  background: rgba(var(--ev-rgb), 0.22);
+  border-radius: 999px;
+  border: 2px solid transparent;
+  background-clip: padding-box;
+}
+
+.page-catalog .catalog-filters .catalog-select-panel::-webkit-scrollbar-thumb:hover {
+  background: rgba(var(--ev-rgb), 0.32);
+  border: 2px solid transparent;
+  background-clip: padding-box;
+}
+
+.page-catalog .catalog-filters .catalog-select-option {
+  padding: 10px 12px;
+  margin: 2px 0;
+  border-radius: 8px;
+  font-size: 14px;
+  line-height: 1.4;
+}
+
+.page-catalog .catalog-filters .catalog-select-option:hover:not(.is-selected) {
+  background: var(--ev-surface-muted);
+}
+
+.page-catalog .catalog-filters .catalog-select-option.is-selected {
+  background: rgba(18, 122, 140, 0.12);
+  color: var(--ev-ink);
+  font-weight: 600;
+  box-shadow: inset 3px 0 0 0 #127a8c;
+}
+
+.page-catalog .catalog-filters .catalog-select-option.is-selected:hover {
+  background: rgba(18, 122, 140, 0.18);
+  color: var(--ev-ink);
 }
 
 .page-catalog .catalog-reset-btn {
@@ -3840,7 +3892,7 @@ body.cart-open .header .cart {
   top: calc(100% + 6px);
   z-index: 80;
   margin: 0;
-  padding: 6px 0;
+  padding: 6px;
   list-style: none;
   background: var(--ev-surface);
   border: 1px solid var(--ev-line-strong);
@@ -3848,31 +3900,58 @@ body.cart-open .header .cart {
   box-shadow: 0 12px 32px rgba(0, 0, 0, 0.12);
   max-height: 280px;
   overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(var(--ev-rgb), 0.28) transparent;
+}
+
+.catalog-select-panel::-webkit-scrollbar {
+  width: 8px;
+}
+
+.catalog-select-panel::-webkit-scrollbar-track {
+  background: transparent;
+  margin: 4px 0;
+}
+
+.catalog-select-panel::-webkit-scrollbar-thumb {
+  background: rgba(var(--ev-rgb), 0.22);
+  border-radius: 999px;
+  border: 2px solid transparent;
+  background-clip: padding-box;
+}
+
+.catalog-select-panel::-webkit-scrollbar-thumb:hover {
+  background: rgba(var(--ev-rgb), 0.32);
+  border: 2px solid transparent;
+  background-clip: padding-box;
 }
 
 .catalog-select-option {
-  padding: 10px 14px;
-  font-family: "PT Sans Caption", sans-serif;
-  font-size: 15px;
-  line-height: 1.35;
+  padding: 10px 12px;
+  margin: 2px 0;
+  border-radius: 8px;
+  font-family: var(--ev-font, "Inter", system-ui, sans-serif);
+  font-size: 14px;
+  line-height: 1.4;
   color: var(--ev-ink);
   cursor: pointer;
   transition: background 0.12s ease, color 0.12s ease;
 }
 
-.catalog-select-option:hover {
-  background: var(--ev-surface-elevated);
+.catalog-select-option:hover:not(.is-selected) {
+  background: var(--ev-surface-muted);
 }
 
 .catalog-select-option.is-selected {
-  background: var(--ev-accent-gradient);
-  color: var(--ev-text-on-accent);
+  background: rgba(18, 122, 140, 0.12);
+  color: var(--ev-ink);
   font-weight: 600;
+  box-shadow: inset 3px 0 0 0 #127a8c;
 }
 
 .catalog-select-option.is-selected:hover {
-  filter: brightness(1.06);
-  color: var(--ev-text-on-accent);
+  background: rgba(18, 122, 140, 0.18);
+  color: var(--ev-ink);
 }
 
 .catalog-price-row {
@@ -4660,8 +4739,8 @@ body.evryka-site.page-cabinet {
 .page-product .product-main-columns {
   container-type: inline-size;
   container-name: product-main;
-  /* Відступ між прев’ю у стовпчику (менший за rhythm — щільніший стек) */
-  --product-thumb-stack-gap: clamp(6px, 1vw, 10px);
+  /* Вертикальний зазор між прев’ю = горизонтальний між прев’ю та головним фото (--product-card-pad) */
+  --product-thumb-stack-gap: var(--product-card-pad);
   /* Зазор фото ↔ інфо = той самий, що внутрішній відступ картки */
   display: flex;
   flex-flow: row nowrap;
@@ -4675,6 +4754,7 @@ body.evryka-site.page-cabinet {
 
 /* Галерея: прев’ю зліка, головне фото праворуч; ширша колонка для великого фото */
 .page-product .product-gallery {
+  --product-gallery-gutter: var(--product-card-pad, var(--product-rhythm));
   position: sticky;
   top: calc(var(--ev-header-h, 72px) + 16px);
   flex: 0 1 auto;
@@ -4686,7 +4766,7 @@ body.evryka-site.page-cabinet {
   display: flex;
   flex-direction: row;
   align-items: flex-start;
-  gap: var(--product-card-pad, var(--product-rhythm));
+  gap: var(--product-gallery-gutter);
 }
 
 .page-product .product-gallery .main-image {
@@ -4741,12 +4821,15 @@ body.evryka-site.page-cabinet {
   flex-shrink: 0;
   margin: 0;
   padding: 0;
+  /* Вирівнювання з головним фото: без зайвого зазору над першим прев’ю */
+  padding-top: 0;
   max-height: none;
   overflow: visible;
   box-sizing: border-box;
 }
 
 .page-product .thumbnails img {
+  display: block;
   width: clamp(80px, 10cqi, 96px);
   height: clamp(80px, 10cqi, 96px);
   object-fit: cover;
@@ -4755,6 +4838,10 @@ body.evryka-site.page-cabinet {
   box-sizing: border-box;
   cursor: pointer;
   transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.page-product .thumbnails img:first-child {
+  margin-top: 0;
 }
 
 .page-product .thumbnails img.thumb-active {
@@ -5071,29 +5158,40 @@ body.evryka-site.page-cabinet {
 
 .page-product .similar-rail {
   margin: 0;
-  padding: 0 clamp(14px, 2.2vw, 28px);
+  /* Трохи більший відступ від краю картки — згасання візуально починається далі від рамки */
+  padding: 0 clamp(20px, 3.2vw, 40px);
   width: 100%;
   box-sizing: border-box;
 }
 
 .page-product .similar-list {
-  --similar-edge-fade: clamp(44px, 8vw, 96px);
+  /* Згасання сильніше: довший перехід + початок рампи зсунутий від зовнішнього краю */
+  --similar-fade-inset: clamp(16px, 3vw, 32px);
+  --similar-fade-span: clamp(64px, 13vw, 140px);
   gap: clamp(10px, 1.5vw, 14px);
-  padding: 10px clamp(16px, 2.4vw, 32px) 28px;
-  scroll-padding-inline: clamp(16px, 2.4vw, 32px);
-  /* М’яке згасання країв ряду (як раніше); тіні карток трохи заходять у зону fade */
+  padding: 10px clamp(22px, 3.2vw, 42px) 28px;
+  scroll-padding-inline: clamp(22px, 3.2vw, 42px);
+  /* М’яке згасання країв ряду; тіні карток трохи заходять у зону fade */
   -webkit-mask-image: linear-gradient(
     to right,
     transparent,
-    #000 var(--similar-edge-fade),
-    #000 calc(100% - var(--similar-edge-fade)),
+    rgba(0, 0, 0, 0.14) var(--similar-fade-inset),
+    rgba(0, 0, 0, 0.5) calc(var(--similar-fade-inset) + (var(--similar-fade-span) * 0.42)),
+    #000 calc(var(--similar-fade-inset) + var(--similar-fade-span)),
+    #000 calc(100% - var(--similar-fade-inset) - var(--similar-fade-span)),
+    rgba(0, 0, 0, 0.5) calc(100% - var(--similar-fade-inset) - (var(--similar-fade-span) * 0.42)),
+    rgba(0, 0, 0, 0.14) calc(100% - var(--similar-fade-inset)),
     transparent
   );
   mask-image: linear-gradient(
     to right,
     transparent,
-    #000 var(--similar-edge-fade),
-    #000 calc(100% - var(--similar-edge-fade)),
+    rgba(0, 0, 0, 0.14) var(--similar-fade-inset),
+    rgba(0, 0, 0, 0.5) calc(var(--similar-fade-inset) + (var(--similar-fade-span) * 0.42)),
+    #000 calc(var(--similar-fade-inset) + var(--similar-fade-span)),
+    #000 calc(100% - var(--similar-fade-inset) - var(--similar-fade-span)),
+    rgba(0, 0, 0, 0.5) calc(100% - var(--similar-fade-inset) - (var(--similar-fade-span) * 0.42)),
+    rgba(0, 0, 0, 0.14) calc(100% - var(--similar-fade-inset)),
     transparent
   );
   -webkit-mask-size: 100% 100%;
@@ -5106,12 +5204,24 @@ body.evryka-site.page-cabinet {
 .page-product .similar-arrow {
   width: 46px;
   height: 46px;
-  border: 1px solid rgba(var(--ev-rgb), 0.2);
+  border: 1px solid rgba(var(--ev-rgb), 0.14);
   background: var(--ev-p-card);
   color: var(--ev-p-ink);
   box-shadow:
-    var(--ev-p-shadow-sm),
-    0 0 0 1px rgba(255, 255, 255, 0.95) inset;
+    0 4px 14px rgba(var(--ev-rgb), 0.1),
+    0 1px 3px rgba(var(--ev-rgb), 0.08);
+  transition: background 0.2s ease, color 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease,
+    transform 0.2s ease;
+}
+
+.page-product .similar-arrow .similar-arrow__icon {
+  width: 22px;
+  height: 22px;
+}
+
+.page-product .similar-arrow:focus-visible {
+  outline: 2px solid var(--ev-accent);
+  outline-offset: 3px;
 }
 
 .page-product .similar-arrow.similar-arrow--prev,
@@ -5141,23 +5251,29 @@ body.evryka-site.page-cabinet {
 }
 
 .page-product .similar-arrow:not(:disabled):hover {
-  background: var(--ev-accent);
-  color: var(--ev-surface);
-  border-color: var(--ev-accent);
+  background: var(--accent-main);
+  color: var(--ev-text-on-accent);
+  border-color: var(--accent-main);
   box-shadow:
-    0 6px 20px rgba(var(--ev-rgb), 0.16),
-    0 0 0 1px rgba(255, 255, 255, 0.2) inset;
+    0 8px 24px rgba(251, 146, 60, 0.32),
+    0 2px 8px rgba(0, 0, 0, 0.08),
+    0 0 0 1px rgba(255, 255, 255, 0.35) inset;
+}
+
+.page-product .similar-arrow:not(:disabled):active {
+  background: var(--accent-hover);
+  color: var(--ev-text-on-accent);
+  border-color: var(--accent-hover);
+  box-shadow: 0 2px 10px rgba(249, 115, 22, 0.25);
 }
 
 .page-product .similar-arrow:disabled,
 .page-product .similar-arrow:disabled:hover {
   cursor: default;
   background: var(--ev-p-card);
-  color: var(--ev-p-ink);
-  border-color: rgba(var(--ev-rgb), 0.18);
-  box-shadow:
-    var(--ev-p-shadow-sm),
-    0 0 0 1px rgba(255, 255, 255, 0.95) inset;
+  color: rgba(var(--ev-rgb), 0.34);
+  border-color: rgba(var(--ev-rgb), 0.12);
+  box-shadow: 0 2px 8px rgba(var(--ev-rgb), 0.05);
   opacity: 1;
   transform: none;
 }
