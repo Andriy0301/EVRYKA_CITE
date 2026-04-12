@@ -616,7 +616,10 @@ a:hover {
 }
 
 .tab {
-  padding: 5px 0 7px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 6px 0;
   margin: 0;
   border-radius: 0;
   border: none;
@@ -627,6 +630,7 @@ a:hover {
   font-weight: 600;
   letter-spacing: 0.07em;
   text-transform: uppercase;
+  line-height: 1.2;
 
   cursor: pointer;
   position: relative;
@@ -638,7 +642,7 @@ a:hover {
   position: absolute;
   left: 0;
   right: 0;
-  bottom: 2px;
+  bottom: 3px;
   height: 2px;
   background: var(--ev-accent);
   transform: scaleX(0);
@@ -3939,20 +3943,16 @@ body.cart-open .header .cart {
   margin-right: 0;
 }
 
-/* Кабінет: блок контенту не ширший за колонку (без 1200px по центру) */
+/* Кабінет: блок контенту; зліва/справа = як зверху (--catalog-heading-gap) */
 .page-cabinet .catalog-products-inner {
   --catalog-heading-gap: clamp(14px, 2vw, 22px);
   max-width: none;
   margin-left: 0;
   margin-right: 0;
   padding-top: var(--catalog-heading-gap);
-  padding-right: clamp(14px, 2vw, 22px);
+  padding-right: var(--catalog-heading-gap);
   padding-bottom: clamp(12px, 1.8vw, 18px);
-  /* Зліва — та сама відстань від лівого краю вікна до контенту шапки, що й для логотипу */
-  padding-left: calc(
-    var(--ev-stack-outer, 0px) + env(safe-area-inset-left, 0px) + var(--ev-header-float-inset) +
-      var(--ev-logo-inset-left, 12px)
-  );
+  padding-left: var(--catalog-heading-gap);
 }
 
 .catalog-products-section.products {
@@ -4356,7 +4356,7 @@ body.cart-open .chat-widget-root {
   color: var(--ev-heart);
 }
 
-/* ——— сторінка товару / каталог / кабінет: shell + білі картки; фон сторінки й панелей — #635d5a ——— */
+/* ——— товар / каталог / кабінет: фон body — як у body.evryka-site (--ev-bg-gradient); темні панелі — лише через --catalog-panel-bg / окремі блоки ——— */
 body.evryka-site.page-product,
 body.evryka-site.page-catalog,
 body.evryka-site.page-cabinet {
@@ -4374,7 +4374,6 @@ body.evryka-site.page-cabinet {
   --ev-p-toggle-bg: var(--surface-primary);
   --ev-p-toggle-border: var(--border-light);
   --ev-p-toggle-shadow: 0 1px 0 rgba(255, 255, 255, 0.95) inset, 0 4px 16px rgba(0, 0, 0, 0.05);
-  background: var(--ev-panel-chrome);
 }
 
 /*
@@ -5056,6 +5055,7 @@ body.evryka-site.page-cabinet {
   text-transform: uppercase;
   color: var(--ev-p-ink);
   margin-bottom: clamp(14px, 2.5vw, 20px);
+  text-align: right;
 }
 
 .page-product .similar-wrap {
@@ -5077,11 +5077,29 @@ body.evryka-site.page-cabinet {
 }
 
 .page-product .similar-list {
+  --similar-edge-fade: clamp(28px, 5vw, 56px);
   gap: clamp(10px, 1.5vw, 14px);
   padding: 10px clamp(16px, 2.4vw, 32px) 28px;
   scroll-padding-inline: clamp(16px, 2.4vw, 32px);
-  -webkit-mask-image: none;
-  mask-image: none;
+  /* М’яке згасання країв ряду (як раніше); тіні карток трохи заходять у зону fade */
+  -webkit-mask-image: linear-gradient(
+    to right,
+    transparent,
+    #000 var(--similar-edge-fade),
+    #000 calc(100% - var(--similar-edge-fade)),
+    transparent
+  );
+  mask-image: linear-gradient(
+    to right,
+    transparent,
+    #000 var(--similar-edge-fade),
+    #000 calc(100% - var(--similar-edge-fade)),
+    transparent
+  );
+  -webkit-mask-size: 100% 100%;
+  mask-size: 100% 100%;
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
   scroll-snap-type: x proximity;
 }
 
