@@ -5480,13 +5480,15 @@ body.evryka-site.page-about {
   width: 100%;
   min-width: 0;
   box-sizing: border-box;
+  /* Менший зазор під заголовком «Про нас» (компенсація row-gap у .catalog-shell) */
+  margin-top: calc(-1 * clamp(6px, 1.2vw, 14px));
 }
 
 .page-about .about-page__grid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: var(--product-rhythm, clamp(24px, 3.5vw, 40px));
-  margin-top: clamp(6px, 1vw, 14px);
+  margin-top: 0;
 }
 
 @media (max-width: 820px) {
@@ -5605,7 +5607,7 @@ body.evryka-site.page-about {
 
 .page-about .about-contact-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr));
   gap: clamp(14px, 2vw, 18px);
 }
 
@@ -5633,6 +5635,13 @@ body.evryka-site.page-about {
   display: flex;
   align-items: flex-start;
   gap: 12px;
+  min-width: 0;
+}
+
+/* Текстова колонка поруч з іконкою — щоб email/телефон не ламались посеред слова */
+.page-about .about-contact-tile__row > div:not(.about-contact-tile__icon) {
+  flex: 1;
+  min-width: 0;
 }
 
 .page-about .about-contact-tile__icon {
@@ -5664,7 +5673,12 @@ body.evryka-site.page-about {
   font-size: 15px;
   font-weight: 600;
   line-height: 1.4;
-  word-break: break-word;
+  word-break: normal;
+  overflow-wrap: normal;
+  max-width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: thin;
 }
 
 .page-about .about-contact-tile__value a {
@@ -5672,6 +5686,7 @@ body.evryka-site.page-about {
   text-decoration: none;
   border-bottom: 1px solid transparent;
   transition: border-color 0.2s ease, color 0.2s ease;
+  white-space: nowrap;
 }
 
 .page-about .about-contact-tile__value a:hover {
