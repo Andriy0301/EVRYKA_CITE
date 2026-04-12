@@ -2,7 +2,13 @@
 :root {
   --bg-main: #f8f5f2;
   --bg-section: #f1ece7;
-  --footer-bg: #e8e9ec;
+  --footer-bg: #3b3b3b;
+  --footer-text: rgba(255, 255, 255, 0.92);
+  --footer-text-muted: rgba(255, 255, 255, 0.72);
+  --footer-text-soft: rgba(255, 255, 255, 0.55);
+  --footer-border: rgba(255, 255, 255, 0.12);
+  --footer-chip-bg: rgba(255, 255, 255, 0.1);
+  --footer-chip-border: rgba(255, 255, 255, 0.18);
   /* Резерв (панелі за замовчуванням світлі; темний не використовуємо для кошика/чату) */
   --ev-panel-chrome: #635d5a;
   --surface-primary: #ffffff;
@@ -592,31 +598,34 @@ a:hover {
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: 8px;
+  /* Один зазор між усіма вкладками (без «фантомних» пробілів у розмітці) */
+  gap: 12px;
   width: fit-content;
   max-width: 100%;
   margin: 15px auto 0;
-  padding: 11px 20px;
+  padding: 8px 18px;
   flex-wrap: wrap;
   box-sizing: border-box;
+  /* Пробіли/переноси між <button> не стають вузькими flex-елементами */
+  font-size: 0;
 
   background: var(--ev-surface);
   border-radius: 999px;
   border: 1px solid var(--ev-line);
-  box-shadow: 0 12px 36px rgba(0, 0, 0, 0.1), 0 4px 12px rgba(0, 0, 0, 0.05);
+  box-shadow: 0 8px 26px rgba(0, 0, 0, 0.09), 0 3px 10px rgba(0, 0, 0, 0.045);
 }
 
 .tab {
-  padding: 8px 14px 10px;
+  padding: 5px 0 7px;
   margin: 0;
   border-radius: 0;
   border: none;
   background: transparent;
   color: var(--ev-ink);
 
-  font-size: 13px;
+  font-size: 12px;
   font-weight: 600;
-  letter-spacing: 0.08em;
+  letter-spacing: 0.07em;
   text-transform: uppercase;
 
   cursor: pointer;
@@ -627,9 +636,9 @@ a:hover {
 .tab::after {
   content: "";
   position: absolute;
-  left: 10px;
-  right: 10px;
-  bottom: 3px;
+  left: 0;
+  right: 0;
+  bottom: 2px;
   height: 2px;
   background: var(--ev-accent);
   transform: scaleX(0);
@@ -682,8 +691,8 @@ a:hover {
 .page-home .container > .category-tabs {
   margin: 0 auto var(--home-hero-to-content-gap, clamp(28px, 4vw, 52px));
   box-shadow:
-    0 14px 40px rgba(0, 0, 0, 0.4),
-    0 4px 14px rgba(0, 0, 0, 0.25);
+    0 10px 32px rgba(0, 0, 0, 0.32),
+    0 3px 11px rgba(0, 0, 0, 0.2);
 }
 
 .page-home .container > section.products {
@@ -2611,7 +2620,7 @@ body.cart-open .header .cart {
   border: none;
   border-radius: 6px;
   background: transparent;
-  color: var(--ev-ink);
+  color: rgba(255, 255, 255, 0.92);
   font-size: 22px;
   line-height: 1;
   cursor: pointer;
@@ -2623,7 +2632,7 @@ body.cart-open .header .cart {
 
 .chat-widget-close:hover,
 .cart-head-float-close:hover {
-  background: var(--ev-surface-muted);
+  background: rgba(255, 255, 255, 0.14);
 }
 .close-btn {
   width: 28px;
@@ -3167,9 +3176,13 @@ body.cart-open .header .cart {
 }
 .footer {
   background: var(--footer-bg);
-  color: var(--text-primary);
-  border-top: 1px solid var(--border-light);
+  color: var(--footer-text);
+  border-top: 1px solid var(--footer-border);
   margin-top: 60px;
+}
+
+.footer a {
+  margin-left: 0;
 }
 
 /* контейнер */
@@ -3185,13 +3198,21 @@ body.cart-open .header .cart {
 .footer-col h4 {
   margin-bottom: 15px;
   font-size: 16px;
+  color: var(--footer-text);
+}
+
+.footer-col p {
+  color: var(--footer-text-muted);
+  font-size: 14px;
+  line-height: 1.5;
+  margin: 0 0 8px;
 }
 
 .footer-col a {
   display: block;
   margin-bottom: 10px;
 
-  color: var(--ev-muted);
+  color: var(--footer-text-muted);
   text-decoration: none;
   font-size: 14px;
 
@@ -3199,14 +3220,18 @@ body.cart-open .header .cart {
 }
 
 .footer-col a:hover {
-  color: var(--ev-accent);
+  color: var(--accent-soft);
 }
 
 /* телефон */
 .phone {
   font-weight: 700;
   font-size: 16px;
-  color: var(--text-primary);
+  color: var(--footer-text);
+}
+
+.footer .phone:hover {
+  color: var(--accent-soft);
 }
 
 /* соц */
@@ -3216,12 +3241,12 @@ body.cart-open .header .cart {
   margin-bottom: 15px;
 }
 
-.socials a {
+.footer .socials a {
   width: 36px;
   height: 36px;
 
-  background: var(--surface-primary);
-  border: 1px solid var(--border-light);
+  background: var(--footer-chip-bg);
+  border: 1px solid var(--footer-chip-border);
   border-radius: 8px;
 
   display: flex;
@@ -3229,20 +3254,20 @@ body.cart-open .header .cart {
   justify-content: center;
 
   font-size: 16px;
-  color: var(--icon-default);
+  color: var(--footer-text);
 }
 
-.socials a:hover {
-  background: var(--accent-soft);
-  color: var(--accent-main);
-  border-color: var(--accent-soft);
+.footer .socials a:hover {
+  background: rgba(255, 255, 255, 0.18);
+  color: var(--accent-soft);
+  border-color: rgba(255, 255, 255, 0.28);
 }
 
 /* оплата */
 .pay-text {
   margin-top: 10px;
   font-size: 14px;
-  color: var(--ev-muted-nav);
+  color: var(--footer-text-soft);
 }
 
 .payments {
@@ -3251,17 +3276,19 @@ body.cart-open .header .cart {
   margin-top: 5px;
 }
 
-.payments span {
-  background: var(--surface-primary);
-  border: 1px solid var(--border-light);
+.footer .payments span {
+  background: var(--footer-chip-bg);
+  border: 1px solid var(--footer-chip-border);
   padding: 6px 10px;
   border-radius: 6px;
   font-size: 12px;
+  font-weight: 600;
+  color: var(--footer-text);
 }
 
 /* низ */
 .footer-bottom {
-  border-top: 1px solid var(--border-light);
+  border-top: 1px solid var(--footer-border);
 
   display: flex;
   justify-content: space-between;
@@ -3270,7 +3297,11 @@ body.cart-open .header .cart {
   padding: 20px 80px;
 
   font-size: 13px;
-  color: var(--ev-muted-nav);
+  color: var(--footer-text-soft);
+}
+
+.footer-bottom p {
+  margin: 0;
 }
 
 .order-success-content {
@@ -3598,7 +3629,15 @@ body.cart-open .header .cart {
   font-weight: 700;
 }
 
-.page-catalog .catalog-filters-title,
+.page-catalog .catalog-filters-title {
+  font-family: var(--ev-font, "Inter", system-ui, sans-serif);
+  font-size: clamp(14px, 1.15vw, 16px);
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.92);
+}
+
 .page-cabinet .catalog-filters-title {
   font-family: var(--ev-font, "Inter", system-ui, sans-serif);
   font-size: clamp(14px, 1.15vw, 16px);
@@ -3615,6 +3654,9 @@ body.cart-open .header .cart {
   gap: 12px;
   padding: clamp(20px, 2.4vw, 28px);
   box-sizing: border-box;
+  background: var(--ev-panel-chrome);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  box-shadow: 0 8px 28px rgba(0, 0, 0, 0.22), 0 2px 8px rgba(0, 0, 0, 0.14);
 }
 
 .page-cabinet .catalog-filters.cabinet-sidebar .catalog-filters-title {
@@ -4000,6 +4042,10 @@ body.cart-open .header .cart {
   font-size: 15px;
 }
 
+.page-catalog .catalog-empty {
+  color: rgba(255, 255, 255, 0.55);
+}
+
 @media (max-width: 900px) {
   .catalog-page-layout {
     grid-template-columns: 1fr;
@@ -4151,7 +4197,7 @@ body.cart-open .chat-widget-root {
   }
 }
 
-/* Плаваюча смуга заголовка чату / кошика / обраних — світла, як шапка-картка */
+/* Плаваюча смуга заголовка чату / кошика / обраних — фон #635d5a за текстом */
 .chat-widget-head-float,
 .cart-head-float {
   flex-shrink: 0;
@@ -4161,14 +4207,14 @@ body.cart-open .chat-widget-root {
   align-items: center;
   justify-content: space-between;
   padding: 10px 12px;
-  background: var(--ev-surface);
-  color: var(--ev-ink);
+  background: var(--ev-panel-chrome);
+  color: rgba(255, 255, 255, 0.95);
   font-weight: 700;
   font-size: 15px;
   border-radius: 10px;
-  border: 1px solid var(--ev-border-hair);
-  border-bottom: 1px solid var(--ev-border-hair);
-  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.18);
 }
 
 /* Середня зона + нижній плаваючий блок; сам лист без рамки — рамки у повідомлень і compose-float */
@@ -4310,11 +4356,12 @@ body.cart-open .chat-widget-root {
   color: var(--ev-heart);
 }
 
-/* ——— сторінка товару / каталог / кабінет: та сама палітра, що на головній (shell + білі картки + --ev-*) ——— */
+/* ——— сторінка товару / каталог / кабінет: shell + білі картки; фон сторінки й панелей — #635d5a ——— */
 body.evryka-site.page-product,
 body.evryka-site.page-catalog,
 body.evryka-site.page-cabinet {
   --product-rhythm: clamp(24px, 3.5vw, 40px);
+  --catalog-panel-bg: var(--ev-panel-chrome);
   --ev-p-ink: var(--ev-ink);
   --ev-p-muted: var(--ev-muted);
   --ev-p-line: var(--border-light);
@@ -4327,12 +4374,7 @@ body.evryka-site.page-cabinet {
   --ev-p-toggle-bg: var(--surface-primary);
   --ev-p-toggle-border: var(--border-light);
   --ev-p-toggle-shadow: 0 1px 0 rgba(255, 255, 255, 0.95) inset, 0 4px 16px rgba(0, 0, 0, 0.05);
-}
-
-/* Панелі фільтрів / блок каталогу: секційний молочний фон */
-body.evryka-site.page-catalog,
-body.evryka-site.page-cabinet {
-  --catalog-panel-bg: var(--bg-section);
+  background: var(--ev-panel-chrome);
 }
 
 /*

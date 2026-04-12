@@ -4,9 +4,28 @@
   if (!document.body.classList.contains("page-catalog")) return;
   if (document.getElementById("scrollToTopBtn")) return;
 
-  /** Показувати лише після «суттєвої» прокрутки: ≈ одна висота екрана (мін. 560px). */
-  function scrollShowThreshold() {
-    return Math.max(560, Math.round(window.innerHeight * 0.85));
+  /** Висота документа для обчислення «докрутив майже до низу». */
+  function documentScrollHeight() {
+    const b = document.body;
+    const e = document.documentElement;
+    return Math.max(
+      b.scrollHeight,
+      b.offsetHeight,
+      e.clientHeight,
+      e.scrollHeight,
+      e.offsetHeight
+    );
+  }
+
+  /** Показувати лише коли залишилось ≈ не більше 18% висоти вікна або 120px до низу (що менше). */
+  function isNearPageBottom() {
+    const winH = window.innerHeight;
+    const scrollY = window.scrollY || document.documentElement.scrollTop;
+    const docH = documentScrollHeight();
+    const maxScroll = Math.max(0, docH - winH);
+    if (maxScroll <= 0) return false;
+    const margin = Math.max(120, Math.round(winH * 0.18));
+    return scrollY >= maxScroll - margin;
   }
 
   const btn = document.createElement("button");
@@ -24,8 +43,7 @@
   document.body.appendChild(btn);
 
   function sync() {
-    const y = window.scrollY || document.documentElement.scrollTop;
-    const show = y > scrollShowThreshold();
+    const show = isNearPageBottom();
     btn.hidden = !show;
     btn.setAttribute("aria-hidden", show ? "false" : "true");
   }
