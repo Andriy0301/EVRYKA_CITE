@@ -107,25 +107,46 @@
 
         <h3>Доставка</h3>
         <label>Спосіб оплати
-          <select id="orderPaymentMethod" required>
-            <option value="cod">Оплата при отриманні</option>
-            <option value="liqpay">Оплата LiqPay</option>
-          </select>
+          <div class="catalog-select-wrap">
+            <button type="button" class="catalog-select-trigger" id="orderPaymentMethodTrigger" aria-expanded="false" aria-haspopup="listbox" aria-controls="orderPaymentMethodPanel">
+              <span class="catalog-select-value" id="orderPaymentMethodValue">Оплата при отриманні</span>
+              <svg class="catalog-select-chevron" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9l6 6 6-6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+            </button>
+            <ul id="orderPaymentMethodPanel" class="catalog-select-panel" role="listbox" hidden></ul>
+            <select id="orderPaymentMethod" class="catalog-filter-select-native" tabindex="-1" aria-hidden="true" required>
+              <option value="cod">Оплата при отриманні</option>
+              <option value="liqpay">Оплата LiqPay</option>
+            </select>
+          </div>
         </label>
         <label>Служба доставки
-          <select id="orderProvider" required>
-            <option value="">Оберіть службу доставки</option>
-            <option value="nova_poshta">Нова пошта</option>
-            <option value="ukr_poshta">Укрпошта</option>
-          </select>
+          <div class="catalog-select-wrap">
+            <button type="button" class="catalog-select-trigger" id="orderProviderTrigger" aria-expanded="false" aria-haspopup="listbox" aria-controls="orderProviderPanel">
+              <span class="catalog-select-value" id="orderProviderValue">Оберіть службу доставки</span>
+              <svg class="catalog-select-chevron" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9l6 6 6-6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+            </button>
+            <ul id="orderProviderPanel" class="catalog-select-panel" role="listbox" hidden></ul>
+            <select id="orderProvider" class="catalog-filter-select-native" tabindex="-1" aria-hidden="true" required>
+              <option value="">Оберіть службу доставки</option>
+              <option value="nova_poshta">Нова пошта</option>
+              <option value="ukr_poshta">Укрпошта</option>
+            </select>
+          </div>
         </label>
 
         <label id="deliveryTypeWrap">Тип доставки
-          <select id="orderDeliveryType">
-            <option value="warehouse">Відділення</option>
-            <option value="postomat">Поштомат</option>
-            <option value="address">Адресна доставка</option>
-          </select>
+          <div class="catalog-select-wrap">
+            <button type="button" class="catalog-select-trigger" id="orderDeliveryTypeTrigger" aria-expanded="false" aria-haspopup="listbox" aria-controls="orderDeliveryTypePanel">
+              <span class="catalog-select-value" id="orderDeliveryTypeValue">Відділення</span>
+              <svg class="catalog-select-chevron" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9l6 6 6-6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+            </button>
+            <ul id="orderDeliveryTypePanel" class="catalog-select-panel" role="listbox" hidden></ul>
+            <select id="orderDeliveryType" class="catalog-filter-select-native" tabindex="-1" aria-hidden="true">
+              <option value="warehouse">Відділення</option>
+              <option value="postomat">Поштомат</option>
+              <option value="address">Адресна доставка</option>
+            </select>
+          </div>
         </label>
 
         <label id="cityWrap" class="city-autocomplete-wrap">Обрати місто
@@ -197,6 +218,7 @@
   </div>
 
   <script src="js/api.js?v=20260424"></script>
+  <script src="js/custom-select.js?v=1"></script>
   <script src="js/order.js?v=20260424"></script>
   <script src="js/cart.js?v=20260430"></script>
   <script src="js/header-nav.js?v=1"></script>

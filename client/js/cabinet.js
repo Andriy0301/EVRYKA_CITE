@@ -507,6 +507,10 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   fillCabinet(profile);
+  if (typeof initCatalogCustomSelect === "function") {
+    initCatalogCustomSelect("cabProvider");
+    initCatalogCustomSelect("cabDeliveryType");
+  }
   setupCabinetSections();
   setupCabinetDeliveryUI();
   loadCabinetOrders(profile);

@@ -713,6 +713,11 @@ document.addEventListener("DOMContentLoaded", () => {
   const profile = getProfile();
   const items = getCheckoutItems();
   fillForm(profile);
+  if (typeof initCatalogCustomSelect === "function") {
+    initCatalogCustomSelect("orderPaymentMethod");
+    initCatalogCustomSelect("orderProvider");
+    initCatalogCustomSelect("orderDeliveryType");
+  }
   setupDeliveryUI();
   hydratePrefilledNovaDelivery(profile);
   renderItems(items);

@@ -1993,6 +1993,121 @@ body.cart-open .header .cart {
   box-shadow: none;
 }
 
+/* Кастомні селекти в кабінеті / замовленні — як поля «місто» / «відділення» */
+.cabinet-form .catalog-select-wrap {
+  width: 100%;
+  min-width: 0;
+}
+
+.cabinet-form select.catalog-filter-select-native {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  min-height: 0;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+  opacity: 0;
+  pointer-events: none;
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+.cabinet-form .catalog-select-trigger {
+  min-height: 48px;
+  padding: 12px 14px;
+  border-radius: var(--cabinet-field-radius);
+  border: 1px solid var(--ev-border-hair);
+  font: inherit;
+  font-size: 15px;
+  font-weight: 500;
+  line-height: 1.3;
+  color: var(--ev-ink);
+  background-color: var(--ev-surface);
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.cabinet-form .catalog-select-trigger:hover {
+  border-color: var(--ev-border-mid);
+}
+
+.cabinet-form .catalog-select-wrap.is-open .catalog-select-trigger,
+.cabinet-form .catalog-select-trigger:focus-visible {
+  outline: none;
+  border-color: var(--ev-accent);
+  box-shadow: 0 0 0 3px var(--ev-accent-soft);
+}
+
+.cabinet-form .catalog-select-chevron {
+  color: #5a737c;
+  flex-shrink: 0;
+}
+
+.cabinet-form .catalog-select-panel {
+  top: calc(100% + 6px);
+  margin: 0;
+  padding: 6px;
+  list-style: none;
+  border: 1px solid #e3e3e3;
+  border-radius: 10px;
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.14);
+  max-height: 220px;
+}
+
+.cabinet-form .catalog-select-wrap.is-open .catalog-select-panel {
+  animation: cabinet-select-panel-in 0.2s ease-out both;
+}
+
+@keyframes cabinet-select-panel-in {
+  from {
+    opacity: 0;
+    transform: translateY(-6px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cabinet-form .catalog-select-wrap.is-open .catalog-select-panel {
+    animation: none;
+  }
+}
+
+.cabinet-form .catalog-select-option {
+  margin: 0;
+  list-style: none;
+  width: 100%;
+  box-sizing: border-box;
+  border-radius: 8px;
+  padding: 10px 12px;
+  font-size: 14px;
+  line-height: 1.4;
+  color: #202020;
+  cursor: pointer;
+  transition: background 0.12s ease, color 0.12s ease;
+}
+
+.cabinet-form .catalog-select-option:hover:not(.is-selected) {
+  background: var(--ev-surface-muted);
+}
+
+.cabinet-form .catalog-select-option.is-selected {
+  background: #2563eb;
+  color: #fff;
+  font-weight: 600;
+}
+
+.cabinet-form .catalog-select-option.is-selected:hover {
+  background: #1d4ed8;
+  color: #fff;
+}
+
 .cabinet-actions-row {
   margin-top: 10px;
   display: flex;
@@ -4526,18 +4641,44 @@ body.evryka-site.page-catalog {
 
 .page-product .similar-wrap {
   gap: clamp(10px, 1.8vw, 14px);
-  align-items: stretch;
+  align-items: center;
 }
 
 .page-product .similar-rail {
-  margin: -4px 0;
-  padding: 4px 0 8px;
+  margin: 0;
+  padding: 0;
 }
 
 .page-product .similar-list {
   gap: clamp(12px, 2vw, 16px);
   padding: 12px 18px 32px;
   scroll-padding-inline: 14px;
+  /* Бокові товари «розсіюються», у центрі смуги — чіткі; при прокрутці зміщуються у зону повної видимості */
+  -webkit-mask-image: linear-gradient(
+    to right,
+    transparent 0%,
+    rgba(0, 0, 0, 0.35) 5%,
+    rgba(0, 0, 0, 0.75) 12%,
+    #000 20%,
+    #000 80%,
+    rgba(0, 0, 0, 0.75) 88%,
+    rgba(0, 0, 0, 0.35) 95%,
+    transparent 100%
+  );
+  mask-image: linear-gradient(
+    to right,
+    transparent 0%,
+    rgba(0, 0, 0, 0.35) 5%,
+    rgba(0, 0, 0, 0.75) 12%,
+    #000 20%,
+    #000 80%,
+    rgba(0, 0, 0, 0.75) 88%,
+    rgba(0, 0, 0, 0.35) 95%,
+    transparent 100%
+  );
+  mask-size: 100% 100%;
+  -webkit-mask-size: 100% 100%;
+  scroll-snap-type: x proximity;
 }
 
 .page-product .similar-arrow {
@@ -4568,6 +4709,7 @@ body.evryka-site.page-catalog {
 }
 
 .page-product .similar-card {
+  scroll-snap-align: center;
   background: var(--ev-p-card);
   border: 1px solid var(--ev-p-line-soft, rgba(0, 0, 0, 0.06));
   box-shadow: 0 3px 14px rgba(0, 0, 0, 0.06);
