@@ -243,14 +243,22 @@ a {
 /* Верх збігається з верхом плаваючої шапки: кошик накладається на хедер, не заходить вище нього */
 .cart-sidebar {
   position: fixed;
+  /* Відступ справа = як зверху (хедер), не менше за safe-area */
+  --ev-cart-side-inset: max(
+    var(--ev-header-bar-top, 16px),
+    env(safe-area-inset-right, 0px)
+  );
   top: var(--ev-header-bar-top, max(16px, env(safe-area-inset-top, 0px)));
-  right: max(16px, env(safe-area-inset-right));
+  right: var(--ev-cart-side-inset);
   /* Та сама відстань від краю, що й зверху (хедер); не менше за safe-area знизу */
   bottom: max(
     var(--ev-header-bar-top, 16px),
     env(safe-area-inset-bottom, 0px)
   );
-  width: min(350px, calc(100vw - 32px));
+  width: min(
+    350px,
+    calc(100vw - var(--ev-header-bar-top, 16px) - var(--ev-cart-side-inset))
+  );
 
   background: white;
   /* Той самий радіус, що й у плаваючої шапки (.header--home-detached) */
@@ -259,7 +267,7 @@ a {
     0 24px 48px rgba(0, 0, 0, 0.16),
     0 8px 20px rgba(0, 0, 0, 0.1);
 
-  transform: translateX(calc(100% + 32px));
+  transform: translateX(calc(100% + var(--ev-cart-side-inset)));
   transition: transform 0.3s ease;
   z-index: 1000;
 
@@ -403,9 +411,10 @@ a {
   transform: translateY(-3px);
 }
 .product {
+  --product-card-radius: 18px;
   background: rgba(255, 253, 248, 0.94);
   border: 1px solid rgba(255, 255, 255, 0.7);
-  border-radius: 18px;
+  border-radius: var(--product-card-radius);
   box-shadow: 0 4px 24px rgba(0, 0, 0, 0.06);
 
   padding: 16px;
@@ -470,6 +479,10 @@ a {
 
   cursor: pointer;
   transition: 0.2s;
+}
+
+.product .buy-btn {
+  border-radius: var(--product-card-radius);
 }
 
 #products {
@@ -584,10 +597,12 @@ a {
   font-weight: 700;
 }
 
-/* Головна: від банера до категорій = від категорій до сітки товарів */
+/* Головна: зазор банер → категорії (margin контейнера) = категорії → сітка */
 .page-home .container > .category-tabs {
-  margin: 15px auto
-    calc(var(--home-hero-to-content-gap, clamp(28px, 4vw, 52px)) + 15px);
+  margin: 0 auto var(--home-hero-to-content-gap, clamp(28px, 4vw, 52px));
+  box-shadow:
+    0 10px 36px rgba(var(--ev-rgb), 0.16),
+    0 4px 14px rgba(0, 0, 0, 0.08);
 }
 
 .page-home .container > section.products {
@@ -3490,6 +3505,13 @@ font-weight: bold;
   font-family: "PT Sans Caption", system-ui, sans-serif;
 }
 
+body.cart-open .chat-widget-root {
+  opacity: 0 !important;
+  visibility: hidden !important;
+  pointer-events: none !important;
+  z-index: 997 !important;
+}
+
 .chat-widget-toggle {
   width: 52px;
   height: 52px;
@@ -3697,8 +3719,8 @@ body.evryka-site.page-product {
   width: 100%;
   min-width: 100%;
   margin: 0;
-  padding-top: var(--product-rhythm);
-  padding-bottom: var(--product-rhythm);
+  padding-top: var(--product-nav-y);
+  padding-bottom: 0;
   border-bottom: 1px solid var(--ev-p-line-soft, rgba(0, 0, 0, 0.06));
   flex-wrap: wrap;
   align-items: center;
@@ -3795,18 +3817,20 @@ body.evryka-site.page-product {
 
 .page-product .product-page {
   --product-rhythm: clamp(24px, 3.5vw, 40px);
+  /* Відступ «шапка → ряд Назад» і «ряд Назад → галерея»: однакові, половина колишнього ритму */
+  --product-nav-y: calc(var(--product-rhythm) / 2);
   position: relative;
   z-index: 0;
   display: flex;
   flex-wrap: wrap;
   align-items: stretch;
   margin: 0 0 clamp(28px, 4vw, 48px);
-  /* Лише відступ під фіксовану шапку; однаковий «крок» знизу навігації — у .product-nav та row-gap */
-  padding: calc(var(--ev-header-h) + 12px - var(--ev-stack-outer))
+  /* Лише відступ під фіксовану шапку; +6px замість 12px — теж удвічі менший зазор під бар */
+  padding: calc(var(--ev-header-h) + 6px - var(--ev-stack-outer))
     var(--product-rhythm)
     var(--product-rhythm);
   column-gap: var(--product-rhythm);
-  row-gap: var(--product-rhythm);
+  row-gap: var(--product-nav-y);
   background: var(--ev-p-card);
   border-radius: var(--ev-shell-radius, clamp(18px, 2.3vw, 26px));
   border: 1px solid var(--ev-p-line-soft);
@@ -3841,12 +3865,12 @@ body.evryka-site.page-product {
   gap: var(--product-gallery-gap);
 }
 
-/* flex-basis 0 — займає весь вільний ряд між мініатюрами та gap; відступи лишаються var(--product-rhythm) */
+/* flex-basis 0 — між мініатюрами та gap; max-width трохи зменшує головне фото на широких екранах */
 .page-product .product-gallery .main-image {
   flex: 1 1 0;
   min-width: 0;
-  max-width: none;
-  align-self: stretch;
+  max-width: min(480px, 90%);
+  align-self: flex-start;
 }
 
 .page-product .main-image img {
@@ -3939,6 +3963,47 @@ body.evryka-site.page-product {
 
 .page-product .product-qty .qty-btn:hover svg {
   stroke: var(--ev-p-ink);
+}
+
+/* Кількість у кошику — той самий стиль, що на сторінці товару, трохи компактніше */
+.cart-sidebar .cart-item .qty-wrapper.cart-qty-wrapper {
+  align-self: flex-start;
+  background: var(--ev-surface);
+  border: 1px solid var(--ev-line);
+  border-radius: var(--ev-header-bar-radius, clamp(12px, 1.4vw, 18px));
+  box-shadow: 0 4px 16px rgba(var(--ev-rgb), 0.07);
+  padding: 3px 5px;
+  gap: 4px;
+  box-sizing: border-box;
+  margin-bottom: 0;
+}
+
+.cart-sidebar .cart-item .qty-wrapper.cart-qty-wrapper .qty-btn {
+  width: 32px;
+  height: 32px;
+  border-radius: max(
+    4px,
+    calc(var(--ev-header-bar-radius, clamp(12px, 1.4vw, 18px)) - 5px)
+  );
+}
+
+.cart-sidebar .cart-item .qty-wrapper.cart-qty-wrapper .qty-btn:hover {
+  background: var(--ev-surface-muted);
+}
+
+.cart-sidebar .cart-item .qty-wrapper.cart-qty-wrapper .qty-btn:hover svg {
+  stroke: var(--ev-ink);
+}
+
+.cart-sidebar .cart-item .qty-wrapper.cart-qty-wrapper .qty-btn svg {
+  width: 14px;
+  height: 14px;
+}
+
+.cart-sidebar .cart-item .qty-wrapper.cart-qty-wrapper .qty-input {
+  width: 48px;
+  font-size: 14px;
+  font-weight: 700;
 }
 
 .page-product .quick-checkout-btn {

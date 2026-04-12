@@ -90,16 +90,31 @@ function addToCart(product, qty = 1) {
 function toggleCart(open) {
   const sidebar = document.getElementById("cartSidebar");
   const overlay = document.getElementById("cartOverlay");
+  const chatRoot = document.getElementById("chatWidgetRoot");
 
   if (open) {
     if (sidebar) sidebar.classList.add("active");
     if (overlay) overlay.classList.add("active");
-    if (sidebar) document.body.classList.add("cart-open");
+    if (sidebar) {
+      document.body.classList.add("cart-open");
+      if (chatRoot) {
+        chatRoot.style.visibility = "hidden";
+        chatRoot.style.pointerEvents = "none";
+        chatRoot.style.opacity = "0";
+        chatRoot.style.zIndex = "997";
+      }
+    }
     renderCart();
   } else {
     if (sidebar) sidebar.classList.remove("active");
     if (overlay) overlay.classList.remove("active");
     document.body.classList.remove("cart-open");
+    if (chatRoot) {
+      chatRoot.style.visibility = "";
+      chatRoot.style.pointerEvents = "";
+      chatRoot.style.opacity = "";
+      chatRoot.style.zIndex = "";
+    }
   }
 }
 

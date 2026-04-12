@@ -134,18 +134,30 @@ body.evryka-site.page-product {
 }
 
 .evryka-site .header.header--home-detached .header-inner {
-  padding: 5px 20px 5px 5px;
+  /* Однаковий зазор зверху / зліва / знизу навколо блоку логотипу */
+  --ev-logo-gutter: 5px;
+  padding: var(--ev-logo-gutter) 20px var(--ev-logo-gutter) var(--ev-logo-gutter);
   min-height: 44px;
   gap: 12px 20px;
 }
 
 .evryka-site .header.header--home-detached .header-logo {
   margin-left: 0;
+  width: 34px;
+  height: 34px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  box-sizing: border-box;
 }
 
 .evryka-site .header.header--home-detached .header-logo-img {
-  max-height: 34px;
+  max-width: 100%;
+  max-height: 100%;
   width: auto;
+  height: auto;
+  object-fit: contain;
   display: block;
 }
 
