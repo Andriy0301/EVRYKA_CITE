@@ -135,9 +135,9 @@ body.evryka-site.page-catalog {
 }
 
 .evryka-site .header.header--home-detached .header-inner {
-  /* Однаковий зазор зверху / зліва / знизу навколо блоку логотипу */
   --ev-logo-gutter: 5px;
-  padding: var(--ev-logo-gutter) 20px var(--ev-logo-gutter) var(--ev-logo-gutter);
+  --ev-logo-inset-left: 12px;
+  padding: var(--ev-logo-gutter) 20px var(--ev-logo-gutter) var(--ev-logo-inset-left);
   min-height: 44px;
   gap: 12px 20px;
 }

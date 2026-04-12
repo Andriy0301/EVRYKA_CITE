@@ -507,12 +507,18 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   fillCabinet(profile);
+  setupCabinetSections();
+  setupCabinetDeliveryUI();
   if (typeof initCatalogCustomSelect === "function") {
     initCatalogCustomSelect("cabProvider");
     initCatalogCustomSelect("cabDeliveryType");
   }
-  setupCabinetSections();
-  setupCabinetDeliveryUI();
+  if (typeof syncCatalogSelectUI === "function") {
+    const pWrap = document.getElementById("cabProvider")?.closest(".catalog-select-wrap");
+    const dWrap = document.getElementById("cabDeliveryType")?.closest(".catalog-select-wrap");
+    if (pWrap) syncCatalogSelectUI(pWrap);
+    if (dWrap) syncCatalogSelectUI(dWrap);
+  }
   loadCabinetOrders(profile);
   bindCabinetSuggestionEvents();
   document.getElementById("cabCity").addEventListener("input", onCabCityInput);
