@@ -448,9 +448,10 @@ body.evryka-site.page-cabinet {
 .hero-evryka--allbirds .hero-slide--repair .hero-evryka__btn,
 .hero-evryka--allbirds .hero-slide--3d-print .hero-evryka__btn,
 .hero-evryka--allbirds .hero-slide--gift .hero-evryka__btn {
-  padding: 11px 20px;
+  min-height: 44px;
+  padding: 10px 18px;
   font-size: 11px;
-  letter-spacing: 0.09em;
+  letter-spacing: 0.08em;
 }
 
 .hero-evryka--allbirds .hero-slide--evryka .hero-evryka__overlay {
@@ -534,14 +535,16 @@ body.evryka-site.page-cabinet {
 }
 
 .hero-evryka--allbirds .hero-evryka__actions {
-  gap: 14px;
+  gap: 12px;
 }
 
 .hero-evryka--allbirds .hero-evryka__btn {
-  border-radius: 40px;
-  padding: 16px 28px;
+  border-radius: 12px;
+  min-height: 44px;
+  padding: 12px 20px;
   font-size: 12px;
-  letter-spacing: 0.1em;
+  letter-spacing: 0.08em;
+  box-sizing: border-box;
 }
 
 .hero-evryka--allbirds .hero-evryka__btn--primary {
@@ -1023,14 +1026,16 @@ body.header-nav-open {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  padding: 14px 28px;
-  font-size: 14px;
+  min-height: 44px;
+  padding: 12px 22px;
+  font-size: 13px;
   font-weight: 600;
-  letter-spacing: 0.04em;
+  letter-spacing: 0.06em;
   text-transform: uppercase;
   text-decoration: none;
-  border-radius: 999px;
+  border-radius: 12px;
   border: none;
+  box-sizing: border-box;
   cursor: pointer;
   transition: transform 0.2s ease, background 0.2s ease, color 0.2s ease, box-shadow 0.2s ease;
 }

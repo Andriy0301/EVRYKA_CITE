@@ -2177,14 +2177,14 @@ body.cart-open .header .cart {
 }
 
 .cabinet-form .catalog-select-option.is-selected {
-  background: rgba(18, 122, 140, 0.12);
+  background: rgba(251, 146, 60, 0.14);
   color: var(--ev-ink);
   font-weight: 600;
-  box-shadow: inset 3px 0 0 0 #127a8c;
+  box-shadow: inset 3px 0 0 0 var(--accent-main);
 }
 
 .cabinet-form .catalog-select-option.is-selected:hover {
-  background: rgba(18, 122, 140, 0.18);
+  background: rgba(251, 146, 60, 0.22);
   color: var(--ev-ink);
 }
 
@@ -2204,6 +2204,15 @@ body.cart-open .header .cart {
 
 .page-cabinet .cabinet-form .catalog-select-panel {
   z-index: 201;
+  border-radius: max(12px, calc(var(--cabinet-field-radius, 14px) + 2px));
+}
+
+.page-cabinet .cabinet-form .catalog-select-option {
+  border-radius: max(10px, calc(var(--cabinet-field-radius, 14px) - 4px));
+}
+
+.page-cabinet .cabinet-actions-row button {
+  border-radius: var(--cabinet-field-radius, clamp(14px, 1.65vw, 18px));
 }
 
 .cabinet-actions-row {
@@ -2522,8 +2531,8 @@ body.cart-open .header .cart {
 /* «Очистити кошик» і «Очистити обрані» — однакові стилі */
 .cart-footer .clear-btn {
   background: #fafafa;
-  color: var(--ev-muted);
-  border: 1px solid #e5e5e5;
+  color: #111;
+  border: 1px solid #111;
   border-radius: 12px;
   font-weight: 600;
   box-shadow: none;
@@ -3614,18 +3623,18 @@ body.cart-open .header .cart {
 .page-catalog .catalog-filters .catalog-filter-input:focus {
   outline: none;
   border-color: var(--ev-accent);
-  box-shadow: 0 0 0 2px rgba(18, 122, 140, 0.22);
+  box-shadow: 0 0 0 2px var(--ev-accent-soft);
 }
 
 .page-catalog .catalog-filters .catalog-filter-input:focus-visible {
   outline: none;
   border-color: var(--ev-accent);
-  box-shadow: 0 0 0 2px rgba(18, 122, 140, 0.22);
+  box-shadow: 0 0 0 2px var(--ev-accent-soft);
 }
 
 .page-catalog .catalog-filters .catalog-select-wrap.is-open .catalog-select-trigger {
   border-color: var(--ev-accent);
-  box-shadow: 0 0 0 2px rgba(18, 122, 140, 0.2);
+  box-shadow: 0 0 0 2px var(--ev-accent-soft);
 }
 
 .catalog-filters-title {
@@ -3653,14 +3662,18 @@ body.cart-open .header .cart {
 }
 
 .page-cabinet .catalog-filters.cabinet-sidebar {
+  /* Зовнішній радіус; кнопки: r ≈ зовнішній − padding (паралельні дуги) */
+  --cab-sidebar-r: clamp(24px, 3vw, 36px);
+  --cab-sidebar-pad: clamp(20px, 2.4vw, 28px);
   display: flex;
   flex-direction: column;
   align-items: stretch;
   gap: 12px;
-  padding: clamp(20px, 2.4vw, 28px);
+  padding: var(--cab-sidebar-pad);
   box-sizing: border-box;
   background: var(--ev-panel-chrome);
   border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: var(--cab-sidebar-r);
   box-shadow: 0 8px 28px rgba(0, 0, 0, 0.22), 0 2px 8px rgba(0, 0, 0, 0.14);
 }
 
@@ -3673,6 +3686,7 @@ body.cart-open .header .cart {
   padding: 12px 14px;
   min-height: 44px;
   box-sizing: border-box;
+  border-radius: max(14px, calc(var(--cab-sidebar-r) - var(--cab-sidebar-pad)));
 }
 
 .page-cabinet .catalog-filters.cabinet-sidebar .cabinet-nav-btn:not(.active):not(.logout) {
@@ -3760,14 +3774,14 @@ body.cart-open .header .cart {
 }
 
 .page-catalog .catalog-filters .catalog-select-option.is-selected {
-  background: rgba(18, 122, 140, 0.12);
+  background: rgba(251, 146, 60, 0.14);
   color: var(--ev-ink);
   font-weight: 600;
-  box-shadow: inset 3px 0 0 0 #127a8c;
+  box-shadow: inset 3px 0 0 0 var(--accent-main);
 }
 
 .page-catalog .catalog-filters .catalog-select-option.is-selected:hover {
-  background: rgba(18, 122, 140, 0.18);
+  background: rgba(251, 146, 60, 0.22);
   color: var(--ev-ink);
 }
 
@@ -3943,14 +3957,14 @@ body.cart-open .header .cart {
 }
 
 .catalog-select-option.is-selected {
-  background: rgba(18, 122, 140, 0.12);
+  background: rgba(251, 146, 60, 0.14);
   color: var(--ev-ink);
   font-weight: 600;
-  box-shadow: inset 3px 0 0 0 #127a8c;
+  box-shadow: inset 3px 0 0 0 var(--accent-main);
 }
 
 .catalog-select-option.is-selected:hover {
-  background: rgba(18, 122, 140, 0.18);
+  background: rgba(251, 146, 60, 0.22);
   color: var(--ev-ink);
 }
 
@@ -4505,12 +4519,23 @@ body.evryka-site.page-cabinet {
   box-sizing: border-box;
 }
 
+/* Кабінет: трохи більший зовнішній радіус оболонки, щоб узгоджувався з сайдбаром і внутрішньою карткою */
+.page-cabinet .catalog-shell {
+  border-radius: clamp(22px, 2.8vw, 30px);
+}
+
 .page-cabinet .catalog-products-inner > .cabinet-card {
   width: 100%;
   max-width: 100%;
   min-width: 0;
   margin: 0;
   box-sizing: border-box;
+  --cabinet-card-r: clamp(20px, 2.5vw, 28px);
+  border-radius: var(--cabinet-card-r);
+}
+
+.page-cabinet .catalog-products-inner > .cabinet-card .cabinet-form {
+  --cabinet-field-radius: max(14px, calc(var(--cabinet-card-r) - 16px));
 }
 
 .page-cabinet .catalog-products-inner > .cabinet-card + .cabinet-card {
@@ -5124,8 +5149,10 @@ body.evryka-site.page-cabinet {
   margin-top: var(--ev-stack-outer, clamp(0px, 0.65vw, 10px));
   --similar-h-pad-l: clamp(16px, 2.4vw, 28px);
   --similar-h-pad-r: 20px;
+  /* Заголовок: менший зазор зверху, більший знизу до ряду карток */
+  --similar-section-pad-top: clamp(14px, 2vw, 22px);
   /* Додатковий низ, щоб власна тінь секції не «різалась» у межах потоку; боки — як у .product-page */
-  padding: var(--product-rhythm) var(--similar-h-pad-r) calc(var(--product-rhythm) + 10px)
+  padding: var(--similar-section-pad-top) var(--similar-h-pad-r) calc(var(--product-rhythm) + 10px)
     var(--similar-h-pad-l);
   background: var(--ev-p-card);
   border-radius: clamp(18px, 2.3vw, 26px);
@@ -5141,7 +5168,7 @@ body.evryka-site.page-cabinet {
   letter-spacing: 0.07em;
   text-transform: uppercase;
   color: var(--ev-p-ink);
-  margin: 0 0 clamp(14px, 2.5vw, 20px);
+  margin: 0 0 clamp(22px, 3.8vw, 34px);
   text-align: left;
 }
 
