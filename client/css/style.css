@@ -412,12 +412,13 @@ a {
 }
 .product {
   --product-card-radius: 18px;
+  --product-buy-btn-radius: 13px;
   background: rgba(255, 253, 248, 0.94);
   border: 1px solid rgba(255, 255, 255, 0.7);
   border-radius: var(--product-card-radius);
   box-shadow: 0 4px 24px rgba(0, 0, 0, 0.06);
 
-  padding: 16px;
+  padding: 12px;
 
   display: flex;
   flex-direction: column;
@@ -427,7 +428,10 @@ a {
 
 .product:hover {
   transform: translateY(-5px);
-  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.12);
+  box-shadow:
+    0 20px 50px rgba(0, 0, 0, 0.14),
+    0 8px 22px rgba(0, 0, 0, 0.1),
+    0 2px 6px rgba(0, 0, 0, 0.06);
 }
 
 /* картинка */
@@ -482,7 +486,8 @@ a {
 }
 
 .product .buy-btn {
-  border-radius: var(--product-card-radius);
+  border-radius: var(--product-buy-btn-radius);
+  padding: 10px 12px;
 }
 
 #products {
@@ -2122,6 +2127,11 @@ body.cart-open .header .cart {
 .cart-footer button {
   width: 100%;
   padding: 14px;
+  min-height: 48px;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 
   border-radius: 10px;
   border: none;
@@ -2205,19 +2215,9 @@ body.cart-open .header .cart {
   margin-bottom: 14px;
 }
 
-/* ОСНОВНА кнопка */
+/* ОСНОВНА кнопка — радіус (перебиває правило вище) */
 .cart-footer button {
-  width: 100%;
-  padding: 14px;
-
   border-radius: 12px;
-  border: none;
-
-  font-size: 15px;
-  font-weight: 600;
-
-  cursor: pointer;
-  transition: 0.2s;
 }
 
 .checkout-btn {
@@ -3721,7 +3721,7 @@ body.evryka-site.page-product {
   margin: 0;
   padding-top: var(--product-nav-y);
   padding-bottom: 0;
-  border-bottom: 1px solid var(--ev-p-line-soft, rgba(0, 0, 0, 0.06));
+  border-bottom: none;
   flex-wrap: wrap;
   align-items: center;
   gap: 12px 20px;
@@ -3760,7 +3760,7 @@ body.evryka-site.page-product {
   font-weight: 500;
 }
 
-/* Як у хедері: при наведенні на рядок інші пункти сіріють; лінія знизу через ::after */
+/* Хлібні крихти: без лінії під посиланнями (на відміну від хедера) */
 .page-product .breadcrumbs a {
   position: relative;
   display: inline-block;
@@ -3778,17 +3778,7 @@ body.evryka-site.page-product {
 }
 
 .page-product .breadcrumbs a::after {
-  content: "";
-  position: absolute;
-  left: 8px;
-  right: 8px;
-  bottom: 2px;
-  height: 2px;
-  background: var(--ev-p-ink);
-  transform: scaleX(0);
-  transform-origin: center;
-  transition: transform 0.32s cubic-bezier(0.4, 0, 0.2, 1);
-  pointer-events: none;
+  content: none;
 }
 
 .page-product .breadcrumbs:hover a {
@@ -3799,32 +3789,17 @@ body.evryka-site.page-product {
   color: var(--ev-p-ink);
 }
 
-.page-product .breadcrumbs:hover a::after {
-  transform: scaleX(0);
-}
-
-.page-product .breadcrumbs:hover a:hover::after {
-  transform: scaleX(1);
-}
-
-.page-product .breadcrumbs a:focus-visible::after {
-  transform: scaleX(1);
-}
-
-.page-product .breadcrumbs:hover a:focus-visible:not(:hover)::after {
-  transform: scaleX(0);
-}
-
 .page-product .product-page {
   --product-rhythm: clamp(24px, 3.5vw, 40px);
-  /* Відступ «шапка → ряд Назад» і «ряд Назад → галерея»: однакові, половина колишнього ритму */
-  --product-nav-y: calc(var(--product-rhythm) / 2);
+  /* Один крок: відступ зверху ряду «Назад» і зазор до галереї */
+  --product-nav-y: var(--product-rhythm);
   position: relative;
   z-index: 0;
   display: flex;
   flex-wrap: wrap;
   align-items: stretch;
-  margin: 0 0 clamp(28px, 4vw, 48px);
+  /* Вертикальний зазор до «Схожі товари» задаємо у .similar-section — як бокові margin контейнера */
+  margin: 0;
   /* Лише відступ під фіксовану шапку; +6px замість 12px — теж удвічі менший зазор під бар */
   padding: calc(var(--ev-header-h) + 6px - var(--ev-stack-outer))
     var(--product-rhythm)
@@ -3842,17 +3817,23 @@ body.evryka-site.page-product {
 
 /* Галерея + інфо в одному рядку: без переносу «інфо під галерею» (інакше sticky накладається на опис) */
 .page-product .product-main-columns {
-  --product-gallery-gap: var(--product-rhythm);
+  container-type: inline-size;
+  container-name: product-main;
+  /* Відступ між прев’ю у стовпчику; зазор «фото → інфо» окремо, щоб не тягнути великий rhythm */
+  --product-thumb-stack-gap: var(--product-rhythm);
+  /* Зазор фото → інфо: fallback по vw, у браузерах з cq — частка ширини рядка (колонка з фото) */
   display: flex;
   flex-flow: row nowrap;
   align-items: flex-start;
-  gap: var(--product-gallery-gap);
+  gap: clamp(10px, 2.5vw, 22px);
+  gap: clamp(10px, 2.2cqw, 22px);
   width: 100%;
   flex: 1 1 100%;
   min-width: 0;
   box-sizing: border-box;
 }
 
+/* Головне фото на всю ширину колонки галереї; мініатюри — поверх лівого краю */
 .page-product .product-gallery {
   position: sticky;
   top: calc(var(--ev-header-h, 72px) + 16px);
@@ -3860,17 +3841,14 @@ body.evryka-site.page-product {
   min-width: 0;
   max-width: none;
   z-index: 1;
-  display: flex;
-  align-items: flex-start;
-  gap: var(--product-gallery-gap);
+  display: block;
 }
 
-/* flex-basis 0 — між мініатюрами та gap; max-width трохи зменшує головне фото на широких екранах */
 .page-product .product-gallery .main-image {
-  flex: 1 1 0;
+  width: 100%;
+  max-width: none;
   min-width: 0;
-  max-width: min(480px, 90%);
-  align-self: flex-start;
+  margin: 0;
 }
 
 .page-product .main-image img {
@@ -3908,7 +3886,24 @@ body.evryka-site.page-product {
 }
 
 .page-product .thumbnails {
+  position: absolute;
+  left: 0;
+  top: 0;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  gap: var(--product-thumb-stack-gap, var(--product-rhythm));
   flex-shrink: 0;
+  margin: clamp(8px, 1.2vw, 14px);
+  padding: 6px;
+  max-height: calc(100% - clamp(16px, 2.4vw, 28px));
+  overflow-y: auto;
+  box-sizing: border-box;
+  border-radius: var(--ev-shell-radius, clamp(14px, 2vw, 20px));
+  background: rgba(255, 255, 255, 0.78);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  box-shadow: var(--ev-p-shadow-sm, 0 4px 16px rgba(0, 0, 0, 0.07));
 }
 
 .page-product .thumbnails img {
@@ -3939,22 +3934,38 @@ body.evryka-site.page-product {
 }
 
 .page-product .product-qty .qty-wrapper {
+  --ev-qty-outer-r: var(--ev-header-bar-radius, clamp(12px, 1.4vw, 18px));
+  --ev-qty-pad-y: 6px;
+  --ev-qty-pad-x: 8px;
+  /* Внутрішній радіус по краях = зовнішній мінус паддінг — збігається з вигином коробки */
+  --ev-qty-end-r: max(5px, calc(var(--ev-qty-outer-r) - var(--ev-qty-pad-x)));
+  --ev-qty-mid-r: 6px;
+
   align-self: flex-start;
   background: var(--ev-surface);
   border: 1px solid var(--ev-p-line);
-  border-radius: var(--ev-header-bar-radius, clamp(12px, 1.4vw, 18px));
+  border-radius: var(--ev-qty-outer-r);
   box-shadow: var(--ev-p-shadow-sm);
-  padding: 4px 6px;
-  gap: 6px;
+  padding: var(--ev-qty-pad-y) var(--ev-qty-pad-x);
+  gap: 8px;
   box-sizing: border-box;
 }
 
-/* Кнопки ±: не коло, а скруглений квадрат у тон зовнішньому радіусу .qty-wrapper */
+/* Кнопки ±: більше повітря навколо іконки; кути зовні узгоджені з оболонкою */
 .page-product .product-qty .qty-btn {
-  border-radius: max(
-    5px,
-    calc(var(--ev-header-bar-radius, clamp(12px, 1.4vw, 18px)) - 4px)
-  );
+  width: auto;
+  min-width: 44px;
+  height: 42px;
+  padding: 0 12px;
+  box-sizing: border-box;
+}
+
+.page-product .product-qty .qty-btn:first-child {
+  border-radius: var(--ev-qty-end-r) var(--ev-qty-mid-r) var(--ev-qty-mid-r) var(--ev-qty-end-r);
+}
+
+.page-product .product-qty .qty-btn:last-child {
+  border-radius: var(--ev-qty-mid-r) var(--ev-qty-end-r) var(--ev-qty-end-r) var(--ev-qty-mid-r);
 }
 
 .page-product .product-qty .qty-btn:hover {
@@ -3967,24 +3978,37 @@ body.evryka-site.page-product {
 
 /* Кількість у кошику — той самий стиль, що на сторінці товару, трохи компактніше */
 .cart-sidebar .cart-item .qty-wrapper.cart-qty-wrapper {
+  --ev-qty-outer-r: var(--ev-header-bar-radius, clamp(12px, 1.4vw, 18px));
+  --ev-qty-pad-y: 5px;
+  --ev-qty-pad-x: 7px;
+  --ev-qty-end-r: max(4px, calc(var(--ev-qty-outer-r) - var(--ev-qty-pad-x)));
+  --ev-qty-mid-r: 5px;
+
   align-self: flex-start;
   background: var(--ev-surface);
   border: 1px solid var(--ev-line);
-  border-radius: var(--ev-header-bar-radius, clamp(12px, 1.4vw, 18px));
+  border-radius: var(--ev-qty-outer-r);
   box-shadow: 0 4px 16px rgba(var(--ev-rgb), 0.07);
-  padding: 3px 5px;
-  gap: 4px;
+  padding: var(--ev-qty-pad-y) var(--ev-qty-pad-x);
+  gap: 6px;
   box-sizing: border-box;
   margin-bottom: 0;
 }
 
 .cart-sidebar .cart-item .qty-wrapper.cart-qty-wrapper .qty-btn {
-  width: 32px;
-  height: 32px;
-  border-radius: max(
-    4px,
-    calc(var(--ev-header-bar-radius, clamp(12px, 1.4vw, 18px)) - 5px)
-  );
+  width: auto;
+  min-width: 36px;
+  height: 34px;
+  padding: 0 10px;
+  box-sizing: border-box;
+}
+
+.cart-sidebar .cart-item .qty-wrapper.cart-qty-wrapper .qty-btn:first-child {
+  border-radius: var(--ev-qty-end-r) var(--ev-qty-mid-r) var(--ev-qty-mid-r) var(--ev-qty-end-r);
+}
+
+.cart-sidebar .cart-item .qty-wrapper.cart-qty-wrapper .qty-btn:last-child {
+  border-radius: var(--ev-qty-mid-r) var(--ev-qty-end-r) var(--ev-qty-end-r) var(--ev-qty-mid-r);
 }
 
 .cart-sidebar .cart-item .qty-wrapper.cart-qty-wrapper .qty-btn:hover {
@@ -4128,7 +4152,7 @@ body.evryka-site.page-product {
 }
 
 .page-product .similar-section {
-  margin-top: clamp(24px, 4vw, 40px);
+  margin-top: var(--ev-stack-outer, clamp(0px, 0.65vw, 10px));
   padding: clamp(20px, 3vw, 28px);
   background: var(--ev-p-card);
   border-radius: clamp(18px, 2.3vw, 26px);
@@ -4195,6 +4219,7 @@ body.evryka-site.page-product {
     top: auto;
     max-width: none;
     width: 100%;
+    display: flex;
     flex-direction: column-reverse;
     align-items: center;
   }
@@ -4214,10 +4239,21 @@ body.evryka-site.page-product {
   }
 
   .page-product .thumbnails {
+    position: static;
     flex-direction: row;
     flex-wrap: wrap;
     justify-content: center;
     width: 100%;
+    max-height: none;
+    margin: 0;
+    padding: 0;
+    background: transparent;
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+    box-shadow: none;
+    border-radius: 0;
+    overflow: visible;
+    gap: 10px;
   }
 
   .page-product .main-image img {
