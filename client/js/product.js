@@ -140,19 +140,12 @@ function renderGallery(product) {
   product.images.forEach((img, i) => {
     const el = document.createElement("img");
     el.src = `${API_URL}${img}`;
-
-    if (i === 0) {
-      el.style.border = "2px solid #111";
-    }
+    if (i === 0) el.classList.add("thumb-active");
 
     el.onclick = () => {
       mainImage.src = `${API_URL}${img}`;
-
-      document.querySelectorAll(".thumbnails img").forEach(t => {
-        t.style.border = "2px solid transparent";
-      });
-
-      el.style.border = "2px solid #111";
+      document.querySelectorAll(".thumbnails img").forEach((t) => t.classList.remove("thumb-active"));
+      el.classList.add("thumb-active");
     };
 
     thumbnails.appendChild(el);

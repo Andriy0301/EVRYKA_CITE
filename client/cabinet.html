@@ -56,40 +56,34 @@
   </div>
 </header>
 
-  <div class="container">
-    <div class="product-nav">
-      <a href="index.html" class="back-btn">
-        <svg class="back-icon" viewBox="0 0 24 24" aria-hidden="true">
-          <path d="M15 6l-6 6 6 6"></path>
-        </svg>
-        Назад
-      </a>
-      <div class="breadcrumbs">
-        <a href="index.html">Головна</a>
-        <span>/</span>
-        <a href="index.html#catalog">Каталог</a>
-        <span>/</span>
-        <span>Особистий кабінет</span>
+  <main class="container">
+    <div class="cabinet-shell">
+      <div class="product-nav catalog-page-nav">
+        <a href="index.html" class="back-btn">
+          <svg class="back-icon" viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M15 6l-6 6 6 6"></path>
+          </svg>
+          Назад
+        </a>
+        <div class="breadcrumbs">
+          <a href="index.html">Головна</a>
+          <span>/</span>
+          <a href="index.html#catalog">Каталог</a>
+          <span>/</span>
+          <span>Особистий кабінет</span>
+        </div>
       </div>
-    </div>
-  </div>
-
-  <section class="hero">
-    <div class="hero-left">
-      <p class="slogan">Особистий кабінет клієнта</p>
-    </div>
-    
-  </section>
-
-  <main class="container cabinet-layout">
-    <aside class="cabinet-sidebar">
-      <button class="cabinet-nav-btn active" type="button" data-section="personal">Особисті дані</button>
-      <button class="cabinet-nav-btn" type="button" data-section="orders">Мої замовлення</button>
-      <button class="cabinet-nav-btn" type="button">Бонуси</button>
-      <button class="cabinet-nav-btn" type="button">Обрані</button>
-      <button id="logoutBtn" class="cabinet-nav-btn logout" type="button">Вийти</button>
-    </aside>
-
+      <p class="cabinet-shell-slogan">Особистий кабінет клієнта</p>
+      <div class="catalog-page-layout">
+        <aside class="cabinet-sidebar">
+          <button class="cabinet-nav-btn active" type="button" data-section="personal">Особисті дані</button>
+          <button class="cabinet-nav-btn" type="button" data-section="orders">Мої замовлення</button>
+          <button class="cabinet-nav-btn" type="button">Бонуси</button>
+          <button class="cabinet-nav-btn" type="button">Обрані</button>
+          <button id="logoutBtn" class="cabinet-nav-btn logout" type="button">Вийти</button>
+        </aside>
+        <div class="cabinet-main">
+          <div class="cabinet-main-inner">
     <section id="cabPersonalSection" class="products cabinet-card">
       <h2>Мої дані</h2>
       <form id="cabinetForm" class="cabinet-form">
@@ -150,6 +144,10 @@
       <h2>Мої замовлення</h2>
       <div id="cabOrdersList" class="cab-orders-list"></div>
     </section>
+          </div>
+        </div>
+      </div>
+    </div>
   </main>
 
   <footer class="footer">
