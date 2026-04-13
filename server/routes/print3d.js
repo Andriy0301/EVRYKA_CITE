@@ -344,6 +344,7 @@ router.post("/order", (req, res, next) => {
       orderColor,
       total,
       ttn,
+      orderStatus: "new",
       files: files.map((f, i) => ({
         index: i + 1,
         name: f.originalname,
@@ -364,6 +365,7 @@ router.post("/order", (req, res, next) => {
       models: files.length,
       orderColor: entry.orderColor,
       ttn: entry.ttn,
+      orderStatus: entry.orderStatus,
       delivery: customer.delivery
     });
 

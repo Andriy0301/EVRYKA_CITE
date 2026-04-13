@@ -46,6 +46,42 @@ function getCabOrderItemImage(item) {
   return `${API_URL}${candidate}`;
 }
 
+function getCabOrderLifecycleLabel(order) {
+  const status = String(order?.orderStatus || "new").trim();
+  if (status === "cancelled") return "Скасовано";
+  return "Активне";
+}
+
+function canCancelCabinetOrder(order) {
+  if (!order) return false;
+  if (String(order?.orderStatus || "").trim() === "cancelled") return false;
+  const deliveryStage = String(order?.deliveryStatus?.stage || "").trim();
+  if (deliveryStage === "picked_up") return false;
+  return true;
+}
+
+function getCabCancelControlsHtml(orderType, order) {
+  if (!canCancelCabinetOrder(order)) return "";
+  const orderKey = String(order?.id || order?.orderNumber || "").trim();
+  return `
+    <div class="cab-cancel-controls" data-cancel-wrap="${orderType}_${orderKey}">
+      <label>Причина скасування
+        <select class="cab-cancel-reason-preset">
+          <option value="">Оберіть причину</option>
+          <option value="Передумав(ла)">Передумав(ла)</option>
+          <option value="Хочу змінити замовлення">Хочу змінити замовлення</option>
+          <option value="Довгий термін очікування">Довгий термін очікування</option>
+          <option value="Інше">Інше</option>
+        </select>
+      </label>
+      <input type="text" class="cab-cancel-reason-custom" placeholder="Деталі причини (необов'язково)">
+      <button type="button" class="clear-btn cab-cancel-order-btn" data-cancel-type="${orderType}" data-cancel-id="${order?.id || ""}" data-cancel-number="${order?.orderNumber || ""}">
+        Скасувати замовлення
+      </button>
+    </div>
+  `;
+}
+
 function getCabDeliveryStatusMeta(track) {
   const statusText = String(track?.status || "").trim();
   const statusCode = String(track?.statusCode || "").trim();
@@ -93,7 +129,7 @@ async function refreshCabinetDeliveryStatuses() {
   );
 }
 
-function renderCabinetOrders(data) {
+function renderCabinetOrders(data, profile) {
   const list = document.getElementById("cabOrdersList");
   if (!list) return;
 
@@ -155,9 +191,11 @@ function renderCabinetOrders(data) {
               <p><b>Сума:</b> ${Number(order?.total || 0)} грн</p>
               <p><b>Моделей:</b> ${Number(order?.models || 0)}</p>
               <p><b>Колір замовлення:</b> ${order?.orderColor || "-"}</p>
+              <p><b>Статус замовлення:</b> ${getCabOrderLifecycleLabel(order)}</p>
               <p><b>Доставка:</b> ${delivery?.city || "-"}, ${deliveryPoint}</p>
               ${order?.ttn ? `<p><b>ТТН:</b> ${order.ttn}</p>` : ""}
               <p><b>Статус доставки:</b> ${order?.ttn ? `<span data-ttn-status="${order.ttn}">Перевіряємо...</span>` : "ТТН відсутня"}</p>
+              ${getCabCancelControlsHtml("print3d", order)}
             </div>
           </article>
         `;
@@ -200,10 +238,12 @@ function renderCabinetOrders(data) {
           </button>
           <div class="cab-order-details" data-order-details="${orderUiId}">
             <p><b>Сума:</b> ${Number(order.total || 0)} грн</p>
+            <p><b>Статус замовлення:</b> ${getCabOrderLifecycleLabel(order)}</p>
             <p><b>Доставка:</b> ${order?.customer?.delivery?.city || "-"}, ${order?.customer?.delivery?.branchText || "-"}</p>
             ${order?.ttn ? `<p><b>ТТН:</b> ${order.ttn}</p>` : ""}
             <p><b>Статус доставки:</b> ${order?.ttn ? `<span data-ttn-status="${order.ttn}">Перевіряємо...</span>` : "ТТН відсутня"}</p>
             <ul class="cab-order-items">${itemsHtml}</ul>
+            ${getCabCancelControlsHtml("shop", order)}
           </div>
         </article>
       `;
@@ -217,6 +257,41 @@ function renderCabinetOrders(data) {
       target.classList.toggle("active");
     });
   });
+
+  list.querySelectorAll(".cab-cancel-order-btn").forEach((btn) => {
+    btn.addEventListener("click", async () => {
+      if (typeof cancelMyOrder !== "function") return;
+      const orderType = String(btn.dataset.cancelType || "shop").trim();
+      const orderId = String(btn.dataset.cancelId || "").trim();
+      const orderNumber = String(btn.dataset.cancelNumber || "").trim();
+      const wrap = btn.closest(".cab-cancel-controls");
+      const presetReason = String(wrap?.querySelector(".cab-cancel-reason-preset")?.value || "").trim();
+      const customReason = String(wrap?.querySelector(".cab-cancel-reason-custom")?.value || "").trim();
+      const reason = customReason || presetReason || "Скасовано з профілю клієнта";
+      const ok = window.confirm(`Скасувати замовлення ${orderNumber || orderId || ""}?`);
+      if (!ok) return;
+
+      btn.disabled = true;
+      btn.innerText = "Скасовуємо...";
+      try {
+        await cancelMyOrder({
+          orderType,
+          orderId,
+          orderNumber,
+          id: profile?.id,
+          email: profile?.email,
+          phone: profile?.phone,
+          reason
+        });
+        showCabinetMessage("Замовлення скасовано", false);
+        await loadCabinetOrders(profile);
+      } catch (error) {
+        showCabinetMessage(error.message || "Не вдалося скасувати замовлення");
+        btn.disabled = false;
+        btn.innerText = "Скасувати замовлення";
+      }
+    });
+  });
 }
 
 async function loadCabinetOrders(profile) {
@@ -228,13 +303,13 @@ async function loadCabinetOrders(profile) {
     renderCabinetOrders({
       orders: data?.orders || [],
       print3dOrders: data?.print3dOrders || profile?.print3dOrders || []
-    });
+    }, profile);
     await refreshCabinetDeliveryStatuses();
   } catch (error) {
     renderCabinetOrders({
       orders: [],
       print3dOrders: profile?.print3dOrders || []
-    });
+    }, profile);
   }
 }
 

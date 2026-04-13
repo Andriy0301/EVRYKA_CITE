@@ -12,7 +12,7 @@ const router = express.Router();
 const ordersPath = path.join(__dirname, "../data/orders.json");
 const print3dOrdersPath = path.join(__dirname, "../data/print3d-orders.json");
 const usersPath = path.join(__dirname, "../data/users.json");
-const { notifyNewOrder } = require("../utils/telegram");
+const { notifyNewOrder, sendTelegramText } = require("../utils/telegram");
 const ADMIN_ORDERS_KEY = process.env.ADMIN_ORDERS_KEY || "31415";
 
 function readOrders() {
@@ -101,6 +101,30 @@ function normalizeItems(items) {
     .filter((item) => Number.isFinite(item.id) && item.id > 0);
 }
 
+function normalizeIdentity(input = {}) {
+  return {
+    id: String(input?.id || "").trim(),
+    email: String(input?.email || "").trim().toLowerCase(),
+    phone: String(input?.phone || "").trim()
+  };
+}
+
+function orderBelongsToIdentity(order, identity) {
+  const customer = order?.customer || {};
+  return (
+    (identity.id && String(customer.id || "").trim() === identity.id) ||
+    (identity.email && String(customer.email || "").trim().toLowerCase() === identity.email) ||
+    (identity.phone && String(customer.phone || "").trim() === identity.phone)
+  );
+}
+
+function canCancelOrder(order) {
+  if (!order || String(order?.orderStatus || "").trim() === "cancelled") return false;
+  const deliveryStage = String(order?.deliveryStatus?.stage || "").trim();
+  if (deliveryStage === "picked_up") return false;
+  return true;
+}
+
 router.post("/", (req, res) => {
   const { customer = {}, items = [], total = 0, ttn = "", orderNumber: incomingOrderNumber = "" } = req.body || {};
   const normalizedItems = normalizeItems(items);
@@ -141,7 +165,8 @@ router.post("/", (req, res) => {
     },
     items: normalizedItems,
     total: Math.max(0, Number(total || 0)),
-    ttn: String(ttn || "").trim()
+    ttn: String(ttn || "").trim(),
+    orderStatus: "new"
   };
 
   const orders = readOrders();
@@ -249,6 +274,107 @@ router.post("/crm-events/status", (req, res) => {
   };
   writeCrmNotifications(events);
   return res.json({ ok: true, event: events[idx] });
+});
+
+router.post("/cancel", async (req, res) => {
+  const {
+    orderType = "shop",
+    orderId,
+    orderNumber,
+    id,
+    email,
+    phone,
+    reason
+  } = req.body || {};
+
+  const identity = normalizeIdentity({ id, email, phone });
+  if (!identity.id && !identity.email && !identity.phone) {
+    return res.status(400).json({ error: "Потрібні дані користувача (id/email/phone)" });
+  }
+
+  const wantedOrderId = String(orderId || "").trim();
+  const wantedOrderNumber = String(orderNumber || "").trim();
+  if (!wantedOrderId && !wantedOrderNumber) {
+    return res.status(400).json({ error: "Не передано orderId або orderNumber" });
+  }
+
+  const list = orderType === "print3d" ? readPrint3dOrders() : readOrders();
+  const idx = list.findIndex((order) => {
+    const idMatch = wantedOrderId && String(order?.id || "").trim() === wantedOrderId;
+    const numMatch = wantedOrderNumber && String(order?.orderNumber || "").trim() === wantedOrderNumber;
+    return idMatch || numMatch;
+  });
+  if (idx < 0) {
+    return res.status(404).json({ error: "Замовлення не знайдено" });
+  }
+
+  const current = list[idx];
+  if (!orderBelongsToIdentity(current, identity)) {
+    return res.status(403).json({ error: "Це замовлення належить іншому користувачу" });
+  }
+  if (String(current?.orderStatus || "") === "cancelled") {
+    return res.json({ ok: true, order: current });
+  }
+  if (!canCancelOrder(current)) {
+    return res.status(400).json({ error: "Це замовлення вже не можна скасувати" });
+  }
+
+  const cancelledAt = new Date().toISOString();
+  const updated = {
+    ...current,
+    orderStatus: "cancelled",
+    cancelledAt,
+    cancelReason: String(reason || "Скасовано клієнтом").trim()
+  };
+  list[idx] = updated;
+
+  if (orderType === "print3d") {
+    fs.writeFileSync(print3dOrdersPath, JSON.stringify(list, null, 2));
+
+    const users = readUsers();
+    let usersChanged = false;
+    users.forEach((user, userIdx) => {
+      const summaries = Array.isArray(user?.print3dOrders) ? user.print3dOrders : [];
+      const summaryIdx = summaries.findIndex((item) => {
+        const idMatch = wantedOrderId && String(item?.id || "").trim() === wantedOrderId;
+        const numMatch = wantedOrderNumber && String(item?.orderNumber || "").trim() === wantedOrderNumber;
+        return idMatch || numMatch;
+      });
+      if (summaryIdx >= 0) {
+        const nextSummaries = [...summaries];
+        nextSummaries[summaryIdx] = {
+          ...nextSummaries[summaryIdx],
+          orderStatus: "cancelled",
+          cancelledAt,
+          cancelReason: String(reason || "Скасовано клієнтом").trim()
+        };
+        users[userIdx] = {
+          ...user,
+          print3dOrders: nextSummaries,
+          updatedAt: cancelledAt
+        };
+        usersChanged = true;
+      }
+    });
+    if (usersChanged) {
+      fs.writeFileSync(usersPath, JSON.stringify(users, null, 2));
+    }
+  } else {
+    writeOrders(list);
+  }
+
+  const lines = [
+    "Скасування замовлення клієнтом",
+    `Тип: ${orderType === "print3d" ? "3D-друк" : "Магазин"}`,
+    `Номер: ${updated?.orderNumber || updated?.id || "—"}`,
+    `Клієнт: ${[updated?.customer?.lastName, updated?.customer?.name].filter(Boolean).join(" ").trim() || "—"}`,
+    `Телефон: ${updated?.customer?.phone || "—"}`,
+    updated?.ttn ? `ТТН: ${updated.ttn}` : null,
+    `Причина: ${updated.cancelReason || "—"}`
+  ].filter(Boolean);
+  sendTelegramText(lines.join("\n")).catch(() => null);
+
+  return res.json({ ok: true, order: updated });
 });
 
 module.exports = router;

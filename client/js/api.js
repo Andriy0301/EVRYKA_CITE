@@ -335,6 +335,21 @@ async function updateCrmEventStatus(adminKey, eventId, status) {
   return res.json();
 }
 
+async function cancelMyOrder(payload) {
+  const res = await fetch(`/api/orders/cancel`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify(payload || {})
+  });
+  if (!res.ok) {
+    const body = await res.json().catch(() => ({}));
+    throw new Error(body.error || "Не вдалося скасувати замовлення");
+  }
+  return res.json();
+}
+
 async function getMyOrders(profile) {
   const params = new URLSearchParams();
   if (profile?.id) params.set("id", String(profile.id));

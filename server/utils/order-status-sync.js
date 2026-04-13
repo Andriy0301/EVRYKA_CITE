@@ -168,6 +168,7 @@ async function syncOrdersCollection(orders, orderType) {
   for (const order of orders) {
     const ttn = String(order?.ttn || "").trim();
     if (!ttn) continue;
+    if (String(order?.orderStatus || "").trim() === "cancelled") continue;
 
     const prevStatus = order?.deliveryStatus || {};
     if (String(prevStatus.stage || "") === "picked_up") continue;
