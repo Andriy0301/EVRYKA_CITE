@@ -12,6 +12,17 @@ let threeMods = null;
 let debounceTimer = null;
 let modelSeq = 1;
 const modelItems = [];
+const COLOR_PRESETS = [
+  { id: "white", name: "Білий", hex: "#f5f5f4" },
+  { id: "black", name: "Чорний", hex: "#222222" },
+  { id: "gray", name: "Сірий", hex: "#9ca3af" },
+  { id: "red", name: "Червоний", hex: "#dc2626" },
+  { id: "blue", name: "Синій", hex: "#2563eb" },
+  { id: "green", name: "Зелений", hex: "#16a34a" },
+  { id: "yellow", name: "Жовтий", hex: "#facc15" },
+  { id: "orange", name: "Помаранчевий", hex: "#f59e0b" }
+];
+const DEFAULT_COLOR = COLOR_PRESETS[7].hex;
 
 async function loadThreeMods() {
   if (threeMods) return threeMods;
@@ -50,6 +61,39 @@ function setGlobalErr(els, message) {
   els.err.hidden = !message;
 }
 
+function openConfirmModal(els, text) {
+  if (!els.confirmModal) return;
+  if (els.confirmText && text) els.confirmText.textContent = text;
+  els.confirmModal.hidden = false;
+  document.body.style.overflow = "hidden";
+}
+
+function closeConfirmModal(els) {
+  if (!els.confirmModal) return;
+  els.confirmModal.hidden = true;
+  document.body.style.overflow = "";
+}
+
+function renderColorPalette(container, selectedHex, onSelect) {
+  container.innerHTML = "";
+  COLOR_PRESETS.forEach((c) => {
+    const btn = document.createElement("button");
+    btn.type = "button";
+    btn.className = "print3d-color-chip";
+    btn.title = c.name;
+    btn.setAttribute("aria-label", c.name);
+    btn.style.background = c.hex;
+    if (String(selectedHex).toLowerCase() === c.hex.toLowerCase()) {
+      btn.classList.add("is-active");
+    }
+    btn.addEventListener("click", () => {
+      onSelect(c.hex);
+      renderColorPalette(container, c.hex, onSelect);
+    });
+    container.appendChild(btn);
+  });
+}
+
 function createCardElement(item) {
   const card = document.createElement("article");
   card.className = "print3d-model-card";
@@ -69,11 +113,9 @@ function createCardElement(item) {
   const colorWrap = document.createElement("label");
   colorWrap.className = "print3d-model-color";
   colorWrap.textContent = "Колір";
-  const colorInput = document.createElement("input");
-  colorInput.type = "color";
-  colorInput.value = item.color;
-  colorInput.setAttribute("aria-label", `Колір моделі ${item.file.name}`);
-  colorWrap.appendChild(colorInput);
+  const colorPalette = document.createElement("div");
+  colorPalette.className = "print3d-color-palette";
+  colorWrap.appendChild(colorPalette);
 
   const headRight = document.createElement("div");
   headRight.style.display = "inline-flex";
@@ -98,6 +140,46 @@ function createCardElement(item) {
   const info = document.createElement("div");
   info.className = "print3d-model-info";
 
+  const params = document.createElement("div");
+  params.className = "print3d-model-params";
+  params.innerHTML = `
+    <label>Матеріал
+      <select data-param="material">
+        <option value="PLA"${item.options.material === "PLA" ? " selected" : ""}>PLA</option>
+        <option value="PETG"${item.options.material === "PETG" ? " selected" : ""}>PETG</option>
+        <option value="ABS"${item.options.material === "ABS" ? " selected" : ""}>ABS</option>
+      </select>
+    </label>
+    <label>Міцність
+      <select data-param="strength">
+        <option value="low"${item.options.strength === "low" ? " selected" : ""}>Low (15%)</option>
+        <option value="medium"${item.options.strength === "medium" ? " selected" : ""}>Medium (25%)</option>
+        <option value="high"${item.options.strength === "high" ? " selected" : ""}>High (50%)</option>
+      </select>
+    </label>
+    <label>Якість
+      <select data-param="quality">
+        <option value="draft"${item.options.quality === "draft" ? " selected" : ""}>Draft</option>
+        <option value="normal"${item.options.quality === "normal" ? " selected" : ""}>Normal</option>
+        <option value="fine"${item.options.quality === "fine" ? " selected" : ""}>Fine</option>
+      </select>
+    </label>
+  `;
+
+  const commentBox = document.createElement("div");
+  commentBox.className = "print3d-model-comment";
+  const commentBtn = document.createElement("button");
+  commentBtn.type = "button";
+  commentBtn.className = "print3d-comment-toggle";
+  commentBtn.textContent = "Додати коментар";
+  const commentWrap = document.createElement("div");
+  commentWrap.hidden = true;
+  const commentInput = document.createElement("textarea");
+  commentInput.placeholder = "Коментар до цієї моделі (за потреби)";
+  commentInput.rows = 3;
+  commentWrap.appendChild(commentInput);
+  commentBox.append(commentBtn, commentWrap);
+
   const status = document.createElement("div");
   status.className = "print3d-card-status";
 
@@ -114,7 +196,7 @@ function createCardElement(item) {
     <div class="print3d-result-item print3d-result-item--price"><strong>Ціна</strong><span class="print3d-val" data-k="price">—</span></div>
   `;
 
-  info.append(status, err, stats);
+  info.append(params, commentBox, status, err, stats);
   body.append(previewWrap, info);
   card.append(head, body);
 
@@ -124,7 +206,13 @@ function createCardElement(item) {
     canvasHost,
     status,
     err,
-    colorInput,
+    colorPalette,
+    selMaterial: params.querySelector('select[data-param="material"]'),
+    selStrength: params.querySelector('select[data-param="strength"]'),
+    selQuality: params.querySelector('select[data-param="quality"]'),
+    commentBtn,
+    commentWrap,
+    commentInput,
     cells: {
       volume: stats.querySelector('[data-k="volume"]'),
       weight: stats.querySelector('[data-k="weight"]'),
@@ -135,7 +223,7 @@ function createCardElement(item) {
 }
 
 function applyColorToObject(THREE, object, colorHex) {
-  const color = new THREE.Color(colorHex || "#f9b262");
+  const color = new THREE.Color(colorHex || DEFAULT_COLOR);
   object.traverse?.((c) => {
     if (!c.isMesh) return;
     const mats = Array.isArray(c.material) ? c.material : [c.material];
@@ -206,9 +294,9 @@ function updateSummary(els) {
     left.className = "print3d-total-row-left";
     const dot = document.createElement("i");
     dot.className = "print3d-color-dot";
-    dot.style.background = item.color || "#f9b262";
+    dot.style.background = item.color || DEFAULT_COLOR;
     const name = document.createElement("span");
-    name.textContent = item.file.name;
+    name.textContent = item.comment ? `${item.file.name} (є коментар)` : item.file.name;
     left.append(dot, name);
     const price = document.createElement("span");
     price.textContent = formatMoney(item.analysis.price);
@@ -294,7 +382,7 @@ async function mountPreview(item) {
         loader.load(fileUrl, resolve, undefined, reject);
       });
       const material = new THREE.MeshStandardMaterial({
-        color: item.color || 0xf9b262,
+        color: item.color || DEFAULT_COLOR,
         metalness: 0.04,
         roughness: 0.38
       });
@@ -307,7 +395,7 @@ async function mountPreview(item) {
       object.traverse((c) => {
         if (c.isMesh) {
           c.material = new THREE.MeshStandardMaterial({
-            color: item.color || 0xfbd3a1,
+            color: item.color || DEFAULT_COLOR,
             metalness: 0.05,
             roughness: 0.42
           });
@@ -386,7 +474,7 @@ async function analyzeItem(item, els) {
   try {
     const fd = new FormData();
     fd.set("file", item.file);
-    const opts = currentOptions(els);
+    const opts = item.options || currentOptions(els);
     fd.set("material", opts.material);
     fd.set("strength", opts.strength);
     fd.set("quality", opts.quality);
@@ -404,15 +492,6 @@ async function analyzeItem(item, els) {
     updateCard(item);
     updateSummary(els);
   }
-}
-
-function scheduleReanalyzeAll(els) {
-  if (debounceTimer) clearTimeout(debounceTimer);
-  debounceTimer = setTimeout(() => {
-    modelItems.forEach((item) => {
-      void analyzeItem(item, els);
-    });
-  }, DEBOUNCE_MS);
 }
 
 function removeItem(id, els) {
@@ -442,7 +521,9 @@ function addFiles(files, els) {
       loading: false,
       error: "",
       analysis: null,
-      color: els.orderColor.value || "#f9b262",
+      options: currentOptions(els),
+      comment: "",
+      color: els.orderColorHex || DEFAULT_COLOR,
       customColor: false,
       disposePreview: null,
       applyPreviewColor: null,
@@ -451,10 +532,30 @@ function addFiles(files, els) {
 
     item.ui = createCardElement(item);
     item.ui.removeBtn.addEventListener("click", () => removeItem(item.id, els));
-    item.ui.colorInput.addEventListener("input", () => {
-      item.color = item.ui.colorInput.value;
+    renderColorPalette(item.ui.colorPalette, item.color, (hex) => {
+      item.color = hex;
       item.customColor = true;
       if (item.applyPreviewColor) item.applyPreviewColor(item.color);
+      updateSummary(els);
+    });
+    item.ui.selMaterial.addEventListener("change", () => {
+      item.options.material = item.ui.selMaterial.value;
+      void analyzeItem(item, els);
+    });
+    item.ui.selStrength.addEventListener("change", () => {
+      item.options.strength = item.ui.selStrength.value;
+      void analyzeItem(item, els);
+    });
+    item.ui.selQuality.addEventListener("change", () => {
+      item.options.quality = item.ui.selQuality.value;
+      void analyzeItem(item, els);
+    });
+    item.ui.commentBtn.addEventListener("click", () => {
+      item.ui.commentWrap.hidden = !item.ui.commentWrap.hidden;
+      item.ui.commentBtn.textContent = item.ui.commentWrap.hidden ? "Додати коментар" : "Сховати коментар";
+    });
+    item.ui.commentInput.addEventListener("input", () => {
+      item.comment = item.ui.commentInput.value.trim();
       updateSummary(els);
     });
     els.modelsGrid.appendChild(item.ui.card);
@@ -502,16 +603,25 @@ function initModelMode(els) {
   });
 
   [els.selMaterial, els.selStrength, els.selQuality].forEach((control) => {
-    control.addEventListener("change", () => scheduleReanalyzeAll(els));
+    control.addEventListener("change", () => {
+      // Верхні селекти діють як налаштування за замовчуванням для нових моделей.
+    });
   });
 
-  els.orderColor.addEventListener("input", () => {
-    const orderColor = els.orderColor.value;
+  renderColorPalette(els.orderColorPalette, els.orderColorHex, (hex) => {
+    els.orderColorHex = hex;
     modelItems.forEach((item) => {
       if (item.customColor) return;
-      item.color = orderColor;
-      if (item.ui?.colorInput) item.ui.colorInput.value = orderColor;
-      if (item.applyPreviewColor) item.applyPreviewColor(orderColor);
+      item.color = hex;
+      if (item.applyPreviewColor) item.applyPreviewColor(hex);
+      if (item.ui?.colorPalette) {
+        renderColorPalette(item.ui.colorPalette, item.color, (modelHex) => {
+          item.color = modelHex;
+          item.customColor = true;
+          if (item.applyPreviewColor) item.applyPreviewColor(modelHex);
+          updateSummary(els);
+        });
+      }
     });
     updateSummary(els);
   });
@@ -523,8 +633,9 @@ function initModelMode(els) {
       alert("Спочатку додайте STL/OBJ і дочекайтесь розрахунку.");
       return;
     }
-    alert(
-      `Заявку прийнято: ${valid.length} моделей, сума ${formatMoney(total)}. Колір замовлення: ${els.orderColor.value}`
+    openConfirmModal(
+      els,
+      `Ваше замовлення прийняте та починає виконуватись. Орієнтовний термін виготовлення: 1–2 дні. Моделей: ${valid.length}. Сума: ${formatMoney(total)}.`
     );
   });
 }
@@ -584,14 +695,28 @@ function init() {
     selMaterial: document.getElementById("print3dMaterial"),
     selStrength: document.getElementById("print3dStrength"),
     selQuality: document.getElementById("print3dQuality"),
-    orderColor: document.getElementById("print3dOrderColor"),
+    orderColorPalette: document.getElementById("print3dOrderColorPalette"),
+    orderColorHex: DEFAULT_COLOR,
     err: document.getElementById("print3dErr"),
     modelsGrid: document.getElementById("print3dModelsGrid"),
     totalBox: document.getElementById("print3dTotalBox"),
     totalRows: document.getElementById("print3dTotalRows"),
     totalPrice: document.getElementById("print3dTotalPrice"),
-    btnOrder: document.getElementById("print3dBtnOrder")
+    btnOrder: document.getElementById("print3dBtnOrder"),
+    confirmModal: document.getElementById("print3dConfirmModal"),
+    confirmText: document.getElementById("print3dConfirmText")
   };
+
+  if (els.confirmModal) {
+    els.confirmModal.querySelectorAll("[data-close-print3d-modal]").forEach((el) => {
+      el.addEventListener("click", () => closeConfirmModal(els));
+    });
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "Escape" && !els.confirmModal.hidden) {
+        closeConfirmModal(els);
+      }
+    });
+  }
 
   initModelMode(els);
   initRequestForm(

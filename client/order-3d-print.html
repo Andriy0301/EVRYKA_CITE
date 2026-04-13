@@ -83,39 +83,41 @@
       </div>
 
       <div id="print3dPanelModel">
-        <div class="print3d-dropzone" id="print3dDrop" role="button" tabindex="0">
-          <p style="margin:0;font-weight:600;font-size:1.05rem;">Перетягніть STL / OBJ / 3MF файли сюди</p>
-          <p style="margin:8px 0 0;font-size:14px;color:var(--ev-muted,#6b7280);">або натисніть, щоб обрати кілька файлів · до 50 МБ кожен</p>
-          <input type="file" id="print3dFile" multiple accept=".stl,.obj,.3mf,model/stl,model/obj" aria-label="Файли 3D моделей">
-        </div>
-        <div class="print3d-fields">
-          <label>Матеріал
-            <select id="print3dMaterial">
-              <option value="PLA">PLA</option>
-              <option value="PETG">PETG</option>
-              <option value="ABS">ABS</option>
-            </select>
-          </label>
-          <label>Міцність (infill)
-            <select id="print3dStrength">
-              <option value="low">Low (15%)</option>
-              <option value="medium" selected>Medium (25%)</option>
-              <option value="high">High (50%)</option>
-            </select>
-          </label>
-          <label>Якість друку
-            <select id="print3dQuality">
-              <option value="draft">Draft</option>
-              <option value="normal" selected>Normal</option>
-              <option value="fine">Fine</option>
-            </select>
-          </label>
-        </div>
-        <div class="print3d-color-controls">
-          <label class="print3d-color-label" for="print3dOrderColor">
-            Колір замовлення
-          </label>
-          <input type="color" id="print3dOrderColor" value="#f9b262" aria-label="Колір замовлення">
+        <div class="print3d-upload-config">
+          <div class="print3d-dropzone" id="print3dDrop" role="button" tabindex="0">
+            <p style="margin:0;font-weight:600;font-size:1.05rem;">Перетягніть STL / OBJ / 3MF файли сюди</p>
+            <p style="margin:8px 0 0;font-size:14px;color:var(--ev-muted,#6b7280);">або натисніть, щоб обрати кілька файлів · до 50 МБ кожен</p>
+            <input type="file" id="print3dFile" multiple accept=".stl,.obj,.3mf,model/stl,model/obj" aria-label="Файли 3D моделей">
+          </div>
+          <div class="print3d-config-side">
+            <div class="print3d-fields">
+              <label>Матеріал
+                <select id="print3dMaterial">
+                  <option value="PLA">PLA</option>
+                  <option value="PETG">PETG</option>
+                  <option value="ABS">ABS</option>
+                </select>
+              </label>
+              <label>Міцність (infill)
+                <select id="print3dStrength">
+                  <option value="low">Low (15%)</option>
+                  <option value="medium" selected>Medium (25%)</option>
+                  <option value="high">High (50%)</option>
+                </select>
+              </label>
+              <label>Якість друку
+                <select id="print3dQuality">
+                  <option value="draft">Draft</option>
+                  <option value="normal" selected>Normal</option>
+                  <option value="fine">Fine</option>
+                </select>
+              </label>
+            </div>
+            <div class="print3d-color-controls">
+              <span class="print3d-color-label">Колір замовлення</span>
+              <div id="print3dOrderColorPalette" class="print3d-color-palette" aria-label="Вибір кольору замовлення"></div>
+            </div>
+          </div>
         </div>
         <div class="print3d-err" id="print3dErr" hidden></div>
         <p class="print3d-note">Для кожної моделі буде окремий перегляд і розрахунок. Формат <strong>3MF</strong> не аналізується на сервері (лише перегляд/заявка).</p>
@@ -294,12 +296,22 @@
   </div>
 </div>
 
+<div id="print3dConfirmModal" class="print3d-confirm-modal" hidden>
+  <div class="print3d-confirm-backdrop" data-close-print3d-modal></div>
+  <div class="print3d-confirm-card" role="dialog" aria-modal="true" aria-labelledby="print3dConfirmTitle">
+    <button type="button" class="print3d-confirm-close" data-close-print3d-modal aria-label="Закрити повідомлення">×</button>
+    <h3 id="print3dConfirmTitle">Замовлення прийнято</h3>
+    <p id="print3dConfirmText">Ваше замовлення прийняте та починає виконуватись. Орієнтовний термін виготовлення: 1–2 дні.</p>
+    <button type="button" class="print3d-btn-primary" data-close-print3d-modal>Добре</button>
+  </div>
+</div>
+
 <script src="js/api.js?v=20260426"></script>
 <script src="js/cart.js?v=20260430"></script>
 <script src="js/header-nav.js?v=1"></script>
 <script src="js/app.js?v=20260411"></script>
 <script src="js/chat-widget.js?v=20260409"></script>
 <script src="js/scroll-to-top.js?v=4"></script>
-<script type="module" src="js/order-3d-print.js?v=7"></script>
+<script type="module" src="js/order-3d-print.js?v=10"></script>
 </body>
 </html>

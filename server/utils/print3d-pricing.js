@@ -8,7 +8,8 @@ function calculatePricing({ volumeCm3, material, strength }) {
   const densityGCm3 = DENSITY[m];
   const weightG = volumeCm3 * infill * densityGCm3;
   const printTimeHours = volumeCm3 / 10;
-  const priceUah = weightG * 1.2 + printTimeHours * 20 + 20;
+  const basePriceUah = weightG * 1.2 + printTimeHours * 20 + 20;
+  const priceUah = basePriceUah * 0.9;
   return {
     volumeCm3,
     infill,
