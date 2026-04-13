@@ -605,6 +605,10 @@
   place-items: center;
 }
 
+.print3d-confirm-modal[hidden] {
+  display: none !important;
+}
+
 .print3d-confirm-backdrop {
   position: absolute;
   inset: 0;

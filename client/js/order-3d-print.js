@@ -5,6 +5,7 @@
 const THREE_BASE = "https://esm.sh/three@0.170.0";
 const API_ANALYZE = "/api/print3d/analyze-model";
 const API_REQUEST = "/api/print3d/request";
+const API_ORDER = "/api/print3d/order";
 const MAX_BYTES = 50 * 1024 * 1024;
 const DEBOUNCE_MS = 400;
 
@@ -38,6 +39,14 @@ function extOf(name) {
   const n = String(name || "").toLowerCase();
   const i = n.lastIndexOf(".");
   return i >= 0 ? n.slice(i + 1) : "";
+}
+
+function getClientProfile() {
+  try {
+    return JSON.parse(localStorage.getItem("userProfile") || "null") || null;
+  } catch {
+    return null;
+  }
 }
 
 function formatMoney(value) {
@@ -626,17 +635,49 @@ function initModelMode(els) {
     updateSummary(els);
   });
 
-  els.btnOrder.addEventListener("click", () => {
+  els.btnOrder.addEventListener("click", async () => {
     const valid = modelItems.filter((x) => x.analysis && !x.error);
     const total = valid.reduce((sum, x) => sum + Number(x.analysis.price || 0), 0);
     if (!valid.length) {
       alert("Спочатку додайте STL/OBJ і дочекайтесь розрахунку.");
       return;
     }
-    openConfirmModal(
-      els,
-      `Ваше замовлення прийняте та починає виконуватись. Орієнтовний термін виготовлення: 1–2 дні. Моделей: ${valid.length}. Сума: ${formatMoney(total)}.`
-    );
+    try {
+      els.btnOrder.disabled = true;
+      const fd = new FormData();
+      valid.forEach((item) => {
+        fd.append("files", item.file, item.file.name);
+      });
+      const modelsMeta = valid.map((item) => ({
+        name: item.file.name,
+        material: item.options?.material,
+        strength: item.options?.strength,
+        quality: item.options?.quality,
+        color: item.color,
+        comment: item.comment || "",
+        price: Number(item.analysis?.price || 0)
+      }));
+      fd.set("modelsMeta", JSON.stringify(modelsMeta));
+      fd.set("orderColor", els.orderColorHex || "");
+      fd.set("total", String(total));
+      const profile = getClientProfile();
+      if (profile?.id) fd.set("userId", String(profile.id));
+      if (profile?.email) fd.set("userEmail", String(profile.email));
+      if (profile?.phone) fd.set("userPhone", String(profile.phone));
+
+      const res = await fetch(API_ORDER, { method: "POST", body: fd });
+      const data = await res.json().catch(() => ({}));
+      if (!res.ok) throw new Error(data.error || "Не вдалося надіслати замовлення");
+
+      openConfirmModal(
+        els,
+        `Ваше замовлення прийняте та починає виконуватись. Орієнтовний термін виготовлення: 1–2 дні. Моделей: ${valid.length}. Сума: ${formatMoney(total)}.`
+      );
+    } catch (e) {
+      alert(e instanceof Error ? e.message : "Помилка надсилання замовлення");
+    } finally {
+      els.btnOrder.disabled = false;
+    }
   });
 }
 
@@ -708,8 +749,16 @@ function init() {
   };
 
   if (els.confirmModal) {
+    closeConfirmModal(els);
     els.confirmModal.querySelectorAll("[data-close-print3d-modal]").forEach((el) => {
-      el.addEventListener("click", () => closeConfirmModal(els));
+      el.addEventListener("click", (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        closeConfirmModal(els);
+      });
+    });
+    els.confirmModal.addEventListener("click", (e) => {
+      if (e.target === els.confirmModal) closeConfirmModal(els);
     });
     document.addEventListener("keydown", (e) => {
       if (e.key === "Escape" && !els.confirmModal.hidden) {
