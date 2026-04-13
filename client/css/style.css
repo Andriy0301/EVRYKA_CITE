@@ -5619,8 +5619,7 @@ body.evryka-site.page-about {
   height: 4px;
   margin-top: 10px;
   border-radius: 999px;
-  background: linear-gradient(90deg, var(--ev-accent), var(--accent-hover));
-  opacity: 0.92;
+  background: var(--ev-accent);
 }
 
 .page-about .about-page__grid {
@@ -5640,13 +5639,7 @@ body.evryka-site.page-about {
   --about-card-r: clamp(16px, 2vw, 20px);
   margin: 0;
   padding: clamp(20px, 2.5vw, 28px);
-  background:
-    linear-gradient(
-      165deg,
-      rgba(254, 215, 170, 0.22) 0%,
-      rgba(255, 255, 255, 0.35) 22%,
-      var(--ev-p-well, var(--surface-secondary)) 52%
-    );
+  background: var(--ev-p-well, var(--surface-secondary));
   border: 1px solid rgba(251, 146, 60, 0.18);
   border-radius: var(--about-card-r);
   box-shadow:
@@ -5682,7 +5675,7 @@ body.evryka-site.page-about {
   display: grid;
   place-items: center;
   border-radius: 12px;
-  background: linear-gradient(145deg, var(--accent-soft), rgba(251, 146, 60, 0.14));
+  background: var(--accent-soft);
   border: 1px solid rgba(251, 146, 60, 0.28);
   color: var(--accent-hover);
   box-shadow:
@@ -5759,12 +5752,7 @@ body.evryka-site.page-about {
 
 .page-about .about-card--contacts {
   grid-column: 1 / -1;
-  background: linear-gradient(
-    168deg,
-    rgba(254, 215, 170, 0.18) 0%,
-    rgba(255, 255, 255, 0.4) 18%,
-    var(--ev-p-well, var(--surface-secondary)) 55%
-  );
+  background: var(--bg-section);
   border-color: rgba(251, 146, 60, 0.22);
 }
 
@@ -5814,7 +5802,7 @@ body.evryka-site.page-about {
   display: grid;
   place-items: center;
   border-radius: 10px;
-  background: linear-gradient(145deg, rgba(254, 215, 170, 0.55), rgba(251, 146, 60, 0.12));
+  background: var(--accent-soft);
   border: 1px solid rgba(251, 146, 60, 0.22);
   color: var(--accent-hover);
 }
@@ -5920,7 +5908,7 @@ body.evryka-site.page-about {
   margin-top: 4px;
   padding: 12px 16px;
   border-radius: 12px;
-  background: linear-gradient(135deg, var(--accent-soft), rgba(255, 255, 255, 0.88));
+  background: var(--accent-soft);
   border: 1px solid rgba(251, 146, 60, 0.28);
   font-weight: 600;
   font-size: clamp(15px, 1.4vw, 17px);

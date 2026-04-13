@@ -5,6 +5,7 @@ let cabCityDropdownVisible = false;
 let cabBranchDropdownVisible = false;
 let cabCitySearchTimer = null;
 let cabCitySelectionInProgress = false;
+let cabBranchSelectionInProgress = false;
 
 function getProfile() {
   return JSON.parse(localStorage.getItem(PROFILE_STORAGE_KEY) || "null");
@@ -391,15 +392,31 @@ function onCabBranchInput() {
 }
 
 function onCabBranchChange() {
+  if (cabBranchSelectionInProgress) return;
+
   const branchEl = document.getElementById("cabBranch");
   const branchRefEl = document.getElementById("cabBranchRef");
   const query = branchEl.value.trim().toLowerCase();
-  const selected =
-    cabBranchOptions.find((w) => (w.Description || "").toLowerCase() === query) ||
-    cabBranchOptions.find((w) => (w.Description || "").toLowerCase().includes(query));
-  if (selected) {
-    branchEl.value = selected.Description;
-    branchRefEl.value = selected.Ref;
+  if (!query) {
+    branchRefEl.value = "";
+    renderCabBranchSuggestions([]);
+    return;
+  }
+
+  const exact = cabBranchOptions.find((w) => (w.Description || "").toLowerCase() === query);
+  if (exact) {
+    branchEl.value = exact.Description;
+    branchRefEl.value = exact.Ref;
+    renderCabBranchSuggestions([]);
+    return;
+  }
+
+  const partial = cabBranchOptions.filter((w) => (w.Description || "").toLowerCase().includes(query));
+  if (partial.length === 1) {
+    branchEl.value = partial[0].Description;
+    branchRefEl.value = partial[0].Ref;
+  } else {
+    branchRefEl.value = "";
   }
   renderCabBranchSuggestions([]);
 }
@@ -429,11 +446,15 @@ function bindCabinetSuggestionEvents() {
   const branchRefEl = document.getElementById("cabBranchRef");
   branchList.addEventListener("mousedown", (event) => {
     const btn = event.target.closest(".city-suggestion-item");
-    if (!btn) return;
+    if (!btn || btn.disabled) return;
     event.preventDefault();
+    cabBranchSelectionInProgress = true;
     branchEl.value = btn.dataset.name || "";
     branchRefEl.value = btn.dataset.ref || "";
     renderCabBranchSuggestions([]);
+    setTimeout(() => {
+      cabBranchSelectionInProgress = false;
+    }, 0);
   });
 
   document.addEventListener("click", (event) => {

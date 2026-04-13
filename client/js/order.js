@@ -6,6 +6,7 @@ let citySearchTimer = null;
 let citySelectionInProgress = false;
 let branchOptions = [];
 let branchDropdownVisible = false;
+let branchSelectionInProgress = false;
 
 function capitalizeCityInput(value) {
   return String(value || "")
@@ -580,15 +581,31 @@ function onBranchInput() {
 }
 
 function onBranchChange() {
+  if (branchSelectionInProgress) return;
+
   const branchEl = document.getElementById("orderBranch");
   const branchRefEl = document.getElementById("orderBranchRef");
   const query = branchEl.value.trim().toLowerCase();
-  const selected =
-    branchOptions.find((w) => (w.Description || "").toLowerCase() === query) ||
-    branchOptions.find((w) => (w.Description || "").toLowerCase().includes(query));
-  if (selected) {
-    branchEl.value = selected.Description;
-    branchRefEl.value = selected.Ref;
+  if (!query) {
+    branchRefEl.value = "";
+    renderBranchSuggestions([]);
+    return;
+  }
+
+  const exact = branchOptions.find((w) => (w.Description || "").toLowerCase() === query);
+  if (exact) {
+    branchEl.value = exact.Description;
+    branchRefEl.value = exact.Ref;
+    renderBranchSuggestions([]);
+    return;
+  }
+
+  const partial = branchOptions.filter((w) => (w.Description || "").toLowerCase().includes(query));
+  if (partial.length === 1) {
+    branchEl.value = partial[0].Description;
+    branchRefEl.value = partial[0].Ref;
+  } else {
+    branchRefEl.value = "";
   }
   renderBranchSuggestions([]);
 }
@@ -598,12 +615,17 @@ function bindBranchSuggestionEvents() {
   const branchEl = document.getElementById("orderBranch");
   const branchRefEl = document.getElementById("orderBranchRef");
 
-  listEl.addEventListener("click", (event) => {
+  listEl.addEventListener("mousedown", (event) => {
     const btn = event.target.closest(".city-suggestion-item");
-    if (!btn) return;
+    if (!btn || btn.disabled) return;
+    event.preventDefault();
+    branchSelectionInProgress = true;
     branchEl.value = btn.dataset.name || "";
     branchRefEl.value = btn.dataset.ref || "";
     renderBranchSuggestions([]);
+    setTimeout(() => {
+      branchSelectionInProgress = false;
+    }, 0);
   });
 
   document.addEventListener("click", (event) => {
