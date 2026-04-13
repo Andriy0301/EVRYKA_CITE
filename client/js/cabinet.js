@@ -46,19 +46,21 @@ function getCabOrderItemImage(item) {
   return `${API_URL}${candidate}`;
 }
 
-function getCabDeliveryStatusLabel(track) {
+function getCabDeliveryStatusMeta(track) {
   const statusText = String(track?.status || "").trim();
   const statusCode = String(track?.statusCode || "").trim();
-  if (!statusText) return "Статус доставки невідомий";
+  if (!statusText) {
+    return { label: "Статус доставки невідомий", tone: "neutral", icon: "ℹ️" };
+  }
 
   const pickedUpCodes = new Set(["9", "10", "11"]);
   const awaitingCodes = new Set(["7", "8"]);
   const inTransitCodes = new Set(["1", "2", "3", "4", "5", "6"]);
 
-  if (pickedUpCodes.has(statusCode)) return "Отримано клієнтом";
-  if (awaitingCodes.has(statusCode)) return "Очікує у відділенні/поштоматі";
-  if (inTransitCodes.has(statusCode)) return "У дорозі";
-  return statusText;
+  if (pickedUpCodes.has(statusCode)) return { label: "Отримано клієнтом", tone: "arrived", icon: "✅" };
+  if (awaitingCodes.has(statusCode)) return { label: "Прибуло у відділення", tone: "arrived", icon: "📦" };
+  if (inTransitCodes.has(statusCode)) return { label: "У дорозі", tone: "transit", icon: "🚚" };
+  return { label: statusText, tone: "neutral", icon: "ℹ️" };
 }
 
 async function refreshCabinetDeliveryStatuses() {
@@ -72,16 +74,20 @@ async function refreshCabinetDeliveryStatuses() {
 
   await Promise.all(
     uniqueTtns.map(async (ttn) => {
-      let label = "Статус недоступний";
+      let meta = { label: "Статус недоступний", tone: "neutral", icon: "ℹ️" };
       try {
         const track = await trackNovaPoshtaTtn(ttn);
-        label = getCabDeliveryStatusLabel(track);
+        meta = getCabDeliveryStatusMeta(track);
       } catch (_) {}
 
       statusNodes
         .filter((node) => String(node.dataset.ttnStatus || "").trim() === ttn)
         .forEach((node) => {
-          node.innerText = label;
+          node.classList.remove("is-loading", "is-arrived", "is-transit", "is-neutral");
+          node.classList.add(
+            meta.tone === "arrived" ? "is-arrived" : meta.tone === "transit" ? "is-transit" : "is-neutral"
+          );
+          node.innerText = `${meta.icon} ${meta.label}`;
         });
     })
   );
@@ -131,6 +137,11 @@ function renderCabinetOrders(data) {
               <div>
                 <span class="cab-order-number">${order?.orderNumber || `3D #${order?.id || "-"}`}</span>
                 <p class="cab-order-meta">${formatCabOrderDate(order?.createdAt)}</p>
+                <p class="cab-order-status-row">
+                  ${order?.ttn
+                    ? `<span class="cab-order-status-badge is-loading" data-ttn-status="${order.ttn}">⏳ Перевіряємо...</span>`
+                    : `<span class="cab-order-status-badge is-neutral">ℹ️ ТТН відсутня</span>`}
+                </p>
               </div>
               <div class="cab-order-summary-right">
                 <p><b>${Number(order?.total || 0)} грн</b></p>
@@ -176,6 +187,11 @@ function renderCabinetOrders(data) {
             <div>
               <span class="cab-order-number">№ ${order.orderNumber || "-"}</span>
               <p class="cab-order-meta">${formatCabOrderDate(order.createdAt)}</p>
+              <p class="cab-order-status-row">
+                ${order?.ttn
+                  ? `<span class="cab-order-status-badge is-loading" data-ttn-status="${order.ttn}">⏳ Перевіряємо...</span>`
+                  : `<span class="cab-order-status-badge is-neutral">ℹ️ ТТН відсутня</span>`}
+              </p>
             </div>
             <div class="cab-order-summary-right">
               <p><b>${Number(order.total || 0)} грн</b></p>

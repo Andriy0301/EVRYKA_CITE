@@ -3725,6 +3725,41 @@ body.cart-open .header .cart {
   font-size: 13px;
 }
 
+.cab-order-status-row {
+  margin: 8px 0 0;
+}
+
+.cab-order-status-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 10px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 1;
+  border: 1px solid transparent;
+}
+
+.cab-order-status-badge.is-loading,
+.cab-order-status-badge.is-neutral {
+  color: #475569;
+  background: #f1f5f9;
+  border-color: #e2e8f0;
+}
+
+.cab-order-status-badge.is-arrived {
+  color: #166534;
+  background: #ecfdf5;
+  border-color: #86efac;
+}
+
+.cab-order-status-badge.is-transit {
+  color: #9a3412;
+  background: #fff7ed;
+  border-color: #fdba74;
+}
+
 .cab-order-summary-right {
   text-align: right;
 }

@@ -6,6 +6,7 @@ function showAdminOrdersMessage(message, isError = true) {
 }
 
 let adminOrdersCache = null;
+let adminAutoSyncAttempted = false;
 
 function escapeHtml(input) {
   return String(input || "")
@@ -177,7 +178,56 @@ function bindCrmStatusEvents() {
 function rerenderFromCache() {
   if (!adminOrdersCache) return;
   renderAdminOrders(adminOrdersCache);
-  renderCrmEvents(adminOrdersCache?.crmNotifications || []);
+  const crmEvents = Array.isArray(adminOrdersCache?.crmNotifications) && adminOrdersCache.crmNotifications.length
+    ? adminOrdersCache.crmNotifications
+    : syntheticCrmEventsFromOrders(adminOrdersCache);
+  renderCrmEvents(crmEvents);
+}
+
+function getAllOrdersWithTtn(payload) {
+  const shopOrders = Array.isArray(payload?.orders) ? payload.orders : [];
+  const print3dOrders = Array.isArray(payload?.print3dOrders) ? payload.print3dOrders : [];
+  return [...shopOrders, ...print3dOrders].filter((order) => String(order?.ttn || "").trim());
+}
+
+function syntheticCrmEventsFromOrders(payload) {
+  return getAllOrdersWithTtn(payload).map((order, index) => ({
+    id: `synthetic_${order?.id || order?.orderNumber || index}`,
+    eventType: "tracking_snapshot",
+    createdAt: order?.deliveryStatus?.lastCheckedAt || order?.createdAt || new Date().toISOString(),
+    orderNumber: order?.orderNumber || null,
+    orderId: order?.id || null,
+    orderType: Array.isArray(order?.items) ? "shop" : "print3d",
+    ttn: order?.ttn || null,
+    deliveryStage: order?.deliveryStatus?.stage || "unknown",
+    deliveryText: order?.deliveryStatus?.text || "Синхронізація ще не запускалась",
+    crmStatus: "in_progress"
+  }));
+}
+
+function setTtnStatusMessage(message, isError = false) {
+  const el = document.getElementById("adminTtnStatusResult");
+  if (!el) return;
+  el.textContent = message || "";
+  el.style.color = isError ? "#b00020" : "#1b7f3a";
+}
+
+async function onCheckTtnStatus() {
+  const ttn = document.getElementById("adminTtnInput")?.value?.trim();
+  if (!ttn) {
+    setTtnStatusMessage("Введіть ТТН", true);
+    return;
+  }
+  setTtnStatusMessage("Перевіряємо...");
+  try {
+    const info = await trackNovaPoshtaTtn(ttn);
+    const text = info?.status || "Невідомий статус";
+    const code = info?.statusCode ? ` (код ${info.statusCode})` : "";
+    const deliveryPoint = info?.warehouseRecipient ? `\nПункт видачі: ${info.warehouseRecipient}` : "";
+    setTtnStatusMessage(`Статус: ${text}${code}${deliveryPoint}`, false);
+  } catch (error) {
+    setTtnStatusMessage(error.message || "Не вдалося перевірити ТТН", true);
+  }
 }
 
 async function onLoadOrders() {
@@ -189,9 +239,34 @@ async function onLoadOrders() {
 
   try {
     const data = await getAllOrders(key);
+    const hasEvents = Array.isArray(data?.crmNotifications) && data.crmNotifications.length > 0;
+    const hasTtnOrders = getAllOrdersWithTtn(data).length > 0;
+    if (!hasEvents && hasTtnOrders && !adminAutoSyncAttempted) {
+      adminAutoSyncAttempted = true;
+      await syncAllOrderStatuses(key);
+      const fresh = await getAllOrders(key);
+      adminOrdersCache = fresh || {};
+      const crmEvents = Array.isArray(fresh?.crmNotifications) && fresh.crmNotifications.length
+        ? fresh.crmNotifications
+        : syntheticCrmEventsFromOrders(fresh);
+      renderAdminOrders(fresh || {});
+      renderCrmEvents(crmEvents);
+      const totalShopFresh = Array.isArray(fresh?.orders) ? fresh.orders.length : 0;
+      const total3dFresh = Array.isArray(fresh?.print3dOrders) ? fresh.print3dOrders.length : 0;
+      const syncAtFresh = fresh?.statusSync?.lastRunAt || "щойно";
+      showAdminOrdersMessage(
+        `Завантажено: магазин ${totalShopFresh}, 3D ${total3dFresh}. Остання синхронізація: ${syncAtFresh}`,
+        false
+      );
+      return;
+    }
+
     adminOrdersCache = data || {};
     renderAdminOrders(data || {});
-    renderCrmEvents(data?.crmNotifications || []);
+    const crmEvents = Array.isArray(data?.crmNotifications) && data.crmNotifications.length
+      ? data.crmNotifications
+      : syntheticCrmEventsFromOrders(data);
+    renderCrmEvents(crmEvents);
     const totalShop = Array.isArray(data?.orders) ? data.orders.length : 0;
     const total3d = Array.isArray(data?.print3dOrders) ? data.print3dOrders.length : 0;
     const syncAt = data?.statusSync?.lastRunAt || "ще не запускалась";
@@ -227,4 +302,5 @@ document.addEventListener("DOMContentLoaded", () => {
   document.getElementById("syncStatusesBtn")?.addEventListener("click", onSyncStatuses);
   document.getElementById("adminOrderFilter")?.addEventListener("change", rerenderFromCache);
   document.getElementById("adminCrmFilter")?.addEventListener("change", rerenderFromCache);
+  document.getElementById("checkTtnBtn")?.addEventListener("click", onCheckTtnStatus);
 });
