@@ -5758,7 +5758,7 @@ body.evryka-site.page-print3d {
   height: 4px;
   margin-top: 10px;
   border-radius: 999px;
-  background: var(--ev-accent);
+  background: linear-gradient(90deg, var(--ev-accent) 0%, var(--ev-btn-dark) 100%);
 }
 
 .page-about .about-page__grid {
@@ -5789,6 +5789,39 @@ body.evryka-site.page-print3d {
     transform 0.22s ease,
     box-shadow 0.22s ease,
     border-color 0.22s ease;
+}
+
+/* Темні акценти у межах глобальної палітри сайту */
+.page-about .about-card--story,
+.page-about .about-card--contacts {
+  background: linear-gradient(180deg, #6c6763 0%, var(--ev-panel-chrome, #635d5a) 100%);
+  border-color: rgba(255, 255, 255, 0.18);
+  box-shadow:
+    0 14px 34px rgba(0, 0, 0, 0.18),
+    0 2px 10px rgba(0, 0, 0, 0.1),
+    0 1px 0 rgba(255, 255, 255, 0.08) inset;
+}
+
+.page-about .about-card--story h2,
+.page-about .about-card--contacts h2,
+.page-about .about-card--story .about-card__body,
+.page-about .about-card--contacts .about-card__body {
+  color: rgba(255, 255, 255, 0.95);
+}
+
+.page-about .about-card--story .about-card__body strong,
+.page-about .about-card--contacts .about-card__body strong {
+  color: #fff;
+}
+
+.page-about .about-card--story .about-card__icon,
+.page-about .about-card--contacts .about-card__icon {
+  background: rgba(255, 255, 255, 0.14);
+  border-color: rgba(255, 255, 255, 0.22);
+  color: #fff;
+  box-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.22) inset,
+    0 6px 18px rgba(0, 0, 0, 0.2);
 }
 
 .page-about .about-card:hover {
@@ -5891,14 +5924,19 @@ body.evryka-site.page-print3d {
 
 .page-about .about-card--contacts {
   grid-column: 1 / -1;
-  background: var(--bg-section);
-  border-color: rgba(251, 146, 60, 0.22);
+  border-color: rgba(255, 255, 255, 0.2);
 }
 
 .page-about .about-contact-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr));
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: clamp(14px, 2vw, 18px);
+}
+
+@media (max-width: 760px) {
+  .page-about .about-contact-grid {
+    grid-template-columns: 1fr;
+  }
 }
 
 .page-about .about-contact-tile {
@@ -5914,6 +5952,13 @@ body.evryka-site.page-print3d {
   transition:
     transform 0.2s ease,
     box-shadow 0.2s ease;
+}
+
+/* Telegram + Viber поруч як окрема пара */
+@media (min-width: 761px) {
+  .page-about .about-contact-tile--messenger {
+    grid-column: span 1;
+  }
 }
 
 .page-about .about-contact-tile:hover {
@@ -5958,6 +6003,10 @@ body.evryka-site.page-print3d {
   text-transform: uppercase;
   color: rgba(249, 115, 22, 0.88);
   margin-bottom: 4px;
+}
+
+.page-about .about-card--contacts .about-contact-tile__label {
+  color: rgba(17, 17, 17, 0.78);
 }
 
 .page-about .about-contact-tile__value {
@@ -6023,7 +6072,7 @@ body.evryka-site.page-print3d {
 }
 
 .page-about .about-msg-btn--telegram {
-  background: #229ed9;
+  background: #2aabee;
   color: #fff;
   border-color: rgba(0, 0, 0, 0.06);
 }

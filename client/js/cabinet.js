@@ -88,7 +88,7 @@ function renderCabinetOrders(data) {
           <article class="cab-order-card">
             <button type="button" class="cab-order-summary" data-order-toggle="${orderUiId}">
               <div>
-                <span class="cab-order-number">3D #${order?.id || "-"}</span>
+                <span class="cab-order-number">${order?.orderNumber || `3D #${order?.id || "-"}`}</span>
                 <p class="cab-order-meta">${formatCabOrderDate(order?.createdAt)}</p>
               </div>
               <div class="cab-order-summary-right">
@@ -104,6 +104,7 @@ function renderCabinetOrders(data) {
               <p><b>Моделей:</b> ${Number(order?.models || 0)}</p>
               <p><b>Колір замовлення:</b> ${order?.orderColor || "-"}</p>
               <p><b>Доставка:</b> ${delivery?.city || "-"}, ${deliveryPoint}</p>
+              ${order?.ttn ? `<p><b>ТТН:</b> ${order.ttn}</p>` : ""}
             </div>
           </article>
         `;

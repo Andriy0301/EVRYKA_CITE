@@ -307,6 +307,8 @@ router.post("/order", (req, res, next) => {
 
     const orderColor = String(req.body.orderColor || "").trim() || null;
     const total = Number(req.body.total || 0);
+    const orderNumber = String(req.body.orderNumber || "").trim() || `EVR3D-${Date.now().toString().slice(-8)}`;
+    const ttn = String(req.body.ttn || "").trim() || "";
     const matchedUser = findUserByIdentity(readUsers(), {
       id: req.body.userId,
       clientId: req.body.userClientId,
@@ -318,6 +320,7 @@ router.post("/order", (req, res, next) => {
       clientId: String(req.body.userClientId || matchedUser?.clientId || "").trim() || null,
       name: String(req.body.userName || "").trim() || null,
       lastName: String(req.body.userLastName || "").trim() || null,
+      middleName: String(req.body.userMiddleName || "").trim() || null,
       email: String(req.body.userEmail || "").trim().toLowerCase() || null,
       phone: String(req.body.userPhone || "").trim() || null,
       isGuest: String(req.body.userIsGuest || "").trim() === "1",
@@ -335,10 +338,12 @@ router.post("/order", (req, res, next) => {
 
     const entry = {
       id: Date.now(),
+      orderNumber,
       createdAt: new Date().toISOString(),
       customer,
       orderColor,
       total,
+      ttn,
       files: files.map((f, i) => ({
         index: i + 1,
         name: f.originalname,
@@ -353,19 +358,22 @@ router.post("/order", (req, res, next) => {
     writeOrders(list);
     attachOrderToUser(customer, {
       id: entry.id,
+      orderNumber: entry.orderNumber,
       createdAt: entry.createdAt,
       total: entry.total,
       models: files.length,
       orderColor: entry.orderColor,
+      ttn: entry.ttn,
       delivery: customer.delivery
     });
 
     const lines = [
       "Нове замовлення 3D-друку",
+      `Номер замовлення: ${orderNumber}`,
       customer.isGuest ? "Оформлення: без реєстрації" : "Оформлення: акаунт",
       `User ID: ${customer.id || "—"}`,
       `Клієнт ID: ${customer.clientId || "—"}`,
-      `Клієнт: ${[customer.name, customer.lastName].filter(Boolean).join(" ").trim() || "—"}`,
+      `Клієнт: ${[customer.lastName, customer.name, customer.middleName].filter(Boolean).join(" ").trim() || "—"}`,
       `Телефон: ${customer.phone || "—"}`,
       `Email: ${customer.email || "—"}`,
       `Служба доставки: ${deliveryProviderTitle(customer.delivery.provider)}`,
@@ -375,6 +383,7 @@ router.post("/order", (req, res, next) => {
       `City Ref: ${customer.delivery.cityRef || "—"}`,
       `Branch Ref: ${customer.delivery.branchRef || "—"}`,
       `${customer.delivery.deliveryType === "address" ? "Адреса" : "Відділення/поштомат"}: ${customer.delivery.point || "—"}`,
+      ttn ? `ТТН: ${ttn}` : null,
       customer.delivery.comment ? `Коментар до замовлення: ${customer.delivery.comment}` : null,
       "",
       `Моделей: ${files.length}`,
@@ -422,7 +431,7 @@ router.post("/order", (req, res, next) => {
       }
     }
 
-    return res.json({ ok: true, id: entry.id });
+    return res.json({ ok: true, id: entry.id, orderNumber, ttn });
   } catch (e) {
     console.error("[print3d order]", e);
     return res.status(500).json({ error: "Не вдалося оформити замовлення 3D-друку" });

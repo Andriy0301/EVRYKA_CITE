@@ -70,7 +70,7 @@
       <div class="breadcrumbs">
         <a href="index.html">Головна</a>
         <span>/</span>
-        <span>3D-друк</span>
+        <span>Замовити 3D друк</span>
       </div>
     </div>
 
@@ -92,27 +92,48 @@
           <div class="print3d-config-side">
             <div class="print3d-fields">
               <label>Матеріал
-                <select id="print3dMaterial">
-                  <option value="PLA">PLA</option>
-                  <option value="PETG">PETG</option>
-                  <option value="ABS">ABS</option>
-                </select>
+                <div class="catalog-select-wrap print3d-select-wrap">
+                  <button type="button" class="catalog-select-trigger print3d-select-trigger" id="print3dMaterialTrigger" aria-expanded="false" aria-haspopup="listbox" aria-label="Матеріал">
+                    <span class="catalog-select-value" id="print3dMaterialValue">PLA</span>
+                    <svg class="catalog-select-chevron" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9l6 6 6-6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+                  </button>
+                  <ul class="catalog-select-panel" role="listbox" hidden></ul>
+                  <select id="print3dMaterial" class="catalog-filter-select-native" data-param="material">
+                    <option value="PLA">PLA</option>
+                    <option value="PETG">PETG</option>
+                    <option value="ABS">ABS</option>
+                  </select>
+                </div>
               </label>
               <label>Міцність (infill)
-                <select id="print3dStrength">
-                  <option value="low">Low (15%)</option>
-                  <option value="medium" selected>Medium (25%)</option>
-                  <option value="strong">Strong (35%)</option>
-                  <option value="high">High (50%)</option>
-                  <option value="ultra">Ultra (70%)</option>
-                </select>
+                <div class="catalog-select-wrap print3d-select-wrap">
+                  <button type="button" class="catalog-select-trigger print3d-select-trigger" id="print3dStrengthTrigger" aria-expanded="false" aria-haspopup="listbox" aria-label="Міцність">
+                    <span class="catalog-select-value" id="print3dStrengthValue">Medium (25%)</span>
+                    <svg class="catalog-select-chevron" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9l6 6 6-6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+                  </button>
+                  <ul class="catalog-select-panel" role="listbox" hidden></ul>
+                  <select id="print3dStrength" class="catalog-filter-select-native" data-param="strength">
+                    <option value="low">Low (15%)</option>
+                    <option value="medium" selected>Medium (25%)</option>
+                    <option value="strong">Strong (35%)</option>
+                    <option value="high">High (50%)</option>
+                    <option value="ultra">Ultra (70%)</option>
+                  </select>
+                </div>
               </label>
               <label>Якість друку
-                <select id="print3dQuality">
-                  <option value="draft">Draft</option>
-                  <option value="normal" selected>Normal</option>
-                  <option value="fine">Fine</option>
-                </select>
+                <div class="catalog-select-wrap print3d-select-wrap">
+                  <button type="button" class="catalog-select-trigger print3d-select-trigger" id="print3dQualityTrigger" aria-expanded="false" aria-haspopup="listbox" aria-label="Якість">
+                    <span class="catalog-select-value" id="print3dQualityValue">Normal</span>
+                    <svg class="catalog-select-chevron" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9l6 6 6-6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+                  </button>
+                  <ul class="catalog-select-panel" role="listbox" hidden></ul>
+                  <select id="print3dQuality" class="catalog-filter-select-native" data-param="quality">
+                    <option value="draft">Draft</option>
+                    <option value="normal" selected>Normal</option>
+                    <option value="fine">Fine</option>
+                  </select>
+                </div>
               </label>
             </div>
             <div class="print3d-color-controls">
@@ -332,6 +353,9 @@
         <label>Email *
           <input type="email" name="email" required>
         </label>
+        <label>По батькові
+          <input type="text" name="middleName">
+        </label>
         <label>Служба доставки *
           <select name="deliveryProvider" id="print3dCheckoutDeliveryProvider" required>
             <option value="nova_poshta">Нова пошта</option>
@@ -384,15 +408,17 @@
     <button type="button" class="print3d-confirm-close" data-close-print3d-modal aria-label="Закрити повідомлення">×</button>
     <h3 id="print3dConfirmTitle">Замовлення прийнято</h3>
     <p id="print3dConfirmText">Ваше замовлення прийняте та починає виконуватись. Орієнтовний термін виготовлення: 1–2 дні.</p>
+    <div id="print3dConfirmDetails" class="print3d-confirm-details"></div>
     <button type="button" class="print3d-btn-primary" data-close-print3d-modal>Добре</button>
   </div>
 </div>
 
 <script src="js/api.js?v=20260426"></script>
+<script src="js/custom-select.js?v=1"></script>
 <script src="js/cart.js?v=20260430"></script>
 <script src="js/header-nav.js?v=1"></script>
 <script src="js/app.js?v=20260411"></script>
 <script src="js/chat-widget.js?v=20260409"></script>
-<script type="module" src="js/order-3d-print.js?v=15"></script>
+<script type="module" src="js/order-3d-print.js?v=16"></script>
 </body>
 </html>

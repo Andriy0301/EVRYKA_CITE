@@ -7,6 +7,12 @@
   margin-top: calc(-1 * clamp(6px, 1.2vw, 14px));
 }
 
+/* На 3D-сторінці: правий і нижній відступи як лівий */
+.page-print3d .catalog-shell {
+  padding-right: 12px;
+  padding-bottom: 12px;
+}
+
 .page-print3d .print3d-mode-tabs {
   display: flex;
   flex-wrap: wrap;
@@ -15,21 +21,101 @@
 }
 
 .page-print3d .print3d-mode-tabs button {
-  border: 1px solid var(--ev-p-line-soft, rgba(17, 17, 17, 0.12));
-  background: var(--ev-p-well, var(--surface-secondary));
+  border: 1px solid var(--ev-p-line-soft, rgba(17, 17, 17, 0.14));
+  background: var(--ev-surface, #fff);
   color: var(--ev-p-ink, var(--ev-ink));
-  font-weight: 600;
-  font-size: 14px;
-  padding: 10px 18px;
-  border-radius: 999px;
+  font-weight: 700;
+  font-size: 15px;
+  line-height: 1.2;
+  min-height: 52px;
+  padding: 12px 24px;
+  border-radius: 14px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
   cursor: pointer;
-  transition: background 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+  transition: background 0.2s ease, border-color 0.2s ease, color 0.2s ease, box-shadow 0.2s ease,
+    transform 0.15s ease;
+}
+
+.page-print3d .print3d-mode-tabs button:hover {
+  border-color: rgba(251, 146, 60, 0.4);
+  background: rgba(254, 215, 170, 0.2);
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.06);
+  transform: translateY(-1px);
 }
 
 .page-print3d .print3d-mode-tabs button.is-active {
   background: var(--ev-accent, #fb923c);
-  border-color: transparent;
+  border-color: rgba(249, 115, 22, 0.45);
   color: var(--ev-text-on-accent, #111);
+  box-shadow: 0 8px 18px rgba(251, 146, 60, 0.28);
+}
+
+.page-print3d .print3d-mode-tabs button.is-active:hover {
+  background: var(--accent-btn-hover, #fdba74);
+  border-color: rgba(249, 115, 22, 0.55);
+  transform: translateY(-1px);
+}
+
+/* Кастомні селекти 3D-друку — той самий патерн, що у фільтрах каталогу */
+.page-print3d .print3d-select-wrap {
+  width: 100%;
+}
+
+.page-print3d .print3d-select-trigger {
+  min-height: 48px;
+  padding: 12px 14px;
+  border-radius: 12px;
+  border: 1px solid var(--ev-p-line, var(--border-light));
+  background: var(--ev-p-card, #fff);
+  font: inherit;
+  font-size: 15px;
+  font-weight: 500;
+  line-height: 1.3;
+  color: var(--ev-p-ink, var(--ev-ink));
+  box-shadow: 0 1px 3px rgba(17, 17, 17, 0.06);
+}
+
+.page-print3d .print3d-select-trigger:hover {
+  border-color: rgba(251, 146, 60, 0.45);
+}
+
+.page-print3d .catalog-select-wrap.is-open .print3d-select-trigger {
+  border-color: rgba(251, 146, 60, 0.62);
+  box-shadow: 0 0 0 2px rgba(251, 146, 60, 0.18);
+}
+
+.page-print3d .catalog-select-wrap .catalog-select-panel {
+  border: 1px solid rgba(17, 17, 17, 0.12);
+  border-radius: 12px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.12), 0 2px 8px rgba(0, 0, 0, 0.06);
+  background: #fff;
+  padding: 6px;
+}
+
+.page-print3d .catalog-select-wrap .catalog-select-option {
+  border-radius: 8px;
+  padding: 10px 12px;
+  font-size: 14px;
+  line-height: 1.4;
+}
+
+.page-print3d .catalog-select-wrap .catalog-select-option.is-selected {
+  background: rgba(251, 146, 60, 0.14);
+  color: var(--ev-ink);
+  font-weight: 600;
+  box-shadow: inset 3px 0 0 0 var(--accent-main);
+}
+
+.page-print3d .catalog-select-wrap .catalog-select-option.is-selected:hover {
+  background: rgba(251, 146, 60, 0.22);
+}
+
+.page-print3d .print3d-model-params .catalog-select-wrap {
+  z-index: 1;
+}
+
+.page-print3d .print3d-model-params .catalog-select-wrap.is-open {
+  z-index: 120;
 }
 
 .page-print3d .print3d-grid {
@@ -106,7 +192,7 @@
   color: var(--ev-p-ink, var(--ev-ink));
 }
 
-.page-print3d .print3d-fields select {
+.page-print3d .print3d-fields select:not(.catalog-filter-select-native) {
   width: 100%;
   min-height: 48px;
   box-sizing: border-box;
@@ -129,17 +215,17 @@
   transition: border-color 0.2s ease, box-shadow 0.2s ease;
 }
 
-.page-print3d .print3d-fields select:focus {
+.page-print3d .print3d-fields select:not(.catalog-filter-select-native):focus {
   outline: none;
   border-color: rgba(251, 146, 60, 0.6);
   box-shadow: 0 0 0 3px rgba(251, 146, 60, 0.18);
 }
 
-.page-print3d .print3d-fields select::-ms-expand {
+.page-print3d .print3d-fields select:not(.catalog-filter-select-native)::-ms-expand {
   display: none;
 }
 
-.page-print3d .print3d-fields select option {
+.page-print3d .print3d-fields select:not(.catalog-filter-select-native) option {
   color: var(--ev-p-ink, var(--ev-ink));
   background: var(--ev-p-card, #fff);
 }
@@ -570,7 +656,7 @@
   color: var(--ev-p-muted, var(--ev-muted));
 }
 
-.page-print3d .print3d-model-params select {
+.page-print3d .print3d-model-params select:not(.catalog-filter-select-native) {
   width: 100%;
   min-height: 42px;
   box-sizing: border-box;
@@ -592,17 +678,17 @@
   transition: border-color 0.2s ease, box-shadow 0.2s ease;
 }
 
-.page-print3d .print3d-model-params select:focus {
+.page-print3d .print3d-model-params select:not(.catalog-filter-select-native):focus {
   outline: none;
   border-color: rgba(251, 146, 60, 0.55);
   box-shadow: 0 0 0 3px rgba(251, 146, 60, 0.16);
 }
 
-.page-print3d .print3d-model-params select::-ms-expand {
+.page-print3d .print3d-model-params select:not(.catalog-filter-select-native)::-ms-expand {
   display: none;
 }
 
-.page-print3d .print3d-model-params select option {
+.page-print3d .print3d-model-params select:not(.catalog-filter-select-native) option {
   color: var(--ev-p-ink, var(--ev-ink));
   background: #fff;
 }
@@ -650,9 +736,50 @@
   min-height: 1.2em;
 }
 
+.page-print3d .print3d-card-status.is-loading {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.page-print3d .print3d-card-status.is-loading::before {
+  content: "";
+  width: 14px;
+  height: 14px;
+  border: 2px solid var(--ev-p-line, #e5e7eb);
+  border-top-color: var(--ev-accent, #fb923c);
+  border-radius: 50%;
+  animation: print3d-spin 0.8s linear infinite;
+}
+
+.page-print3d .print3d-model-card.is-loading .print3d-val {
+  display: inline-block;
+  min-width: 74px;
+  height: 1.1em;
+  border-radius: 6px;
+  color: transparent;
+  background: linear-gradient(
+    90deg,
+    rgba(148, 163, 184, 0.2) 0%,
+    rgba(226, 232, 240, 0.75) 50%,
+    rgba(148, 163, 184, 0.2) 100%
+  );
+  background-size: 200% 100%;
+  animation: print3d-shimmer 1.15s ease-in-out infinite;
+}
+
 .page-print3d .print3d-card-err {
   color: #b91c1c;
   font-size: 13px;
+}
+
+@keyframes print3d-shimmer {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
 }
 
 .page-print3d .print3d-result-grid--card {
@@ -890,6 +1017,18 @@
   margin: 0 0 16px;
   color: #57534e;
   line-height: 1.55;
+}
+
+.print3d-confirm-details {
+  margin: 0 0 14px;
+  padding: 10px 12px;
+  border-radius: 12px;
+  background: #f8fafc;
+  border: 1px solid rgba(15, 23, 42, 0.08);
+  text-align: left;
+  font-size: 14px;
+  line-height: 1.5;
+  color: #334155;
 }
 
 .print3d-confirm-close {

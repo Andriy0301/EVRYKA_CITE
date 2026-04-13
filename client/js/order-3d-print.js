@@ -73,6 +73,13 @@ function formatNum(value, unit) {
   return `${Number(value || 0).toFixed(2)} ${unit}`;
 }
 
+function initPrint3dCustomSelect(selectId) {
+  if (typeof initCatalogCustomSelect !== "function") return;
+  const select = document.getElementById(selectId);
+  if (!select) return;
+  initCatalogCustomSelect(selectId);
+}
+
 function currentOptions(els) {
   return {
     material: els.selMaterial.value,
@@ -92,9 +99,21 @@ function syncBodyScrollLock(els) {
   document.body.style.overflow = hasConfirm || hasCheckout ? "hidden" : "";
 }
 
-function openConfirmModal(els, text) {
+function escapeHtml(text) {
+  return String(text || "")
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;");
+}
+
+function openConfirmModal(els, text, detailsHtml = "") {
   if (!els.confirmModal) return;
   if (els.confirmText && text) els.confirmText.textContent = text;
+  if (els.confirmDetails) {
+    els.confirmDetails.innerHTML = detailsHtml || "";
+    els.confirmDetails.hidden = !detailsHtml;
+  }
   els.confirmModal.hidden = false;
   syncBodyScrollLock(els);
 }
@@ -135,6 +154,14 @@ function paymentLabel(value) {
   if (v === "cod") return "Післяплата";
   if (v === "card_online") return "Оплата карткою онлайн";
   if (v === "bank_transfer") return "Безготівково";
+  return v || "—";
+}
+
+function deliveryTypeLabel(value) {
+  const v = String(value || "").trim();
+  if (v === "warehouse") return "Відділення";
+  if (v === "postomat") return "Поштомат";
+  if (v === "address") return "Адресна доставка";
   return v || "—";
 }
 
@@ -446,6 +473,7 @@ function showCheckoutForm(els, profile) {
   const form = els.checkoutForm;
   form.elements.lastName.value = profile?.lastName || "";
   form.elements.name.value = profile?.name || "";
+  form.elements.middleName.value = profile?.middleName || "";
   form.elements.phone.value = profile?.phone || "";
   form.elements.email.value = profile?.email || "";
   form.elements.deliveryProvider.value = d.provider || "nova_poshta";
@@ -510,6 +538,9 @@ function renderColorPalette(container, selectedHex, onSelect) {
 }
 
 function createCardElement(item) {
+  const materialId = `print3dModelMaterial_${item.id}`;
+  const strengthId = `print3dModelStrength_${item.id}`;
+  const qualityId = `print3dModelQuality_${item.id}`;
   const card = document.createElement("article");
   card.className = "print3d-model-card";
 
@@ -559,27 +590,64 @@ function createCardElement(item) {
   params.className = "print3d-model-params";
   params.innerHTML = `
     <label>Матеріал
-      <select data-param="material">
-        <option value="PLA"${item.options.material === "PLA" ? " selected" : ""}>PLA</option>
-        <option value="PETG"${item.options.material === "PETG" ? " selected" : ""}>PETG</option>
-        <option value="ABS"${item.options.material === "ABS" ? " selected" : ""}>ABS</option>
-      </select>
+      <div class="catalog-select-wrap print3d-select-wrap">
+        <button type="button" class="catalog-select-trigger print3d-select-trigger" id="${materialId}Trigger" aria-expanded="false" aria-haspopup="listbox" aria-label="Матеріал">
+          <span class="catalog-select-value" id="${materialId}Value">${item.options.material}</span>
+          <svg class="catalog-select-chevron" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9l6 6 6-6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+        </button>
+        <ul class="catalog-select-panel" role="listbox" hidden></ul>
+        <select id="${materialId}" data-param="material" class="catalog-filter-select-native">
+          <option value="PLA"${item.options.material === "PLA" ? " selected" : ""}>PLA</option>
+          <option value="PETG"${item.options.material === "PETG" ? " selected" : ""}>PETG</option>
+          <option value="ABS"${item.options.material === "ABS" ? " selected" : ""}>ABS</option>
+        </select>
+      </div>
     </label>
     <label>Міцність
-      <select data-param="strength">
-        <option value="low"${item.options.strength === "low" ? " selected" : ""}>Low (15%)</option>
-        <option value="medium"${item.options.strength === "medium" ? " selected" : ""}>Medium (25%)</option>
-        <option value="strong"${item.options.strength === "strong" ? " selected" : ""}>Strong (35%)</option>
-        <option value="high"${item.options.strength === "high" ? " selected" : ""}>High (50%)</option>
-        <option value="ultra"${item.options.strength === "ultra" ? " selected" : ""}>Ultra (70%)</option>
-      </select>
+      <div class="catalog-select-wrap print3d-select-wrap">
+        <button type="button" class="catalog-select-trigger print3d-select-trigger" id="${strengthId}Trigger" aria-expanded="false" aria-haspopup="listbox" aria-label="Міцність">
+          <span class="catalog-select-value" id="${strengthId}Value">${
+    item.options.strength === "low"
+      ? "Low (15%)"
+      : item.options.strength === "strong"
+        ? "Strong (35%)"
+        : item.options.strength === "high"
+          ? "High (50%)"
+          : item.options.strength === "ultra"
+            ? "Ultra (70%)"
+            : "Medium (25%)"
+  }</span>
+          <svg class="catalog-select-chevron" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9l6 6 6-6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+        </button>
+        <ul class="catalog-select-panel" role="listbox" hidden></ul>
+        <select id="${strengthId}" data-param="strength" class="catalog-filter-select-native">
+          <option value="low"${item.options.strength === "low" ? " selected" : ""}>Low (15%)</option>
+          <option value="medium"${item.options.strength === "medium" ? " selected" : ""}>Medium (25%)</option>
+          <option value="strong"${item.options.strength === "strong" ? " selected" : ""}>Strong (35%)</option>
+          <option value="high"${item.options.strength === "high" ? " selected" : ""}>High (50%)</option>
+          <option value="ultra"${item.options.strength === "ultra" ? " selected" : ""}>Ultra (70%)</option>
+        </select>
+      </div>
     </label>
     <label>Якість
-      <select data-param="quality">
-        <option value="draft"${item.options.quality === "draft" ? " selected" : ""}>Draft</option>
-        <option value="normal"${item.options.quality === "normal" ? " selected" : ""}>Normal</option>
-        <option value="fine"${item.options.quality === "fine" ? " selected" : ""}>Fine</option>
-      </select>
+      <div class="catalog-select-wrap print3d-select-wrap">
+        <button type="button" class="catalog-select-trigger print3d-select-trigger" id="${qualityId}Trigger" aria-expanded="false" aria-haspopup="listbox" aria-label="Якість">
+          <span class="catalog-select-value" id="${qualityId}Value">${
+    item.options.quality === "draft"
+      ? "Draft"
+      : item.options.quality === "fine"
+        ? "Fine"
+        : "Normal"
+  }</span>
+          <svg class="catalog-select-chevron" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9l6 6 6-6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+        </button>
+        <ul class="catalog-select-panel" role="listbox" hidden></ul>
+        <select id="${qualityId}" data-param="quality" class="catalog-filter-select-native">
+          <option value="draft"${item.options.quality === "draft" ? " selected" : ""}>Draft</option>
+          <option value="normal"${item.options.quality === "normal" ? " selected" : ""}>Normal</option>
+          <option value="fine"${item.options.quality === "fine" ? " selected" : ""}>Fine</option>
+        </select>
+      </div>
     </label>
   `;
 
@@ -616,6 +684,10 @@ function createCardElement(item) {
   info.append(params, commentBox, status, err, stats);
   body.append(previewWrap, info);
   card.append(head, body);
+
+  initPrint3dCustomSelect(materialId);
+  initPrint3dCustomSelect(strengthId);
+  initPrint3dCustomSelect(qualityId);
 
   return {
     card,
@@ -659,6 +731,9 @@ function applyColorToObject(THREE, object, colorHex) {
 function updateCard(item) {
   const ui = item.ui;
   if (!ui) return;
+
+  ui.card.classList.toggle("is-loading", Boolean(item.loading));
+  ui.status.classList.toggle("is-loading", Boolean(item.loading));
 
   if (item.loading) {
     ui.status.textContent = "Розрахунок...";
@@ -1053,6 +1128,7 @@ async function submitCheckoutOrder(els) {
   const customer = {
     name: String(data.get("name") || "").trim(),
     lastName: String(data.get("lastName") || "").trim(),
+    middleName: String(data.get("middleName") || "").trim(),
     phone: String(data.get("phone") || "").trim(),
     email: String(data.get("email") || "").trim().toLowerCase(),
     deliveryProvider: String(data.get("deliveryProvider") || "").trim(),
@@ -1075,6 +1151,9 @@ async function submitCheckoutOrder(els) {
     if (!customer.cityRef) {
       throw new Error("Оберіть місто зі списку Нової пошти");
     }
+    if (customer.deliveryType === "address" && !customer.middleName) {
+      throw new Error("Для адресної доставки вкажіть по батькові");
+    }
     if (customer.deliveryType !== "address" && !customer.branchRef) {
       throw new Error("Оберіть відділення або поштомат зі списку");
     }
@@ -1084,6 +1163,29 @@ async function submitCheckoutOrder(els) {
   const authorized = isAuthorizedProfile(profile);
   const valid = pendingOrderState.valid;
   const total = pendingOrderState.total;
+  const orderNumber = `EVR3D-${Date.now().toString().slice(-8)}`;
+  let ttn = "";
+
+  if (customer.deliveryProvider === "nova_poshta") {
+    if (typeof window.createNovaPoshtaTtn !== "function") {
+      throw new Error("Сервіс Нової пошти тимчасово недоступний");
+    }
+    const ttnResult = await window.createNovaPoshtaTtn({
+      recipientName: customer.name,
+      recipientLastName: customer.lastName,
+      recipientMiddleName: customer.middleName,
+      recipientPhone: customer.phone,
+      cityRef: customer.cityRef,
+      warehouseRef: customer.deliveryType === "address" ? customer.deliveryPoint : customer.branchRef,
+      address: customer.deliveryType === "address" ? customer.deliveryPoint : "",
+      deliveryType: customer.deliveryType,
+      paymentMethod: customer.paymentMethod,
+      orderNumber,
+      cost: total,
+      cargoDescription: valid.slice(0, 3).map((item) => item.file?.name || "3D model").join(", ")
+    });
+    ttn = String(ttnResult?.ttn || "").trim();
+  }
 
   const fd = new FormData();
   valid.forEach((item) => {
@@ -1101,8 +1203,11 @@ async function submitCheckoutOrder(els) {
   fd.set("modelsMeta", JSON.stringify(modelsMeta));
   fd.set("orderColor", els.orderColorHex || "");
   fd.set("total", String(total));
+  fd.set("orderNumber", orderNumber);
+  fd.set("ttn", ttn);
   fd.set("userName", customer.name);
   fd.set("userLastName", customer.lastName);
+  fd.set("userMiddleName", customer.middleName);
   fd.set("userEmail", customer.email);
   fd.set("userPhone", customer.phone);
   fd.set("userDeliveryProvider", customer.deliveryProvider);
@@ -1126,6 +1231,7 @@ async function submitCheckoutOrder(els) {
       ...profile,
       name: customer.name,
       lastName: customer.lastName,
+      middleName: customer.middleName,
       email: customer.email,
       phone: customer.phone,
       delivery: {
@@ -1143,9 +1249,24 @@ async function submitCheckoutOrder(els) {
     localStorage.setItem("userProfile", JSON.stringify(updated));
   }
   closeCheckoutModal(els);
+  const deliveryPointLabel = customer.deliveryType === "address" ? "Адреса" : "Відділення/поштомат";
+  const detailsHtml = `
+    <p><b>Номер замовлення:</b> ${escapeHtml(orderNumber)}</p>
+    ${ttn ? `<p><b>ТТН:</b> ${escapeHtml(ttn)}</p>` : ""}
+    <p><b>ПІБ:</b> ${escapeHtml(`${customer.lastName} ${customer.name} ${customer.middleName}`.trim())}</p>
+    <p><b>Телефон:</b> ${escapeHtml(customer.phone)}</p>
+    <p><b>Email:</b> ${escapeHtml(customer.email)}</p>
+    <p><b>Служба доставки:</b> ${escapeHtml(providerLabel(customer.deliveryProvider))}</p>
+    <p><b>Тип доставки:</b> ${escapeHtml(deliveryTypeLabel(customer.deliveryType))}</p>
+    <p><b>Оплата:</b> ${escapeHtml(paymentLabel(customer.paymentMethod))}</p>
+    <p><b>Місто:</b> ${escapeHtml(customer.city)}</p>
+    <p><b>${deliveryPointLabel}:</b> ${escapeHtml(customer.deliveryPoint)}</p>
+    <p><b>Сума:</b> ${escapeHtml(formatMoney(total))}</p>
+  `;
   openConfirmModal(
     els,
-    `Ваше замовлення прийняте та починає виконуватись. Орієнтовний термін виготовлення: 1–2 дні. Моделей: ${valid.length}. Сума: ${formatMoney(total)}. Доставка: ${providerLabel(customer.deliveryProvider)}. Оплата: ${paymentLabel(customer.paymentMethod)}.`
+    "Ваше замовлення прийняте. Перевірте дані нижче.",
+    detailsHtml
   );
 }
 
@@ -1254,8 +1375,13 @@ function init() {
     checkoutGuestBtn: document.getElementById("print3dCheckoutGuestBtn"),
     checkoutSubmit: document.getElementById("print3dCheckoutSubmit"),
     confirmModal: document.getElementById("print3dConfirmModal"),
-    confirmText: document.getElementById("print3dConfirmText")
+    confirmText: document.getElementById("print3dConfirmText"),
+    confirmDetails: document.getElementById("print3dConfirmDetails")
   };
+
+  initPrint3dCustomSelect("print3dMaterial");
+  initPrint3dCustomSelect("print3dStrength");
+  initPrint3dCustomSelect("print3dQuality");
 
   if (els.checkoutModal) {
     bindCheckoutSuggestionEvents(els);
