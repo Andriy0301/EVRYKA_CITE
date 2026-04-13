@@ -1,5 +1,5 @@
 const DENSITY = { PLA: 1.24, PETG: 1.27, ABS: 1.04 };
-const INFILL = { low: 0.15, medium: 0.25, high: 0.5 };
+const INFILL = { low: 0.15, medium: 0.25, strong: 0.35, high: 0.5, ultra: 0.7 };
 
 function calculatePricing({ volumeCm3, material, strength }) {
   const m = DENSITY[material] != null ? material : "PLA";

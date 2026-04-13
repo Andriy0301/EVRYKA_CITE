@@ -107,12 +107,41 @@
 }
 
 .page-print3d .print3d-fields select {
-  padding: 10px 12px;
+  width: 100%;
+  min-height: 48px;
+  box-sizing: border-box;
+  padding: 12px 44px 12px 14px;
   border-radius: 12px;
   border: 1px solid var(--ev-p-line, var(--border-light));
   background: var(--ev-p-card, #fff);
-  font-size: 14px;
-  color: inherit;
+  font: inherit;
+  font-size: 15px;
+  font-weight: 500;
+  color: var(--ev-p-ink, var(--ev-ink));
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  cursor: pointer;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='20' viewBox='0 0 24 24' fill='none' stroke='%235a737c' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 14px center;
+  background-size: 18px;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.page-print3d .print3d-fields select:focus {
+  outline: none;
+  border-color: rgba(251, 146, 60, 0.6);
+  box-shadow: 0 0 0 3px rgba(251, 146, 60, 0.18);
+}
+
+.page-print3d .print3d-fields select::-ms-expand {
+  display: none;
+}
+
+.page-print3d .print3d-fields select option {
+  color: var(--ev-p-ink, var(--ev-ink));
+  background: var(--ev-p-card, #fff);
 }
 
 .page-print3d .print3d-color-controls {
@@ -321,6 +350,61 @@
   resize: vertical;
 }
 
+.page-print3d .print3d-request-file {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-height: 46px;
+  padding: 8px 12px;
+  border-radius: 12px;
+  border: 1px solid var(--ev-p-line, var(--border-light));
+  background: #fff;
+}
+
+.page-print3d .print3d-request-file input[type="file"] {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  border: 0;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+}
+
+.page-print3d .print3d-request-file-btn {
+  appearance: none;
+  flex: 0 0 auto;
+  margin: 0;
+  padding: 8px 14px;
+  border-radius: 10px;
+  border: 1px solid var(--ev-p-line, var(--border-light));
+  background: var(--ev-p-bg, #f8fafc);
+  color: var(--ev-p-ink, var(--ev-ink));
+  font-size: 13px;
+  font-weight: 600;
+  font-family: inherit;
+  line-height: 1.2;
+  cursor: pointer;
+  transition: background-color 0.2s ease, border-color 0.2s ease;
+}
+
+.page-print3d .print3d-request-file-btn:hover {
+  background: #f1f5f9;
+  border-color: rgba(251, 146, 60, 0.35);
+}
+
+.page-print3d .print3d-request-file-name {
+  min-width: 0;
+  flex: 1 1 auto;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--ev-p-muted, var(--ev-muted));
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
 .page-print3d .print3d-request-form button[type="submit"] {
   width: 100%;
   padding: 14px;
@@ -488,11 +572,39 @@
 
 .page-print3d .print3d-model-params select {
   width: 100%;
-  padding: 8px 10px;
+  min-height: 42px;
+  box-sizing: border-box;
+  padding: 8px 36px 8px 10px;
   border-radius: 10px;
   border: 1px solid var(--ev-p-line, var(--border-light));
   background: #fff;
   font-size: 13px;
+  font-weight: 500;
+  color: var(--ev-p-ink, var(--ev-ink));
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  cursor: pointer;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='18' height='18' viewBox='0 0 24 24' fill='none' stroke='%235a737c' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 10px center;
+  background-size: 16px;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.page-print3d .print3d-model-params select:focus {
+  outline: none;
+  border-color: rgba(251, 146, 60, 0.55);
+  box-shadow: 0 0 0 3px rgba(251, 146, 60, 0.16);
+}
+
+.page-print3d .print3d-model-params select::-ms-expand {
+  display: none;
+}
+
+.page-print3d .print3d-model-params select option {
+  color: var(--ev-p-ink, var(--ev-ink));
+  background: #fff;
 }
 
 @media (max-width: 520px) {
@@ -504,6 +616,7 @@
 .page-print3d .print3d-model-comment {
   display: grid;
   gap: 8px;
+  min-width: 0;
 }
 
 .page-print3d .print3d-comment-toggle {
@@ -518,7 +631,10 @@
 }
 
 .page-print3d .print3d-model-comment textarea {
+  display: block;
   width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
   border: 1px solid var(--ev-p-line, var(--border-light));
   border-radius: 10px;
   padding: 10px;
@@ -597,6 +713,11 @@
   font-size: 18px;
 }
 
+.page-print3d #print3dTotalPrice {
+  font-weight: 800;
+}
+
+.print3d-checkout-modal,
 .print3d-confirm-modal {
   position: fixed;
   inset: 0;
@@ -605,6 +726,7 @@
   place-items: center;
 }
 
+.print3d-checkout-modal[hidden],
 .print3d-confirm-modal[hidden] {
   display: none !important;
 }
@@ -613,6 +735,101 @@
   position: absolute;
   inset: 0;
   background: rgba(15, 23, 42, 0.38);
+}
+
+.print3d-checkout-card {
+  position: relative;
+  width: min(700px, calc(100vw - 24px));
+  max-height: min(88vh, 920px);
+  overflow: auto;
+  padding: 22px;
+  border-radius: 16px;
+  border: 1px solid rgba(251, 146, 60, 0.25);
+  background: #fff;
+  box-shadow: 0 20px 50px rgba(15, 23, 42, 0.18);
+  z-index: 1;
+}
+
+.print3d-checkout-card h3 {
+  margin: 0 0 8px;
+  font-size: 22px;
+}
+
+.print3d-checkout-summary {
+  margin: 0 0 14px;
+  color: #57534e;
+}
+
+.print3d-checkout-auth-prompt p {
+  margin: 0 0 10px;
+  color: var(--ev-p-muted, var(--ev-muted));
+}
+
+.print3d-checkout-auth-actions {
+  display: grid;
+  gap: 10px;
+}
+
+.print3d-btn-secondary {
+  background: var(--ev-p-well, var(--surface-secondary));
+  border: 1px solid var(--ev-p-line, var(--border-light));
+}
+
+.print3d-btn-ghost {
+  background: transparent;
+  border: 1px dashed var(--ev-p-line, var(--border-light));
+}
+
+.print3d-checkout-form {
+  display: grid;
+  gap: 10px;
+}
+
+.print3d-checkout-grid {
+  display: grid;
+  gap: 10px;
+}
+
+@media (min-width: 700px) {
+  .print3d-checkout-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+.print3d-checkout-form label {
+  display: grid;
+  gap: 6px;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.print3d-checkout-form input,
+.print3d-checkout-form select,
+.print3d-checkout-form textarea {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 10px 12px;
+  border-radius: 12px;
+  border: 1px solid var(--ev-p-line, var(--border-light));
+  background: #fff;
+  font: inherit;
+}
+
+.print3d-checkout-form textarea {
+  resize: vertical;
+}
+
+.print3d-checkout-status {
+  margin: 0;
+  font-size: 13px;
+}
+
+.print3d-checkout-status.is-err {
+  color: #b91c1c;
+}
+
+.print3d-checkout-status.is-ok {
+  color: #15803d;
 }
 
 .print3d-confirm-card {

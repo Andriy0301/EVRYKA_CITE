@@ -106,8 +106,25 @@ function normMaterial(v) {
 
 function normStrength(v) {
   const s = String(v || "medium").toLowerCase();
-  if (s === "low" || s === "high" || s === "medium") return s;
+  if (s === "low" || s === "medium" || s === "strong" || s === "high" || s === "ultra") return s;
   return "medium";
+}
+
+function deliveryProviderTitle(v) {
+  const p = String(v || "").trim();
+  if (p === "nova_poshta") return "Нова пошта";
+  if (p === "ukrposhta") return "Укрпошта";
+  if (p === "courier") return "Кур'єр";
+  if (p === "self_pickup") return "Самовивіз";
+  return p || "—";
+}
+
+function paymentMethodTitle(v) {
+  const p = String(v || "").trim();
+  if (p === "cod") return "Післяплата";
+  if (p === "card_online") return "Оплата карткою онлайн";
+  if (p === "bank_transfer") return "Безготівково";
+  return p || "—";
 }
 
 router.post("/analyze-model", (req, res, next) => {
@@ -266,8 +283,18 @@ router.post("/order", (req, res, next) => {
     const total = Number(req.body.total || 0);
     const customer = {
       id: String(req.body.userId || "").trim() || null,
+      name: String(req.body.userName || "").trim() || null,
+      lastName: String(req.body.userLastName || "").trim() || null,
       email: String(req.body.userEmail || "").trim().toLowerCase() || null,
-      phone: String(req.body.userPhone || "").trim() || null
+      phone: String(req.body.userPhone || "").trim() || null,
+      isGuest: String(req.body.userIsGuest || "").trim() === "1",
+      delivery: {
+        provider: String(req.body.userDeliveryProvider || "").trim() || null,
+        paymentMethod: String(req.body.userPaymentMethod || "").trim() || null,
+        city: String(req.body.userCity || "").trim() || null,
+        point: String(req.body.userDeliveryPoint || "").trim() || null,
+        comment: String(req.body.userOrderComment || "").trim() || null
+      }
     };
 
     const entry = {
@@ -293,11 +320,23 @@ router.post("/order", (req, res, next) => {
       createdAt: entry.createdAt,
       total: entry.total,
       models: files.length,
-      orderColor: entry.orderColor
+      orderColor: entry.orderColor,
+      delivery: customer.delivery
     });
 
     const lines = [
       "Нове замовлення 3D-друку",
+      customer.isGuest ? "Оформлення: без реєстрації" : "Оформлення: акаунт",
+      `Клієнт ID: ${customer.id || "—"}`,
+      `Клієнт: ${[customer.name, customer.lastName].filter(Boolean).join(" ").trim() || "—"}`,
+      `Телефон: ${customer.phone || "—"}`,
+      `Email: ${customer.email || "—"}`,
+      `Служба доставки: ${deliveryProviderTitle(customer.delivery.provider)}`,
+      `Спосіб оплати: ${paymentMethodTitle(customer.delivery.paymentMethod)}`,
+      `Місто: ${customer.delivery.city || "—"}`,
+      `Відділення/адреса: ${customer.delivery.point || "—"}`,
+      customer.delivery.comment ? `Коментар до замовлення: ${customer.delivery.comment}` : null,
+      "",
       `Моделей: ${files.length}`,
       `Сума: ${Number(total || 0).toFixed(2)} грн`,
       orderColor ? `Колір замовлення: ${orderColor}` : null,

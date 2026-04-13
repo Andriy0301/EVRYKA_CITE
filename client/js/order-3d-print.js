@@ -13,6 +13,7 @@ let threeMods = null;
 let debounceTimer = null;
 let modelSeq = 1;
 const modelItems = [];
+let pendingOrderState = null;
 const COLOR_PRESETS = [
   { id: "white", name: "Білий", hex: "#f5f5f4" },
   { id: "black", name: "Чорний", hex: "#222222" },
@@ -49,6 +50,14 @@ function getClientProfile() {
   }
 }
 
+function isAuthorizedProfile(profile) {
+  if (!profile) return false;
+  const id = String(profile.id || "").trim();
+  const email = String(profile.email || "").trim();
+  const phone = String(profile.phone || "").trim();
+  return Boolean(id || email || phone);
+}
+
 function formatMoney(value) {
   return `${Number(value || 0).toFixed(2)} грн`;
 }
@@ -70,17 +79,92 @@ function setGlobalErr(els, message) {
   els.err.hidden = !message;
 }
 
+function syncBodyScrollLock(els) {
+  const hasConfirm = Boolean(els.confirmModal && !els.confirmModal.hidden);
+  const hasCheckout = Boolean(els.checkoutModal && !els.checkoutModal.hidden);
+  document.body.style.overflow = hasConfirm || hasCheckout ? "hidden" : "";
+}
+
 function openConfirmModal(els, text) {
   if (!els.confirmModal) return;
   if (els.confirmText && text) els.confirmText.textContent = text;
   els.confirmModal.hidden = false;
-  document.body.style.overflow = "hidden";
+  syncBodyScrollLock(els);
 }
 
 function closeConfirmModal(els) {
   if (!els.confirmModal) return;
   els.confirmModal.hidden = true;
-  document.body.style.overflow = "";
+  syncBodyScrollLock(els);
+}
+
+function closeCheckoutModal(els) {
+  if (!els.checkoutModal) return;
+  els.checkoutModal.hidden = true;
+  pendingOrderState = null;
+  if (els.checkoutStatus) {
+    els.checkoutStatus.hidden = true;
+    els.checkoutStatus.textContent = "";
+    els.checkoutStatus.classList.remove("is-err", "is-ok");
+  }
+  syncBodyScrollLock(els);
+}
+
+function providerLabel(value) {
+  const v = String(value || "").trim();
+  if (v === "nova_poshta") return "Нова пошта";
+  if (v === "ukrposhta") return "Укрпошта";
+  if (v === "courier") return "Кур'єр";
+  if (v === "self_pickup") return "Самовивіз";
+  return v || "—";
+}
+
+function paymentLabel(value) {
+  const v = String(value || "").trim();
+  if (v === "cod") return "Післяплата";
+  if (v === "card_online") return "Оплата карткою онлайн";
+  if (v === "bank_transfer") return "Безготівково";
+  return v || "—";
+}
+
+function showCheckoutForm(els, profile) {
+  if (els.checkoutAuthPrompt) els.checkoutAuthPrompt.hidden = true;
+  if (els.checkoutForm) els.checkoutForm.hidden = false;
+  if (!els.checkoutForm) return;
+  const d = profile?.delivery || {};
+  const form = els.checkoutForm;
+  form.elements.lastName.value = profile?.lastName || "";
+  form.elements.name.value = profile?.name || "";
+  form.elements.phone.value = profile?.phone || "";
+  form.elements.email.value = profile?.email || "";
+  form.elements.deliveryProvider.value = d.provider || "nova_poshta";
+  form.elements.paymentMethod.value = d.paymentMethod || "cod";
+  form.elements.city.value = d.city || "";
+  form.elements.deliveryPoint.value = d.branchText || d.address || "";
+  form.elements.orderComment.value = "";
+}
+
+function openCheckoutModal(els, valid, total) {
+  if (!els.checkoutModal) return;
+  const profile = getClientProfile();
+  const authorized = isAuthorizedProfile(profile);
+  pendingOrderState = { valid, total };
+  if (els.checkoutSummary) {
+    els.checkoutSummary.textContent = `Моделей: ${valid.length}. Сума до сплати: ${formatMoney(total)}.`;
+  }
+  if (authorized) {
+    showCheckoutForm(els, profile);
+  } else {
+    if (els.checkoutAuthPrompt) els.checkoutAuthPrompt.hidden = false;
+    if (els.checkoutForm) els.checkoutForm.hidden = true;
+  }
+  if (els.checkoutStatus) {
+    els.checkoutStatus.hidden = true;
+    els.checkoutStatus.textContent = "";
+    els.checkoutStatus.classList.remove("is-err", "is-ok");
+  }
+  els.checkoutModal.hidden = false;
+  syncBodyScrollLock(els);
 }
 
 function renderColorPalette(container, selectedHex, onSelect) {
@@ -163,7 +247,9 @@ function createCardElement(item) {
       <select data-param="strength">
         <option value="low"${item.options.strength === "low" ? " selected" : ""}>Low (15%)</option>
         <option value="medium"${item.options.strength === "medium" ? " selected" : ""}>Medium (25%)</option>
+        <option value="strong"${item.options.strength === "strong" ? " selected" : ""}>Strong (35%)</option>
         <option value="high"${item.options.strength === "high" ? " selected" : ""}>High (50%)</option>
+        <option value="ultra"${item.options.strength === "ultra" ? " selected" : ""}>Ultra (70%)</option>
       </select>
     </label>
     <label>Якість
@@ -642,46 +728,110 @@ function initModelMode(els) {
       alert("Спочатку додайте STL/OBJ і дочекайтесь розрахунку.");
       return;
     }
-    try {
-      els.btnOrder.disabled = true;
-      const fd = new FormData();
-      valid.forEach((item) => {
-        fd.append("files", item.file, item.file.name);
-      });
-      const modelsMeta = valid.map((item) => ({
-        name: item.file.name,
-        material: item.options?.material,
-        strength: item.options?.strength,
-        quality: item.options?.quality,
-        color: item.color,
-        comment: item.comment || "",
-        price: Number(item.analysis?.price || 0)
-      }));
-      fd.set("modelsMeta", JSON.stringify(modelsMeta));
-      fd.set("orderColor", els.orderColorHex || "");
-      fd.set("total", String(total));
-      const profile = getClientProfile();
-      if (profile?.id) fd.set("userId", String(profile.id));
-      if (profile?.email) fd.set("userEmail", String(profile.email));
-      if (profile?.phone) fd.set("userPhone", String(profile.phone));
-
-      const res = await fetch(API_ORDER, { method: "POST", body: fd });
-      const data = await res.json().catch(() => ({}));
-      if (!res.ok) throw new Error(data.error || "Не вдалося надіслати замовлення");
-
-      openConfirmModal(
-        els,
-        `Ваше замовлення прийняте та починає виконуватись. Орієнтовний термін виготовлення: 1–2 дні. Моделей: ${valid.length}. Сума: ${formatMoney(total)}.`
-      );
-    } catch (e) {
-      alert(e instanceof Error ? e.message : "Помилка надсилання замовлення");
-    } finally {
-      els.btnOrder.disabled = false;
-    }
+    openCheckoutModal(els, valid, total);
   });
 }
 
+async function submitCheckoutOrder(els) {
+  if (!pendingOrderState?.valid?.length) {
+    throw new Error("Немає моделей для оформлення");
+  }
+  const form = els.checkoutForm;
+  const data = new FormData(form);
+  const customer = {
+    name: String(data.get("name") || "").trim(),
+    lastName: String(data.get("lastName") || "").trim(),
+    phone: String(data.get("phone") || "").trim(),
+    email: String(data.get("email") || "").trim().toLowerCase(),
+    deliveryProvider: String(data.get("deliveryProvider") || "").trim(),
+    paymentMethod: String(data.get("paymentMethod") || "").trim(),
+    city: String(data.get("city") || "").trim(),
+    deliveryPoint: String(data.get("deliveryPoint") || "").trim(),
+    orderComment: String(data.get("orderComment") || "").trim()
+  };
+
+  if (!customer.name || !customer.lastName || !customer.phone || !customer.email) {
+    throw new Error("Заповніть ПІБ, телефон та email");
+  }
+  if (!customer.deliveryProvider || !customer.paymentMethod || !customer.city || !customer.deliveryPoint) {
+    throw new Error("Заповніть дані доставки та оплати");
+  }
+
+  const profile = getClientProfile();
+  const authorized = isAuthorizedProfile(profile);
+  const valid = pendingOrderState.valid;
+  const total = pendingOrderState.total;
+
+  const fd = new FormData();
+  valid.forEach((item) => {
+    fd.append("files", item.file, item.file.name);
+  });
+  const modelsMeta = valid.map((item) => ({
+    name: item.file.name,
+    material: item.options?.material,
+    strength: item.options?.strength,
+    quality: item.options?.quality,
+    color: item.color,
+    comment: item.comment || "",
+    price: Number(item.analysis?.price || 0)
+  }));
+  fd.set("modelsMeta", JSON.stringify(modelsMeta));
+  fd.set("orderColor", els.orderColorHex || "");
+  fd.set("total", String(total));
+  fd.set("userName", customer.name);
+  fd.set("userLastName", customer.lastName);
+  fd.set("userEmail", customer.email);
+  fd.set("userPhone", customer.phone);
+  fd.set("userDeliveryProvider", customer.deliveryProvider);
+  fd.set("userPaymentMethod", customer.paymentMethod);
+  fd.set("userCity", customer.city);
+  fd.set("userDeliveryPoint", customer.deliveryPoint);
+  fd.set("userOrderComment", customer.orderComment);
+  fd.set("userIsGuest", authorized ? "0" : "1");
+  if (profile?.id) fd.set("userId", String(profile.id));
+
+  const res = await fetch(API_ORDER, { method: "POST", body: fd });
+  const responseData = await res.json().catch(() => ({}));
+  if (!res.ok) throw new Error(responseData.error || "Не вдалося надіслати замовлення");
+
+  if (authorized && profile) {
+    const updated = {
+      ...profile,
+      name: customer.name,
+      lastName: customer.lastName,
+      email: customer.email,
+      phone: customer.phone,
+      delivery: {
+        ...(profile.delivery || {}),
+        provider: customer.deliveryProvider,
+        paymentMethod: customer.paymentMethod,
+        city: customer.city,
+        branchText: customer.deliveryPoint
+      }
+    };
+    localStorage.setItem("userProfile", JSON.stringify(updated));
+  }
+  closeCheckoutModal(els);
+  openConfirmModal(
+    els,
+    `Ваше замовлення прийняте та починає виконуватись. Орієнтовний термін виготовлення: 1–2 дні. Моделей: ${valid.length}. Сума: ${formatMoney(total)}. Доставка: ${providerLabel(customer.deliveryProvider)}. Оплата: ${paymentLabel(customer.paymentMethod)}.`
+  );
+}
+
 function initRequestForm(form, statusEl) {
+  const fileInput = form.querySelector('input[name="attachment"]');
+  const fileBtn = document.getElementById("print3dRequestFileBtn");
+  const fileNameEl = document.getElementById("print3dRequestFileName");
+  const defaultFileText = "Файл не вибрано";
+  if (fileInput && fileNameEl) {
+    if (fileBtn) {
+      fileBtn.addEventListener("click", () => fileInput.click());
+    }
+    fileInput.addEventListener("change", () => {
+      fileNameEl.textContent = fileInput.files?.[0]?.name || defaultFileText;
+    });
+  }
+
   form.addEventListener("submit", async (e) => {
     e.preventDefault();
     statusEl.hidden = true;
@@ -702,6 +852,7 @@ function initRequestForm(form, statusEl) {
       statusEl.classList.add("is-ok");
       statusEl.textContent = "Запит надіслано. Дякуємо!";
       form.reset();
+      if (fileNameEl) fileNameEl.textContent = defaultFileText;
     } catch (err) {
       statusEl.hidden = false;
       statusEl.classList.add("is-err");
@@ -744,9 +895,65 @@ function init() {
     totalRows: document.getElementById("print3dTotalRows"),
     totalPrice: document.getElementById("print3dTotalPrice"),
     btnOrder: document.getElementById("print3dBtnOrder"),
+    checkoutModal: document.getElementById("print3dCheckoutModal"),
+    checkoutSummary: document.getElementById("print3dCheckoutSummary"),
+    checkoutAuthPrompt: document.getElementById("print3dCheckoutAuthPrompt"),
+    checkoutForm: document.getElementById("print3dCheckoutForm"),
+    checkoutStatus: document.getElementById("print3dCheckoutStatus"),
+    checkoutLoginBtn: document.getElementById("print3dCheckoutLoginBtn"),
+    checkoutRegisterBtn: document.getElementById("print3dCheckoutRegisterBtn"),
+    checkoutGuestBtn: document.getElementById("print3dCheckoutGuestBtn"),
+    checkoutSubmit: document.getElementById("print3dCheckoutSubmit"),
     confirmModal: document.getElementById("print3dConfirmModal"),
     confirmText: document.getElementById("print3dConfirmText")
   };
+
+  if (els.checkoutModal) {
+    els.checkoutModal.querySelectorAll("[data-close-print3d-checkout]").forEach((el) => {
+      el.addEventListener("click", (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        closeCheckoutModal(els);
+      });
+    });
+    if (els.checkoutLoginBtn) {
+      els.checkoutLoginBtn.addEventListener("click", () => {
+        closeCheckoutModal(els);
+        if (typeof window.openAuthModal === "function") window.openAuthModal("login");
+      });
+    }
+    if (els.checkoutRegisterBtn) {
+      els.checkoutRegisterBtn.addEventListener("click", () => {
+        closeCheckoutModal(els);
+        if (typeof window.openAuthModal === "function") window.openAuthModal("register");
+      });
+    }
+    if (els.checkoutGuestBtn) {
+      els.checkoutGuestBtn.addEventListener("click", () => showCheckoutForm(els, null));
+    }
+    if (els.checkoutForm) {
+      els.checkoutForm.addEventListener("submit", async (e) => {
+        e.preventDefault();
+        if (els.checkoutStatus) {
+          els.checkoutStatus.hidden = true;
+          els.checkoutStatus.classList.remove("is-err", "is-ok");
+          els.checkoutStatus.textContent = "";
+        }
+        try {
+          if (els.checkoutSubmit) els.checkoutSubmit.disabled = true;
+          await submitCheckoutOrder(els);
+        } catch (err) {
+          if (els.checkoutStatus) {
+            els.checkoutStatus.hidden = false;
+            els.checkoutStatus.classList.add("is-err");
+            els.checkoutStatus.textContent = err instanceof Error ? err.message : "Помилка оформлення";
+          }
+        } finally {
+          if (els.checkoutSubmit) els.checkoutSubmit.disabled = false;
+        }
+      });
+    }
+  }
 
   if (els.confirmModal) {
     closeConfirmModal(els);
@@ -761,7 +968,9 @@ function init() {
       if (e.target === els.confirmModal) closeConfirmModal(els);
     });
     document.addEventListener("keydown", (e) => {
-      if (e.key === "Escape" && !els.confirmModal.hidden) {
+      if (e.key === "Escape" && els.checkoutModal && !els.checkoutModal.hidden) {
+        closeCheckoutModal(els);
+      } else if (e.key === "Escape" && !els.confirmModal.hidden) {
         closeConfirmModal(els);
       }
     });
