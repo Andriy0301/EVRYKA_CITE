@@ -528,7 +528,7 @@ function renderSearchResults(products, query) {
   const more = document.createElement("a");
   more.className = "search-more";
   more.href = `catalog.html?q=${encodeURIComponent(query.trim())}`;
-  more.textContent = "Дивитися всі результати →";
+  more.textContent = "Дивитися всі результати";
 
   searchResults.appendChild(more);
 
