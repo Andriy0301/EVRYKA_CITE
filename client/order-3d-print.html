@@ -83,82 +83,85 @@
       </div>
 
       <div id="print3dPanelModel">
-        <div class="print3d-grid print3d-grid--split">
-          <div>
-            <div class="print3d-dropzone" id="print3dDrop" role="button" tabindex="0">
-              <p style="margin:0;font-weight:600;font-size:1.05rem;">Перетягніть STL / OBJ / 3MF сюди</p>
-              <p style="margin:8px 0 0;font-size:14px;color:var(--ev-muted,#6b7280);">або натисніть, щоб обрати · до 50 МБ</p>
-              <input type="file" id="print3dFile" accept=".stl,.obj,.3mf,model/stl,model/obj" aria-label="Файл 3D моделі">
-            </div>
-            <div class="print3d-fields">
-              <label>Матеріал
-                <select id="print3dMaterial">
-                  <option value="PLA">PLA</option>
-                  <option value="PETG">PETG</option>
-                  <option value="ABS">ABS</option>
-                </select>
-              </label>
-              <label>Міцність (infill)
-                <select id="print3dStrength">
-                  <option value="low">Low (15%)</option>
-                  <option value="medium" selected>Medium (25%)</option>
-                  <option value="high">High (50%)</option>
-                </select>
-              </label>
-              <label>Якість друку
-                <select id="print3dQuality">
-                  <option value="draft">Draft</option>
-                  <option value="normal" selected>Normal</option>
-                  <option value="fine">Fine</option>
-                </select>
-              </label>
-            </div>
-            <p class="print3d-note">Розрахунок об’єму та ціни на сервері для <strong>STL</strong> та <strong>OBJ</strong>. Формат <strong>3MF</strong> — лише заявка у вкладці «Немає моделі» або конвертація в STL.</p>
-            <div class="print3d-loader" id="print3dLoader"><span class="print3d-spinner" aria-hidden="true"></span> Розрахунок…</div>
-            <div class="print3d-err" id="print3dErr" hidden></div>
-            <div class="print3d-result" id="print3dResult" hidden>
-              <h3 style="margin:0 0 12px;font-size:1.1rem;">Орієнтовний розрахунок</h3>
-              <div class="print3d-result-grid" style="grid-template-columns:repeat(2,minmax(0,1fr));">
-                <div class="print3d-result-item"><strong>Об’єм</strong><span class="print3d-val" data-print3d-volume>—</span></div>
-                <div class="print3d-result-item"><strong>Вага</strong><span class="print3d-val" data-print3d-weight>—</span></div>
-                <div class="print3d-result-item"><strong>Час друку</strong><span class="print3d-val" data-print3d-time>—</span></div>
-                <div class="print3d-result-item print3d-result-item--price"><strong>Ціна</strong><span class="print3d-val" data-print3d-price>—</span></div>
-              </div>
-              <button type="button" class="print3d-btn-primary" id="print3dBtnOrder">Замовити</button>
-            </div>
+        <div class="print3d-dropzone" id="print3dDrop" role="button" tabindex="0">
+          <p style="margin:0;font-weight:600;font-size:1.05rem;">Перетягніть STL / OBJ / 3MF файли сюди</p>
+          <p style="margin:8px 0 0;font-size:14px;color:var(--ev-muted,#6b7280);">або натисніть, щоб обрати кілька файлів · до 50 МБ кожен</p>
+          <input type="file" id="print3dFile" multiple accept=".stl,.obj,.3mf,model/stl,model/obj" aria-label="Файли 3D моделей">
+        </div>
+        <div class="print3d-fields">
+          <label>Матеріал
+            <select id="print3dMaterial">
+              <option value="PLA">PLA</option>
+              <option value="PETG">PETG</option>
+              <option value="ABS">ABS</option>
+            </select>
+          </label>
+          <label>Міцність (infill)
+            <select id="print3dStrength">
+              <option value="low">Low (15%)</option>
+              <option value="medium" selected>Medium (25%)</option>
+              <option value="high">High (50%)</option>
+            </select>
+          </label>
+          <label>Якість друку
+            <select id="print3dQuality">
+              <option value="draft">Draft</option>
+              <option value="normal" selected>Normal</option>
+              <option value="fine">Fine</option>
+            </select>
+          </label>
+        </div>
+        <div class="print3d-color-controls">
+          <label class="print3d-color-label" for="print3dOrderColor">
+            Колір замовлення
+          </label>
+          <input type="color" id="print3dOrderColor" value="#f9b262" aria-label="Колір замовлення">
+        </div>
+        <div class="print3d-err" id="print3dErr" hidden></div>
+        <p class="print3d-note">Для кожної моделі буде окремий перегляд і розрахунок. Формат <strong>3MF</strong> не аналізується на сервері (лише перегляд/заявка).</p>
+
+        <div id="print3dModelsGrid" class="print3d-models-grid"></div>
+
+        <div id="print3dTotalBox" class="print3d-total-box" hidden>
+          <h3 class="print3d-total-title">Підсумок по всіх моделях</h3>
+          <div id="print3dTotalRows" class="print3d-total-rows"></div>
+          <div class="print3d-total-foot">
+            <strong>Загальна сума:</strong>
+            <span id="print3dTotalPrice">0 грн</span>
           </div>
-          <div>
-            <h2 style="margin:0 0 10px;font-size:15px;font-weight:600;color:var(--ev-p-ink,var(--ev-ink));">Попередній перегляд</h2>
-            <div class="print3d-canvas-wrap" id="print3dCanvasHost"></div>
-            <p class="print3d-canvas-hint">Обертання: затисніть ліву кнопку миші та рухайте</p>
-          </div>
+          <button type="button" class="print3d-btn-primary" id="print3dBtnOrder">Замовити всі моделі</button>
         </div>
       </div>
 
       <div id="print3dPanelRequest" hidden>
-        <form id="print3dRequestForm" class="print3d-request-form" style="max-width:560px;">
-          <p class="print3d-note" style="margin-bottom:16px;">Опишіть задачу — додайте креслення, фото або посилання. Заявка збережеться на сервері; за наявності Telegram — отримаєте сповіщення.</p>
-          <label>Ім’я *
-            <input name="name" type="text" required autocomplete="name" placeholder="Олександр">
-          </label>
-          <label>Телефон *
-            <input name="phone" type="tel" required autocomplete="tel" placeholder="+380…">
-          </label>
-          <label>Email *
-            <input name="email" type="email" required autocomplete="email" placeholder="you@example.com">
-          </label>
-          <label>Опис *
-            <textarea name="description" required placeholder="Опишіть, що надрукувати, розміри, терміни..."></textarea>
-          </label>
-          <label>Посилання (необов’язково)
-            <input name="link" type="url" placeholder="https://…">
-          </label>
-          <label>Файл (креслення / фото)
-            <input name="attachment" type="file" accept="image/*,.pdf,.stl,.obj">
-          </label>
-          <p id="print3dRequestStatus" class="print3d-request-status" hidden></p>
-          <button type="submit">Надіслати запит</button>
-        </form>
+        <div class="print3d-request-center">
+          <form id="print3dRequestForm" class="print3d-request-form">
+            <h3 class="print3d-request-title">Немає готової 3D-моделі?</h3>
+            <p class="print3d-request-subtitle">Опишіть задачу, прикріпіть креслення або фото — ми допоможемо підготувати модель і розрахуємо вартість.</p>
+            <div class="print3d-request-grid">
+              <label>Ім’я *
+                <input name="name" type="text" required autocomplete="name" placeholder="Олександр">
+              </label>
+              <label>Телефон *
+                <input name="phone" type="tel" required autocomplete="tel" placeholder="+380…">
+              </label>
+            </div>
+            <label>Email *
+              <input name="email" type="email" required autocomplete="email" placeholder="you@example.com">
+            </label>
+            <label>Опис *
+              <textarea name="description" required placeholder="Опишіть, що надрукувати, розміри, терміни..."></textarea>
+            </label>
+            <label>Посилання (необов’язково)
+              <input name="link" type="url" placeholder="https://…">
+            </label>
+            <label>Файл (креслення / фото)
+              <input name="attachment" type="file" accept="image/*,.pdf,.stl,.obj">
+            </label>
+            <p id="print3dRequestStatus" class="print3d-request-status" hidden></p>
+            <button type="submit">Надіслати запит</button>
+          </form>
+        </div>
       </div>
     </div>
   </div>
@@ -297,6 +300,6 @@
 <script src="js/app.js?v=20260411"></script>
 <script src="js/chat-widget.js?v=20260409"></script>
 <script src="js/scroll-to-top.js?v=4"></script>
-<script type="module" src="js/order-3d-print.js?v=2"></script>
+<script type="module" src="js/order-3d-print.js?v=7"></script>
 </body>
 </html>
