@@ -47,6 +47,37 @@ function deliveryTypeToServiceType(type) {
   return "WarehouseWarehouse";
 }
 
+function normalizeNamePart(value) {
+  return String(value || "")
+    .trim()
+    .toLowerCase()
+    .replace(/\s+/g, " ");
+}
+
+function buildRecipientFullName(lastName, firstName, middleName) {
+  return [lastName, firstName, middleName]
+    .map((part) => String(part || "").trim())
+    .filter(Boolean)
+    .join(" ");
+}
+
+function pickRecipientContact(contacts, recipientLastName, recipientName, recipientMiddleName) {
+  if (!Array.isArray(contacts) || !contacts.length) return null;
+  const expected = normalizeNamePart(buildRecipientFullName(recipientLastName, recipientName, recipientMiddleName));
+  if (!expected) return contacts[0];
+
+  const exact = contacts.find((contact) => normalizeNamePart(contact?.Description) === expected);
+  if (exact) return exact;
+
+  const hasLastAndFirst = contacts.find((contact) => {
+    const text = normalizeNamePart(contact?.Description);
+    return text.includes(normalizeNamePart(recipientLastName)) && text.includes(normalizeNamePart(recipientName));
+  });
+  if (hasLastAndFirst) return hasLastAndFirst;
+
+  return contacts[0];
+}
+
 async function resolveSenderConfig() {
   if (SENDER_CONFIG_CACHE) return SENDER_CONFIG_CACHE;
 
@@ -196,8 +227,14 @@ router.post("/nova-poshta/create-ttn", async (req, res) => {
       Ref: recipientRef,
       Page: 1
     });
-    const recipientContactRef = contacts[0]?.Ref;
-    const recipientFullName = contacts[0]?.Description;
+    const selectedRecipientContact = pickRecipientContact(
+      contacts,
+      recipientLastName,
+      recipientName,
+      recipientMiddleName
+    );
+    const recipientContactRef = selectedRecipientContact?.Ref;
+    const recipientFullName = buildRecipientFullName(recipientLastName, recipientName, recipientMiddleName);
 
     if (!recipientContactRef) {
       throw new Error("Не вдалося отримати контакт отримувача");
@@ -222,7 +259,7 @@ router.post("/nova-poshta/create-ttn", async (req, res) => {
       Recipient: recipientRef,
       ContactRecipient: recipientContactRef,
       RecipientsPhone: recipientPhone,
-      RecipientContactName: recipientFullName
+      RecipientContactName: recipientFullName || selectedRecipientContact?.Description || recipientName
     };
 
     // Default package dimensions for every order.

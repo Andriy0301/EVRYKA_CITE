@@ -60,13 +60,38 @@ function canCancelCabinetOrder(order) {
   return true;
 }
 
-function getCabCancelControlsHtml(orderType, order) {
+function getCabCancelButtonHtml(orderType, order) {
   if (!canCancelCabinetOrder(order)) return "";
-  const orderKey = String(order?.id || order?.orderNumber || "").trim();
   return `
-    <div class="cab-cancel-controls" data-cancel-wrap="${orderType}_${orderKey}">
-      <label>Причина скасування
-        <select class="cab-cancel-reason-preset">
+    <button type="button" class="clear-btn cab-cancel-order-btn" data-cancel-type="${orderType}" data-cancel-id="${order?.id || ""}" data-cancel-number="${order?.orderNumber || ""}">
+      Скасувати замовлення
+    </button>
+  `;
+}
+
+function showCabCancelReasonDialog(orderLabel) {
+  return new Promise((resolve) => {
+    const overlay = document.createElement("div");
+    overlay.style.position = "fixed";
+    overlay.style.inset = "0";
+    overlay.style.background = "rgba(0, 0, 0, 0.45)";
+    overlay.style.display = "flex";
+    overlay.style.alignItems = "center";
+    overlay.style.justifyContent = "center";
+    overlay.style.zIndex = "9999";
+
+    const modal = document.createElement("div");
+    modal.style.width = "min(460px, calc(100vw - 24px))";
+    modal.style.background = "#fff";
+    modal.style.borderRadius = "14px";
+    modal.style.padding = "16px";
+    modal.style.boxShadow = "0 20px 40px rgba(0,0,0,.25)";
+    modal.innerHTML = `
+      <h3 style="margin:0 0 10px 0; font-size:20px;">Скасування замовлення</h3>
+      <p style="margin:0 0 12px 0; color:#444;">${orderLabel || "Оберіть причину скасування"}</p>
+      <label style="display:block; margin-bottom:10px;">
+        Причина
+        <select id="cabCancelReasonSelect" style="width:100%; margin-top:6px;">
           <option value="">Оберіть причину</option>
           <option value="Передумав(ла)">Передумав(ла)</option>
           <option value="Хочу змінити замовлення">Хочу змінити замовлення</option>
@@ -74,12 +99,48 @@ function getCabCancelControlsHtml(orderType, order) {
           <option value="Інше">Інше</option>
         </select>
       </label>
-      <input type="text" class="cab-cancel-reason-custom" placeholder="Деталі причини (необов'язково)">
-      <button type="button" class="clear-btn cab-cancel-order-btn" data-cancel-type="${orderType}" data-cancel-id="${order?.id || ""}" data-cancel-number="${order?.orderNumber || ""}">
-        Скасувати замовлення
-      </button>
-    </div>
-  `;
+      <label style="display:block; margin-bottom:14px;">
+        Коментар (необов'язково)
+        <input id="cabCancelReasonComment" type="text" placeholder="Деталі причини" style="width:100%; margin-top:6px;">
+      </label>
+      <div style="display:flex; gap:10px; justify-content:flex-end;">
+        <button type="button" id="cabCancelReasonClose" class="clear-btn">Закрити</button>
+        <button type="button" id="cabCancelReasonConfirm" class="checkout-btn">Підтвердити</button>
+      </div>
+    `;
+
+    function close(result) {
+      overlay.remove();
+      resolve(result);
+    }
+
+    overlay.addEventListener("click", (event) => {
+      if (event.target === overlay) close(null);
+    });
+
+    const closeBtn = modal.querySelector("#cabCancelReasonClose");
+    const confirmBtn = modal.querySelector("#cabCancelReasonConfirm");
+    const reasonSelect = modal.querySelector("#cabCancelReasonSelect");
+    const reasonComment = modal.querySelector("#cabCancelReasonComment");
+
+    closeBtn?.addEventListener("click", () => close(null));
+    confirmBtn?.addEventListener("click", () => {
+      const selected = String(reasonSelect?.value || "").trim();
+      const comment = String(reasonComment?.value || "").trim();
+      const reason = comment || selected;
+      if (!reason) {
+        reasonSelect?.focus();
+        return;
+      }
+      close(reason);
+    });
+
+    overlay.appendChild(modal);
+    document.body.appendChild(overlay);
+    setTimeout(() => {
+      reasonSelect?.focus();
+    }, 0);
+  });
 }
 
 function getCabDeliveryStatusMeta(track) {
@@ -195,7 +256,7 @@ function renderCabinetOrders(data, profile) {
               <p><b>Доставка:</b> ${delivery?.city || "-"}, ${deliveryPoint}</p>
               ${order?.ttn ? `<p><b>ТТН:</b> ${order.ttn}</p>` : ""}
               <p><b>Статус доставки:</b> ${order?.ttn ? `<span data-ttn-status="${order.ttn}">Перевіряємо...</span>` : "ТТН відсутня"}</p>
-              ${getCabCancelControlsHtml("print3d", order)}
+              ${getCabCancelButtonHtml("print3d", order)}
             </div>
           </article>
         `;
@@ -243,7 +304,7 @@ function renderCabinetOrders(data, profile) {
             ${order?.ttn ? `<p><b>ТТН:</b> ${order.ttn}</p>` : ""}
             <p><b>Статус доставки:</b> ${order?.ttn ? `<span data-ttn-status="${order.ttn}">Перевіряємо...</span>` : "ТТН відсутня"}</p>
             <ul class="cab-order-items">${itemsHtml}</ul>
-            ${getCabCancelControlsHtml("shop", order)}
+            ${getCabCancelButtonHtml("shop", order)}
           </div>
         </article>
       `;
@@ -264,12 +325,8 @@ function renderCabinetOrders(data, profile) {
       const orderType = String(btn.dataset.cancelType || "shop").trim();
       const orderId = String(btn.dataset.cancelId || "").trim();
       const orderNumber = String(btn.dataset.cancelNumber || "").trim();
-      const wrap = btn.closest(".cab-cancel-controls");
-      const presetReason = String(wrap?.querySelector(".cab-cancel-reason-preset")?.value || "").trim();
-      const customReason = String(wrap?.querySelector(".cab-cancel-reason-custom")?.value || "").trim();
-      const reason = customReason || presetReason || "Скасовано з профілю клієнта";
-      const ok = window.confirm(`Скасувати замовлення ${orderNumber || orderId || ""}?`);
-      if (!ok) return;
+      const reason = await showCabCancelReasonDialog(`Замовлення ${orderNumber || orderId || ""}`);
+      if (!reason) return;
 
       btn.disabled = true;
       btn.innerText = "Скасовуємо...";
