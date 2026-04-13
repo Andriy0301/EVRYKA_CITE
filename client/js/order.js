@@ -646,6 +646,7 @@ async function submitOrder(e) {
 
   const profile = {
     id: getProfile()?.id,
+    clientId: getProfile()?.clientId,
     name: document.getElementById("orderName").value.trim(),
     lastName: document.getElementById("orderLastName").value.trim(),
     middleName: document.getElementById("orderMiddleName").value.trim(),

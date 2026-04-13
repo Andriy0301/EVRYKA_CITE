@@ -1,9 +1,11 @@
 const express = require("express");
 const fs = require("fs");
 const path = require("path");
+const { ensureClientIds, findUserByIdentity } = require("../utils/client-id");
 
 const router = express.Router();
 const ordersPath = path.join(__dirname, "../data/orders.json");
+const usersPath = path.join(__dirname, "../data/users.json");
 const { notifyNewOrder } = require("../utils/telegram");
 const ADMIN_ORDERS_KEY = process.env.ADMIN_ORDERS_KEY || "31415";
 
@@ -22,6 +24,22 @@ function readOrders() {
 
 function writeOrders(orders) {
   fs.writeFileSync(ordersPath, JSON.stringify(orders, null, 2));
+}
+
+function readUsers() {
+  try {
+    if (!fs.existsSync(usersPath)) {
+      fs.writeFileSync(usersPath, "[]");
+      return [];
+    }
+    const raw = fs.readFileSync(usersPath, "utf8");
+    const parsed = raw ? JSON.parse(raw) : [];
+    const { users, changed } = ensureClientIds(Array.isArray(parsed) ? parsed : []);
+    if (changed) fs.writeFileSync(usersPath, JSON.stringify(users, null, 2));
+    return users;
+  } catch {
+    return [];
+  }
 }
 
 function normalizeItems(items) {
@@ -46,12 +64,21 @@ router.post("/", (req, res) => {
   }
 
   const orderNumber = String(incomingOrderNumber || "").trim() || `EVR-${Date.now().toString().slice(-8)}`;
+  const users = readUsers();
+  const matchedUser = findUserByIdentity(users, {
+    id: customer?.id,
+    clientId: customer?.clientId,
+    email: customer?.email,
+    phone: customer?.phone
+  });
+  const resolvedClientId = String(customer?.clientId || matchedUser?.clientId || "").trim();
   const savedOrder = {
     id: Date.now(),
     orderNumber,
     createdAt: new Date().toISOString(),
     customer: {
       id: String(customer?.id || "").trim(),
+      clientId: resolvedClientId,
       name: String(customer?.name || "").trim(),
       lastName: String(customer?.lastName || "").trim(),
       middleName: String(customer?.middleName || "").trim(),
@@ -98,6 +125,7 @@ router.get("/my", (req, res) => {
   }
 
   const orders = readOrders();
+  const users = readUsers();
   const filtered = orders.filter((order) => {
     const customer = order?.customer || {};
     return (
@@ -107,7 +135,16 @@ router.get("/my", (req, res) => {
     );
   });
 
-  return res.json({ orders: filtered });
+  const user = users.find((u) => {
+    return (
+      (id && String(u.id || "").trim() === id) ||
+      (email && String(u.email || "").trim().toLowerCase() === email) ||
+      (phone && String(u.phone || "").trim() === phone)
+    );
+  });
+  const print3dOrders = Array.isArray(user?.print3dOrders) ? user.print3dOrders : [];
+
+  return res.json({ orders: filtered, print3dOrders });
 });
 
 router.get("/all", (req, res) => {

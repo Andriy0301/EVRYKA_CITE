@@ -8,7 +8,8 @@ const TELEGRAM_CHAT_ID = String(process.env.TELEGRAM_CHAT_ID || "").trim();
 const MAX_LEN = 4000;
 const MENU_ROWS = [
   [{ text: "📩 Запитання" }, { text: "🛒 Замовлення" }],
-  [{ text: "🖨️ 3D-друк" }, { text: "🔄 Меню" }]
+  [{ text: "🖨️ 3D-друк" }, { text: "🔎 Клієнт по ID" }],
+  [{ text: "🔄 Меню" }]
 ];
 const MENU_TEXT = "Оберіть категорію:";
 const DATA_DIR = path.join(__dirname, "../data");
@@ -16,12 +17,14 @@ const DATA_FILES = {
   inquiries: path.join(DATA_DIR, "inquiries.json"),
   orders: path.join(DATA_DIR, "orders.json"),
   print3dOrders: path.join(DATA_DIR, "print3d-orders.json"),
-  print3dRequests: path.join(DATA_DIR, "print3d-requests.json")
+  print3dRequests: path.join(DATA_DIR, "print3d-requests.json"),
+  users: path.join(DATA_DIR, "users.json")
 };
 const UPDATE_TIMEOUT_SEC = 25;
 const UPDATE_RETRY_MS = 2000;
 const MAX_ITEMS_PER_SECTION = 5;
 let botLoopStarted = false;
+const chatStateById = new Map();
 
 function getChatId() {
   return /^-?\d+$/.test(TELEGRAM_CHAT_ID) ? Number(TELEGRAM_CHAT_ID) : TELEGRAM_CHAT_ID;
@@ -107,6 +110,63 @@ function short(v, limit = 130) {
   return str.length <= limit ? str : `${str.slice(0, limit - 1)}…`;
 }
 
+function formatDeliveryProvider(provider) {
+  const p = String(provider || "").trim();
+  if (p === "nova_poshta") return "Нова пошта";
+  if (p === "ukr_poshta" || p === "ukrposhta") return "Укрпошта";
+  if (p === "courier") return "Кур'єр";
+  if (p === "self_pickup") return "Самовивіз";
+  return p || "—";
+}
+
+function formatDeliveryType(type) {
+  const t = String(type || "").trim();
+  if (t === "warehouse") return "Відділення";
+  if (t === "postomat") return "Поштомат";
+  if (t === "address") return "Адреса";
+  return t || "—";
+}
+
+function formatClientByIdCard(user) {
+  if (!user) return "Клієнта за вказаним ID не знайдено.";
+  const delivery = user.delivery || {};
+  const point = delivery.branchText || delivery.branch || "—";
+  const address = delivery.address || "—";
+  const hasDelivery =
+    delivery.provider || delivery.deliveryType || delivery.city || delivery.cityRef || delivery.branch || delivery.branchText || delivery.address;
+  return [
+    `Клієнт ${short(user.clientId, 80)}`,
+    "",
+    `Прізвище: ${short(user.lastName, 80)}`,
+    `Ім'я: ${short(user.name, 80)}`,
+    `Телефон: ${short(user.phone, 50)}`,
+    `Email: ${short(user.email, 120)}`,
+    "",
+    hasDelivery ? "Доставка (з профілю):" : "Доставка (з профілю): —",
+    hasDelivery ? `  Служба: ${formatDeliveryProvider(delivery.provider)}` : null,
+    hasDelivery ? `  Тип: ${formatDeliveryType(delivery.deliveryType)}` : null,
+    hasDelivery ? `  Місто: ${short(delivery.city, 100)}` : null,
+    hasDelivery ? `  City Ref: ${short(delivery.cityRef, 100)}` : null,
+    hasDelivery ? `  Відділення/поштомат: ${short(point, 160)}` : null,
+    hasDelivery ? `  Адреса: ${short(address, 180)}` : null
+  ]
+    .filter(Boolean)
+    .join("\n");
+}
+
+function findUserByClientId(query) {
+  const wanted = String(query || "").trim().toLowerCase();
+  if (!wanted) return null;
+  const users = safeReadList(DATA_FILES.users);
+  return (
+    users.find((user) => {
+      const clientId = String(user?.clientId || "").trim().toLowerCase();
+      const legacyId = String(user?.id || "").trim().toLowerCase();
+      return clientId === wanted || legacyId === wanted;
+    }) || null
+  );
+}
+
 function formatInquiryList(items) {
   if (!items.length) return "Запитань поки немає.";
   const rows = ["Останні запитання:"];
@@ -130,6 +190,7 @@ function formatShopOrdersList(items) {
       "",
       `${idx + 1}) ${entry.orderNumber || `ID ${entry.id || "—"}`}`,
       `   👤 ${short([customer.name, customer.lastName].filter(Boolean).join(" ") || "—", 80)}`,
+      `   🆔 ${short(customer.clientId || customer.id || "—", 80)}`,
       `   💰 ${Number(entry.total || 0).toFixed(2)} грн | 📦 ${Array.isArray(entry.items) ? entry.items.length : 0} товар(ів)`
     );
   });
@@ -153,6 +214,7 @@ function formatPrint3dList(orderItems, requestItems) {
         "",
         `${idx + 1}) [Замовлення] ID ${entry.id || "—"}`,
         `   👤 ${short([customer.name, customer.lastName].filter(Boolean).join(" ") || "—", 80)}`,
+        `   🆔 ${short(customer.clientId || customer.id || "—", 80)}`,
         `   💰 ${Number(entry.total || 0).toFixed(2)} грн | 🧩 ${Array.isArray(entry.files) ? entry.files.length : 0} модель(і)`
       );
       return;
@@ -162,6 +224,7 @@ function formatPrint3dList(orderItems, requestItems) {
       "",
       `${idx + 1}) [Заявка] ID ${entry.id || "—"}`,
       `   👤 ${short(entry.name || "—", 80)} | 📞 ${short(entry.phone || "—", 40)}`,
+      `   🆔 ${short(entry.clientId || "—", 80)}`,
       `   📝 ${short(entry.description, 170)}`
     );
   });
@@ -184,8 +247,17 @@ async function sendMenu(chatId) {
 
 async function sendCategory(chatId, text) {
   const normalized = String(text || "").trim().toLowerCase();
+  const state = chatStateById.get(String(chatId)) || "";
   if (normalized === "/start" || normalized === "/menu" || normalized === "🔄 меню") {
+    chatStateById.delete(String(chatId));
     await sendMenu(chatId);
+    return;
+  }
+
+  if (state === "await_client_id") {
+    const user = findUserByClientId(text);
+    await sendTelegramTextTo(chatId, formatClientByIdCard(user));
+    chatStateById.delete(String(chatId));
     return;
   }
 
@@ -202,6 +274,11 @@ async function sendCategory(chatId, text) {
       chatId,
       formatPrint3dList(safeReadList(DATA_FILES.print3dOrders), safeReadList(DATA_FILES.print3dRequests))
     );
+    return;
+  }
+  if (normalized === "🔎 клієнт по id") {
+    chatStateById.set(String(chatId), "await_client_id");
+    await sendTelegramTextTo(chatId, "Надішліть внутрішній ID клієнта (наприклад: CL-XXXX...).");
     return;
   }
 }
@@ -312,6 +389,8 @@ function formatInquiry(entry) {
     "",
     entry.message,
     "",
+    entry.clientId ? `Клієнт ID: ${entry.clientId}` : null,
+    entry.userId ? `User ID: ${entry.userId}` : null,
     entry.phone ? `Телефон: ${entry.phone}` : null,
     entry.email ? `Email: ${entry.email}` : null,
     entry.name ? `Ім'я: ${entry.name}` : null,
@@ -328,6 +407,8 @@ function formatOrder(order) {
     `Нове замовлення ${order.orderNumber || ""}`,
     `Сума: ${order.total} грн`,
     "",
+    `Клієнт ID: ${c.clientId || "—"}`,
+    `User ID: ${c.id || "—"}`,
     `Клієнт: ${[c.name, c.lastName].filter(Boolean).join(" ")}`.trim() || "—",
     `Телефон: ${c.phone || "—"}`,
     `Email: ${c.email || "—"}`,

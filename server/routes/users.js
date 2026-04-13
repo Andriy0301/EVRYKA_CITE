@@ -1,6 +1,7 @@
 const express = require("express");
 const fs = require("fs");
 const path = require("path");
+const { ensureClientIds, ensureClientIdForUser } = require("../utils/client-id");
 
 const router = express.Router();
 const usersPath = path.join(__dirname, "../data/users.json");
@@ -13,7 +14,10 @@ function readUsers() {
     }
 
     const raw = fs.readFileSync(usersPath, "utf8");
-    return raw ? JSON.parse(raw) : [];
+    const parsed = raw ? JSON.parse(raw) : [];
+    const { users, changed } = ensureClientIds(Array.isArray(parsed) ? parsed : []);
+    if (changed) writeUsers(users);
+    return users;
   } catch (error) {
     return [];
   }
@@ -25,7 +29,7 @@ function writeUsers(users) {
 
 function sanitizeUser(user) {
   if (!user) return user;
-  const { password, ...safeUser } = user;
+  const { password, clientId, ...safeUser } = user;
   return safeUser;
 }
 
@@ -89,6 +93,7 @@ router.post("/register", (req, res) => {
   const existingUser = existingIndex >= 0 ? users[existingIndex] : null;
   const savedUser = {
     id: existingUser ? existingUser.id : Date.now(),
+    clientId: String(existingUser?.clientId || "").trim(),
     name: String(name).trim(),
     lastName: String(lastName).trim(),
     middleName: String(middleName || "").trim(),
@@ -100,6 +105,7 @@ router.post("/register", (req, res) => {
     favorites: Array.isArray(existingUser?.favorites) ? existingUser.favorites : [],
     updatedAt: new Date().toISOString()
   };
+  ensureClientIdForUser(savedUser, users);
 
   if (existingIndex >= 0) {
     users[existingIndex] = savedUser;
@@ -150,6 +156,7 @@ router.post("/google-login", (req, res) => {
   if (!user) {
     user = {
       id: Date.now(),
+      clientId: "",
       name: String(name || "Google User").trim(),
       lastName: String(lastName || "User").trim(),
       middleName: String(middleName || "").trim(),
@@ -161,6 +168,7 @@ router.post("/google-login", (req, res) => {
       favorites: [],
       updatedAt: new Date().toISOString()
     };
+    ensureClientIdForUser(user, users);
     users.push(user);
     writeUsers(users);
   }
@@ -187,6 +195,7 @@ router.post("/update-profile", (req, res) => {
       ? users[index]
       : {
           id: id || Date.now(),
+          clientId: "",
           password: "",
           name: "",
           lastName: "",
@@ -206,6 +215,7 @@ router.post("/update-profile", (req, res) => {
     delivery: normalizeDelivery(delivery, current.delivery),
     updatedAt: new Date().toISOString()
   };
+  ensureClientIdForUser(updated, users);
 
   if (index >= 0) {
     users[index] = updated;
@@ -257,8 +267,9 @@ router.post("/cart", (req, res) => {
   });
 
   if (index < 0) {
-    users.push({
+    const created = {
       id: normalizedId || Date.now(),
+      clientId: "",
       name: "",
       lastName: "",
       middleName: "",
@@ -269,7 +280,9 @@ router.post("/cart", (req, res) => {
       cart: normalizeCartItems(items),
       favorites: [],
       updatedAt: new Date().toISOString()
-    });
+    };
+    ensureClientIdForUser(created, users);
+    users.push(created);
   } else {
     users[index] = {
       ...users[index],
@@ -324,8 +337,9 @@ router.post("/favorites", (req, res) => {
   });
 
   if (index < 0) {
-    users.push({
+    const created = {
       id: normalizedId || Date.now(),
+      clientId: "",
       name: "",
       lastName: "",
       middleName: "",
@@ -336,7 +350,9 @@ router.post("/favorites", (req, res) => {
       cart: [],
       favorites: normalizeFavoriteItems(items),
       updatedAt: new Date().toISOString()
-    });
+    };
+    ensureClientIdForUser(created, users);
+    users.push(created);
   } else {
     users[index] = {
       ...users[index],

@@ -1820,11 +1820,13 @@ body.cart-open .header .cart {
 .auth-modal {
   position: fixed;
   inset: 0;
-  background: rgba(0, 0, 0, 0.5);
+  background: rgba(17, 17, 17, 0.56);
   display: none;
   align-items: center;
   justify-content: center;
   z-index: 1200;
+  padding: 16px;
+  box-sizing: border-box;
 }
 
 .auth-modal.active {
@@ -1832,108 +1834,159 @@ body.cart-open .header .cart {
 }
 
 .auth-modal-content {
-  width: min(440px, 92vw);
+  width: min(520px, 100%);
   background: var(--surface-primary);
   color: var(--text-primary);
-  border-radius: 14px;
-  padding: 20px;
+  border-radius: clamp(16px, 2.4vw, 22px);
+  padding: clamp(20px, 3.2vw, 30px);
   border: 1px solid var(--border-light);
+  box-shadow: 0 18px 52px rgba(0, 0, 0, 0.18), 0 2px 12px rgba(0, 0, 0, 0.08);
+  position: relative;
+  max-height: min(92vh, 860px);
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(var(--ev-rgb), 0.28) transparent;
+}
+
+.auth-modal-content::-webkit-scrollbar {
+  width: 8px;
+}
+
+.auth-modal-content::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.auth-modal-content::-webkit-scrollbar-thumb {
+  border-radius: 999px;
+  background: rgba(var(--ev-rgb), 0.24);
 }
 
 #registerForm {
   display: grid;
-  gap: 10px;
+  gap: 12px;
 }
 
 .auth-light {
-  width: min(520px, 92vw);
+  width: min(520px, 100%);
   background: var(--surface-primary);
   color: var(--text-primary);
-  border-radius: 14px;
-  padding: 28px 30px 24px;
-  box-shadow: 0 14px 35px rgba(0, 0, 0, 0.12);
-  border: 1px solid var(--border-light);
+  border-radius: inherit;
+  padding: inherit;
+  box-shadow: none;
+  border: none;
 }
 
 .auth-title {
   text-align: center;
-  font-size: 38px;
-  font-weight: 600;
-  margin: 0 0 20px;
+  font-size: clamp(30px, 4.2vw, 46px);
+  font-weight: 700;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+  margin: 0 0 16px;
   color: var(--text-primary);
 }
 
 .auth-input {
   background: var(--surface-secondary);
   border: 1px solid var(--border-light);
-  border-radius: 10px;
+  border-radius: 14px;
   color: var(--text-primary);
-  padding: 12px 14px;
-  font-size: 16px;
+  min-height: 54px;
+  padding: 13px 16px;
+  font-size: 15px;
+  line-height: 1.35;
+  box-sizing: border-box;
   outline: none;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
 }
 
 .auth-input::placeholder {
   color: var(--ev-muted);
 }
 
+.auth-input:focus {
+  border-color: var(--ev-accent);
+  background: var(--surface-primary);
+  box-shadow: 0 0 0 3px var(--ev-accent-soft);
+}
+
 .auth-submit-btn {
-  margin-top: 12px;
+  margin-top: 4px;
   border: none;
-  border-radius: 10px;
-  padding: 14px;
-  font-size: 16px;
-  background: var(--ev-accent-gradient);
+  border-radius: 14px;
+  min-height: 54px;
+  padding: 14px 16px;
+  font-size: 18px;
+  font-weight: 700;
+  letter-spacing: 0.01em;
+  background: var(--accent-main);
   color: var(--ev-text-on-accent);
   cursor: pointer;
-  transition: filter 0.2s ease;
+  transition: transform 0.15s ease, background 0.2s ease;
 }
 
 .auth-submit-btn:hover {
-  filter: brightness(1.06);
+  background: var(--accent-btn-hover);
+  transform: translateY(-1px);
+}
+
+.auth-submit-btn:active {
+  transform: translateY(0);
 }
 
 .auth-message {
   min-height: 18px;
-  margin: 6px 0 0;
+  margin: 2px 0 0;
   font-size: 13px;
   color: #b00020;
 }
 
 .auth-links {
-  margin-top: 16px;
+  margin-top: 8px;
   display: flex;
   justify-content: space-between;
-  gap: 10px;
+  gap: 12px;
 }
 
 .auth-link-btn {
   background: none;
   border: none;
   color: var(--ev-accent);
-  font-size: 16px;
+  font-size: 15px;
+  font-weight: 600;
   cursor: pointer;
-  padding: 0;
+  padding: 6px 0;
+  text-align: left;
+}
+
+.auth-link-btn:last-child {
+  text-align: right;
 }
 
 .auth-terms {
-  margin-top: 16px;
+  margin-top: 10px;
   display: flex;
-  align-items: center;
-  gap: 8px;
+  align-items: flex-start;
+  gap: 10px;
   color: var(--ev-muted);
+  font-size: 15px;
+  line-height: 1.45;
 }
 
 .auth-terms input {
-  width: 18px;
-  height: 18px;
+  width: 20px;
+  height: 20px;
+  margin-top: 1px;
+  accent-color: var(--accent-main);
+  flex-shrink: 0;
 }
 
 .auth-divider {
-  margin: 18px 0 8px;
+  margin: 14px 0 6px;
   display: flex;
   align-items: center;
   color: var(--ev-muted);
+  font-size: 14px;
   gap: 10px;
 }
 
@@ -1948,6 +2001,62 @@ body.cart-open .header .cart {
 .google-btn-wrap {
   display: flex;
   justify-content: center;
+  min-height: 42px;
+}
+
+.auth-modal .close-btn {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  width: 34px;
+  height: 34px;
+  border-radius: 10px;
+  border: 1px solid var(--border-light);
+  background: var(--surface-secondary);
+  color: var(--ev-muted);
+  font-size: 16px;
+}
+
+.auth-modal .close-btn:hover {
+  background: var(--ev-surface-muted);
+  color: var(--ev-ink);
+}
+
+@media (max-width: 640px) {
+  .auth-modal {
+    padding: 10px;
+  }
+
+  .auth-modal-content {
+    border-radius: 16px;
+    padding: 16px 14px;
+    max-height: 94vh;
+  }
+
+  .auth-title {
+    font-size: clamp(26px, 7.8vw, 34px);
+    margin-bottom: 12px;
+  }
+
+  .auth-input {
+    min-height: 48px;
+    border-radius: 12px;
+    padding: 11px 14px;
+  }
+
+  .auth-submit-btn {
+    min-height: 48px;
+    border-radius: 12px;
+    font-size: 17px;
+  }
+
+  .auth-links {
+    gap: 8px;
+  }
+
+  .auth-link-btn {
+    font-size: 14px;
+  }
 }
 
 .cabinet-page {
@@ -3641,6 +3750,15 @@ body.cart-open .header .cart {
   border: 1px solid #e7e7e7;
 }
 
+.cab-order-thumb--label {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 800;
+  color: #1f4ed4;
+  background: #eef2ff;
+}
+
 .cab-order-details {
   display: none;
   margin-top: 8px;
@@ -4547,9 +4665,10 @@ body.cart-open .chat-widget-root {
   max-width: 92%;
   padding: 10px 12px;
   border-radius: 12px 12px 4px 12px;
-  background: var(--bg-section);
-  border: 1px solid var(--ev-border-mid);
+  background: rgba(251, 146, 60, 0.18);
+  border: 1px solid rgba(251, 146, 60, 0.46);
   color: var(--ev-ink);
+  box-shadow: 0 1px 3px rgba(251, 146, 60, 0.16);
 }
 
 .chat-widget-compose {

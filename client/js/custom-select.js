@@ -37,7 +37,10 @@ function rebuildCatalogSelectPanel(wrap) {
     li.dataset.value = opt.value;
     li.textContent = opt.textContent;
     li.addEventListener("mousedown", (e) => e.preventDefault());
-    li.addEventListener("click", () => {
+    li.addEventListener("click", (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      wrap.dataset.justSelectedAt = String(Date.now());
       if (select.value !== opt.value) {
         select.value = opt.value;
         syncCatalogSelectUI(wrap);
@@ -73,7 +76,13 @@ function initCatalogCustomSelect(selectId) {
   }
 
   trigger.addEventListener("click", (e) => {
+    e.preventDefault();
     e.stopPropagation();
+    const justSelectedAt = Number(wrap.dataset.justSelectedAt || "0");
+    if (Date.now() - justSelectedAt < 250) {
+      delete wrap.dataset.justSelectedAt;
+      return;
+    }
     const wasOpen = wrap.classList.contains("is-open");
     closeAllCatalogSelects();
     if (!wasOpen) {

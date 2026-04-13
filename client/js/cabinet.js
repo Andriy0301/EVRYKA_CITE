@@ -46,19 +46,70 @@ function getCabOrderItemImage(item) {
   return `${API_URL}${candidate}`;
 }
 
-function renderCabinetOrders(orders) {
+function renderCabinetOrders(data) {
   const list = document.getElementById("cabOrdersList");
   if (!list) return;
 
-  if (!Array.isArray(orders) || !orders.length) {
+  const regularOrders = Array.isArray(data?.orders) ? data.orders : [];
+  const print3dOrders = Array.isArray(data?.print3dOrders) ? data.print3dOrders : [];
+
+  const merged = [
+    ...regularOrders.map((order, index) => ({
+      type: "shop",
+      order,
+      key: `shop_${order?.id || order?.orderNumber || index}`,
+      createdAtTs: new Date(order?.createdAt || 0).getTime() || 0
+    })),
+    ...print3dOrders.map((order, index) => ({
+      type: "print3d",
+      order,
+      key: `print3d_${order?.id || index}`,
+      createdAtTs: new Date(order?.createdAt || 0).getTime() || 0
+    }))
+  ].sort((a, b) => b.createdAtTs - a.createdAtTs);
+
+  if (!merged.length) {
     list.innerHTML = "<p>Поки що немає оформлених замовлень.</p>";
     return;
   }
 
-  list.innerHTML = orders
-    .map((order, index) => {
+  list.innerHTML = merged
+    .map((entry, index) => {
+      const order = entry.order || {};
+      const orderUiId = String(entry.key || index);
+
+      if (entry.type === "print3d") {
+        const delivery = order?.delivery || {};
+        const isAddress = delivery?.deliveryType === "address";
+        const deliveryPoint = isAddress
+          ? (delivery?.address || delivery?.point || "-")
+          : (delivery?.branchText || delivery?.point || delivery?.address || "-");
+        return `
+          <article class="cab-order-card">
+            <button type="button" class="cab-order-summary" data-order-toggle="${orderUiId}">
+              <div>
+                <span class="cab-order-number">3D #${order?.id || "-"}</span>
+                <p class="cab-order-meta">${formatCabOrderDate(order?.createdAt)}</p>
+              </div>
+              <div class="cab-order-summary-right">
+                <p><b>${Number(order?.total || 0)} грн</b></p>
+                <div class="cab-order-thumbs">
+                  <span class="cab-order-thumb cab-order-thumb--label">3D</span>
+                </div>
+              </div>
+            </button>
+            <div class="cab-order-details" data-order-details="${orderUiId}">
+              <p><b>Тип:</b> 3D-друк</p>
+              <p><b>Сума:</b> ${Number(order?.total || 0)} грн</p>
+              <p><b>Моделей:</b> ${Number(order?.models || 0)}</p>
+              <p><b>Колір замовлення:</b> ${order?.orderColor || "-"}</p>
+              <p><b>Доставка:</b> ${delivery?.city || "-"}, ${deliveryPoint}</p>
+            </div>
+          </article>
+        `;
+      }
+
       const items = Array.isArray(order?.items) ? order.items : [];
-      const orderUiId = String(order?.id || order?.orderNumber || index);
       const thumbsHtml = items
         .slice(0, 5)
         .map((item) => `<img class="cab-order-thumb" src="${getCabOrderItemImage(item)}" alt="${item.name}">`)
@@ -114,9 +165,15 @@ async function loadCabinetOrders(profile) {
   if (list) list.innerHTML = "<p>Завантаження...</p>";
   try {
     const data = await getMyOrders(profile);
-    renderCabinetOrders(data?.orders || []);
+    renderCabinetOrders({
+      orders: data?.orders || [],
+      print3dOrders: data?.print3dOrders || profile?.print3dOrders || []
+    });
   } catch (error) {
-    if (list) list.innerHTML = "<p>Не вдалося завантажити замовлення.</p>";
+    renderCabinetOrders({
+      orders: [],
+      print3dOrders: profile?.print3dOrders || []
+    });
   }
 }
 

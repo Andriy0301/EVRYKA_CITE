@@ -2,6 +2,9 @@
  * Об'єм сітки в см³ (координати в мм → мм³ / 1000 = см³).
  * Динамічний імпорт three (ESM) з CommonJS роуту.
  */
+const JSZip = require("jszip");
+const { parseStringPromise, processors } = require("xml2js");
+const stripPrefix = processors.stripPrefix;
 
 async function computeBufferGeometryVolumeCm3(geometry, THREE) {
   geometry.computeVertexNormals();
@@ -46,6 +49,128 @@ function extOf(name) {
   return dot >= 0 ? lower.slice(dot) : "";
 }
 
+function asArray(value) {
+  if (!value) return [];
+  return Array.isArray(value) ? value : [value];
+}
+
+function parse3mfTransform(transformValue, THREE) {
+  const matrix = new THREE.Matrix4();
+  if (!transformValue) return matrix;
+  const values = String(transformValue)
+    .trim()
+    .split(/\s+/)
+    .map((n) => Number(n));
+  if (values.length !== 12 || values.some((n) => !Number.isFinite(n))) return matrix;
+  matrix.set(
+    values[0], values[3], values[6], values[9],
+    values[1], values[4], values[7], values[10],
+    values[2], values[5], values[8], values[11],
+    0, 0, 0, 1
+  );
+  return matrix;
+}
+
+function meshGeometryFrom3mf(mesh, THREE) {
+  const vertices = asArray(mesh?.vertices?.vertex);
+  const triangles = asArray(mesh?.triangles?.triangle);
+  if (!vertices.length || !triangles.length) return null;
+
+  const positions = [];
+  for (const tri of triangles) {
+    const i1 = Number(tri?.v1);
+    const i2 = Number(tri?.v2);
+    const i3 = Number(tri?.v3);
+    if (![i1, i2, i3].every((v) => Number.isInteger(v) && v >= 0 && v < vertices.length)) continue;
+    const v1 = vertices[i1] || {};
+    const v2 = vertices[i2] || {};
+    const v3 = vertices[i3] || {};
+    positions.push(
+      Number(v1.x || 0), Number(v1.y || 0), Number(v1.z || 0),
+      Number(v2.x || 0), Number(v2.y || 0), Number(v2.z || 0),
+      Number(v3.x || 0), Number(v3.y || 0), Number(v3.z || 0)
+    );
+  }
+  if (!positions.length) return null;
+
+  const geometry = new THREE.BufferGeometry();
+  geometry.setAttribute("position", new THREE.Float32BufferAttribute(positions, 3));
+  return geometry;
+}
+
+async function parse3mfVolumeCm3(buffer, THREE) {
+  const zip = await JSZip.loadAsync(Buffer.from(buffer));
+  const modelEntry = Object.values(zip.files).find((file) => !file.dir && /\.model$/i.test(file.name));
+  if (!modelEntry) {
+    throw new Error("3MF не містить файлу .model");
+  }
+  const modelXml = await modelEntry.async("string");
+  const parsed = await parseStringPromise(modelXml, {
+    explicitArray: false,
+    mergeAttrs: true,
+    tagNameProcessors: [stripPrefix],
+    attrNameProcessors: [stripPrefix]
+  });
+  const model = parsed?.model || parsed?.Model;
+  const resources = model?.resources || {};
+  const objects = asArray(resources.object);
+  if (!objects.length) {
+    throw new Error("У 3MF немає об'єктів для аналізу");
+  }
+
+  const objectById = new Map();
+  objects.forEach((obj) => {
+    const id = String(obj?.id || "").trim();
+    if (id) objectById.set(id, obj);
+  });
+
+  const visitObject = async (objectId, matrix, stack = new Set()) => {
+    const id = String(objectId || "").trim();
+    if (!id || stack.has(id)) return 0;
+    const obj = objectById.get(id);
+    if (!obj) return 0;
+
+    const nextStack = new Set(stack);
+    nextStack.add(id);
+    let total = 0;
+
+    if (obj.mesh) {
+      const g = meshGeometryFrom3mf(obj.mesh, THREE);
+      if (g) {
+        g.applyMatrix4(matrix);
+        total += await computeBufferGeometryVolumeCm3(g, THREE);
+        g.dispose();
+      }
+    }
+
+    const components = asArray(obj?.components?.component);
+    for (const comp of components) {
+      const childId = comp?.objectid || comp?.objectId;
+      const childMatrix = matrix.clone().multiply(parse3mfTransform(comp?.transform, THREE));
+      total += await visitObject(childId, childMatrix, nextStack);
+    }
+    return total;
+  };
+
+  const buildItems = asArray(model?.build?.item);
+  let totalVolume = 0;
+  if (buildItems.length) {
+    for (const item of buildItems) {
+      const itemId = item?.objectid || item?.objectId;
+      const itemMatrix = parse3mfTransform(item?.transform, THREE);
+      totalVolume += await visitObject(itemId, itemMatrix);
+    }
+  } else {
+    for (const obj of objects) {
+      if (!obj?.mesh) continue;
+      const id = String(obj?.id || "").trim();
+      if (!id) continue;
+      totalVolume += await visitObject(id, new THREE.Matrix4());
+    }
+  }
+  return Math.round(totalVolume * 10000) / 10000;
+}
+
 /** Multer дає Node.js Buffer; STLLoader/DataView потребують саме ArrayBuffer */
 function toArrayBuffer(input) {
   if (input instanceof ArrayBuffer) return input;
@@ -86,7 +211,10 @@ async function parseModelVolume(buffer, originalname) {
     });
     return total;
   }
-  throw new Error("Підтримуються лише .stl та .obj для розрахунку.");
+  if (ext === ".3mf") {
+    return parse3mfVolumeCm3(buffer, THREE);
+  }
+  throw new Error("Підтримуються лише .stl, .obj та .3mf для розрахунку.");
 }
 
 module.exports = { parseModelVolume, extOf };

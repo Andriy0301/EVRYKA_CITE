@@ -122,7 +122,7 @@
           </div>
         </div>
         <div class="print3d-err" id="print3dErr" hidden></div>
-        <p class="print3d-note">Для кожної моделі буде окремий перегляд і розрахунок. Формат <strong>3MF</strong> не аналізується на сервері (лише перегляд/заявка).</p>
+        <p class="print3d-note">Для кожної моделі буде окремий перегляд і розрахунок. Для <strong>3MF</strong> доступний авто-розрахунок, але 3D-перегляд у вікні моделі може бути обмежений.</p>
 
         <div id="print3dModelsGrid" class="print3d-models-grid"></div>
 
@@ -230,7 +230,7 @@
         <span>I agree to Terms of Use and Privacy Policy</span>
       </label>
       <div class="auth-divider">
-        <span>Login with other accounts</span>
+        <span id="authOauthLabel">Login with Google</span>
       </div>
       <div id="googleSignInBtn" class="google-btn-wrap"></div>
     </form>
@@ -333,15 +333,22 @@
           <input type="email" name="email" required>
         </label>
         <label>Служба доставки *
-          <select name="deliveryProvider" required>
+          <select name="deliveryProvider" id="print3dCheckoutDeliveryProvider" required>
             <option value="nova_poshta">Нова пошта</option>
             <option value="ukrposhta">Укрпошта</option>
             <option value="courier">Кур'єр</option>
             <option value="self_pickup">Самовивіз</option>
           </select>
         </label>
+        <label id="print3dCheckoutDeliveryTypeWrap">Тип доставки *
+          <select name="deliveryType" id="print3dCheckoutDeliveryType" required>
+            <option value="warehouse">Відділення</option>
+            <option value="postomat">Поштомат</option>
+            <option value="address">Адресна доставка</option>
+          </select>
+        </label>
         <label>Спосіб оплати *
-          <select name="paymentMethod" required>
+          <select name="paymentMethod" id="print3dCheckoutPaymentMethod" required>
             <option value="cod">Післяплата</option>
             <option value="card_online">Оплата карткою онлайн</option>
             <option value="bank_transfer">Безготівково</option>
@@ -349,11 +356,19 @@
         </label>
       </div>
       <label>Місто *
-        <input type="text" name="city" required>
+        <div id="print3dCheckoutCityWrap" class="city-autocomplete-wrap print3d-checkout-suggest-wrap">
+          <input type="text" id="print3dCheckoutCity" name="city" required autocomplete="off" placeholder="Почніть вводити місто...">
+          <div id="print3dCheckoutCitySuggestions" class="city-suggestions" style="display:none;"></div>
+        </div>
       </label>
-      <label>Відділення / адреса *
-        <input type="text" name="deliveryPoint" required>
+      <input type="hidden" name="cityRef" id="print3dCheckoutCityRef">
+      <label id="print3dCheckoutDeliveryPointWrap">Відділення / адреса *
+        <div id="print3dCheckoutBranchWrap" class="city-autocomplete-wrap print3d-checkout-suggest-wrap">
+          <input type="text" id="print3dCheckoutDeliveryPoint" name="deliveryPoint" required autocomplete="off" placeholder="Почніть вводити відділення...">
+          <div id="print3dCheckoutBranchSuggestions" class="city-suggestions" style="display:none;"></div>
+        </div>
       </label>
+      <input type="hidden" name="branchRef" id="print3dCheckoutBranchRef">
       <label>Коментар до замовлення
         <textarea name="orderComment" rows="3" placeholder="Додаткові побажання до доставки/замовлення"></textarea>
       </label>
@@ -378,6 +393,6 @@
 <script src="js/header-nav.js?v=1"></script>
 <script src="js/app.js?v=20260411"></script>
 <script src="js/chat-widget.js?v=20260409"></script>
-<script type="module" src="js/order-3d-print.js?v=13"></script>
+<script type="module" src="js/order-3d-print.js?v=15"></script>
 </body>
 </html>

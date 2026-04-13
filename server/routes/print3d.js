@@ -5,6 +5,7 @@ const multer = require("multer");
 const { parseModelVolume } = require("../utils/parse-model-volume");
 const { calculatePricing } = require("../utils/print3d-pricing");
 const { sendTelegramText, sendTelegramDocument } = require("../utils/telegram");
+const { ensureClientIds, findUserByIdentity } = require("../utils/client-id");
 
 const router = express.Router();
 const MAX_SIZE = 50 * 1024 * 1024;
@@ -60,7 +61,10 @@ function readUsers() {
   try {
     if (!fs.existsSync(usersPath)) return [];
     const raw = fs.readFileSync(usersPath, "utf8");
-    return raw ? JSON.parse(raw) : [];
+    const parsed = raw ? JSON.parse(raw) : [];
+    const { users, changed } = ensureClientIds(Array.isArray(parsed) ? parsed : []);
+    if (changed) writeUsers(users);
+    return users;
   } catch {
     return [];
   }
@@ -73,18 +77,19 @@ function writeUsers(users) {
 
 function attachOrderToUser(customer, orderSummary) {
   const userId = String(customer?.id || "").trim();
+  const userClientId = String(customer?.clientId || "").trim();
   const userEmail = String(customer?.email || "").trim().toLowerCase();
   const userPhone = String(customer?.phone || "").trim();
-  if (!userId && !userEmail && !userPhone) return;
+  if (!userId && !userClientId && !userEmail && !userPhone) return;
 
   const users = readUsers();
-  const idx = users.findIndex((u) => {
-    return (
-      (userId && String(u.id) === userId) ||
-      (userEmail && String(u.email || "").trim().toLowerCase() === userEmail) ||
-      (userPhone && String(u.phone || "").trim() === userPhone)
-    );
+  const found = findUserByIdentity(users, {
+    id: userId,
+    clientId: userClientId,
+    email: userEmail,
+    phone: userPhone
   });
+  const idx = found ? users.findIndex((u) => String(u.id) === String(found.id)) : -1;
   if (idx < 0) return;
 
   const current = users[idx];
@@ -125,6 +130,14 @@ function paymentMethodTitle(v) {
   if (p === "card_online") return "Оплата карткою онлайн";
   if (p === "bank_transfer") return "Безготівково";
   return p || "—";
+}
+
+function deliveryTypeTitle(v) {
+  const t = String(v || "").trim();
+  if (t === "warehouse") return "Відділення";
+  if (t === "postomat") return "Поштомат";
+  if (t === "address") return "Адресна доставка";
+  return t || "—";
 }
 
 router.post("/analyze-model", (req, res, next) => {
@@ -192,6 +205,8 @@ router.post("/request", (req, res, next) => {
     const email = String(req.body.email || "").trim();
     const description = String(req.body.description || "").trim();
     const link = String(req.body.link || "").trim();
+    const userId = String(req.body.userId || "").trim();
+    const incomingClientId = String(req.body.clientId || "").trim();
 
     if (!name || !phone || !email) {
       return res.status(400).json({
@@ -202,9 +217,19 @@ router.post("/request", (req, res, next) => {
       return res.status(400).json({ error: "Опишіть задачу (мінімум 3 символи)" });
     }
 
+    const matchedUser = findUserByIdentity(readUsers(), {
+      id: userId,
+      clientId: incomingClientId,
+      email,
+      phone
+    });
+    const clientId = String(incomingClientId || matchedUser?.clientId || "").trim();
+
     const entry = {
       id: Date.now(),
       createdAt: new Date().toISOString(),
+      userId: userId || null,
+      clientId: clientId || null,
       name,
       phone,
       email,
@@ -221,6 +246,7 @@ router.post("/request", (req, res, next) => {
       "Заявка 3D-друк (немає моделі)",
       "",
       `Ім'я: ${name}`,
+      `Клієнт ID: ${clientId || "—"}`,
       `Телефон: ${phone}`,
       `Email: ${email}`,
       link ? `Посилання: ${link}` : null,
@@ -281,8 +307,15 @@ router.post("/order", (req, res, next) => {
 
     const orderColor = String(req.body.orderColor || "").trim() || null;
     const total = Number(req.body.total || 0);
+    const matchedUser = findUserByIdentity(readUsers(), {
+      id: req.body.userId,
+      clientId: req.body.userClientId,
+      email: req.body.userEmail,
+      phone: req.body.userPhone
+    });
     const customer = {
       id: String(req.body.userId || "").trim() || null,
+      clientId: String(req.body.userClientId || matchedUser?.clientId || "").trim() || null,
       name: String(req.body.userName || "").trim() || null,
       lastName: String(req.body.userLastName || "").trim() || null,
       email: String(req.body.userEmail || "").trim().toLowerCase() || null,
@@ -290,8 +323,11 @@ router.post("/order", (req, res, next) => {
       isGuest: String(req.body.userIsGuest || "").trim() === "1",
       delivery: {
         provider: String(req.body.userDeliveryProvider || "").trim() || null,
+        deliveryType: String(req.body.userDeliveryType || "").trim() || null,
         paymentMethod: String(req.body.userPaymentMethod || "").trim() || null,
         city: String(req.body.userCity || "").trim() || null,
+        cityRef: String(req.body.userCityRef || "").trim() || null,
+        branchRef: String(req.body.userBranchRef || "").trim() || null,
         point: String(req.body.userDeliveryPoint || "").trim() || null,
         comment: String(req.body.userOrderComment || "").trim() || null
       }
@@ -327,14 +363,18 @@ router.post("/order", (req, res, next) => {
     const lines = [
       "Нове замовлення 3D-друку",
       customer.isGuest ? "Оформлення: без реєстрації" : "Оформлення: акаунт",
-      `Клієнт ID: ${customer.id || "—"}`,
+      `User ID: ${customer.id || "—"}`,
+      `Клієнт ID: ${customer.clientId || "—"}`,
       `Клієнт: ${[customer.name, customer.lastName].filter(Boolean).join(" ").trim() || "—"}`,
       `Телефон: ${customer.phone || "—"}`,
       `Email: ${customer.email || "—"}`,
       `Служба доставки: ${deliveryProviderTitle(customer.delivery.provider)}`,
+      `Тип доставки: ${deliveryTypeTitle(customer.delivery.deliveryType)}`,
       `Спосіб оплати: ${paymentMethodTitle(customer.delivery.paymentMethod)}`,
       `Місто: ${customer.delivery.city || "—"}`,
-      `Відділення/адреса: ${customer.delivery.point || "—"}`,
+      `City Ref: ${customer.delivery.cityRef || "—"}`,
+      `Branch Ref: ${customer.delivery.branchRef || "—"}`,
+      `${customer.delivery.deliveryType === "address" ? "Адреса" : "Відділення/поштомат"}: ${customer.delivery.point || "—"}`,
       customer.delivery.comment ? `Коментар до замовлення: ${customer.delivery.comment}` : null,
       "",
       `Моделей: ${files.length}`,

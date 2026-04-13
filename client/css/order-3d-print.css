@@ -770,14 +770,47 @@
   gap: 10px;
 }
 
+.print3d-checkout-auth-actions .print3d-btn-primary {
+  margin-top: 0;
+  min-height: 54px;
+  border-radius: 14px;
+  font-size: 17px;
+  letter-spacing: 0.01em;
+  box-shadow: 0 8px 20px rgba(15, 23, 42, 0.08);
+}
+
+.print3d-checkout-auth-actions .print3d-btn-primary:hover {
+  transform: translateY(-1px);
+}
+
+.print3d-checkout-auth-actions .print3d-btn-primary:active {
+  transform: translateY(0);
+}
+
+.print3d-checkout-auth-actions .print3d-btn-primary:not(.print3d-btn-secondary):not(.print3d-btn-ghost) {
+  background: var(--ev-accent-gradient, linear-gradient(135deg, #fb923c, #f97316));
+  color: var(--ev-text-on-accent, #111);
+  border: none;
+}
+
 .print3d-btn-secondary {
-  background: var(--ev-p-well, var(--surface-secondary));
-  border: 1px solid var(--ev-p-line, var(--border-light));
+  background: #fff;
+  color: var(--ev-ink, #111827);
+  border: 1px solid var(--ev-border-hair, rgba(15, 23, 42, 0.18));
+  box-shadow: none;
 }
 
 .print3d-btn-ghost {
-  background: transparent;
-  border: 1px dashed var(--ev-p-line, var(--border-light));
+  background: #f8fafc;
+  color: var(--ev-ink, #111827);
+  border: 1px solid var(--ev-border-hair, rgba(15, 23, 42, 0.18));
+  box-shadow: none;
+}
+
+.print3d-btn-secondary:hover,
+.print3d-btn-ghost:hover {
+  background: #f1f5f9;
+  filter: none;
 }
 
 .print3d-checkout-form {
@@ -817,6 +850,10 @@
 
 .print3d-checkout-form textarea {
   resize: vertical;
+}
+
+.print3d-checkout-suggest-wrap .city-suggestions {
+  z-index: 60;
 }
 
 .print3d-checkout-status {

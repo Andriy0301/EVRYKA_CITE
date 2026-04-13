@@ -14,6 +14,13 @@ let debounceTimer = null;
 let modelSeq = 1;
 const modelItems = [];
 let pendingOrderState = null;
+let checkoutCityOptions = [];
+let checkoutCityDropdownVisible = false;
+let checkoutCitySearchTimer = null;
+let checkoutCitySelectionInProgress = false;
+let checkoutBranchOptions = [];
+let checkoutBranchDropdownVisible = false;
+let checkoutBranchSelectionInProgress = false;
 const COLOR_PRESETS = [
   { id: "white", name: "Білий", hex: "#f5f5f4" },
   { id: "black", name: "Чорний", hex: "#222222" },
@@ -102,6 +109,10 @@ function closeCheckoutModal(els) {
   if (!els.checkoutModal) return;
   els.checkoutModal.hidden = true;
   pendingOrderState = null;
+  checkoutCityOptions = [];
+  checkoutBranchOptions = [];
+  renderCheckoutCitySuggestions(els, []);
+  renderCheckoutBranchSuggestions(els, []);
   if (els.checkoutStatus) {
     els.checkoutStatus.hidden = true;
     els.checkoutStatus.textContent = "";
@@ -127,6 +138,306 @@ function paymentLabel(value) {
   return v || "—";
 }
 
+function capitalizeCityInput(value) {
+  return String(value || "")
+    .toLowerCase()
+    .replace(/(^|\s|-)([a-zа-яіїєґ])/giu, (match, separator, letter) => {
+      return `${separator}${letter.toUpperCase()}`;
+    });
+}
+
+function renderCheckoutCitySuggestions(els, options) {
+  const listEl = els.checkoutCitySuggestions;
+  if (!listEl) return;
+  if (!options.length) {
+    listEl.style.display = "none";
+    listEl.innerHTML = "";
+    checkoutCityDropdownVisible = false;
+    return;
+  }
+  listEl.innerHTML = options
+    .slice(0, 8)
+    .map(
+      (city) =>
+        `<button type="button" class="city-suggestion-item" data-ref="${city.DeliveryCity || city.Ref}" data-name="${city.Present}">${city.Present}</button>`
+    )
+    .join("");
+  listEl.style.display = "block";
+  checkoutCityDropdownVisible = true;
+}
+
+function renderCheckoutCityLoading(els) {
+  if (!els.checkoutCitySuggestions) return;
+  els.checkoutCitySuggestions.innerHTML = '<button type="button" class="city-suggestion-item" disabled>Пошук...</button>';
+  els.checkoutCitySuggestions.style.display = "block";
+  checkoutCityDropdownVisible = true;
+}
+
+function renderCheckoutBranchSuggestions(els, options) {
+  const listEl = els.checkoutBranchSuggestions;
+  if (!listEl) return;
+  if (!options.length) {
+    listEl.style.display = "none";
+    listEl.innerHTML = "";
+    checkoutBranchDropdownVisible = false;
+    return;
+  }
+  listEl.innerHTML = options
+    .slice(0, 14)
+    .map(
+      (w) =>
+        `<button type="button" class="city-suggestion-item" data-ref="${w.Ref}" data-name="${w.Description}">${w.Description}</button>`
+    )
+    .join("");
+  listEl.style.display = "block";
+  checkoutBranchDropdownVisible = true;
+}
+
+async function loadCheckoutWarehouses(els, cityRef, deliveryType, options = {}) {
+  const preserveSelection = Boolean(options?.preserveSelection);
+  const preselectedBranchRef = String(options?.preselectedBranchRef || "").trim();
+  const preselectedBranchText = String(options?.preselectedBranchText || "").trim();
+  if (!els.checkoutDeliveryPoint || !els.checkoutBranchRef || !cityRef) return;
+
+  if (!preserveSelection) {
+    els.checkoutBranchRef.value = "";
+    els.checkoutDeliveryPoint.value = "";
+  }
+  els.checkoutDeliveryPoint.placeholder = "Завантаження...";
+  try {
+    const warehouses = await getNovaPoshtaWarehouses(cityRef, deliveryType);
+    const filtered = warehouses.filter((w) => {
+      const text = `${w.Description || ""} ${w.ShortAddress || ""}`.toLowerCase();
+      const isPostomat = text.includes("поштомат");
+      if (deliveryType === "postomat") return isPostomat;
+      if (deliveryType === "warehouse") return !isPostomat;
+      return true;
+    });
+    if (!filtered.length) {
+      checkoutBranchOptions = [];
+      els.checkoutDeliveryPoint.value = "";
+      els.checkoutDeliveryPoint.placeholder = "Немає доступних точок";
+      renderCheckoutBranchSuggestions(els, []);
+      return;
+    }
+    checkoutBranchOptions = filtered;
+    els.checkoutDeliveryPoint.placeholder =
+      deliveryType === "postomat" ? "Почніть вводити поштомат..." : "Почніть вводити відділення...";
+    if (preserveSelection && preselectedBranchRef) {
+      const matched =
+        filtered.find((w) => String(w.Ref || "") === preselectedBranchRef) ||
+        filtered.find((w) => String(w.Description || "").trim() === preselectedBranchText);
+      if (matched) {
+        els.checkoutBranchRef.value = matched.Ref;
+        els.checkoutDeliveryPoint.value = matched.Description;
+      }
+    }
+    renderCheckoutBranchSuggestions(els, checkoutBranchOptions);
+  } catch {
+    checkoutBranchOptions = [];
+    els.checkoutDeliveryPoint.value = "";
+    els.checkoutDeliveryPoint.placeholder = "Не вдалося завантажити";
+    renderCheckoutBranchSuggestions(els, []);
+  }
+}
+
+function applyCheckoutDeliveryVisibility(els) {
+  if (!els.checkoutForm) return;
+  const provider = els.checkoutDeliveryProvider?.value || "";
+  const deliveryType = els.checkoutDeliveryType?.value || "warehouse";
+  const isNova = provider === "nova_poshta";
+
+  if (els.checkoutDeliveryTypeWrap) {
+    els.checkoutDeliveryTypeWrap.style.display = isNova ? "grid" : "none";
+  }
+  if (els.checkoutCityInput) {
+    els.checkoutCityInput.placeholder = isNova ? "Почніть вводити місто..." : "Місто";
+  }
+  if (els.checkoutDeliveryPointLabel) {
+    if (isNova && deliveryType === "address") {
+      els.checkoutDeliveryPointLabel.firstChild.textContent = "Адреса доставки *";
+    } else if (isNova && deliveryType === "postomat") {
+      els.checkoutDeliveryPointLabel.firstChild.textContent = "Поштомат *";
+    } else {
+      els.checkoutDeliveryPointLabel.firstChild.textContent = "Відділення / адреса *";
+    }
+  }
+
+  if (!isNova) {
+    if (els.checkoutCityRef) els.checkoutCityRef.value = "";
+    if (els.checkoutBranchRef) els.checkoutBranchRef.value = "";
+    checkoutBranchOptions = [];
+    renderCheckoutBranchSuggestions(els, []);
+    renderCheckoutCitySuggestions(els, []);
+    if (els.checkoutDeliveryPoint) {
+      els.checkoutDeliveryPoint.placeholder = "Вкажіть відділення або адресу";
+    }
+    return;
+  }
+
+  if (deliveryType === "address") {
+    if (els.checkoutBranchRef) els.checkoutBranchRef.value = "";
+    checkoutBranchOptions = [];
+    renderCheckoutBranchSuggestions(els, []);
+    if (els.checkoutDeliveryPoint) {
+      els.checkoutDeliveryPoint.placeholder = "Вулиця, будинок, квартира";
+    }
+  } else if (els.checkoutCityRef?.value) {
+    void loadCheckoutWarehouses(els, els.checkoutCityRef.value, deliveryType);
+  } else if (els.checkoutDeliveryPoint) {
+    els.checkoutDeliveryPoint.placeholder = "Спочатку оберіть місто зі списку";
+  }
+}
+
+async function onCheckoutCityInput(els) {
+  if (!els.checkoutCityInput || !els.checkoutCityRef || !els.checkoutDeliveryProvider) return;
+  const normalized = capitalizeCityInput(els.checkoutCityInput.value);
+  if (els.checkoutCityInput.value !== normalized) {
+    els.checkoutCityInput.value = normalized;
+  }
+  const query = normalized.trim();
+  els.checkoutCityRef.value = "";
+  if (checkoutCitySearchTimer) clearTimeout(checkoutCitySearchTimer);
+  if (els.checkoutDeliveryProvider.value !== "nova_poshta" || query.length < 1) {
+    renderCheckoutCitySuggestions(els, []);
+    return;
+  }
+  const instantMatches = checkoutCityOptions.filter((city) =>
+    String(city.Present || "").toLowerCase().includes(query.toLowerCase())
+  );
+  if (instantMatches.length) renderCheckoutCitySuggestions(els, instantMatches);
+  else renderCheckoutCityLoading(els);
+
+  checkoutCitySearchTimer = setTimeout(async () => {
+    try {
+      checkoutCityOptions = await searchNovaPoshtaCities(query);
+      renderCheckoutCitySuggestions(els, checkoutCityOptions);
+    } catch {
+      renderCheckoutCitySuggestions(els, []);
+    }
+  }, 40);
+}
+
+async function onCheckoutCityChange(els) {
+  if (checkoutCitySelectionInProgress) return;
+  if (!els.checkoutCityInput || !els.checkoutCityRef || !els.checkoutDeliveryProvider) return;
+  if (els.checkoutDeliveryProvider.value !== "nova_poshta") return;
+
+  const normalizedInput = capitalizeCityInput(els.checkoutCityInput.value.trim());
+  els.checkoutCityInput.value = normalizedInput;
+  let selectedCity = checkoutCityOptions.find((city) => city.Present === normalizedInput);
+  if (!selectedCity && normalizedInput.length >= 3) {
+    try {
+      const freshCities = await searchNovaPoshtaCities(normalizedInput);
+      checkoutCityOptions = freshCities;
+      selectedCity =
+        freshCities.find((city) => city.Present === normalizedInput) ||
+        freshCities.find((city) => city.Present.toLowerCase().startsWith(normalizedInput.toLowerCase()));
+    } catch {
+      selectedCity = null;
+    }
+  }
+
+  const selectedCityRef = selectedCity?.DeliveryCity || selectedCity?.Ref || "";
+  els.checkoutCityRef.value = selectedCityRef;
+  if (selectedCityRef) {
+    els.checkoutCityInput.value = selectedCity.Present;
+    renderCheckoutCitySuggestions(els, []);
+    await loadCheckoutWarehouses(els, selectedCityRef, els.checkoutDeliveryType?.value || "warehouse");
+  } else {
+    if (els.checkoutBranchRef) els.checkoutBranchRef.value = "";
+    if (els.checkoutDeliveryPoint) {
+      els.checkoutDeliveryPoint.value = "";
+      els.checkoutDeliveryPoint.placeholder = "Спочатку оберіть місто зі списку";
+    }
+    checkoutBranchOptions = [];
+    renderCheckoutBranchSuggestions(els, []);
+    renderCheckoutCitySuggestions(els, []);
+  }
+}
+
+function onCheckoutBranchInput(els) {
+  if (!els.checkoutDeliveryPoint || !els.checkoutBranchRef) return;
+  const query = els.checkoutDeliveryPoint.value.trim().toLowerCase();
+  els.checkoutBranchRef.value = "";
+  if (!checkoutBranchOptions.length) {
+    renderCheckoutBranchSuggestions(els, []);
+    return;
+  }
+  if (!query) {
+    renderCheckoutBranchSuggestions(els, checkoutBranchOptions);
+    return;
+  }
+  const filtered = checkoutBranchOptions.filter((w) => (w.Description || "").toLowerCase().includes(query));
+  renderCheckoutBranchSuggestions(els, filtered);
+}
+
+function onCheckoutBranchChange(els) {
+  if (checkoutBranchSelectionInProgress) return;
+  if (!els.checkoutDeliveryPoint || !els.checkoutBranchRef) return;
+  const query = els.checkoutDeliveryPoint.value.trim().toLowerCase();
+  if (!query) {
+    els.checkoutBranchRef.value = "";
+    renderCheckoutBranchSuggestions(els, []);
+    return;
+  }
+  const exact = checkoutBranchOptions.find((w) => (w.Description || "").toLowerCase() === query);
+  if (exact) {
+    els.checkoutDeliveryPoint.value = exact.Description;
+    els.checkoutBranchRef.value = exact.Ref;
+    renderCheckoutBranchSuggestions(els, []);
+    return;
+  }
+  const partial = checkoutBranchOptions.filter((w) => (w.Description || "").toLowerCase().includes(query));
+  if (partial.length === 1) {
+    els.checkoutDeliveryPoint.value = partial[0].Description;
+    els.checkoutBranchRef.value = partial[0].Ref;
+  } else {
+    els.checkoutBranchRef.value = "";
+  }
+  renderCheckoutBranchSuggestions(els, []);
+}
+
+function bindCheckoutSuggestionEvents(els) {
+  if (els.checkoutCitySuggestions) {
+    els.checkoutCitySuggestions.addEventListener("mousedown", async (event) => {
+      const btn = event.target.closest(".city-suggestion-item");
+      if (!btn) return;
+      event.preventDefault();
+      checkoutCitySelectionInProgress = true;
+      if (els.checkoutCityInput) els.checkoutCityInput.value = btn.dataset.name || "";
+      if (els.checkoutCityRef) els.checkoutCityRef.value = btn.dataset.ref || "";
+      renderCheckoutCitySuggestions(els, []);
+      await loadCheckoutWarehouses(els, btn.dataset.ref || "", els.checkoutDeliveryType?.value || "warehouse");
+      setTimeout(() => {
+        checkoutCitySelectionInProgress = false;
+      }, 0);
+    });
+  }
+  if (els.checkoutBranchSuggestions) {
+    els.checkoutBranchSuggestions.addEventListener("mousedown", (event) => {
+      const btn = event.target.closest(".city-suggestion-item");
+      if (!btn || btn.disabled) return;
+      event.preventDefault();
+      checkoutBranchSelectionInProgress = true;
+      if (els.checkoutDeliveryPoint) els.checkoutDeliveryPoint.value = btn.dataset.name || "";
+      if (els.checkoutBranchRef) els.checkoutBranchRef.value = btn.dataset.ref || "";
+      renderCheckoutBranchSuggestions(els, []);
+      setTimeout(() => {
+        checkoutBranchSelectionInProgress = false;
+      }, 0);
+    });
+  }
+  document.addEventListener("click", (event) => {
+    if (els.checkoutCityWrap && !els.checkoutCityWrap.contains(event.target) && checkoutCityDropdownVisible) {
+      renderCheckoutCitySuggestions(els, []);
+    }
+    if (els.checkoutBranchWrap && !els.checkoutBranchWrap.contains(event.target) && checkoutBranchDropdownVisible) {
+      renderCheckoutBranchSuggestions(els, []);
+    }
+  });
+}
+
 function showCheckoutForm(els, profile) {
   if (els.checkoutAuthPrompt) els.checkoutAuthPrompt.hidden = true;
   if (els.checkoutForm) els.checkoutForm.hidden = false;
@@ -138,10 +449,21 @@ function showCheckoutForm(els, profile) {
   form.elements.phone.value = profile?.phone || "";
   form.elements.email.value = profile?.email || "";
   form.elements.deliveryProvider.value = d.provider || "nova_poshta";
+  form.elements.deliveryType.value = d.deliveryType || "warehouse";
   form.elements.paymentMethod.value = d.paymentMethod || "cod";
   form.elements.city.value = d.city || "";
-  form.elements.deliveryPoint.value = d.branchText || d.address || "";
+  form.elements.cityRef.value = d.cityRef || "";
+  form.elements.branchRef.value = d.branch || "";
+  form.elements.deliveryPoint.value = d.deliveryType === "address" ? (d.address || "") : (d.branchText || "");
   form.elements.orderComment.value = "";
+  applyCheckoutDeliveryVisibility(els);
+  if (form.elements.deliveryProvider.value === "nova_poshta" && form.elements.cityRef.value && form.elements.deliveryType.value !== "address") {
+    void loadCheckoutWarehouses(els, form.elements.cityRef.value, form.elements.deliveryType.value, {
+      preserveSelection: true,
+      preselectedBranchRef: form.elements.branchRef.value,
+      preselectedBranchText: form.elements.deliveryPoint.value
+    });
+  }
 }
 
 function openCheckoutModal(els, valid, total) {
@@ -552,16 +874,6 @@ async function mountPreview(item) {
 }
 
 async function analyzeItem(item, els) {
-  const ext = extOf(item.file.name);
-  if (ext === "3mf") {
-    item.loading = false;
-    item.analysis = null;
-    item.error = "3MF не підтримується для авто-розрахунку. Використайте STL/OBJ.";
-    updateCard(item);
-    updateSummary(els);
-    return;
-  }
-
   item.loading = true;
   item.error = "";
   updateCard(item);
@@ -744,8 +1056,11 @@ async function submitCheckoutOrder(els) {
     phone: String(data.get("phone") || "").trim(),
     email: String(data.get("email") || "").trim().toLowerCase(),
     deliveryProvider: String(data.get("deliveryProvider") || "").trim(),
+    deliveryType: String(data.get("deliveryType") || "warehouse").trim(),
     paymentMethod: String(data.get("paymentMethod") || "").trim(),
     city: String(data.get("city") || "").trim(),
+    cityRef: String(data.get("cityRef") || "").trim(),
+    branchRef: String(data.get("branchRef") || "").trim(),
     deliveryPoint: String(data.get("deliveryPoint") || "").trim(),
     orderComment: String(data.get("orderComment") || "").trim()
   };
@@ -755,6 +1070,14 @@ async function submitCheckoutOrder(els) {
   }
   if (!customer.deliveryProvider || !customer.paymentMethod || !customer.city || !customer.deliveryPoint) {
     throw new Error("Заповніть дані доставки та оплати");
+  }
+  if (customer.deliveryProvider === "nova_poshta") {
+    if (!customer.cityRef) {
+      throw new Error("Оберіть місто зі списку Нової пошти");
+    }
+    if (customer.deliveryType !== "address" && !customer.branchRef) {
+      throw new Error("Оберіть відділення або поштомат зі списку");
+    }
   }
 
   const profile = getClientProfile();
@@ -783,12 +1106,16 @@ async function submitCheckoutOrder(els) {
   fd.set("userEmail", customer.email);
   fd.set("userPhone", customer.phone);
   fd.set("userDeliveryProvider", customer.deliveryProvider);
+  fd.set("userDeliveryType", customer.deliveryType);
   fd.set("userPaymentMethod", customer.paymentMethod);
   fd.set("userCity", customer.city);
+  fd.set("userCityRef", customer.cityRef);
+  fd.set("userBranchRef", customer.branchRef);
   fd.set("userDeliveryPoint", customer.deliveryPoint);
   fd.set("userOrderComment", customer.orderComment);
   fd.set("userIsGuest", authorized ? "0" : "1");
   if (profile?.id) fd.set("userId", String(profile.id));
+  if (profile?.clientId) fd.set("userClientId", String(profile.clientId));
 
   const res = await fetch(API_ORDER, { method: "POST", body: fd });
   const responseData = await res.json().catch(() => ({}));
@@ -804,9 +1131,13 @@ async function submitCheckoutOrder(els) {
       delivery: {
         ...(profile.delivery || {}),
         provider: customer.deliveryProvider,
+        deliveryType: customer.deliveryType,
         paymentMethod: customer.paymentMethod,
         city: customer.city,
-        branchText: customer.deliveryPoint
+        cityRef: customer.cityRef,
+        branch: customer.branchRef,
+        branchText: customer.deliveryType === "address" ? "" : customer.deliveryPoint,
+        address: customer.deliveryType === "address" ? customer.deliveryPoint : ""
       }
     };
     localStorage.setItem("userProfile", JSON.stringify(updated));
@@ -837,6 +1168,11 @@ function initRequestForm(form, statusEl) {
     statusEl.hidden = true;
     statusEl.classList.remove("is-ok", "is-err");
     const fd = new FormData(form);
+    const profile = getClientProfile();
+    if (profile?.id) fd.set("userId", String(profile.id));
+    if (profile?.clientId) fd.set("clientId", String(profile.clientId));
+    if (!fd.get("email") && profile?.email) fd.set("email", String(profile.email));
+    if (!fd.get("phone") && profile?.phone) fd.set("phone", String(profile.phone));
     const att = fd.get("attachment");
     if (att instanceof File && att.size > MAX_BYTES) {
       statusEl.hidden = false;
@@ -900,6 +1236,19 @@ function init() {
     checkoutAuthPrompt: document.getElementById("print3dCheckoutAuthPrompt"),
     checkoutForm: document.getElementById("print3dCheckoutForm"),
     checkoutStatus: document.getElementById("print3dCheckoutStatus"),
+    checkoutDeliveryProvider: document.getElementById("print3dCheckoutDeliveryProvider"),
+    checkoutDeliveryType: document.getElementById("print3dCheckoutDeliveryType"),
+    checkoutDeliveryTypeWrap: document.getElementById("print3dCheckoutDeliveryTypeWrap"),
+    checkoutPaymentMethod: document.getElementById("print3dCheckoutPaymentMethod"),
+    checkoutCityWrap: document.getElementById("print3dCheckoutCityWrap"),
+    checkoutCityInput: document.getElementById("print3dCheckoutCity"),
+    checkoutCityRef: document.getElementById("print3dCheckoutCityRef"),
+    checkoutCitySuggestions: document.getElementById("print3dCheckoutCitySuggestions"),
+    checkoutBranchWrap: document.getElementById("print3dCheckoutBranchWrap"),
+    checkoutDeliveryPointLabel: document.getElementById("print3dCheckoutDeliveryPointWrap"),
+    checkoutDeliveryPoint: document.getElementById("print3dCheckoutDeliveryPoint"),
+    checkoutBranchRef: document.getElementById("print3dCheckoutBranchRef"),
+    checkoutBranchSuggestions: document.getElementById("print3dCheckoutBranchSuggestions"),
     checkoutLoginBtn: document.getElementById("print3dCheckoutLoginBtn"),
     checkoutRegisterBtn: document.getElementById("print3dCheckoutRegisterBtn"),
     checkoutGuestBtn: document.getElementById("print3dCheckoutGuestBtn"),
@@ -909,6 +1258,7 @@ function init() {
   };
 
   if (els.checkoutModal) {
+    bindCheckoutSuggestionEvents(els);
     els.checkoutModal.querySelectorAll("[data-close-print3d-checkout]").forEach((el) => {
       el.addEventListener("click", (e) => {
         e.preventDefault();
@@ -930,6 +1280,62 @@ function init() {
     }
     if (els.checkoutGuestBtn) {
       els.checkoutGuestBtn.addEventListener("click", () => showCheckoutForm(els, null));
+    }
+    if (els.checkoutDeliveryProvider) {
+      els.checkoutDeliveryProvider.addEventListener("change", () => {
+        applyCheckoutDeliveryVisibility(els);
+      });
+    }
+    if (els.checkoutDeliveryType) {
+      els.checkoutDeliveryType.addEventListener("change", () => {
+        if (els.checkoutBranchRef) els.checkoutBranchRef.value = "";
+        if (els.checkoutDeliveryPoint) els.checkoutDeliveryPoint.value = "";
+        checkoutBranchOptions = [];
+        renderCheckoutBranchSuggestions(els, []);
+        applyCheckoutDeliveryVisibility(els);
+      });
+    }
+    if (els.checkoutCityInput) {
+      els.checkoutCityInput.addEventListener("input", () => {
+        void onCheckoutCityInput(els);
+      });
+      els.checkoutCityInput.addEventListener("focus", () => {
+        if (String(els.checkoutCityInput.value || "").trim().length >= 1) {
+          void onCheckoutCityInput(els);
+        }
+      });
+      els.checkoutCityInput.addEventListener("change", () => {
+        void onCheckoutCityChange(els);
+      });
+      els.checkoutCityInput.addEventListener("blur", () => {
+        void onCheckoutCityChange(els);
+      });
+    }
+    if (els.checkoutDeliveryPoint) {
+      els.checkoutDeliveryPoint.addEventListener("input", () => {
+        if (els.checkoutDeliveryProvider?.value === "nova_poshta" && els.checkoutDeliveryType?.value !== "address") {
+          onCheckoutBranchInput(els);
+        }
+      });
+      els.checkoutDeliveryPoint.addEventListener("change", () => {
+        if (els.checkoutDeliveryProvider?.value === "nova_poshta" && els.checkoutDeliveryType?.value !== "address") {
+          onCheckoutBranchChange(els);
+        }
+      });
+      els.checkoutDeliveryPoint.addEventListener("blur", () => {
+        if (els.checkoutDeliveryProvider?.value === "nova_poshta" && els.checkoutDeliveryType?.value !== "address") {
+          onCheckoutBranchChange(els);
+        }
+      });
+      els.checkoutDeliveryPoint.addEventListener("focus", () => {
+        if (
+          els.checkoutDeliveryProvider?.value === "nova_poshta" &&
+          els.checkoutDeliveryType?.value !== "address" &&
+          checkoutBranchOptions.length
+        ) {
+          onCheckoutBranchInput(els);
+        }
+      });
     }
     if (els.checkoutForm) {
       els.checkoutForm.addEventListener("submit", async (e) => {

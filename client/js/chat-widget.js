@@ -35,10 +35,14 @@
       const raw = localStorage.getItem(PROFILE_KEY);
       if (!raw) return {};
       const p = JSON.parse(raw);
+      const userId = String(p?.id || "").trim();
+      const clientId = String(p?.clientId || "").trim();
       const email = String(p?.email || "").trim();
       const phone = String(p?.phone || "").trim();
       const name = [p?.name, p?.lastName].filter(Boolean).join(" ").trim();
       return {
+        ...(userId ? { userId } : {}),
+        ...(clientId ? { clientId } : {}),
         ...(email ? { email } : {}),
         ...(phone ? { phone } : {}),
         ...(name ? { name } : {})

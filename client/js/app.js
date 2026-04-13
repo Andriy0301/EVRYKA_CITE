@@ -89,12 +89,14 @@ function fillProfileForm(profile) {
 function applyAuthMode() {
   const title = document.getElementById("authTitle");
   const submitBtn = document.getElementById("authSubmitBtn");
+  const oauthLabel = document.getElementById("authOauthLabel");
   const registerOnly = document.querySelectorAll(".auth-register-only");
   const terms = document.getElementById("termsCheck");
 
   const isRegister = authMode === "register";
   if (title) title.innerText = isRegister ? "Create Account" : "Log In";
   if (submitBtn) submitBtn.innerText = isRegister ? "Create Account" : "Log In";
+  if (oauthLabel) oauthLabel.innerText = isRegister ? "Sign up with Google" : "Login with Google";
   registerOnly.forEach((el) => {
     el.style.display = isRegister ? "block" : "none";
   });
@@ -176,7 +178,7 @@ function initGoogleSignIn() {
     theme: "outline",
     size: "large",
     shape: "pill",
-    text: "signin_with",
+    text: authMode === "register" ? "signup_with" : "signin_with",
     width: 280
   });
 }
