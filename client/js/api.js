@@ -260,6 +260,21 @@ async function createNovaPoshtaTtn(payload) {
   return res.json();
 }
 
+async function trackNovaPoshtaTtn(ttn) {
+  const normalizedTtn = String(ttn || "").trim();
+  if (!normalizedTtn) {
+    throw new Error("Не передано ТТН");
+  }
+
+  const res = await fetch(`/api/shipping/nova-poshta/track-ttn?ttn=${encodeURIComponent(normalizedTtn)}`);
+  if (!res.ok) {
+    const body = await res.json().catch(() => ({}));
+    throw new Error(body.error || "Не вдалося отримати статус ТТН");
+  }
+
+  return res.json();
+}
+
 async function createOrder(payload) {
   const res = await fetch(`/api/orders`, {
     method: "POST",
@@ -282,6 +297,40 @@ async function getAllOrders(adminKey) {
   if (!res.ok) {
     const body = await res.json().catch(() => ({}));
     throw new Error(body.error || "Не вдалося завантажити замовлення");
+  }
+  return res.json();
+}
+
+async function syncAllOrderStatuses(adminKey) {
+  const res = await fetch(`/api/orders/sync-status`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({ key: String(adminKey || "") })
+  });
+  if (!res.ok) {
+    const body = await res.json().catch(() => ({}));
+    throw new Error(body.error || "Не вдалося запустити синхронізацію статусів");
+  }
+  return res.json();
+}
+
+async function updateCrmEventStatus(adminKey, eventId, status) {
+  const res = await fetch(`/api/orders/crm-events/status`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({
+      key: String(adminKey || ""),
+      eventId: String(eventId || ""),
+      status: String(status || "")
+    })
+  });
+  if (!res.ok) {
+    const body = await res.json().catch(() => ({}));
+    throw new Error(body.error || "Не вдалося оновити CRM-статус");
   }
   return res.json();
 }

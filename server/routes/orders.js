@@ -2,9 +2,15 @@ const express = require("express");
 const fs = require("fs");
 const path = require("path");
 const { ensureClientIds, findUserByIdentity } = require("../utils/client-id");
+const {
+  syncOrderStatusesOnce,
+  CRM_NOTIFICATIONS_PATH,
+  STATUS_SYNC_STATE_PATH
+} = require("../utils/order-status-sync");
 
 const router = express.Router();
 const ordersPath = path.join(__dirname, "../data/orders.json");
+const print3dOrdersPath = path.join(__dirname, "../data/print3d-orders.json");
 const usersPath = path.join(__dirname, "../data/users.json");
 const { notifyNewOrder } = require("../utils/telegram");
 const ADMIN_ORDERS_KEY = process.env.ADMIN_ORDERS_KEY || "31415";
@@ -24,6 +30,46 @@ function readOrders() {
 
 function writeOrders(orders) {
   fs.writeFileSync(ordersPath, JSON.stringify(orders, null, 2));
+}
+
+function readPrint3dOrders() {
+  try {
+    if (!fs.existsSync(print3dOrdersPath)) {
+      fs.writeFileSync(print3dOrdersPath, "[]");
+      return [];
+    }
+    const raw = fs.readFileSync(print3dOrdersPath, "utf8");
+    return raw ? JSON.parse(raw) : [];
+  } catch {
+    return [];
+  }
+}
+
+function readCrmNotifications() {
+  try {
+    if (!fs.existsSync(CRM_NOTIFICATIONS_PATH)) return [];
+    const raw = fs.readFileSync(CRM_NOTIFICATIONS_PATH, "utf8");
+    const parsed = raw ? JSON.parse(raw) : [];
+    return Array.isArray(parsed) ? parsed : [];
+  } catch {
+    return [];
+  }
+}
+
+function writeCrmNotifications(events) {
+  fs.mkdirSync(path.dirname(CRM_NOTIFICATIONS_PATH), { recursive: true });
+  fs.writeFileSync(CRM_NOTIFICATIONS_PATH, JSON.stringify(events, null, 2));
+}
+
+function readStatusSyncState() {
+  try {
+    if (!fs.existsSync(STATUS_SYNC_STATE_PATH)) return {};
+    const raw = fs.readFileSync(STATUS_SYNC_STATE_PATH, "utf8");
+    const parsed = raw ? JSON.parse(raw) : {};
+    return parsed && typeof parsed === "object" ? parsed : {};
+  } catch {
+    return {};
+  }
 }
 
 function readUsers() {
@@ -152,7 +198,57 @@ router.get("/all", (req, res) => {
   if (!key || key !== ADMIN_ORDERS_KEY) {
     return res.status(403).json({ error: "Доступ заборонено" });
   }
-  return res.json({ orders: readOrders() });
+  return res.json({
+    orders: readOrders(),
+    print3dOrders: readPrint3dOrders(),
+    crmNotifications: readCrmNotifications().slice(0, 200),
+    statusSync: readStatusSyncState()
+  });
+});
+
+router.post("/sync-status", async (req, res) => {
+  const key = String(req.body?.key || req.query.key || req.headers["x-admin-key"] || "").trim();
+  if (!key || key !== ADMIN_ORDERS_KEY) {
+    return res.status(403).json({ error: "Доступ заборонено" });
+  }
+
+  const result = await syncOrderStatusesOnce();
+  if (!result?.ok && !result?.skipped) {
+    return res.status(500).json({ error: result.error || "Помилка синхронізації" });
+  }
+  return res.json(result);
+});
+
+router.post("/crm-events/status", (req, res) => {
+  const key = String(req.body?.key || req.query.key || req.headers["x-admin-key"] || "").trim();
+  if (!key || key !== ADMIN_ORDERS_KEY) {
+    return res.status(403).json({ error: "Доступ заборонено" });
+  }
+
+  const eventId = String(req.body?.eventId || "").trim();
+  const status = String(req.body?.status || "").trim();
+  const allowed = new Set(["in_progress", "reminded", "closed"]);
+  if (!eventId) {
+    return res.status(400).json({ error: "eventId обов'язковий" });
+  }
+  if (!allowed.has(status)) {
+    return res.status(400).json({ error: "Некоректний статус CRM-події" });
+  }
+
+  const events = readCrmNotifications();
+  const idx = events.findIndex((evt) => String(evt?.id || "").trim() === eventId);
+  if (idx < 0) {
+    return res.status(404).json({ error: "CRM-подію не знайдено" });
+  }
+
+  const current = events[idx] || {};
+  events[idx] = {
+    ...current,
+    crmStatus: status,
+    crmStatusUpdatedAt: new Date().toISOString()
+  };
+  writeCrmNotifications(events);
+  return res.json({ ok: true, event: events[idx] });
 });
 
 module.exports = router;

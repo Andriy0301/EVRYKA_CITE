@@ -261,4 +261,31 @@ router.post("/nova-poshta/create-ttn", async (req, res) => {
   }
 });
 
+router.get("/nova-poshta/track-ttn", async (req, res) => {
+  try {
+    const ttn = String(req.query.ttn || "").trim();
+    if (!ttn) {
+      return res.status(400).json({ error: "Не передано ТТН" });
+    }
+
+    const data = await callNovaPoshta("TrackingDocument", "getStatusDocuments", {
+      Documents: [{ DocumentNumber: ttn, Phone: "" }]
+    });
+    const doc = data[0] || {};
+
+    return res.json({
+      ttn,
+      status: String(doc.Status || "").trim(),
+      statusCode: String(doc.StatusCode || "").trim(),
+      warehouseRecipient: String(doc.WarehouseRecipient || "").trim(),
+      warehouseSender: String(doc.WarehouseSender || "").trim(),
+      dateReceived: String(doc.DateReceived || "").trim(),
+      actualDeliveryDate: String(doc.ActualDeliveryDate || "").trim(),
+      scheduledDeliveryDate: String(doc.ScheduledDeliveryDate || "").trim()
+    });
+  } catch (error) {
+    return res.status(500).json({ error: error.message || "Не вдалося отримати статус ТТН" });
+  }
+});
+
 module.exports = router;

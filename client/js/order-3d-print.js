@@ -6,6 +6,10 @@ const THREE_BASE = "https://esm.sh/three@0.170.0";
 const API_ANALYZE = "/api/print3d/analyze-model";
 const API_REQUEST = "/api/print3d/request";
 const API_ORDER = "/api/print3d/order";
+const PRINT3D_CHECKOUT_PAGE = "order-3d-checkout.html";
+const PRINT3D_PENDING_KEY = "print3dCheckoutPending";
+const PRINT3D_DB_NAME = "evrykaPrint3dDb";
+const PRINT3D_DB_STORE = "pendingFiles";
 const MAX_BYTES = 50 * 1024 * 1024;
 const DEBOUNCE_MS = 400;
 
@@ -21,6 +25,36 @@ let checkoutCitySelectionInProgress = false;
 let checkoutBranchOptions = [];
 let checkoutBranchDropdownVisible = false;
 let checkoutBranchSelectionInProgress = false;
+
+function openPrint3dDb() {
+  return new Promise((resolve, reject) => {
+    const req = indexedDB.open(PRINT3D_DB_NAME, 1);
+    req.onupgradeneeded = () => {
+      const db = req.result;
+      if (!db.objectStoreNames.contains(PRINT3D_DB_STORE)) {
+        db.createObjectStore(PRINT3D_DB_STORE, { keyPath: "id" });
+      }
+    };
+    req.onsuccess = () => resolve(req.result);
+    req.onerror = () => reject(req.error || new Error("IndexedDB unavailable"));
+  });
+}
+
+async function dbPutPendingFile(id, file) {
+  const db = await openPrint3dDb();
+  await new Promise((resolve, reject) => {
+    const tx = db.transaction(PRINT3D_DB_STORE, "readwrite");
+    tx.objectStore(PRINT3D_DB_STORE).put({
+      id,
+      blob: file,
+      name: file.name,
+      type: file.type || "application/octet-stream"
+    });
+    tx.oncomplete = () => resolve();
+    tx.onerror = () => reject(tx.error || new Error("Failed to save file"));
+  });
+  db.close();
+}
 const COLOR_PRESETS = [
   { id: "white", name: "Білий", hex: "#f5f5f4" },
   { id: "black", name: "Чорний", hex: "#222222" },
@@ -685,10 +719,6 @@ function createCardElement(item) {
   body.append(previewWrap, info);
   card.append(head, body);
 
-  initPrint3dCustomSelect(materialId);
-  initPrint3dCustomSelect(strengthId);
-  initPrint3dCustomSelect(qualityId);
-
   return {
     card,
     removeBtn,
@@ -1041,6 +1071,9 @@ function addFiles(files, els) {
       updateSummary(els);
     });
     els.modelsGrid.appendChild(item.ui.card);
+    initPrint3dCustomSelect(item.ui.selMaterial.id);
+    initPrint3dCustomSelect(item.ui.selStrength.id);
+    initPrint3dCustomSelect(item.ui.selQuality.id);
     modelItems.push(item);
 
     void mountPreview(item).catch((e) => {
@@ -1108,6 +1141,42 @@ function initModelMode(els) {
     updateSummary(els);
   });
 
+  async function redirectTo3dCheckout(validItems, total) {
+    const pendingId = `p3d_${Date.now()}_${Math.random().toString(36).slice(2, 8)}`;
+    const models = [];
+
+    for (let i = 0; i < validItems.length; i++) {
+      const item = validItems[i];
+      const fileKey = `${pendingId}_f_${i + 1}`;
+      await dbPutPendingFile(fileKey, item.file);
+      models.push({
+        fileKey,
+        name: item.file.name,
+        size: item.file.size,
+        type: item.file.type || "",
+        material: item.options?.material || "PLA",
+        strength: item.options?.strength || "medium",
+        quality: item.options?.quality || "normal",
+        color: item.color || els.orderColorHex || DEFAULT_COLOR,
+        comment: item.comment || "",
+        price: Number(item.analysis?.price || 0),
+        volume: Number(item.analysis?.volume || 0),
+        estimatedWeight: Number(item.analysis?.estimatedWeight || 0),
+        printTimeHours: Number(item.analysis?.printTimeHours || 0)
+      });
+    }
+
+    const payload = {
+      pendingId,
+      createdAt: new Date().toISOString(),
+      orderColor: els.orderColorHex || DEFAULT_COLOR,
+      total: Number(total || 0),
+      models
+    };
+    sessionStorage.setItem(PRINT3D_PENDING_KEY, JSON.stringify(payload));
+    window.location.href = PRINT3D_CHECKOUT_PAGE;
+  }
+
   els.btnOrder.addEventListener("click", async () => {
     const valid = modelItems.filter((x) => x.analysis && !x.error);
     const total = valid.reduce((sum, x) => sum + Number(x.analysis.price || 0), 0);
@@ -1115,7 +1184,14 @@ function initModelMode(els) {
       alert("Спочатку додайте STL/OBJ і дочекайтесь розрахунку.");
       return;
     }
-    openCheckoutModal(els, valid, total);
+    try {
+      els.btnOrder.disabled = true;
+      await redirectTo3dCheckout(valid, total);
+    } catch (err) {
+      alert(err instanceof Error ? err.message : "Не вдалося підготувати checkout сторінку");
+    } finally {
+      els.btnOrder.disabled = false;
+    }
   });
 }
 

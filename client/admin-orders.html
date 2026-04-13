@@ -15,16 +15,37 @@
       <label>Адмін-ключ
         <input id="adminKeyInput" type="password" placeholder="Введіть ключ доступу">
       </label>
+      <label>Фільтр замовлень
+        <select id="adminOrderFilter">
+          <option value="all">Усі</option>
+          <option value="awaiting_long">Довго очікують на видачу</option>
+          <option value="picked_up">Отримані клієнтом</option>
+          <option value="without_ttn">Без ТТН</option>
+        </select>
+      </label>
       <div class="cabinet-actions-row">
         <button id="loadOrdersBtn" type="button" class="checkout-btn">Завантажити замовлення</button>
+        <button id="syncStatusesBtn" type="button" class="checkout-btn">Синхронізувати статуси</button>
       </div>
       <p id="adminOrdersMessage" class="auth-message"></p>
     </section>
 
     <section id="adminOrdersList"></section>
+    <section class="products cabinet-card">
+      <h3>CRM-події</h3>
+      <label>Фільтр CRM-подій
+        <select id="adminCrmFilter">
+          <option value="all">Усі</option>
+          <option value="in_progress">В роботі</option>
+          <option value="reminded">Нагадано</option>
+          <option value="closed">Закрито</option>
+        </select>
+      </label>
+      <div id="adminCrmEvents"></div>
+    </section>
   </main>
 
-  <script src="js/api.js?v=20260416"></script>
-  <script src="js/admin-orders.js?v=20260416"></script>
+  <script src="js/api.js?v=20260417"></script>
+  <script src="js/admin-orders.js?v=20260417"></script>
 </body>
 </html>

@@ -46,6 +46,47 @@ function getCabOrderItemImage(item) {
   return `${API_URL}${candidate}`;
 }
 
+function getCabDeliveryStatusLabel(track) {
+  const statusText = String(track?.status || "").trim();
+  const statusCode = String(track?.statusCode || "").trim();
+  if (!statusText) return "Статус доставки невідомий";
+
+  const pickedUpCodes = new Set(["9", "10", "11"]);
+  const awaitingCodes = new Set(["7", "8"]);
+  const inTransitCodes = new Set(["1", "2", "3", "4", "5", "6"]);
+
+  if (pickedUpCodes.has(statusCode)) return "Отримано клієнтом";
+  if (awaitingCodes.has(statusCode)) return "Очікує у відділенні/поштоматі";
+  if (inTransitCodes.has(statusCode)) return "У дорозі";
+  return statusText;
+}
+
+async function refreshCabinetDeliveryStatuses() {
+  if (typeof trackNovaPoshtaTtn !== "function") return;
+
+  const statusNodes = Array.from(document.querySelectorAll("[data-ttn-status]"));
+  if (!statusNodes.length) return;
+
+  const uniqueTtns = [...new Set(statusNodes.map((node) => String(node.dataset.ttnStatus || "").trim()).filter(Boolean))];
+  if (!uniqueTtns.length) return;
+
+  await Promise.all(
+    uniqueTtns.map(async (ttn) => {
+      let label = "Статус недоступний";
+      try {
+        const track = await trackNovaPoshtaTtn(ttn);
+        label = getCabDeliveryStatusLabel(track);
+      } catch (_) {}
+
+      statusNodes
+        .filter((node) => String(node.dataset.ttnStatus || "").trim() === ttn)
+        .forEach((node) => {
+          node.innerText = label;
+        });
+    })
+  );
+}
+
 function renderCabinetOrders(data) {
   const list = document.getElementById("cabOrdersList");
   if (!list) return;
@@ -105,6 +146,7 @@ function renderCabinetOrders(data) {
               <p><b>Колір замовлення:</b> ${order?.orderColor || "-"}</p>
               <p><b>Доставка:</b> ${delivery?.city || "-"}, ${deliveryPoint}</p>
               ${order?.ttn ? `<p><b>ТТН:</b> ${order.ttn}</p>` : ""}
+              <p><b>Статус доставки:</b> ${order?.ttn ? `<span data-ttn-status="${order.ttn}">Перевіряємо...</span>` : "ТТН відсутня"}</p>
             </div>
           </article>
         `;
@@ -144,6 +186,7 @@ function renderCabinetOrders(data) {
             <p><b>Сума:</b> ${Number(order.total || 0)} грн</p>
             <p><b>Доставка:</b> ${order?.customer?.delivery?.city || "-"}, ${order?.customer?.delivery?.branchText || "-"}</p>
             ${order?.ttn ? `<p><b>ТТН:</b> ${order.ttn}</p>` : ""}
+            <p><b>Статус доставки:</b> ${order?.ttn ? `<span data-ttn-status="${order.ttn}">Перевіряємо...</span>` : "ТТН відсутня"}</p>
             <ul class="cab-order-items">${itemsHtml}</ul>
           </div>
         </article>
@@ -170,6 +213,7 @@ async function loadCabinetOrders(profile) {
       orders: data?.orders || [],
       print3dOrders: data?.print3dOrders || profile?.print3dOrders || []
     });
+    await refreshCabinetDeliveryStatuses();
   } catch (error) {
     renderCabinetOrders({
       orders: [],

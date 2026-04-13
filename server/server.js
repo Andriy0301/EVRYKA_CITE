@@ -7,6 +7,7 @@ require("dotenv").config({ path: path.join(__dirname, "../.env") });
 const app = express();
 
 const { isTelegramConfigured, startTelegramMenuBot } = require("./utils/telegram");
+const { startOrderStatusSyncLoop } = require("./utils/order-status-sync");
 if (isTelegramConfigured()) {
   console.log("[telegram] Сповіщення увімкнено (TELEGRAM_BOT_TOKEN + TELEGRAM_CHAT_ID)");
   startTelegramMenuBot();
@@ -15,6 +16,7 @@ if (isTelegramConfigured()) {
     "[telegram] Сповіщення вимкнено — додайте TELEGRAM_BOT_TOKEN і TELEGRAM_CHAT_ID у змінних середовища"
   );
 }
+startOrderStatusSyncLoop();
 
 // CORS
 app.use(cors({
