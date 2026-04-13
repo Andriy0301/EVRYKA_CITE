@@ -46,6 +46,15 @@ function extOf(name) {
   return dot >= 0 ? lower.slice(dot) : "";
 }
 
+/** Multer дає Node.js Buffer; STLLoader/DataView потребують саме ArrayBuffer */
+function toArrayBuffer(input) {
+  if (input instanceof ArrayBuffer) return input;
+  const buf = Buffer.isBuffer(input) ? input : Buffer.from(input);
+  const ab = new ArrayBuffer(buf.length);
+  new Uint8Array(ab).set(buf);
+  return ab;
+}
+
 async function parseModelVolume(buffer, originalname) {
   const THREE = await import("three");
   const { STLLoader } = await import("three/examples/jsm/loaders/STLLoader.js");
@@ -54,7 +63,7 @@ async function parseModelVolume(buffer, originalname) {
   const ext = extOf(originalname);
   if (ext === ".stl") {
     const loader = new STLLoader();
-    const geometry = loader.parse(buffer);
+    const geometry = loader.parse(toArrayBuffer(buffer));
     const vol = computeBufferGeometryVolumeCm3(geometry, THREE);
     geometry.dispose();
     return vol;
