@@ -83,7 +83,8 @@ body.evryka-site:not(.page-home) {
 body.evryka-site.page-product,
 body.evryka-site.page-catalog,
 body.evryka-site.page-cabinet,
-body.evryka-site.page-about {
+body.evryka-site.page-about,
+body.evryka-site.page-print3d {
   padding-top: var(--ev-stack-outer);
 }
 

@@ -33,6 +33,7 @@ const popularityRoute = require("./routes/popularity");
 const shippingRoute = require("./routes/shipping");
 const ordersRoute = require("./routes/orders");
 const inquiriesRoute = require("./routes/inquiries");
+const print3dRoute = require("./routes/print3d");
 
 app.use("/api/products", productsRoute);
 app.use("/api/users", usersRoute);
@@ -40,6 +41,7 @@ app.use("/api/popularity", popularityRoute);
 app.use("/api/shipping", shippingRoute);
 app.use("/api/orders", ordersRoute);
 app.use("/api/inquiries", inquiriesRoute);
+app.use("/api/print3d", print3dRoute);
 
 // 🔥 КАРТИНКИ
 app.use("/images", express.static(path.join(__dirname, "../client/images")));

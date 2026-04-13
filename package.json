@@ -15,7 +15,9 @@
     "csv-parser": "^3.2.0",
     "dotenv": "^17.4.1",
     "express": "^5.2.1",
+    "multer": "^1.4.5-lts.2",
     "nodemon": "^3.1.14",
+    "three": "^0.170.0",
     "xml2js": "^0.6.2"
   }
 }

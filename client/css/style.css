@@ -4282,7 +4282,8 @@ body.cart-open .header .cart {
 }
 
 /* ——— кнопка «вгору» лише на каталозі (над чатом) ——— */
-body.page-catalog .scroll-to-top-btn {
+body.page-catalog .scroll-to-top-btn,
+body.page-print3d .scroll-to-top-btn {
   position: fixed;
   right: calc(18px + env(safe-area-inset-right, 0px));
   bottom: calc(18px + 52px + 12px + env(safe-area-inset-bottom, 0px));
@@ -4303,18 +4304,21 @@ body.page-catalog .scroll-to-top-btn {
   font-family: var(--ev-font);
 }
 
-body.page-catalog .scroll-to-top-btn:hover {
+body.page-catalog .scroll-to-top-btn:hover,
+body.page-print3d .scroll-to-top-btn:hover {
   background: var(--ev-surface-muted);
   border-color: var(--ev-border-mid);
   transform: scale(1.04);
 }
 
-body.page-catalog .scroll-to-top-btn:focus-visible {
+body.page-catalog .scroll-to-top-btn:focus-visible,
+body.page-print3d .scroll-to-top-btn:focus-visible {
   outline: 2px solid var(--ev-accent);
   outline-offset: 2px;
 }
 
-body.page-catalog.cart-open .scroll-to-top-btn {
+body.page-catalog.cart-open .scroll-to-top-btn,
+body.page-print3d.cart-open .scroll-to-top-btn {
   opacity: 0 !important;
   visibility: hidden !important;
   pointer-events: none !important;
@@ -4619,7 +4623,8 @@ body.cart-open .chat-widget-root {
 body.evryka-site.page-product,
 body.evryka-site.page-catalog,
 body.evryka-site.page-cabinet,
-body.evryka-site.page-about {
+body.evryka-site.page-about,
+body.evryka-site.page-print3d {
   --product-rhythm: clamp(24px, 3.5vw, 40px);
   --catalog-panel-bg: var(--ev-panel-chrome);
   --ev-p-ink: var(--ev-ink);
@@ -4644,7 +4649,8 @@ body.evryka-site.page-about {
 .page-product .container,
 .page-catalog .container,
 .page-cabinet .container,
-.page-about .container {
+.page-about .container,
+.page-print3d .container {
   max-width: none;
   width: auto;
   margin-left: calc(
@@ -4660,7 +4666,8 @@ body.evryka-site.page-about {
 /* Каталог і кабінет: одна велика картка (як на сторінці товару) */
 .page-catalog .catalog-shell,
 .page-cabinet .catalog-shell,
-.page-about .catalog-shell {
+.page-about .catalog-shell,
+.page-print3d .catalog-shell {
   --product-rhythm: clamp(24px, 3.5vw, 40px);
   /* Для зазору фільтри↔сітка (як «край→шапка») */
   --ev-header-screen-inset-l: calc(
@@ -4732,7 +4739,8 @@ body.evryka-site.page-about {
   color: var(--ev-p-ink, var(--ev-ink));
 }
 
-.page-about .about-page-title {
+.page-about .about-page-title,
+.page-print3d .about-page-title {
   flex: 1 1 100%;
   width: 100%;
   margin: 0;
@@ -4748,7 +4756,8 @@ body.evryka-site.page-about {
 
 .page-catalog .catalog-page-nav.product-nav,
 .page-cabinet .catalog-shell > .product-nav.catalog-page-nav,
-.page-about .catalog-shell > .product-nav.catalog-page-nav {
+.page-about .catalog-shell > .product-nav.catalog-page-nav,
+.page-print3d .catalog-shell > .product-nav.catalog-page-nav {
   flex: 1 1 100%;
   width: 100%;
   min-width: 100%;
@@ -4765,14 +4774,16 @@ body.evryka-site.page-about {
 /* Без додаткового зсуву — ряд «Назад» збігається з лівим паддінгом shell */
 .page-catalog .catalog-page-nav.product-nav,
 .page-cabinet .catalog-shell > .product-nav.catalog-page-nav,
-.page-about .catalog-shell > .product-nav.catalog-page-nav {
+.page-about .catalog-shell > .product-nav.catalog-page-nav,
+.page-print3d .catalog-shell > .product-nav.catalog-page-nav {
   margin-inline: 0;
   padding-inline: 0;
 }
 
 .page-catalog .back-btn,
 .page-cabinet .catalog-shell .back-btn,
-.page-about .catalog-shell .back-btn {
+.page-about .catalog-shell .back-btn,
+.page-print3d .catalog-shell .back-btn {
   background: var(--ev-surface);
   color: var(--ev-p-ink);
   border: 1px solid var(--ev-p-line);
@@ -4788,33 +4799,38 @@ body.evryka-site.page-about {
 
 .page-catalog .back-btn:hover,
 .page-cabinet .catalog-shell .back-btn:hover,
-.page-about .catalog-shell .back-btn:hover {
+.page-about .catalog-shell .back-btn:hover,
+.page-print3d .catalog-shell .back-btn:hover {
   background: var(--ev-p-tier2);
   color: var(--ev-p-ink);
 }
 
 .page-catalog .back-icon,
 .page-cabinet .catalog-shell .back-icon,
-.page-about .catalog-shell .back-icon {
+.page-about .catalog-shell .back-icon,
+.page-print3d .catalog-shell .back-icon {
   stroke: var(--ev-p-ink);
 }
 
 .page-catalog .back-btn:hover .back-icon,
 .page-cabinet .catalog-shell .back-btn:hover .back-icon,
-.page-about .catalog-shell .back-btn:hover .back-icon {
+.page-about .catalog-shell .back-btn:hover .back-icon,
+.page-print3d .catalog-shell .back-btn:hover .back-icon {
   stroke: var(--ev-p-ink);
 }
 
 .page-catalog .breadcrumbs,
 .page-cabinet .catalog-shell .breadcrumbs,
-.page-about .catalog-shell .breadcrumbs {
+.page-about .catalog-shell .breadcrumbs,
+.page-print3d .catalog-shell .breadcrumbs {
   color: var(--ev-p-muted);
   font-weight: 500;
 }
 
 .page-catalog .breadcrumbs a,
 .page-cabinet .catalog-shell .breadcrumbs a,
-.page-about .catalog-shell .breadcrumbs a {
+.page-about .catalog-shell .breadcrumbs a,
+.page-print3d .catalog-shell .breadcrumbs a {
   position: relative;
   display: inline-block;
   padding: 5px 8px 6px;
@@ -4828,25 +4844,29 @@ body.evryka-site.page-about {
 
 .page-catalog .breadcrumbs a:hover,
 .page-cabinet .catalog-shell .breadcrumbs a:hover,
-.page-about .catalog-shell .breadcrumbs a:hover {
+.page-about .catalog-shell .breadcrumbs a:hover,
+.page-print3d .catalog-shell .breadcrumbs a:hover {
   font-weight: 500;
 }
 
 .page-catalog .breadcrumbs a::after,
 .page-cabinet .catalog-shell .breadcrumbs a::after,
-.page-about .catalog-shell .breadcrumbs a::after {
+.page-about .catalog-shell .breadcrumbs a::after,
+.page-print3d .catalog-shell .breadcrumbs a::after {
   content: none;
 }
 
 .page-catalog .breadcrumbs:hover a,
 .page-cabinet .catalog-shell .breadcrumbs:hover a,
-.page-about .catalog-shell .breadcrumbs:hover a {
+.page-about .catalog-shell .breadcrumbs:hover a,
+.page-print3d .catalog-shell .breadcrumbs:hover a {
   color: var(--ev-muted-nav);
 }
 
 .page-catalog .breadcrumbs:hover a:hover,
 .page-cabinet .catalog-shell .breadcrumbs:hover a:hover,
-.page-about .catalog-shell .breadcrumbs:hover a:hover {
+.page-about .catalog-shell .breadcrumbs:hover a:hover,
+.page-print3d .catalog-shell .breadcrumbs:hover a:hover {
   color: var(--ev-p-ink);
 }
 
