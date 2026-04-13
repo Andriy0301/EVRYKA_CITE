@@ -3,7 +3,7 @@
  * Three.js з jsDelivr (ESM).
  */
 
-const THREE_BASE = "https://cdn.jsdelivr.net/npm/three@0.170.0";
+const THREE_BASE = "https://esm.sh/three@0.170.0";
 const API_ANALYZE = "/api/print3d/analyze-model";
 const API_REQUEST = "/api/print3d/request";
 const MAX_BYTES = 50 * 1024 * 1024;
@@ -12,7 +12,7 @@ const DEBOUNCE_MS = 400;
 let threeMods = null;
 async function loadThreeMods() {
   if (threeMods) return threeMods;
-  const THREE = await import(`${THREE_BASE}/build/three.module.js`);
+  const THREE = await import(THREE_BASE);
   const { STLLoader } = await import(
     `${THREE_BASE}/examples/jsm/loaders/STLLoader.js`
   );
@@ -297,7 +297,11 @@ function initModelMode(els) {
       return;
     }
     currentFile = file;
-    void runPreview(els.canvasHost, file);
+    void runPreview(els.canvasHost, file).catch((err) => {
+      console.error("[print3d preview]", err);
+      els.canvasHost.innerHTML =
+        '<p style="padding:24px;color:#b91c1c;font-size:14px;">Не вдалося завантажити 3D-перегляд.</p>';
+    });
     scheduleAnalyze(els, opts());
   };
 
