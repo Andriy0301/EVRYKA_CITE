@@ -10,6 +10,7 @@ let citySelectionInProgress = false;
 let branchOptions = [];
 let branchDropdownVisible = false;
 let branchSelectionInProgress = false;
+let orderSubmitting = false;
 
 const pendingState = {
   meta: null,
@@ -81,6 +82,14 @@ function showMessage(msg, isError = true) {
   if (!el) return;
   el.textContent = msg;
   el.style.color = isError ? "#b00020" : "#1b7f3a";
+}
+
+function setSubmitLoading(isLoading) {
+  const submitBtn = document.querySelector('#orderForm button[type="submit"]');
+  if (!submitBtn) return;
+  submitBtn.disabled = Boolean(isLoading);
+  submitBtn.classList.toggle("is-loading", Boolean(isLoading));
+  submitBtn.textContent = isLoading ? "Оформлюємо..." : "Підтвердити замовлення";
 }
 
 function escapeHtml(text) {
@@ -401,6 +410,23 @@ function renderBranchSuggestions(options) {
   branchDropdownVisible = true;
 }
 
+function filterBranchOptionsByQuery(options, rawQuery) {
+  const query = String(rawQuery || "").trim().toLowerCase();
+  if (!query) return options;
+
+  // Якщо введено тільки номер (напр. "3"), шукаємо саме відділення/поштомат №3.
+  if (/^\d+$/.test(query)) {
+    return options.filter((w) => {
+      const desc = String(w?.Description || "");
+      const match = desc.match(/(?:відділення|поштомат)\s*№\s*(\d+)/i);
+      if (match?.[1]) return match[1] === query;
+      return false;
+    });
+  }
+
+  return options.filter((w) => String(w?.Description || "").toLowerCase().includes(query));
+}
+
 function onBranchInput() {
   const branchEl = document.getElementById("orderBranch");
   const branchRefEl = document.getElementById("orderBranchRef");
@@ -408,7 +434,7 @@ function onBranchInput() {
   branchRefEl.value = "";
   if (!branchOptions.length) return renderBranchSuggestions([]);
   if (!query) return renderBranchSuggestions(branchOptions);
-  renderBranchSuggestions(branchOptions.filter((w) => (w.Description || "").toLowerCase().includes(query)));
+  renderBranchSuggestions(filterBranchOptionsByQuery(branchOptions, query));
 }
 
 function onBranchChange() {
@@ -426,7 +452,7 @@ function onBranchChange() {
     branchRefEl.value = exact.Ref;
     return renderBranchSuggestions([]);
   }
-  const partial = branchOptions.filter((w) => (w.Description || "").toLowerCase().includes(query));
+  const partial = filterBranchOptionsByQuery(branchOptions, query);
   if (partial.length === 1) {
     branchEl.value = partial[0].Description;
     branchRefEl.value = partial[0].Ref;
@@ -468,6 +494,7 @@ async function cleanupPending() {
 
 async function submitOrder(e) {
   e.preventDefault();
+  if (orderSubmitting) return;
   const models = Array.isArray(pendingState.meta?.models) ? pendingState.meta.models : [];
   if (!models.length) return showMessage("Немає файлів для оформлення");
 
@@ -501,6 +528,9 @@ async function submitOrder(e) {
   }
 
   try {
+    orderSubmitting = true;
+    setSubmitLoading(true);
+    showMessage("Оформлюємо замовлення, зачекайте...", false);
     const totalCost = models.reduce((sum, m) => sum + Number(m.price || 0), 0);
     const orderNumber = `EVR3D-${Date.now().toString().slice(-8)}`;
     let ttn = "";
@@ -584,6 +614,9 @@ async function submitOrder(e) {
     });
   } catch (error) {
     showMessage(error.message || "Не вдалося оформити замовлення");
+  } finally {
+    orderSubmitting = false;
+    setSubmitLoading(false);
   }
 }
 

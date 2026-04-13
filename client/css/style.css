@@ -2688,6 +2688,31 @@ body.cart-open .header .cart {
   filter: brightness(1.06);
 }
 
+.checkout-btn:disabled {
+  opacity: 0.7;
+  cursor: wait;
+  filter: none;
+}
+
+.checkout-btn.is-loading::after {
+  content: "";
+  display: inline-block;
+  width: 14px;
+  height: 14px;
+  margin-left: 8px;
+  border: 2px solid rgba(255, 255, 255, 0.6);
+  border-top-color: rgba(17, 17, 17, 0.85);
+  border-radius: 50%;
+  vertical-align: -2px;
+  animation: checkout-btn-spin 0.8s linear infinite;
+}
+
+@keyframes checkout-btn-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
 .clear-btn {
   margin-top: 10px;
 }
