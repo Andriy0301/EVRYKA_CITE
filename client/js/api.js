@@ -113,13 +113,13 @@ async function trackPopularity(items) {
 }
 
 async function updateUserProfile(payload) {
-  const res = await fetch(`/api/users/update-profile`, {
+  const res = await fetchWithTimeout(`/api/users/update-profile`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json"
     },
     body: JSON.stringify(payload)
-  });
+  }, ORDER_REQUEST_TIMEOUT_MS);
 
   if (!res.ok) {
     const body = await res.json().catch(() => ({}));

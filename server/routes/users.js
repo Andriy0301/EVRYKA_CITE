@@ -1,6 +1,6 @@
 const express = require("express");
 const { ensureClientIds, ensureClientIdForUser } = require("../utils/client-id");
-const { getList, setList } = require("../utils/data-store");
+const { getList, upsertListItem } = require("../utils/data-store");
 
 const router = express.Router();
 
@@ -8,15 +8,15 @@ async function readUsers() {
   try {
     const parsed = await getList("users");
     const { users, changed } = ensureClientIds(Array.isArray(parsed) ? parsed : []);
-    if (changed) await writeUsers(users);
+    if (changed) {
+      for (const user of users) {
+        await upsertListItem("users", user);
+      }
+    }
     return users;
   } catch (error) {
     return [];
   }
-}
-
-async function writeUsers(users) {
-  await setList("users", users);
 }
 
 function sanitizeUser(user) {
@@ -99,13 +99,7 @@ router.post("/register", async (req, res) => {
   };
   ensureClientIdForUser(savedUser, users);
 
-  if (existingIndex >= 0) {
-    users[existingIndex] = savedUser;
-  } else {
-    users.push(savedUser);
-  }
-
-  await writeUsers(users);
+  await upsertListItem("users", savedUser);
   return res.json(sanitizeUser(savedUser));
 });
 
@@ -162,7 +156,7 @@ router.post("/google-login", async (req, res) => {
     };
     ensureClientIdForUser(user, users);
     users.push(user);
-    await writeUsers(users);
+    await upsertListItem("users", user);
   }
 
   return res.json(sanitizeUser(user));
@@ -209,12 +203,7 @@ router.post("/update-profile", async (req, res) => {
   };
   ensureClientIdForUser(updated, users);
 
-  if (index >= 0) {
-    users[index] = updated;
-  } else {
-    users.push(updated);
-  }
-  await writeUsers(users);
+  await upsertListItem("users", updated);
   return res.json(sanitizeUser(updated));
 });
 
@@ -258,6 +247,7 @@ router.post("/cart", async (req, res) => {
     );
   });
 
+  let savedUser;
   if (index < 0) {
     const created = {
       id: normalizedId || Date.now(),
@@ -274,17 +264,16 @@ router.post("/cart", async (req, res) => {
       updatedAt: new Date().toISOString()
     };
     ensureClientIdForUser(created, users);
-    users.push(created);
+    savedUser = created;
   } else {
-    users[index] = {
+    savedUser = {
       ...users[index],
       cart: normalizeCartItems(items),
       updatedAt: new Date().toISOString()
     };
   }
 
-  await writeUsers(users);
-  const savedUser = index < 0 ? users[users.length - 1] : users[index];
+  await upsertListItem("users", savedUser);
   return res.json({ items: savedUser.cart });
 });
 
@@ -328,6 +317,7 @@ router.post("/favorites", async (req, res) => {
     );
   });
 
+  let savedUser;
   if (index < 0) {
     const created = {
       id: normalizedId || Date.now(),
@@ -344,17 +334,16 @@ router.post("/favorites", async (req, res) => {
       updatedAt: new Date().toISOString()
     };
     ensureClientIdForUser(created, users);
-    users.push(created);
+    savedUser = created;
   } else {
-    users[index] = {
+    savedUser = {
       ...users[index],
       favorites: normalizeFavoriteItems(items),
       updatedAt: new Date().toISOString()
     };
   }
 
-  await writeUsers(users);
-  const savedUser = index < 0 ? users[users.length - 1] : users[index];
+  await upsertListItem("users", savedUser);
   return res.json({ items: savedUser.favorites });
 });
 
