@@ -122,8 +122,17 @@ async function updateUserProfile(payload) {
   }, ORDER_REQUEST_TIMEOUT_MS);
 
   if (!res.ok) {
-    const body = await res.json().catch(() => ({}));
-    throw new Error(body.error || "Не вдалося оновити профіль");
+    const raw = await res.text().catch(() => "");
+    let msg = "";
+    if (raw) {
+      try {
+        const body = JSON.parse(raw);
+        msg = String(body?.error || "").trim();
+      } catch {
+        msg = raw.trim().slice(0, 180);
+      }
+    }
+    throw new Error(msg || "Не вдалося оновити профіль");
   }
 
   return res.json();

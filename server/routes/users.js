@@ -163,48 +163,53 @@ router.post("/google-login", async (req, res) => {
 });
 
 router.post("/update-profile", async (req, res) => {
-  const { id, name, lastName, middleName, phone, email, delivery = {} } = req.body || {};
-  const normalizedEmail = String(email || "").trim().toLowerCase();
-  const normalizedPhone = String(phone || "").trim();
+  try {
+    const { id, name, lastName, middleName, phone, email, delivery = {} } = req.body || {};
+    const normalizedEmail = String(email || "").trim().toLowerCase();
+    const normalizedPhone = String(phone || "").trim();
 
-  const users = await readUsers();
-  let index = users.findIndex((u) => String(u.id) === String(id));
-  if (index < 0 && normalizedEmail) {
-    index = users.findIndex((u) => String(u.email || "").toLowerCase() === normalizedEmail);
+    const users = await readUsers();
+    let index = users.findIndex((u) => String(u.id) === String(id));
+    if (index < 0 && normalizedEmail) {
+      index = users.findIndex((u) => String(u.email || "").toLowerCase() === normalizedEmail);
+    }
+    if (index < 0 && normalizedPhone) {
+      index = users.findIndex((u) => String(u.phone || "").trim() === normalizedPhone);
+    }
+
+    const current =
+      index >= 0
+        ? users[index]
+        : {
+            id: id || Date.now(),
+            clientId: "",
+            password: "",
+            name: "",
+            lastName: "",
+            middleName: "",
+            phone: "",
+            email: "",
+            delivery: normalizeDelivery({})
+          };
+
+    const updated = {
+      ...current,
+      name: String(name || current.name || "").trim(),
+      lastName: String(lastName || current.lastName || "").trim(),
+      middleName: String(middleName || current.middleName || "").trim(),
+      phone: normalizedPhone || String(current.phone || "").trim(),
+      email: normalizedEmail || String(current.email || "").trim().toLowerCase(),
+      delivery: normalizeDelivery(delivery, current.delivery),
+      updatedAt: new Date().toISOString()
+    };
+    ensureClientIdForUser(updated, users);
+
+    await upsertListItem("users", updated);
+    return res.json(sanitizeUser(updated));
+  } catch (error) {
+    console.error("[users/update-profile]", error?.stack || error?.message || error);
+    return res.status(500).json({ error: error?.message || "Не вдалося оновити профіль" });
   }
-  if (index < 0 && normalizedPhone) {
-    index = users.findIndex((u) => String(u.phone || "").trim() === normalizedPhone);
-  }
-
-  const current =
-    index >= 0
-      ? users[index]
-      : {
-          id: id || Date.now(),
-          clientId: "",
-          password: "",
-          name: "",
-          lastName: "",
-          middleName: "",
-          phone: "",
-          email: "",
-          delivery: normalizeDelivery({})
-        };
-
-  const updated = {
-    ...current,
-    name: String(name || current.name || "").trim(),
-    lastName: String(lastName || current.lastName || "").trim(),
-    middleName: String(middleName || current.middleName || "").trim(),
-    phone: normalizedPhone || String(current.phone || "").trim(),
-    email: normalizedEmail || String(current.email || "").trim().toLowerCase(),
-    delivery: normalizeDelivery(delivery, current.delivery),
-    updatedAt: new Date().toISOString()
-  };
-  ensureClientIdForUser(updated, users);
-
-  await upsertListItem("users", updated);
-  return res.json(sanitizeUser(updated));
 });
 
 router.get("/cart", async (req, res) => {
