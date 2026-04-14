@@ -44,9 +44,27 @@ app.use("/images", express.static(path.join(__dirname, "../client/images")));
 // 🚀 PORT
 const PORT = process.env.PORT || 3000;
 
+process.on("unhandledRejection", (reason) => {
+  console.error("[process] unhandledRejection:", reason);
+});
+
+process.on("uncaughtException", (error) => {
+  console.error("[process] uncaughtException:", error?.stack || error?.message || error);
+  process.exit(1);
+});
+
 async function bootstrap() {
   try {
+    console.log("[startup] booting app...");
+    console.log("[startup] env:", {
+      nodeEnv: process.env.NODE_ENV || "undefined",
+      port: PORT,
+      hasDatabaseUrl: Boolean(process.env.DATABASE_URL)
+    });
+
     await initDataStore();
+    console.log("[startup] data store initialized");
+
     if (isTelegramConfigured()) {
       console.log("[telegram] Сповіщення увімкнено (TELEGRAM_BOT_TOKEN + TELEGRAM_CHAT_ID)");
       startTelegramMenuBot();
@@ -56,11 +74,15 @@ async function bootstrap() {
       );
     }
     startOrderStatusSyncLoop();
-    app.listen(PORT, () => {
+    const server = app.listen(PORT, () => {
       console.log(`Server started on port ${PORT}`);
     });
+    server.on("error", (error) => {
+      console.error("[startup] listen failed:", error?.stack || error?.message || error);
+      process.exit(1);
+    });
   } catch (error) {
-    console.error("[startup] failed:", error?.message || error);
+    console.error("[startup] failed:", error?.stack || error?.message || error);
     process.exit(1);
   }
 }
