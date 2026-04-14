@@ -43,6 +43,18 @@ app.use("/images", express.static(path.join(__dirname, "../client/images")));
 
 // 🚀 PORT
 const PORT = process.env.PORT || 3000;
+const DATASTORE_RETRY_MS = Math.max(5000, Number(process.env.DATASTORE_RETRY_MS || 15000));
+let dataStoreReady = false;
+let dataStoreInitInProgress = false;
+let dataStoreLastError = "";
+
+app.get("/api/healthz", (req, res) => {
+  res.status(200).json({
+    ok: true,
+    dataStoreReady,
+    dataStoreLastError: dataStoreLastError || null
+  });
+});
 
 process.on("unhandledRejection", (reason) => {
   console.error("[process] unhandledRejection:", reason);
@@ -62,18 +74,6 @@ async function bootstrap() {
       hasDatabaseUrl: Boolean(process.env.DATABASE_URL)
     });
 
-    await initDataStore();
-    console.log("[startup] data store initialized");
-
-    if (isTelegramConfigured()) {
-      console.log("[telegram] Сповіщення увімкнено (TELEGRAM_BOT_TOKEN + TELEGRAM_CHAT_ID)");
-      startTelegramMenuBot();
-    } else {
-      console.warn(
-        "[telegram] Сповіщення вимкнено — додайте TELEGRAM_BOT_TOKEN і TELEGRAM_CHAT_ID у змінних середовища"
-      );
-    }
-    startOrderStatusSyncLoop();
     const server = app.listen(PORT, () => {
       console.log(`Server started on port ${PORT}`);
     });
@@ -81,6 +81,39 @@ async function bootstrap() {
       console.error("[startup] listen failed:", error?.stack || error?.message || error);
       process.exit(1);
     });
+
+    const initDataStoreWithRetry = async () => {
+      if (dataStoreInitInProgress || dataStoreReady) return;
+      dataStoreInitInProgress = true;
+      try {
+        await initDataStore();
+        dataStoreReady = true;
+        dataStoreLastError = "";
+        console.log("[startup] data store initialized");
+
+        if (isTelegramConfigured()) {
+          console.log("[telegram] Сповіщення увімкнено (TELEGRAM_BOT_TOKEN + TELEGRAM_CHAT_ID)");
+          startTelegramMenuBot();
+        } else {
+          console.warn(
+            "[telegram] Сповіщення вимкнено — додайте TELEGRAM_BOT_TOKEN і TELEGRAM_CHAT_ID у змінних середовища"
+          );
+        }
+
+        startOrderStatusSyncLoop();
+      } catch (error) {
+        dataStoreLastError = String(error?.message || error || "init_failed");
+        console.error("[startup] data store init failed:", error?.stack || error?.message || error);
+        console.log(`[startup] retrying data store init in ${DATASTORE_RETRY_MS}ms`);
+        setTimeout(() => {
+          initDataStoreWithRetry().catch(() => null);
+        }, DATASTORE_RETRY_MS);
+      } finally {
+        dataStoreInitInProgress = false;
+      }
+    };
+
+    initDataStoreWithRetry().catch(() => null);
   } catch (error) {
     console.error("[startup] failed:", error?.stack || error?.message || error);
     process.exit(1);

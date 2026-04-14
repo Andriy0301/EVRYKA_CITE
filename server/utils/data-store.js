@@ -18,7 +18,9 @@ const LEGACY_FILES = {
 
 const pool = new Pool({
   connectionString: process.env.DATABASE_URL,
-  ssl: { rejectUnauthorized: false }
+  ssl: { rejectUnauthorized: false },
+  connectionTimeoutMillis: Number(process.env.PG_CONNECTION_TIMEOUT_MS || 10000),
+  idleTimeoutMillis: Number(process.env.PG_IDLE_TIMEOUT_MS || 30000)
 });
 
 let initPromise = null;
