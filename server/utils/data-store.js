@@ -178,7 +178,7 @@ async function initDataStore() {
     // Allow subsequent retries if first init failed or timed out.
     initPromise = null;
     throw error;
-  })();
+  });
   return initPromise;
 }
 
