@@ -25,6 +25,7 @@ const pool = new Pool({
 });
 
 let initPromise = null;
+const DATASTORE_INIT_WAIT_TIMEOUT_MS = Math.max(3000, Number(process.env.DATASTORE_INIT_WAIT_TIMEOUT_MS || 8000));
 
 const LIST_TABLES = {
   users: "users",
@@ -182,8 +183,18 @@ async function initDataStore() {
   return initPromise;
 }
 
+async function ensureDataStoreReady() {
+  const initTask = initDataStore();
+  const timeoutTask = new Promise((_, reject) => {
+    setTimeout(() => {
+      reject(new Error("База даних тимчасово недоступна. Спробуйте ще раз за кілька секунд."));
+    }, DATASTORE_INIT_WAIT_TIMEOUT_MS);
+  });
+  return Promise.race([initTask, timeoutTask]);
+}
+
 async function getList(name) {
-  await initDataStore();
+  await ensureDataStoreReady();
   const table = LIST_TABLES[name];
   if (!table) throw new Error(`Unknown list collection: ${name}`);
   const rows = await pool.query(
@@ -195,7 +206,7 @@ async function getList(name) {
 }
 
 async function setList(name, list) {
-  await initDataStore();
+  await ensureDataStoreReady();
   const table = LIST_TABLES[name];
   if (!table) throw new Error(`Unknown list collection: ${name}`);
   const items = Array.isArray(list) ? list : [];
@@ -254,7 +265,7 @@ async function setList(name, list) {
 }
 
 async function upsertListItem(name, item) {
-  await initDataStore();
+  await ensureDataStoreReady();
   const table = LIST_TABLES[name];
   if (!table) throw new Error(`Unknown list collection: ${name}`);
 
@@ -300,7 +311,7 @@ async function upsertListItem(name, item) {
 }
 
 async function getObject(name) {
-  await initDataStore();
+  await ensureDataStoreReady();
   const table = OBJECT_TABLES[name];
   if (!table) throw new Error(`Unknown object collection: ${name}`);
   const res = await pool.query(`SELECT data FROM ${table} WHERE id = $1`, ["default"]);
@@ -308,7 +319,7 @@ async function getObject(name) {
 }
 
 async function setObject(name, obj) {
-  await initDataStore();
+  await ensureDataStoreReady();
   const table = OBJECT_TABLES[name];
   if (!table) throw new Error(`Unknown object collection: ${name}`);
   const value = obj && typeof obj === "object" && !Array.isArray(obj) ? obj : {};

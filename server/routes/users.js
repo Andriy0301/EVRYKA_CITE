@@ -7,12 +7,7 @@ const router = express.Router();
 async function readUsers() {
   try {
     const parsed = await getList("users");
-    const { users, changed } = ensureClientIds(Array.isArray(parsed) ? parsed : []);
-    if (changed) {
-      for (const user of users) {
-        await upsertListItem("users", user);
-      }
-    }
+    const { users } = ensureClientIds(Array.isArray(parsed) ? parsed : []);
     return users;
   } catch (error) {
     return [];
