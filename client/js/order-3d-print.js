@@ -259,10 +259,11 @@ async function loadCheckoutWarehouses(els, cityRef, deliveryType, options = {}) 
   const preselectedBranchRef = String(options?.preselectedBranchRef || "").trim();
   const preselectedBranchText = String(options?.preselectedBranchText || "").trim();
   if (!els.checkoutDeliveryPoint || !els.checkoutBranchRef || !cityRef) return;
+  const pendingQuery = preserveSelection ? "" : String(els.checkoutDeliveryPoint.value || "").trim();
 
   if (!preserveSelection) {
     els.checkoutBranchRef.value = "";
-    els.checkoutDeliveryPoint.value = "";
+    if (!pendingQuery) els.checkoutDeliveryPoint.value = "";
   }
   els.checkoutDeliveryPoint.placeholder = "Завантаження...";
   try {
@@ -292,6 +293,11 @@ async function loadCheckoutWarehouses(els, cityRef, deliveryType, options = {}) 
         els.checkoutBranchRef.value = matched.Ref;
         els.checkoutDeliveryPoint.value = matched.Description;
       }
+    }
+    if (!preserveSelection && pendingQuery) {
+      els.checkoutDeliveryPoint.value = pendingQuery;
+      onCheckoutBranchInput(els);
+      return;
     }
     renderCheckoutBranchSuggestions(els, checkoutBranchOptions);
   } catch {
@@ -1548,7 +1554,16 @@ function init() {
           els.checkoutStatus.textContent = "";
         }
         try {
-          if (els.checkoutSubmit) els.checkoutSubmit.disabled = true;
+          if (els.checkoutStatus) {
+            els.checkoutStatus.hidden = false;
+            els.checkoutStatus.classList.remove("is-err", "is-ok");
+            els.checkoutStatus.textContent = "Оформлюємо замовлення, зачекайте...";
+          }
+          if (els.checkoutSubmit) {
+            els.checkoutSubmit.disabled = true;
+            els.checkoutSubmit.classList.add("is-loading");
+            els.checkoutSubmit.textContent = "Оформлюємо...";
+          }
           await submitCheckoutOrder(els);
         } catch (err) {
           if (els.checkoutStatus) {
@@ -1557,7 +1572,11 @@ function init() {
             els.checkoutStatus.textContent = err instanceof Error ? err.message : "Помилка оформлення";
           }
         } finally {
-          if (els.checkoutSubmit) els.checkoutSubmit.disabled = false;
+          if (els.checkoutSubmit) {
+            els.checkoutSubmit.disabled = false;
+            els.checkoutSubmit.classList.remove("is-loading");
+            els.checkoutSubmit.textContent = "Підтвердити замовлення";
+          }
         }
       });
     }

@@ -152,7 +152,18 @@ function getCabDeliveryStatusMeta(track) {
 
   const pickedUpCodes = new Set(["9", "10", "11"]);
   const awaitingCodes = new Set(["7", "8"]);
-  const inTransitCodes = new Set(["1", "2", "3", "4", "5", "6"]);
+  const createdCodes = new Set(["1", "2"]);
+  const inTransitCodes = new Set(["3", "4", "5", "6"]);
+  const normalizedText = statusText.toLowerCase();
+
+  if (
+    createdCodes.has(statusCode) ||
+    normalizedText.includes("створен") ||
+    normalizedText.includes("очікує передач") ||
+    normalizedText.includes("ще не передано")
+  ) {
+    return { label: "ТТН створена, очікує передачі в НП", tone: "neutral", icon: "🧾" };
+  }
 
   if (pickedUpCodes.has(statusCode)) return { label: "Отримано клієнтом", tone: "arrived", icon: "✅" };
   if (awaitingCodes.has(statusCode)) return { label: "Прибуло у відділення", tone: "arrived", icon: "📦" };

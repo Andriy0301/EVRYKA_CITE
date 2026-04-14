@@ -7,6 +7,8 @@ let citySelectionInProgress = false;
 let branchOptions = [];
 let branchDropdownVisible = false;
 let branchSelectionInProgress = false;
+let orderSubmitting = false;
+let orderSuccessAnimation = null;
 
 function capitalizeCityInput(value) {
   return String(value || "")
@@ -161,6 +163,14 @@ function showMessage(msg, isError = true) {
   el.style.color = isError ? "#b00020" : "#1b7f3a";
 }
 
+function setOrderSubmitLoading(isLoading) {
+  const submitBtn = document.querySelector('#orderForm button[type="submit"]');
+  if (!submitBtn) return;
+  submitBtn.disabled = Boolean(isLoading);
+  submitBtn.classList.toggle("is-loading", Boolean(isLoading));
+  submitBtn.textContent = isLoading ? "Оформлюємо..." : "Підтвердити замовлення";
+}
+
 function getProviderTitle(provider) {
   if (provider === "nova_poshta") return "Нова пошта";
   if (provider === "ukr_poshta") return "Укрпошта";
@@ -238,6 +248,16 @@ function closeOrderSuccessModal() {
   if (!modal) return;
   modal.style.display = "none";
   window.location.href = "index.html";
+}
+
+function initOrderSuccessAnimation() {
+  if (typeof window.OrderSuccessAnimation !== "function") return;
+  if (orderSuccessAnimation) return;
+
+  orderSuccessAnimation = new window.OrderSuccessAnimation({
+    message: "Замовлення оформлено",
+    showSkipButton: true
+  });
 }
 
 function initOrderSuccessModalEvents() {
@@ -481,10 +501,11 @@ async function loadWarehouses(cityRef, deliveryType, options = {}) {
   const preselectedBranchText = String(options?.preselectedBranchText || "").trim();
   const branchEl = document.getElementById("orderBranch");
   const branchRefEl = document.getElementById("orderBranchRef");
+  const pendingQuery = preserveSelection ? "" : String(branchEl.value || "").trim();
   if (!cityRef) return;
   if (!preserveSelection) {
     branchRefEl.value = "";
-    branchEl.value = "";
+    if (!pendingQuery) branchEl.value = "";
   }
   branchEl.placeholder = "Завантаження...";
   try {
@@ -516,6 +537,14 @@ async function loadWarehouses(cityRef, deliveryType, options = {}) {
         branchRefEl.value = matched.Ref;
         branchEl.value = matched.Description;
       }
+    }
+
+    if (!preserveSelection && pendingQuery) {
+      branchEl.value = pendingQuery;
+      renderBranchSuggestions(
+        branchOptions.filter((w) => (w.Description || "").toLowerCase().includes(pendingQuery.toLowerCase()))
+      );
+      return;
     }
 
     renderBranchSuggestions(branchOptions);
@@ -638,6 +667,7 @@ function bindBranchSuggestionEvents() {
 
 async function submitOrder(e) {
   e.preventDefault();
+  if (orderSubmitting) return;
   const items = getCheckoutItems();
   if (!items.length) {
     showMessage("Немає товарів для оформлення");
@@ -694,6 +724,9 @@ async function submitOrder(e) {
   }
 
   try {
+    orderSubmitting = true;
+    setOrderSubmitLoading(true);
+    showMessage("Оформлюємо замовлення, зачекайте...", false);
     const totalCost = items.reduce((sum, item) => sum + Number(item.price || 0) * Number(item.qty || 1), 0);
     let ttn = "";
     const orderNumber = `EVR-${Date.now().toString().slice(-8)}`;
@@ -741,9 +774,24 @@ async function submitOrder(e) {
       updateCart();
     }
     renderItems([]);
+    if (orderSuccessAnimation) {
+      try {
+        await orderSuccessAnimation.play({
+          items,
+          message: "Замовлення оформлено",
+          showSkipButton: true,
+          exitDirection: window.innerWidth <= 640 ? "down" : "right"
+        });
+      } catch (animationError) {
+        console.warn("Order success animation failed:", animationError);
+      }
+    }
     showOrderSuccessModal(savedOrder);
   } catch (error) {
     showMessage(error.message || "Не вдалося оформити замовлення");
+  } finally {
+    orderSubmitting = false;
+    setOrderSubmitLoading(false);
   }
 }
 
@@ -759,6 +807,7 @@ document.addEventListener("DOMContentLoaded", () => {
   setupDeliveryUI();
   hydratePrefilledNovaDelivery(profile);
   renderItems(items);
+  initOrderSuccessAnimation();
   bindCitySuggestionEvents();
   bindBranchSuggestionEvents();
   const cityInput = document.getElementById("orderCity");

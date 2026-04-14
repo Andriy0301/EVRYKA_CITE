@@ -8,15 +8,7 @@ const app = express();
 
 const { isTelegramConfigured, startTelegramMenuBot } = require("./utils/telegram");
 const { startOrderStatusSyncLoop } = require("./utils/order-status-sync");
-if (isTelegramConfigured()) {
-  console.log("[telegram] Сповіщення увімкнено (TELEGRAM_BOT_TOKEN + TELEGRAM_CHAT_ID)");
-  startTelegramMenuBot();
-} else {
-  console.warn(
-    "[telegram] Сповіщення вимкнено — додайте TELEGRAM_BOT_TOKEN і TELEGRAM_CHAT_ID у змінних середовища"
-  );
-}
-startOrderStatusSyncLoop();
+const { initDataStore } = require("./utils/data-store");
 
 // CORS
 app.use(cors({
@@ -52,6 +44,25 @@ app.use("/images", express.static(path.join(__dirname, "../client/images")));
 // 🚀 PORT
 const PORT = process.env.PORT || 3000;
 
-app.listen(PORT, () => {
-  console.log(`Server started on port ${PORT}`);
-});
+async function bootstrap() {
+  try {
+    await initDataStore();
+    if (isTelegramConfigured()) {
+      console.log("[telegram] Сповіщення увімкнено (TELEGRAM_BOT_TOKEN + TELEGRAM_CHAT_ID)");
+      startTelegramMenuBot();
+    } else {
+      console.warn(
+        "[telegram] Сповіщення вимкнено — додайте TELEGRAM_BOT_TOKEN і TELEGRAM_CHAT_ID у змінних середовища"
+      );
+    }
+    startOrderStatusSyncLoop();
+    app.listen(PORT, () => {
+      console.log(`Server started on port ${PORT}`);
+    });
+  } catch (error) {
+    console.error("[startup] failed:", error?.message || error);
+    process.exit(1);
+  }
+}
+
+bootstrap();

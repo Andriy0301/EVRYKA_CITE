@@ -1,87 +1,61 @@
 const express = require("express");
-const fs = require("fs");
-const path = require("path");
 const { ensureClientIds, findUserByIdentity } = require("../utils/client-id");
 const {
-  syncOrderStatusesOnce,
-  CRM_NOTIFICATIONS_PATH,
-  STATUS_SYNC_STATE_PATH
+  syncOrderStatusesOnce
 } = require("../utils/order-status-sync");
+const { getList, setList, getObject } = require("../utils/data-store");
 
 const router = express.Router();
-const ordersPath = path.join(__dirname, "../data/orders.json");
-const print3dOrdersPath = path.join(__dirname, "../data/print3d-orders.json");
-const usersPath = path.join(__dirname, "../data/users.json");
 const { notifyNewOrder, sendTelegramText } = require("../utils/telegram");
 const ADMIN_ORDERS_KEY = process.env.ADMIN_ORDERS_KEY || "31415";
 
-function readOrders() {
+async function readOrders() {
   try {
-    if (!fs.existsSync(ordersPath)) {
-      fs.writeFileSync(ordersPath, "[]");
-      return [];
-    }
-    const raw = fs.readFileSync(ordersPath, "utf8");
-    return raw ? JSON.parse(raw) : [];
+    return await getList("orders");
   } catch (error) {
     return [];
   }
 }
 
-function writeOrders(orders) {
-  fs.writeFileSync(ordersPath, JSON.stringify(orders, null, 2));
+async function writeOrders(orders) {
+  await setList("orders", orders);
 }
 
-function readPrint3dOrders() {
+async function readPrint3dOrders() {
   try {
-    if (!fs.existsSync(print3dOrdersPath)) {
-      fs.writeFileSync(print3dOrdersPath, "[]");
-      return [];
-    }
-    const raw = fs.readFileSync(print3dOrdersPath, "utf8");
-    return raw ? JSON.parse(raw) : [];
+    return await getList("print3dOrders");
   } catch {
     return [];
   }
 }
 
-function readCrmNotifications() {
+async function readCrmNotifications() {
   try {
-    if (!fs.existsSync(CRM_NOTIFICATIONS_PATH)) return [];
-    const raw = fs.readFileSync(CRM_NOTIFICATIONS_PATH, "utf8");
-    const parsed = raw ? JSON.parse(raw) : [];
+    const parsed = await getList("crmNotifications");
     return Array.isArray(parsed) ? parsed : [];
   } catch {
     return [];
   }
 }
 
-function writeCrmNotifications(events) {
-  fs.mkdirSync(path.dirname(CRM_NOTIFICATIONS_PATH), { recursive: true });
-  fs.writeFileSync(CRM_NOTIFICATIONS_PATH, JSON.stringify(events, null, 2));
+async function writeCrmNotifications(events) {
+  await setList("crmNotifications", events);
 }
 
-function readStatusSyncState() {
+async function readStatusSyncState() {
   try {
-    if (!fs.existsSync(STATUS_SYNC_STATE_PATH)) return {};
-    const raw = fs.readFileSync(STATUS_SYNC_STATE_PATH, "utf8");
-    const parsed = raw ? JSON.parse(raw) : {};
+    const parsed = await getObject("statusSync");
     return parsed && typeof parsed === "object" ? parsed : {};
   } catch {
     return {};
   }
 }
 
-function readUsers() {
+async function readUsers() {
   try {
-    if (!fs.existsSync(usersPath)) {
-      fs.writeFileSync(usersPath, "[]");
-      return [];
-    }
-    const raw = fs.readFileSync(usersPath, "utf8");
-    const parsed = raw ? JSON.parse(raw) : [];
+    const parsed = await getList("users");
     const { users, changed } = ensureClientIds(Array.isArray(parsed) ? parsed : []);
-    if (changed) fs.writeFileSync(usersPath, JSON.stringify(users, null, 2));
+    if (changed) await setList("users", users);
     return users;
   } catch {
     return [];
@@ -125,7 +99,7 @@ function canCancelOrder(order) {
   return true;
 }
 
-router.post("/", (req, res) => {
+router.post("/", async (req, res) => {
   const { customer = {}, items = [], total = 0, ttn = "", orderNumber: incomingOrderNumber = "" } = req.body || {};
   const normalizedItems = normalizeItems(items);
 
@@ -134,7 +108,7 @@ router.post("/", (req, res) => {
   }
 
   const orderNumber = String(incomingOrderNumber || "").trim() || `EVR-${Date.now().toString().slice(-8)}`;
-  const users = readUsers();
+  const users = await readUsers();
   const matchedUser = findUserByIdentity(users, {
     id: customer?.id,
     clientId: customer?.clientId,
@@ -169,9 +143,9 @@ router.post("/", (req, res) => {
     orderStatus: "new"
   };
 
-  const orders = readOrders();
+  const orders = await readOrders();
   orders.unshift(savedOrder);
-  writeOrders(orders);
+  await writeOrders(orders);
 
   notifyNewOrder(savedOrder)
     .then((r) => {
@@ -186,7 +160,7 @@ router.post("/", (req, res) => {
   return res.json(savedOrder);
 });
 
-router.get("/my", (req, res) => {
+router.get("/my", async (req, res) => {
   const id = String(req.query.id || "").trim();
   const email = String(req.query.email || "").trim().toLowerCase();
   const phone = String(req.query.phone || "").trim();
@@ -195,8 +169,8 @@ router.get("/my", (req, res) => {
     return res.status(400).json({ error: "id/email/phone is required" });
   }
 
-  const orders = readOrders();
-  const users = readUsers();
+  const orders = await readOrders();
+  const users = await readUsers();
   const filtered = orders.filter((order) => {
     const customer = order?.customer || {};
     return (
@@ -218,16 +192,16 @@ router.get("/my", (req, res) => {
   return res.json({ orders: filtered, print3dOrders });
 });
 
-router.get("/all", (req, res) => {
+router.get("/all", async (req, res) => {
   const key = String(req.query.key || req.headers["x-admin-key"] || "").trim();
   if (!key || key !== ADMIN_ORDERS_KEY) {
     return res.status(403).json({ error: "Доступ заборонено" });
   }
   return res.json({
-    orders: readOrders(),
-    print3dOrders: readPrint3dOrders(),
-    crmNotifications: readCrmNotifications().slice(0, 200),
-    statusSync: readStatusSyncState()
+    orders: await readOrders(),
+    print3dOrders: await readPrint3dOrders(),
+    crmNotifications: (await readCrmNotifications()).slice(0, 200),
+    statusSync: await readStatusSyncState()
   });
 });
 
@@ -244,7 +218,7 @@ router.post("/sync-status", async (req, res) => {
   return res.json(result);
 });
 
-router.post("/crm-events/status", (req, res) => {
+router.post("/crm-events/status", async (req, res) => {
   const key = String(req.body?.key || req.query.key || req.headers["x-admin-key"] || "").trim();
   if (!key || key !== ADMIN_ORDERS_KEY) {
     return res.status(403).json({ error: "Доступ заборонено" });
@@ -260,7 +234,7 @@ router.post("/crm-events/status", (req, res) => {
     return res.status(400).json({ error: "Некоректний статус CRM-події" });
   }
 
-  const events = readCrmNotifications();
+  const events = await readCrmNotifications();
   const idx = events.findIndex((evt) => String(evt?.id || "").trim() === eventId);
   if (idx < 0) {
     return res.status(404).json({ error: "CRM-подію не знайдено" });
@@ -272,7 +246,7 @@ router.post("/crm-events/status", (req, res) => {
     crmStatus: status,
     crmStatusUpdatedAt: new Date().toISOString()
   };
-  writeCrmNotifications(events);
+  await writeCrmNotifications(events);
   return res.json({ ok: true, event: events[idx] });
 });
 
@@ -298,7 +272,7 @@ router.post("/cancel", async (req, res) => {
     return res.status(400).json({ error: "Не передано orderId або orderNumber" });
   }
 
-  const list = orderType === "print3d" ? readPrint3dOrders() : readOrders();
+  const list = orderType === "print3d" ? await readPrint3dOrders() : await readOrders();
   const idx = list.findIndex((order) => {
     const idMatch = wantedOrderId && String(order?.id || "").trim() === wantedOrderId;
     const numMatch = wantedOrderNumber && String(order?.orderNumber || "").trim() === wantedOrderNumber;
@@ -329,9 +303,9 @@ router.post("/cancel", async (req, res) => {
   list[idx] = updated;
 
   if (orderType === "print3d") {
-    fs.writeFileSync(print3dOrdersPath, JSON.stringify(list, null, 2));
+    await setList("print3dOrders", list);
 
-    const users = readUsers();
+    const users = await readUsers();
     let usersChanged = false;
     users.forEach((user, userIdx) => {
       const summaries = Array.isArray(user?.print3dOrders) ? user.print3dOrders : [];
@@ -357,10 +331,10 @@ router.post("/cancel", async (req, res) => {
       }
     });
     if (usersChanged) {
-      fs.writeFileSync(usersPath, JSON.stringify(users, null, 2));
+      await setList("users", users);
     }
   } else {
-    writeOrders(list);
+    await writeOrders(list);
   }
 
   const lines = [

@@ -1,44 +1,34 @@
 const express = require("express");
-const fs = require("fs");
-const path = require("path");
 const { ensureClientIds, findUserByIdentity } = require("../utils/client-id");
+const { getList, setList } = require("../utils/data-store");
 
 const router = express.Router();
-const inquiriesPath = path.join(__dirname, "../data/inquiries.json");
-const usersPath = path.join(__dirname, "../data/users.json");
 const { notifyInquiry } = require("../utils/telegram");
 
-function readInquiries() {
+async function readInquiries() {
   try {
-    if (!fs.existsSync(inquiriesPath)) {
-      fs.writeFileSync(inquiriesPath, "[]");
-      return [];
-    }
-    const raw = fs.readFileSync(inquiriesPath, "utf8");
-    return raw ? JSON.parse(raw) : [];
+    return await getList("inquiries");
   } catch {
     return [];
   }
 }
 
-function writeInquiries(list) {
-  fs.writeFileSync(inquiriesPath, JSON.stringify(list, null, 2));
+async function writeInquiries(list) {
+  await setList("inquiries", list);
 }
 
-function readUsers() {
+async function readUsers() {
   try {
-    if (!fs.existsSync(usersPath)) return [];
-    const raw = fs.readFileSync(usersPath, "utf8");
-    const parsed = raw ? JSON.parse(raw) : [];
+    const parsed = await getList("users");
     const { users, changed } = ensureClientIds(Array.isArray(parsed) ? parsed : []);
-    if (changed) fs.writeFileSync(usersPath, JSON.stringify(users, null, 2));
+    if (changed) await setList("users", users);
     return users;
   } catch {
     return [];
   }
 }
 
-router.post("/", (req, res) => {
+router.post("/", async (req, res) => {
   const message = String(req.body?.message || "").trim();
   const email = String(req.body?.email || "").trim().slice(0, 200);
   const phone = String(req.body?.phone || "").trim().slice(0, 40);
@@ -55,7 +45,7 @@ router.post("/", (req, res) => {
     return res.status(400).json({ error: "Повідомлення занадто довге" });
   }
 
-  const matchedUser = findUserByIdentity(readUsers(), {
+  const matchedUser = findUserByIdentity(await readUsers(), {
     id: userId,
     clientId: incomingClientId,
     email,
@@ -75,9 +65,9 @@ router.post("/", (req, res) => {
     page: page || null
   };
 
-  const list = readInquiries();
+  const list = await readInquiries();
   list.unshift(entry);
-  writeInquiries(list);
+  await writeInquiries(list);
 
   notifyInquiry(entry)
     .then((r) => {

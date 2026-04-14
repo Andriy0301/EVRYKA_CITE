@@ -1,11 +1,10 @@
 const express = require("express");
-const fs = require("fs");
-const path = require("path");
 const multer = require("multer");
 const { parseModelVolume } = require("../utils/parse-model-volume");
 const { calculatePricing } = require("../utils/print3d-pricing");
 const { sendTelegramText, sendTelegramDocument } = require("../utils/telegram");
 const { ensureClientIds, findUserByIdentity } = require("../utils/client-id");
+const { getList, setList } = require("../utils/data-store");
 
 const router = express.Router();
 const MAX_SIZE = 50 * 1024 * 1024;
@@ -15,74 +14,53 @@ const upload = multer({
   limits: { fileSize: MAX_SIZE }
 });
 
-const dataPath = path.join(__dirname, "../data/print3d-requests.json");
-const ordersPath = path.join(__dirname, "../data/print3d-orders.json");
-const usersPath = path.join(__dirname, "../data/users.json");
-
-function readRequests() {
+async function readRequests() {
   try {
-    if (!fs.existsSync(dataPath)) {
-      fs.mkdirSync(path.dirname(dataPath), { recursive: true });
-      fs.writeFileSync(dataPath, "[]");
-      return [];
-    }
-    const raw = fs.readFileSync(dataPath, "utf8");
-    return raw ? JSON.parse(raw) : [];
+    return await getList("print3dRequests");
   } catch {
     return [];
   }
 }
 
-function writeRequests(list) {
-  fs.mkdirSync(path.dirname(dataPath), { recursive: true });
-  fs.writeFileSync(dataPath, JSON.stringify(list, null, 2));
+async function writeRequests(list) {
+  await setList("print3dRequests", list);
 }
 
-function readOrders() {
+async function readOrders() {
   try {
-    if (!fs.existsSync(ordersPath)) {
-      fs.mkdirSync(path.dirname(ordersPath), { recursive: true });
-      fs.writeFileSync(ordersPath, "[]");
-      return [];
-    }
-    const raw = fs.readFileSync(ordersPath, "utf8");
-    return raw ? JSON.parse(raw) : [];
+    return await getList("print3dOrders");
   } catch {
     return [];
   }
 }
 
-function writeOrders(list) {
-  fs.mkdirSync(path.dirname(ordersPath), { recursive: true });
-  fs.writeFileSync(ordersPath, JSON.stringify(list, null, 2));
+async function writeOrders(list) {
+  await setList("print3dOrders", list);
 }
 
-function readUsers() {
+async function readUsers() {
   try {
-    if (!fs.existsSync(usersPath)) return [];
-    const raw = fs.readFileSync(usersPath, "utf8");
-    const parsed = raw ? JSON.parse(raw) : [];
+    const parsed = await getList("users");
     const { users, changed } = ensureClientIds(Array.isArray(parsed) ? parsed : []);
-    if (changed) writeUsers(users);
+    if (changed) await writeUsers(users);
     return users;
   } catch {
     return [];
   }
 }
 
-function writeUsers(users) {
-  fs.mkdirSync(path.dirname(usersPath), { recursive: true });
-  fs.writeFileSync(usersPath, JSON.stringify(users, null, 2));
+async function writeUsers(users) {
+  await setList("users", users);
 }
 
-function attachOrderToUser(customer, orderSummary) {
+async function attachOrderToUser(customer, orderSummary) {
   const userId = String(customer?.id || "").trim();
   const userClientId = String(customer?.clientId || "").trim();
   const userEmail = String(customer?.email || "").trim().toLowerCase();
   const userPhone = String(customer?.phone || "").trim();
   if (!userId && !userClientId && !userEmail && !userPhone) return;
 
-  const users = readUsers();
+  const users = await readUsers();
   const found = findUserByIdentity(users, {
     id: userId,
     clientId: userClientId,
@@ -100,7 +78,7 @@ function attachOrderToUser(customer, orderSummary) {
     print3dOrders: list.slice(0, 100),
     updatedAt: new Date().toISOString()
   };
-  writeUsers(users);
+  await writeUsers(users);
 }
 
 function normMaterial(v) {
@@ -217,7 +195,7 @@ router.post("/request", (req, res, next) => {
       return res.status(400).json({ error: "Опишіть задачу (мінімум 3 символи)" });
     }
 
-    const matchedUser = findUserByIdentity(readUsers(), {
+    const matchedUser = findUserByIdentity(await readUsers(), {
       id: userId,
       clientId: incomingClientId,
       email,
@@ -238,9 +216,9 @@ router.post("/request", (req, res, next) => {
       attachmentName: req.file ? req.file.originalname : null
     };
 
-    const list = readRequests();
+    const list = await readRequests();
     list.unshift(entry);
-    writeRequests(list);
+    await writeRequests(list);
 
     const lines = [
       "Заявка 3D-друк (немає моделі)",
@@ -309,7 +287,7 @@ router.post("/order", (req, res, next) => {
     const total = Number(req.body.total || 0);
     const orderNumber = String(req.body.orderNumber || "").trim() || `EVR3D-${Date.now().toString().slice(-8)}`;
     const ttn = String(req.body.ttn || "").trim() || "";
-    const matchedUser = findUserByIdentity(readUsers(), {
+    const matchedUser = findUserByIdentity(await readUsers(), {
       id: req.body.userId,
       clientId: req.body.userClientId,
       email: req.body.userEmail,
@@ -354,10 +332,10 @@ router.post("/order", (req, res, next) => {
       modelsMeta
     };
 
-    const list = readOrders();
+    const list = await readOrders();
     list.unshift(entry);
-    writeOrders(list);
-    attachOrderToUser(customer, {
+    await writeOrders(list);
+    await attachOrderToUser(customer, {
       id: entry.id,
       orderNumber: entry.orderNumber,
       createdAt: entry.createdAt,

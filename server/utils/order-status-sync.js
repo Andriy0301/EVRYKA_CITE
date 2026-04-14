@@ -1,16 +1,9 @@
-const fs = require("fs");
-const path = require("path");
 const { sendTelegramText } = require("./telegram");
+const { getList, setList, getObject, setObject } = require("./data-store");
 
 const NOVA_POSHTA_API_URL = "https://api.novaposhta.ua/v2.0/json/";
 const NOVA_POSHTA_API_KEY =
   process.env.NOVA_POSHTA_API_KEY || "c21832386bc9bfa724d114721295a7f2";
-
-const DATA_DIR = path.join(__dirname, "../data");
-const ORDERS_PATH = path.join(DATA_DIR, "orders.json");
-const PRINT3D_ORDERS_PATH = path.join(DATA_DIR, "print3d-orders.json");
-const CRM_NOTIFICATIONS_PATH = path.join(DATA_DIR, "crm-notifications.json");
-const STATUS_SYNC_STATE_PATH = path.join(DATA_DIR, "order-status-sync.json");
 
 const DEFAULT_SYNC_INTERVAL_MS = 3 * 60 * 60 * 1000;
 const DEFAULT_REMINDER_HOURS = 72;
@@ -27,33 +20,6 @@ const PICKUP_REMINDER_HOURS = Math.max(
 
 let loopStarted = false;
 let syncInProgress = false;
-
-function readJsonArray(filePath) {
-  try {
-    if (!fs.existsSync(filePath)) return [];
-    const raw = fs.readFileSync(filePath, "utf8");
-    const parsed = raw ? JSON.parse(raw) : [];
-    return Array.isArray(parsed) ? parsed : [];
-  } catch {
-    return [];
-  }
-}
-
-function readJsonObject(filePath) {
-  try {
-    if (!fs.existsSync(filePath)) return {};
-    const raw = fs.readFileSync(filePath, "utf8");
-    const parsed = raw ? JSON.parse(raw) : {};
-    return parsed && typeof parsed === "object" ? parsed : {};
-  } catch {
-    return {};
-  }
-}
-
-function writeJson(filePath, value) {
-  fs.mkdirSync(path.dirname(filePath), { recursive: true });
-  fs.writeFileSync(filePath, JSON.stringify(value, null, 2));
-}
 
 function parseDateSafe(value) {
   const text = String(value || "").trim();
@@ -75,7 +41,17 @@ function classifyNovaPoshtaStage(statusCode, statusText) {
   const text = String(statusText || "").trim().toLowerCase();
   const pickedUpCodes = new Set(["9", "10", "11"]);
   const awaitingCodes = new Set(["7", "8"]);
-  const inTransitCodes = new Set(["1", "2", "3", "4", "5", "6"]);
+  const createdCodes = new Set(["1", "2"]);
+  const inTransitCodes = new Set(["3", "4", "5", "6"]);
+
+  if (
+    createdCodes.has(code) ||
+    text.includes("створен") ||
+    text.includes("очікує передач") ||
+    text.includes("ще не передано")
+  ) {
+    return "created";
+  }
 
   if (pickedUpCodes.has(code) || text.includes("отрим")) return "picked_up";
   if (
@@ -267,23 +243,23 @@ async function syncOrderStatusesOnce() {
 
   const startedAt = new Date();
   try {
-    const orders = readJsonArray(ORDERS_PATH);
-    const print3dOrders = readJsonArray(PRINT3D_ORDERS_PATH);
+    const orders = await getList("orders");
+    const print3dOrders = await getList("print3dOrders");
     const shopSync = await syncOrdersCollection(orders, "shop");
     const print3dSync = await syncOrdersCollection(print3dOrders, "print3d");
 
-    if (shopSync.changed) writeJson(ORDERS_PATH, orders);
-    if (print3dSync.changed) writeJson(PRINT3D_ORDERS_PATH, print3dOrders);
+    if (shopSync.changed) await setList("orders", orders);
+    if (print3dSync.changed) await setList("print3dOrders", print3dOrders);
 
     const newEvents = [...shopSync.events, ...print3dSync.events];
     if (newEvents.length) {
-      const existing = readJsonArray(CRM_NOTIFICATIONS_PATH);
+      const existing = await getList("crmNotifications");
       const merged = [...newEvents, ...existing].slice(0, MAX_CRM_EVENTS);
-      writeJson(CRM_NOTIFICATIONS_PATH, merged);
+      await setList("crmNotifications", merged);
     }
 
-    const state = readJsonObject(STATUS_SYNC_STATE_PATH);
-    writeJson(STATUS_SYNC_STATE_PATH, {
+    const state = await getObject("statusSync");
+    await setObject("statusSync", {
       ...state,
       lastRunAt: new Date().toISOString(),
       lastRunResult: {
@@ -302,8 +278,8 @@ async function syncOrderStatusesOnce() {
       eventsCreated: newEvents.length
     };
   } catch (error) {
-    const state = readJsonObject(STATUS_SYNC_STATE_PATH);
-    writeJson(STATUS_SYNC_STATE_PATH, {
+    const state = await getObject("statusSync");
+    await setObject("statusSync", {
       ...state,
       lastRunAt: new Date().toISOString(),
       lastError: String(error?.message || error || "sync_failed")
@@ -329,7 +305,5 @@ function startOrderStatusSyncLoop() {
 
 module.exports = {
   syncOrderStatusesOnce,
-  startOrderStatusSyncLoop,
-  CRM_NOTIFICATIONS_PATH,
-  STATUS_SYNC_STATE_PATH
+  startOrderStatusSyncLoop
 };

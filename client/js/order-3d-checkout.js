@@ -11,6 +11,7 @@ let branchOptions = [];
 let branchDropdownVisible = false;
 let branchSelectionInProgress = false;
 let orderSubmitting = false;
+let orderSuccessAnimation = null;
 
 const pendingState = {
   meta: null,
@@ -206,6 +207,16 @@ function closeOrderSuccessModal() {
   window.location.href = "order-3d-print.html";
 }
 
+function initOrderSuccessAnimation() {
+  if (typeof window.OrderSuccessAnimation !== "function") return;
+  if (orderSuccessAnimation) return;
+
+  orderSuccessAnimation = new window.OrderSuccessAnimation({
+    message: "Замовлення оформлено",
+    showSkipButton: true
+  });
+}
+
 function initOrderSuccessModalEvents() {
   const modal = document.getElementById("orderSuccessModal");
   if (!modal) return;
@@ -374,8 +385,9 @@ async function loadWarehouses(cityRef, deliveryType) {
   const branchEl = document.getElementById("orderBranch");
   const branchRefEl = document.getElementById("orderBranchRef");
   if (!cityRef) return;
+  const pendingQuery = String(branchEl.value || "").trim();
   branchRefEl.value = "";
-  branchEl.value = "";
+  if (!pendingQuery) branchEl.value = "";
   branchEl.placeholder = "Завантаження...";
   try {
     const warehouses = await getNovaPoshtaWarehouses(cityRef, deliveryType);
@@ -388,6 +400,11 @@ async function loadWarehouses(cityRef, deliveryType) {
     });
     branchOptions = filtered;
     branchEl.placeholder = deliveryType === "postomat" ? "Почніть вводити поштомат..." : "Почніть вводити відділення...";
+    if (pendingQuery) {
+      branchEl.value = pendingQuery;
+      renderBranchSuggestions(filterBranchOptionsByQuery(filtered, pendingQuery));
+      return;
+    }
     renderBranchSuggestions(filtered);
   } catch (error) {
     branchOptions = [];
@@ -605,6 +622,21 @@ async function submitOrder(e) {
     await cleanupPending();
     showMessage("", false);
     renderItems();
+    if (orderSuccessAnimation) {
+      try {
+        await orderSuccessAnimation.play({
+          items: models.map((model) => ({
+            name: model?.name || "3D model",
+            image: model?.previewImage || model?.image || ""
+          })),
+          message: "Замовлення оформлено",
+          showSkipButton: true,
+          exitDirection: window.innerWidth <= 640 ? "down" : "right"
+        });
+      } catch (animationError) {
+        console.warn("Order success animation failed:", animationError);
+      }
+    }
     showOrderSuccessModal({
       orderNumber,
       ttn,
@@ -662,6 +694,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   }
   setupDeliveryUI();
   renderItems();
+  initOrderSuccessAnimation();
   bindCitySuggestionEvents();
   bindBranchSuggestionEvents();
   document.getElementById("orderCity").addEventListener("input", onCityInput);

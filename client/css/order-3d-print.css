@@ -371,6 +371,19 @@
   cursor: not-allowed;
 }
 
+.page-print3d .print3d-btn-primary.is-loading::after {
+  content: "";
+  display: inline-block;
+  width: 14px;
+  height: 14px;
+  margin-left: 8px;
+  border: 2px solid rgba(17, 17, 17, 0.35);
+  border-top-color: rgba(17, 17, 17, 0.95);
+  border-radius: 50%;
+  vertical-align: -2px;
+  animation: print3d-spin 0.8s linear infinite;
+}
+
 .page-print3d .print3d-note {
   font-size: 12px;
   color: var(--ev-p-muted, var(--ev-muted));

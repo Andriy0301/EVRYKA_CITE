@@ -1,6 +1,5 @@
 const https = require("https");
-const fs = require("fs");
-const path = require("path");
+const { getList } = require("./data-store");
 
 const TELEGRAM_BOT_TOKEN = String(process.env.TELEGRAM_BOT_TOKEN || "").trim();
 const TELEGRAM_CHAT_ID = String(process.env.TELEGRAM_CHAT_ID || "").trim();
@@ -12,14 +11,6 @@ const MENU_ROWS = [
   [{ text: "🔄 Меню" }]
 ];
 const MENU_TEXT = "Оберіть категорію:";
-const DATA_DIR = path.join(__dirname, "../data");
-const DATA_FILES = {
-  inquiries: path.join(DATA_DIR, "inquiries.json"),
-  orders: path.join(DATA_DIR, "orders.json"),
-  print3dOrders: path.join(DATA_DIR, "print3d-orders.json"),
-  print3dRequests: path.join(DATA_DIR, "print3d-requests.json"),
-  users: path.join(DATA_DIR, "users.json")
-};
 const UPDATE_TIMEOUT_SEC = 25;
 const UPDATE_RETRY_MS = 2000;
 const MAX_ITEMS_PER_SECTION = 5;
@@ -92,12 +83,9 @@ function sendTelegramTextTo(chatId, text, opts = {}) {
   });
 }
 
-function safeReadList(filePath) {
+async function safeReadList(name) {
   try {
-    if (!fs.existsSync(filePath)) return [];
-    const raw = fs.readFileSync(filePath, "utf8");
-    if (!raw) return [];
-    const parsed = JSON.parse(raw);
+    const parsed = await getList(name);
     return Array.isArray(parsed) ? parsed : [];
   } catch {
     return [];
@@ -154,10 +142,10 @@ function formatClientByIdCard(user) {
     .join("\n");
 }
 
-function findUserByClientId(query) {
+async function findUserByClientId(query) {
   const wanted = String(query || "").trim().toLowerCase();
   if (!wanted) return null;
-  const users = safeReadList(DATA_FILES.users);
+  const users = await safeReadList("users");
   return (
     users.find((user) => {
       const clientId = String(user?.clientId || "").trim().toLowerCase();
@@ -255,24 +243,24 @@ async function sendCategory(chatId, text) {
   }
 
   if (state === "await_client_id") {
-    const user = findUserByClientId(text);
+    const user = await findUserByClientId(text);
     await sendTelegramTextTo(chatId, formatClientByIdCard(user));
     chatStateById.delete(String(chatId));
     return;
   }
 
   if (normalized === "📩 запитання") {
-    await sendTelegramTextTo(chatId, formatInquiryList(safeReadList(DATA_FILES.inquiries)));
+    await sendTelegramTextTo(chatId, formatInquiryList(await safeReadList("inquiries")));
     return;
   }
   if (normalized === "🛒 замовлення") {
-    await sendTelegramTextTo(chatId, formatShopOrdersList(safeReadList(DATA_FILES.orders)));
+    await sendTelegramTextTo(chatId, formatShopOrdersList(await safeReadList("orders")));
     return;
   }
   if (normalized === "🖨️ 3d-друк") {
     await sendTelegramTextTo(
       chatId,
-      formatPrint3dList(safeReadList(DATA_FILES.print3dOrders), safeReadList(DATA_FILES.print3dRequests))
+      formatPrint3dList(await safeReadList("print3dOrders"), await safeReadList("print3dRequests"))
     );
     return;
   }

@@ -1,30 +1,22 @@
 const express = require("express");
-const fs = require("fs");
-const path = require("path");
 const { ensureClientIds, ensureClientIdForUser } = require("../utils/client-id");
+const { getList, setList } = require("../utils/data-store");
 
 const router = express.Router();
-const usersPath = path.join(__dirname, "../data/users.json");
 
-function readUsers() {
+async function readUsers() {
   try {
-    if (!fs.existsSync(usersPath)) {
-      fs.writeFileSync(usersPath, "[]");
-      return [];
-    }
-
-    const raw = fs.readFileSync(usersPath, "utf8");
-    const parsed = raw ? JSON.parse(raw) : [];
+    const parsed = await getList("users");
     const { users, changed } = ensureClientIds(Array.isArray(parsed) ? parsed : []);
-    if (changed) writeUsers(users);
+    if (changed) await writeUsers(users);
     return users;
   } catch (error) {
     return [];
   }
 }
 
-function writeUsers(users) {
-  fs.writeFileSync(usersPath, JSON.stringify(users, null, 2));
+async function writeUsers(users) {
+  await setList("users", users);
 }
 
 function sanitizeUser(user) {
@@ -75,14 +67,14 @@ function normalizeFavoriteItems(items) {
     .filter((item) => Number.isFinite(item.id) && item.id > 0);
 }
 
-router.post("/register", (req, res) => {
+router.post("/register", async (req, res) => {
   const { name, lastName, middleName, phone, email, password, delivery = {} } = req.body || {};
 
   if (!name || !lastName || !phone || !email || !password) {
     return res.status(400).json({ error: "name, lastName, phone, email and password are required" });
   }
 
-  const users = readUsers();
+  const users = await readUsers();
   const normalizedPhone = String(phone).trim();
   const normalizedEmail = String(email || "").trim().toLowerCase();
 
@@ -113,11 +105,11 @@ router.post("/register", (req, res) => {
     users.push(savedUser);
   }
 
-  writeUsers(users);
+  await writeUsers(users);
   return res.json(sanitizeUser(savedUser));
 });
 
-router.post("/login", (req, res) => {
+router.post("/login", async (req, res) => {
   const { phone, email, password } = req.body || {};
   const normalizedPhone = String(phone || "").trim();
   const normalizedEmail = String(email || "").trim().toLowerCase();
@@ -127,7 +119,7 @@ router.post("/login", (req, res) => {
     return res.status(400).json({ error: "email/phone and password are required" });
   }
 
-  const users = readUsers();
+  const users = await readUsers();
   const user = users.find((u) => {
     return (
       ((normalizedPhone && u.phone === normalizedPhone) || (normalizedEmail && u.email === normalizedEmail)) &&
@@ -142,7 +134,7 @@ router.post("/login", (req, res) => {
   return res.json(sanitizeUser(user));
 });
 
-router.post("/google-login", (req, res) => {
+router.post("/google-login", async (req, res) => {
   const { email, name, lastName, middleName } = req.body || {};
   const normalizedEmail = String(email || "").trim().toLowerCase();
 
@@ -150,7 +142,7 @@ router.post("/google-login", (req, res) => {
     return res.status(400).json({ error: "email is required" });
   }
 
-  const users = readUsers();
+  const users = await readUsers();
   let user = users.find((u) => u.email === normalizedEmail);
 
   if (!user) {
@@ -170,18 +162,18 @@ router.post("/google-login", (req, res) => {
     };
     ensureClientIdForUser(user, users);
     users.push(user);
-    writeUsers(users);
+    await writeUsers(users);
   }
 
   return res.json(sanitizeUser(user));
 });
 
-router.post("/update-profile", (req, res) => {
+router.post("/update-profile", async (req, res) => {
   const { id, name, lastName, middleName, phone, email, delivery = {} } = req.body || {};
   const normalizedEmail = String(email || "").trim().toLowerCase();
   const normalizedPhone = String(phone || "").trim();
 
-  const users = readUsers();
+  const users = await readUsers();
   let index = users.findIndex((u) => String(u.id) === String(id));
   if (index < 0 && normalizedEmail) {
     index = users.findIndex((u) => String(u.email || "").toLowerCase() === normalizedEmail);
@@ -222,11 +214,11 @@ router.post("/update-profile", (req, res) => {
   } else {
     users.push(updated);
   }
-  writeUsers(users);
+  await writeUsers(users);
   return res.json(sanitizeUser(updated));
 });
 
-router.get("/cart", (req, res) => {
+router.get("/cart", async (req, res) => {
   const id = String(req.query.id || "").trim();
   const email = String(req.query.email || "").trim().toLowerCase();
   const phone = String(req.query.phone || "").trim();
@@ -235,7 +227,7 @@ router.get("/cart", (req, res) => {
     return res.status(400).json({ error: "id/email/phone is required" });
   }
 
-  const users = readUsers();
+  const users = await readUsers();
   const user = users.find((u) => {
     return (
       (id && String(u.id) === id) ||
@@ -251,13 +243,13 @@ router.get("/cart", (req, res) => {
   return res.json({ items: normalizeCartItems(user?.cart || []) });
 });
 
-router.post("/cart", (req, res) => {
+router.post("/cart", async (req, res) => {
   const { id, email, phone, items } = req.body || {};
   const normalizedId = String(id || "").trim();
   const normalizedEmail = String(email || "").trim().toLowerCase();
   const normalizedPhone = String(phone || "").trim();
 
-  const users = readUsers();
+  const users = await readUsers();
   const index = users.findIndex((u) => {
     return (
       (normalizedId && String(u.id) === normalizedId) ||
@@ -291,12 +283,12 @@ router.post("/cart", (req, res) => {
     };
   }
 
-  writeUsers(users);
+  await writeUsers(users);
   const savedUser = index < 0 ? users[users.length - 1] : users[index];
   return res.json({ items: savedUser.cart });
 });
 
-router.get("/favorites", (req, res) => {
+router.get("/favorites", async (req, res) => {
   const id = String(req.query.id || "").trim();
   const email = String(req.query.email || "").trim().toLowerCase();
   const phone = String(req.query.phone || "").trim();
@@ -305,7 +297,7 @@ router.get("/favorites", (req, res) => {
     return res.status(400).json({ error: "id/email/phone is required" });
   }
 
-  const users = readUsers();
+  const users = await readUsers();
   const user = users.find((u) => {
     return (
       (id && String(u.id) === id) ||
@@ -321,13 +313,13 @@ router.get("/favorites", (req, res) => {
   return res.json({ items: normalizeFavoriteItems(user.favorites || []) });
 });
 
-router.post("/favorites", (req, res) => {
+router.post("/favorites", async (req, res) => {
   const { id, email, phone, items } = req.body || {};
   const normalizedId = String(id || "").trim();
   const normalizedEmail = String(email || "").trim().toLowerCase();
   const normalizedPhone = String(phone || "").trim();
 
-  const users = readUsers();
+  const users = await readUsers();
   const index = users.findIndex((u) => {
     return (
       (normalizedId && String(u.id) === normalizedId) ||
@@ -361,7 +353,7 @@ router.post("/favorites", (req, res) => {
     };
   }
 
-  writeUsers(users);
+  await writeUsers(users);
   const savedUser = index < 0 ? users[users.length - 1] : users[index];
   return res.json({ items: savedUser.favorites });
 });

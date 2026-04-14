@@ -23,6 +23,7 @@ function paymentLabel(value) {
 }
 
 function deliveryStageLabel(stage) {
+  if (stage === "created") return "ТТН створена, очікує передачі в НП";
   if (stage === "picked_up") return "Отримано клієнтом";
   if (stage === "awaiting_pickup") return "Очікує у відділенні/поштоматі";
   if (stage === "in_transit") return "У дорозі";
