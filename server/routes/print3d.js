@@ -4,7 +4,7 @@ const { parseModelVolume } = require("../utils/parse-model-volume");
 const { calculatePricing } = require("../utils/print3d-pricing");
 const { sendTelegramText, sendTelegramDocument } = require("../utils/telegram");
 const { ensureClientIds, findUserByIdentity } = require("../utils/client-id");
-const { getList, setList } = require("../utils/data-store");
+const { getList, setList, upsertListItem } = require("../utils/data-store");
 
 const router = express.Router();
 const MAX_SIZE = 50 * 1024 * 1024;
@@ -216,9 +216,7 @@ router.post("/request", (req, res, next) => {
       attachmentName: req.file ? req.file.originalname : null
     };
 
-    const list = await readRequests();
-    list.unshift(entry);
-    await writeRequests(list);
+    await upsertListItem("print3dRequests", entry);
 
     const lines = [
       "Заявка 3D-друк (немає моделі)",
@@ -332,9 +330,7 @@ router.post("/order", (req, res, next) => {
       modelsMeta
     };
 
-    const list = await readOrders();
-    list.unshift(entry);
-    await writeOrders(list);
+    await upsertListItem("print3dOrders", entry);
     await attachOrderToUser(customer, {
       id: entry.id,
       orderNumber: entry.orderNumber,

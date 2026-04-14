@@ -5,6 +5,7 @@ const router = express.Router();
 const NOVA_POSHTA_API_URL = "https://api.novaposhta.ua/v2.0/json/";
 const NOVA_POSHTA_API_KEY =
   process.env.NOVA_POSHTA_API_KEY || "c21832386bc9bfa724d114721295a7f2";
+const NOVA_POSHTA_TIMEOUT_MS = Math.max(5000, Number(process.env.NOVA_POSHTA_TIMEOUT_MS || 15000));
 let SENDER_CONFIG_CACHE = null;
 
 /** Дата відправлення для API НП: лише день у форматі DD.MM.YYYY, часовий пояс України (інакше NP повертає "DateTime cannot be less then now"). */
@@ -16,18 +17,31 @@ function formatNovaPoshtaShipmentDate() {
 }
 
 async function callNovaPoshta(modelName, calledMethod, methodProperties = {}) {
-  const res = await fetch(NOVA_POSHTA_API_URL, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json"
-    },
-    body: JSON.stringify({
-      apiKey: NOVA_POSHTA_API_KEY,
-      modelName,
-      calledMethod,
-      methodProperties
-    })
-  });
+  const controller = new AbortController();
+  const timeoutId = setTimeout(() => controller.abort(), NOVA_POSHTA_TIMEOUT_MS);
+  let res;
+  try {
+    res = await fetch(NOVA_POSHTA_API_URL, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        apiKey: NOVA_POSHTA_API_KEY,
+        modelName,
+        calledMethod,
+        methodProperties
+      }),
+      signal: controller.signal
+    });
+  } catch (error) {
+    if (error?.name === "AbortError") {
+      throw new Error("Таймаут запиту до API Нової Пошти");
+    }
+    throw error;
+  } finally {
+    clearTimeout(timeoutId);
+  }
 
   if (!res.ok) {
     throw new Error("Помилка підключення до API Нової Пошти");

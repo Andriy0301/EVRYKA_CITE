@@ -3,9 +3,29 @@ const CITY_SEARCH_CACHE = new Map();
 const CITY_SEARCH_PENDING = new Map();
 const WAREHOUSE_CACHE = new Map();
 const WAREHOUSE_PENDING = new Map();
+const ORDER_REQUEST_TIMEOUT_MS = 25000;
 
 function sleep(ms) {
   return new Promise((resolve) => setTimeout(resolve, ms));
+}
+
+async function fetchWithTimeout(url, options = {}, timeoutMs = ORDER_REQUEST_TIMEOUT_MS) {
+  const controller = new AbortController();
+  const timeoutId = setTimeout(() => controller.abort(), timeoutMs);
+
+  try {
+    return await fetch(url, {
+      ...options,
+      signal: controller.signal
+    });
+  } catch (error) {
+    if (error?.name === "AbortError") {
+      throw new Error("Сервер відповідає занадто довго. Спробуйте ще раз.");
+    }
+    throw error;
+  } finally {
+    clearTimeout(timeoutId);
+  }
 }
 
 async function getProducts(sort = "default") {
@@ -244,13 +264,13 @@ async function getNovaPoshtaWarehouses(cityRef, type = "warehouse") {
 }
 
 async function createNovaPoshtaTtn(payload) {
-  const res = await fetch(`/api/shipping/nova-poshta/create-ttn`, {
+  const res = await fetchWithTimeout(`/api/shipping/nova-poshta/create-ttn`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json"
     },
     body: JSON.stringify(payload)
-  });
+  }, ORDER_REQUEST_TIMEOUT_MS);
 
   if (!res.ok) {
     const body = await res.json().catch(() => ({}));
@@ -276,13 +296,13 @@ async function trackNovaPoshtaTtn(ttn) {
 }
 
 async function createOrder(payload) {
-  const res = await fetch(`/api/orders`, {
+  const res = await fetchWithTimeout(`/api/orders`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json"
     },
     body: JSON.stringify(payload)
-  });
+  }, ORDER_REQUEST_TIMEOUT_MS);
 
   if (!res.ok) {
     const body = await res.json().catch(() => ({}));
@@ -356,7 +376,7 @@ async function getMyOrders(profile) {
   if (profile?.email) params.set("email", String(profile.email));
   if (profile?.phone) params.set("phone", String(profile.phone));
 
-  const res = await fetch(`/api/orders/my?${params.toString()}`);
+  const res = await fetchWithTimeout(`/api/orders/my?${params.toString()}`, {}, ORDER_REQUEST_TIMEOUT_MS);
   if (!res.ok) {
     const body = await res.json().catch(() => ({}));
     throw new Error(body.error || "Не вдалося завантажити історію замовлень");

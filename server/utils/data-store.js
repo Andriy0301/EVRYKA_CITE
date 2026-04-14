@@ -20,7 +20,8 @@ const pool = new Pool({
   connectionString: process.env.DATABASE_URL,
   ssl: { rejectUnauthorized: false },
   connectionTimeoutMillis: Number(process.env.PG_CONNECTION_TIMEOUT_MS || 10000),
-  idleTimeoutMillis: Number(process.env.PG_IDLE_TIMEOUT_MS || 30000)
+  idleTimeoutMillis: Number(process.env.PG_IDLE_TIMEOUT_MS || 30000),
+  query_timeout: Number(process.env.PG_QUERY_TIMEOUT_MS || 15000)
 });
 
 let initPromise = null;
@@ -173,6 +174,10 @@ async function initDataStore() {
     await migrateLegacyListIfEmpty("crmNotifications");
     await migrateLegacyObjectIfEmpty("statusSync");
     console.log("PostgreSQL connected");
+  })().catch((error) => {
+    // Allow subsequent retries if first init failed or timed out.
+    initPromise = null;
+    throw error;
   })();
   return initPromise;
 }
@@ -248,6 +253,52 @@ async function setList(name, list) {
   return items;
 }
 
+async function upsertListItem(name, item) {
+  await initDataStore();
+  const table = LIST_TABLES[name];
+  if (!table) throw new Error(`Unknown list collection: ${name}`);
+
+  const id = extractId(item, 0);
+  const data = { ...(item || {}), id };
+
+  if (table === "users") {
+    await pool.query(
+      `INSERT INTO users(id, email, password, data)
+       VALUES($1, $2, $3, $4::jsonb)
+       ON CONFLICT(id) DO UPDATE SET
+         email = EXCLUDED.email,
+         password = EXCLUDED.password,
+         data = EXCLUDED.data`,
+      [id, String(data.email || "").trim().toLowerCase() || null, String(data.password || ""), JSON.stringify(data)]
+    );
+    return data;
+  }
+
+  if (LIST_TABLES_WITH_USER_ID.has(name)) {
+    await pool.query(
+      `INSERT INTO ${table}(id, user_id, data, created_at)
+       VALUES($1, $2, $3::jsonb, $4::timestamp)
+       ON CONFLICT(id) DO UPDATE SET
+         user_id = EXCLUDED.user_id,
+         data = EXCLUDED.data,
+         created_at = EXCLUDED.created_at`,
+      [id, extractUserId(name, data), JSON.stringify(data), extractCreatedAt(data)]
+    );
+    return data;
+  }
+
+  await pool.query(
+    `INSERT INTO ${table}(id, data, created_at)
+     VALUES($1, $2::jsonb, $3::timestamp)
+     ON CONFLICT(id) DO UPDATE SET
+       data = EXCLUDED.data,
+       created_at = EXCLUDED.created_at`,
+    [id, JSON.stringify(data), extractCreatedAt(data)]
+  );
+
+  return data;
+}
+
 async function getObject(name) {
   await initDataStore();
   const table = OBJECT_TABLES[name];
@@ -301,6 +352,7 @@ module.exports = {
   setCollection,
   getList,
   setList,
+  upsertListItem,
   getObject,
   setObject
 };

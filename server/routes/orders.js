@@ -3,7 +3,7 @@ const { ensureClientIds, findUserByIdentity } = require("../utils/client-id");
 const {
   syncOrderStatusesOnce
 } = require("../utils/order-status-sync");
-const { getList, setList, getObject } = require("../utils/data-store");
+const { getList, setList, getObject, upsertListItem } = require("../utils/data-store");
 
 const router = express.Router();
 const { notifyNewOrder, sendTelegramText } = require("../utils/telegram");
@@ -143,9 +143,7 @@ router.post("/", async (req, res) => {
     orderStatus: "new"
   };
 
-  const orders = await readOrders();
-  orders.unshift(savedOrder);
-  await writeOrders(orders);
+  await upsertListItem("orders", savedOrder);
 
   notifyNewOrder(savedOrder)
     .then((r) => {
