@@ -25,7 +25,6 @@ const pool = new Pool({
 });
 
 let initPromise = null;
-const DATASTORE_INIT_WAIT_TIMEOUT_MS = Math.max(3000, Number(process.env.DATASTORE_INIT_WAIT_TIMEOUT_MS || 8000));
 
 const LIST_TABLES = {
   users: "users",
@@ -184,13 +183,7 @@ async function initDataStore() {
 }
 
 async function ensureDataStoreReady() {
-  const initTask = initDataStore();
-  const timeoutTask = new Promise((_, reject) => {
-    setTimeout(() => {
-      reject(new Error("База даних тимчасово недоступна. Спробуйте ще раз за кілька секунд."));
-    }, DATASTORE_INIT_WAIT_TIMEOUT_MS);
-  });
-  return Promise.race([initTask, timeoutTask]);
+  return initDataStore();
 }
 
 async function getList(name) {

@@ -74,6 +74,38 @@ async function bootstrap() {
       hasDatabaseUrl: Boolean(process.env.DATABASE_URL)
     });
 
+    while (!dataStoreReady) {
+      if (dataStoreInitInProgress) {
+        await new Promise((resolve) => setTimeout(resolve, 250));
+        continue;
+      }
+      dataStoreInitInProgress = true;
+      try {
+        await initDataStore();
+        dataStoreReady = true;
+        dataStoreLastError = "";
+        console.log("[startup] data store initialized");
+      } catch (error) {
+        dataStoreLastError = String(error?.message || error || "init_failed");
+        console.error("[startup] data store init failed:", error?.stack || error?.message || error);
+        console.log(`[startup] retrying data store init in ${DATASTORE_RETRY_MS}ms`);
+        await new Promise((resolve) => setTimeout(resolve, DATASTORE_RETRY_MS));
+      } finally {
+        dataStoreInitInProgress = false;
+      }
+    }
+
+    if (isTelegramConfigured()) {
+      console.log("[telegram] Сповіщення увімкнено (TELEGRAM_BOT_TOKEN + TELEGRAM_CHAT_ID)");
+      startTelegramMenuBot();
+    } else {
+      console.warn(
+        "[telegram] Сповіщення вимкнено — додайте TELEGRAM_BOT_TOKEN і TELEGRAM_CHAT_ID у змінних середовища"
+      );
+    }
+
+    startOrderStatusSyncLoop();
+
     const server = app.listen(PORT, () => {
       console.log(`Server started on port ${PORT}`);
     });
@@ -81,39 +113,6 @@ async function bootstrap() {
       console.error("[startup] listen failed:", error?.stack || error?.message || error);
       process.exit(1);
     });
-
-    const initDataStoreWithRetry = async () => {
-      if (dataStoreInitInProgress || dataStoreReady) return;
-      dataStoreInitInProgress = true;
-      try {
-        await initDataStore();
-        dataStoreReady = true;
-        dataStoreLastError = "";
-        console.log("[startup] data store initialized");
-
-        if (isTelegramConfigured()) {
-          console.log("[telegram] Сповіщення увімкнено (TELEGRAM_BOT_TOKEN + TELEGRAM_CHAT_ID)");
-          startTelegramMenuBot();
-        } else {
-          console.warn(
-            "[telegram] Сповіщення вимкнено — додайте TELEGRAM_BOT_TOKEN і TELEGRAM_CHAT_ID у змінних середовища"
-          );
-        }
-
-        startOrderStatusSyncLoop();
-      } catch (error) {
-        dataStoreLastError = String(error?.message || error || "init_failed");
-        console.error("[startup] data store init failed:", error?.stack || error?.message || error);
-        console.log(`[startup] retrying data store init in ${DATASTORE_RETRY_MS}ms`);
-        setTimeout(() => {
-          initDataStoreWithRetry().catch(() => null);
-        }, DATASTORE_RETRY_MS);
-      } finally {
-        dataStoreInitInProgress = false;
-      }
-    };
-
-    initDataStoreWithRetry().catch(() => null);
   } catch (error) {
     console.error("[startup] failed:", error?.stack || error?.message || error);
     process.exit(1);
