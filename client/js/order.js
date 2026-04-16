@@ -8,7 +8,6 @@ let branchOptions = [];
 let branchDropdownVisible = false;
 let branchSelectionInProgress = false;
 let orderSubmitting = false;
-let orderSuccessAnimation = null;
 
 function capitalizeCityInput(value) {
   return String(value || "")
@@ -248,16 +247,6 @@ function closeOrderSuccessModal() {
   if (!modal) return;
   modal.style.display = "none";
   window.location.href = "index.html";
-}
-
-function initOrderSuccessAnimation() {
-  if (typeof window.OrderSuccessAnimation !== "function") return;
-  if (orderSuccessAnimation) return;
-
-  orderSuccessAnimation = new window.OrderSuccessAnimation({
-    message: "Замовлення оформлено",
-    showSkipButton: true
-  });
 }
 
 function initOrderSuccessModalEvents() {
@@ -774,18 +763,6 @@ async function submitOrder(e) {
       updateCart();
     }
     renderItems([]);
-    if (orderSuccessAnimation) {
-      try {
-        await orderSuccessAnimation.play({
-          items,
-          message: "Замовлення оформлено",
-          showSkipButton: true,
-          exitDirection: window.innerWidth <= 640 ? "down" : "right"
-        });
-      } catch (animationError) {
-        console.warn("Order success animation failed:", animationError);
-      }
-    }
     showOrderSuccessModal(savedOrder);
   } catch (error) {
     showMessage(error.message || "Не вдалося оформити замовлення");
@@ -807,7 +784,6 @@ document.addEventListener("DOMContentLoaded", () => {
   setupDeliveryUI();
   hydratePrefilledNovaDelivery(profile);
   renderItems(items);
-  initOrderSuccessAnimation();
   bindCitySuggestionEvents();
   bindBranchSuggestionEvents();
   const cityInput = document.getElementById("orderCity");

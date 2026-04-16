@@ -15,6 +15,9 @@ const CATEGORY_RU_TO_UA = {
   "Товары для дома": "Товари для дому",
   "Автотовары": "Автотовари",
   "Сувениры и подарки": "Сувеніри та подарунки",
+  "Корневая группа": "Інше",
+  "Корпусы": "Корпуси",
+  "Циклоны": "Циклони",
   "Другое": "Інше"
 };
 
@@ -61,7 +64,19 @@ function getHeaderIndex(headers, name) {
 function translateCategory(raw) {
   const value = String(raw || "").trim();
   if (!value) return "Інше";
-  return CATEGORY_RU_TO_UA[value] || value;
+  if (CATEGORY_RU_TO_UA[value]) return CATEGORY_RU_TO_UA[value];
+
+  // Safety net for other Russian labels not listed explicitly.
+  const normalized = value
+    .replace(/инструмент(ы|ов)?/gi, "Інструменти")
+    .replace(/игрушк(и|а|е|у|ой|ам|ах)?/gi, "Іграшки")
+    .replace(/корпус(ы|а|ов)?/gi, "Корпуси")
+    .replace(/циклон(ы|а|ов)?/gi, "Циклони")
+    .replace(/корневая группа/gi, "Інше")
+    .replace(/другое/gi, "Інше")
+    .trim();
+
+  return normalized || "Інше";
 }
 
 function pickPopularityColumnIndex(headers) {

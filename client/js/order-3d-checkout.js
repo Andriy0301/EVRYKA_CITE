@@ -11,7 +11,6 @@ let branchOptions = [];
 let branchDropdownVisible = false;
 let branchSelectionInProgress = false;
 let orderSubmitting = false;
-let orderSuccessAnimation = null;
 
 const pendingState = {
   meta: null,
@@ -205,16 +204,6 @@ function closeOrderSuccessModal() {
   const modal = document.getElementById("orderSuccessModal");
   if (modal) modal.style.display = "none";
   window.location.href = "order-3d-print.html";
-}
-
-function initOrderSuccessAnimation() {
-  if (typeof window.OrderSuccessAnimation !== "function") return;
-  if (orderSuccessAnimation) return;
-
-  orderSuccessAnimation = new window.OrderSuccessAnimation({
-    message: "Замовлення оформлено",
-    showSkipButton: true
-  });
 }
 
 function initOrderSuccessModalEvents() {
@@ -622,21 +611,6 @@ async function submitOrder(e) {
     await cleanupPending();
     showMessage("", false);
     renderItems();
-    if (orderSuccessAnimation) {
-      try {
-        await orderSuccessAnimation.play({
-          items: models.map((model) => ({
-            name: model?.name || "3D model",
-            image: model?.previewImage || model?.image || ""
-          })),
-          message: "Замовлення оформлено",
-          showSkipButton: true,
-          exitDirection: window.innerWidth <= 640 ? "down" : "right"
-        });
-      } catch (animationError) {
-        console.warn("Order success animation failed:", animationError);
-      }
-    }
     showOrderSuccessModal({
       orderNumber,
       ttn,
@@ -694,7 +668,6 @@ document.addEventListener("DOMContentLoaded", async () => {
   }
   setupDeliveryUI();
   renderItems();
-  initOrderSuccessAnimation();
   bindCitySuggestionEvents();
   bindBranchSuggestionEvents();
   document.getElementById("orderCity").addEventListener("input", onCityInput);
