@@ -119,6 +119,90 @@ function closeAuthModal() {
   if (modal) modal.classList.remove("active");
 }
 
+function initAuthEyes() {
+  const eyesRoot = document.getElementById("authEyes");
+  const modal = document.getElementById("authModal");
+  if (!eyesRoot || !modal) return;
+
+  const eyes = [...eyesRoot.querySelectorAll(".auth-eye")];
+  const states = eyes.map((eye) => ({
+    eye,
+    pupil: eye.querySelector(".auth-eye-pupil"),
+    currentX: 0,
+    currentY: 0
+  })).filter((state) => state.pupil);
+  if (!states.length) return;
+
+  const pointer = { x: window.innerWidth / 2, y: window.innerHeight / 2 };
+  const smoothing = 0.14;
+  let isPrivate = false;
+  let blinkTimer = 0;
+
+  const setPrivateMode = (nextValue) => {
+    isPrivate = Boolean(nextValue);
+    eyesRoot.classList.toggle("is-private", isPrivate);
+  };
+
+  const scheduleBlink = () => {
+    clearTimeout(blinkTimer);
+    const nextBlinkDelay = 3800 + Math.random() * 4200;
+    blinkTimer = window.setTimeout(() => {
+      if (!isPrivate && modal.classList.contains("active")) {
+        eyesRoot.classList.add("is-blinking");
+        window.setTimeout(() => eyesRoot.classList.remove("is-blinking"), 170);
+      }
+      scheduleBlink();
+    }, nextBlinkDelay);
+  };
+
+  const getTargetOffset = (state) => {
+    const eyeRect = state.eye.getBoundingClientRect();
+    const pupilRect = state.pupil.getBoundingClientRect();
+
+    if (!eyeRect.width || !eyeRect.height) return { x: 0, y: 0 };
+
+    const centerX = eyeRect.left + eyeRect.width / 2;
+    const centerY = eyeRect.top + eyeRect.height / 2;
+    const dx = pointer.x - centerX;
+    const dy = pointer.y - centerY;
+    const distance = Math.hypot(dx, dy) || 1;
+    const maxRadius = Math.max(0, (Math.min(eyeRect.width, eyeRect.height) - Math.max(pupilRect.width, pupilRect.height)) / 2 - 5);
+    const factor = Math.min(1, maxRadius / distance);
+    return { x: dx * factor, y: dy * factor };
+  };
+
+  const tick = () => {
+    states.forEach((state) => {
+      const target = isPrivate ? { x: 0, y: 0 } : getTargetOffset(state);
+      state.currentX += (target.x - state.currentX) * smoothing;
+      state.currentY += (target.y - state.currentY) * smoothing;
+      state.pupil.style.setProperty("--pupil-x", `${state.currentX.toFixed(2)}px`);
+      state.pupil.style.setProperty("--pupil-y", `${state.currentY.toFixed(2)}px`);
+    });
+    window.requestAnimationFrame(tick);
+  };
+
+  const passwordInputs = [...document.querySelectorAll("#registerForm input[type='password']")];
+  const syncPrivacyWithFocus = () => {
+    const active = document.activeElement;
+    setPrivateMode(passwordInputs.includes(active));
+  };
+
+  document.addEventListener("pointermove", (event) => {
+    pointer.x = event.clientX;
+    pointer.y = event.clientY;
+  }, { passive: true });
+
+  passwordInputs.forEach((input) => {
+    input.addEventListener("focus", () => setPrivateMode(true));
+    input.addEventListener("blur", syncPrivacyWithFocus);
+  });
+  document.addEventListener("focusin", syncPrivacyWithFocus);
+
+  scheduleBlink();
+  tick();
+}
+
 function showAuthMessage(message = "", isError = true) {
   const el = document.getElementById("authMessage");
   if (!el) return;
@@ -656,6 +740,7 @@ function initHeroCarousel() {
 // =========================
 document.addEventListener("DOMContentLoaded", async () => {
   initCategoryTabs();
+  initAuthEyes();
   const authBtn = document.getElementById("authBtn");
   const authForm = document.getElementById("registerForm");
   const closeAuth = document.getElementById("closeAuthBtn");

@@ -56,6 +56,38 @@
   </div>
 </header>
 
+  <div id="cartOverlay" class="cart-overlay" onclick="toggleCart(false)"></div>
+  <div id="cartSidebar" class="cart-sidebar">
+    <div class="cart-head-float">
+      <h3 id="cartPanelTitle">Кошик</h3>
+      <button type="button" class="cart-head-float-close" onclick="toggleCart(false)" aria-label="Закрити кошик">×</button>
+    </div>
+    <div id="cartItems" class="cart-items"></div>
+    <div class="cart-footer">
+      <div class="cart-total">
+        <span>Разом</span>
+        <div>
+          <b id="cartTotal">0</b>
+          <span>грн</span>
+        </div>
+      </div>
+      <button class="checkout-btn" onclick="checkout()">Оформити</button>
+      <button class="clear-btn" onclick="clearCart()">Очистити кошик</button>
+    </div>
+  </div>
+
+  <div id="favoritesOverlay" class="cart-overlay" onclick="toggleFavorites(false)"></div>
+  <div id="favoritesSidebar" class="cart-sidebar">
+    <div class="cart-head-float">
+      <h3>Обрані</h3>
+      <button type="button" class="cart-head-float-close" onclick="toggleFavorites(false)" aria-label="Закрити обрані">×</button>
+    </div>
+    <div id="favoritesItems" class="cart-items"></div>
+    <div class="cart-footer">
+      <button class="clear-btn" onclick="clearFavorites()">Очистити обрані</button>
+    </div>
+  </div>
+
   <main class="container">
     <div class="catalog-shell">
       <div class="product-nav catalog-page-nav">
@@ -219,7 +251,7 @@
   <script src="js/header-nav.js?v=1"></script>
   <script src="js/api.js?v=20260422"></script>
   <script src="js/custom-select.js?v=1"></script>
-  <script src="js/cabinet.js?v=20260502"></script>
+  <script src="js/cabinet.js?v=20260503"></script>
   <script src="js/cart.js?v=20260430"></script>
   <script src="js/chat-widget.js?v=20260409"></script>
 </body>

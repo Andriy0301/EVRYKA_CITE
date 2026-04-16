@@ -1,4 +1,5 @@
 ﻿const PROFILE_STORAGE_KEY = "userProfile";
+const FAVORITES_STORAGE_KEY = "favorites";
 let cabCityOptions = [];
 let cabBranchOptions = [];
 let cabCityDropdownVisible = false;
@@ -22,6 +23,99 @@ function setProfile(profile) {
     }
   };
   localStorage.setItem(PROFILE_STORAGE_KEY, JSON.stringify(merged));
+}
+
+function getFavorites() {
+  try {
+    return JSON.parse(localStorage.getItem(FAVORITES_STORAGE_KEY) || "[]");
+  } catch {
+    return [];
+  }
+}
+
+function saveFavorites(items) {
+  const next = Array.isArray(items) ? items : [];
+  localStorage.setItem(FAVORITES_STORAGE_KEY, JSON.stringify(next));
+  const profile = getProfile();
+  if (profile?.id && typeof saveUserFavorites === "function") {
+    saveUserFavorites(profile, next).catch(() => null);
+  }
+}
+
+async function hydrateFavoritesFromProfile(profile) {
+  if (!profile?.id || typeof getUserFavorites !== "function") return;
+  try {
+    const data = await getUserFavorites(profile);
+    const items = Array.isArray(data?.items) ? data.items : [];
+    localStorage.setItem(FAVORITES_STORAGE_KEY, JSON.stringify(items));
+  } catch {
+    // fallback to local data
+  }
+}
+
+function resolveFavoriteImageSrc(item) {
+  const candidate = item?.image || item?.images?.[0] || "";
+  if (!candidate) return "images/favicon.png";
+  if (/^https?:\/\//i.test(candidate)) return candidate;
+  return `${API_URL}${candidate}`;
+}
+
+function goToProduct(id) {
+  if (!id) return;
+  window.location.href = `product.html?id=${encodeURIComponent(id)}`;
+}
+
+function renderFavoritesList() {
+  const container = document.getElementById("favoritesItems");
+  if (!container) return;
+  const favorites = getFavorites();
+  container.innerHTML = "";
+
+  if (!favorites.length) {
+    container.innerHTML = "<p style='text-align:center;'>Немає обраних товарів</p>";
+    return;
+  }
+
+  favorites.forEach((item) => {
+    const div = document.createElement("div");
+    div.className = "cart-item";
+    div.innerHTML = `
+      <img src="${resolveFavoriteImageSrc(item)}" alt="${item?.name || "Товар"}">
+      <div class="cart-info">
+        <h4>${item?.name || "Товар"}</h4>
+        <p>${Number(item?.price || 0)} грн</p>
+      </div>
+      <button type="button" class="remove-btn" aria-label="Прибрати з обраного">✖</button>
+    `;
+    div.addEventListener("click", () => goToProduct(item?.id));
+    const removeBtn = div.querySelector(".remove-btn");
+    removeBtn?.addEventListener("click", (event) => {
+      event.stopPropagation();
+      const next = getFavorites().filter((entry) => Number(entry?.id) !== Number(item?.id));
+      saveFavorites(next);
+      renderFavoritesList();
+    });
+    container.appendChild(div);
+  });
+}
+
+function toggleFavorites(open) {
+  const sidebar = document.getElementById("favoritesSidebar");
+  const overlay = document.getElementById("favoritesOverlay");
+  if (!sidebar || !overlay) return;
+  if (open) {
+    sidebar.classList.add("active");
+    overlay.classList.add("active");
+    renderFavoritesList();
+    return;
+  }
+  sidebar.classList.remove("active");
+  overlay.classList.remove("active");
+}
+
+function clearFavorites() {
+  saveFavorites([]);
+  renderFavoritesList();
 }
 
 function showCabinetMessage(message = "", isError = true) {
@@ -63,8 +157,9 @@ function canCancelCabinetOrder(order) {
 function getCabCancelButtonHtml(orderType, order) {
   if (!canCancelCabinetOrder(order)) return "";
   return `
-    <button type="button" class="clear-btn cab-cancel-order-btn" data-cancel-type="${orderType}" data-cancel-id="${order?.id || ""}" data-cancel-number="${order?.orderNumber || ""}">
-      Скасувати замовлення
+    <button type="button" class="cab-cancel-order-btn" data-cancel-type="${orderType}" data-cancel-id="${order?.id || ""}" data-cancel-number="${order?.orderNumber || ""}">
+      <span aria-hidden="true">✕</span>
+      <span>Скасувати замовлення</span>
     </button>
   `;
 }
@@ -72,26 +167,20 @@ function getCabCancelButtonHtml(orderType, order) {
 function showCabCancelReasonDialog(orderLabel) {
   return new Promise((resolve) => {
     const overlay = document.createElement("div");
-    overlay.style.position = "fixed";
-    overlay.style.inset = "0";
-    overlay.style.background = "rgba(0, 0, 0, 0.45)";
-    overlay.style.display = "flex";
-    overlay.style.alignItems = "center";
-    overlay.style.justifyContent = "center";
-    overlay.style.zIndex = "9999";
+    overlay.className = "cab-cancel-modal";
 
     const modal = document.createElement("div");
-    modal.style.width = "min(460px, calc(100vw - 24px))";
-    modal.style.background = "#fff";
-    modal.style.borderRadius = "14px";
-    modal.style.padding = "16px";
-    modal.style.boxShadow = "0 20px 40px rgba(0,0,0,.25)";
+    modal.className = "cab-cancel-modal__card";
+    modal.setAttribute("role", "dialog");
+    modal.setAttribute("aria-modal", "true");
     modal.innerHTML = `
-      <h3 style="margin:0 0 10px 0; font-size:20px;">Скасування замовлення</h3>
-      <p style="margin:0 0 12px 0; color:#444;">${orderLabel || "Оберіть причину скасування"}</p>
-      <label style="display:block; margin-bottom:10px;">
-        Причина
-        <select id="cabCancelReasonSelect" style="width:100%; margin-top:6px;">
+      <div class="cab-cancel-modal__header">
+        <h3 class="cab-cancel-modal__title">Скасування замовлення</h3>
+        <p class="cab-cancel-modal__subtitle">${orderLabel || "Оберіть причину скасування"}</p>
+      </div>
+      <label class="cab-cancel-modal__field">
+        <span>Причина</span>
+        <select id="cabCancelReasonSelect" class="cab-cancel-modal__control">
           <option value="">Оберіть причину</option>
           <option value="Передумав(ла)">Передумав(ла)</option>
           <option value="Хочу змінити замовлення">Хочу змінити замовлення</option>
@@ -99,17 +188,21 @@ function showCabCancelReasonDialog(orderLabel) {
           <option value="Інше">Інше</option>
         </select>
       </label>
-      <label style="display:block; margin-bottom:14px;">
-        Коментар (необов'язково)
-        <input id="cabCancelReasonComment" type="text" placeholder="Деталі причини" style="width:100%; margin-top:6px;">
+      <label class="cab-cancel-modal__field">
+        <span>Коментар (необов'язково)</span>
+        <input id="cabCancelReasonComment" class="cab-cancel-modal__control" type="text" placeholder="Деталі причини">
       </label>
-      <div style="display:flex; gap:10px; justify-content:flex-end;">
-        <button type="button" id="cabCancelReasonClose" class="clear-btn">Закрити</button>
-        <button type="button" id="cabCancelReasonConfirm" class="checkout-btn">Підтвердити</button>
+      <div class="cab-cancel-modal__actions">
+        <button type="button" id="cabCancelReasonClose" class="cab-cancel-modal__btn cab-cancel-modal__btn--ghost">Закрити</button>
+        <button type="button" id="cabCancelReasonConfirm" class="cab-cancel-modal__btn cab-cancel-modal__btn--danger">Підтвердити</button>
       </div>
     `;
 
+    const onEsc = (event) => {
+      if (event.key === "Escape") close(null);
+    };
     function close(result) {
+      document.removeEventListener("keydown", onEsc);
       overlay.remove();
       resolve(result);
     }
@@ -117,6 +210,7 @@ function showCabCancelReasonDialog(orderLabel) {
     overlay.addEventListener("click", (event) => {
       if (event.target === overlay) close(null);
     });
+    document.addEventListener("keydown", onEsc);
 
     const closeBtn = modal.querySelector("#cabCancelReasonClose");
     const confirmBtn = modal.querySelector("#cabCancelReasonConfirm");
@@ -339,6 +433,7 @@ function renderCabinetOrders(data, profile) {
       const reason = await showCabCancelReasonDialog(`Замовлення ${orderNumber || orderId || ""}`);
       if (!reason) return;
 
+      const originalHtml = btn.innerHTML;
       btn.disabled = true;
       btn.innerText = "Скасовуємо...";
       try {
@@ -356,7 +451,7 @@ function renderCabinetOrders(data, profile) {
       } catch (error) {
         showCabinetMessage(error.message || "Не вдалося скасувати замовлення");
         btn.disabled = false;
-        btn.innerText = "Скасувати замовлення";
+        btn.innerHTML = originalHtml;
       }
     });
   });
@@ -781,7 +876,7 @@ function logout() {
   window.location.href = "index.html";
 }
 
-document.addEventListener("DOMContentLoaded", () => {
+document.addEventListener("DOMContentLoaded", async () => {
   const profile = getProfile();
   if (!profile?.id) {
     window.location.href = "index.html";
@@ -815,6 +910,8 @@ document.addEventListener("DOMContentLoaded", () => {
   renderInitials(profile);
   const authBtn = document.getElementById("authBtn");
   if (authBtn) authBtn.addEventListener("click", () => window.location.href = "cabinet.html");
+  await hydrateFavoritesFromProfile(profile);
+  renderFavoritesList();
   document.getElementById("cabinetForm").addEventListener("submit", saveCabinet);
   document.getElementById("logoutBtn").addEventListener("click", logout);
 });
