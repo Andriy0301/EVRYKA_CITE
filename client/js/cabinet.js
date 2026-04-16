@@ -146,6 +146,19 @@ function getCabOrderLifecycleLabel(order) {
   return "Активне";
 }
 
+function isCabOrderCancelled(order) {
+  return String(order?.orderStatus || "").trim() === "cancelled";
+}
+
+function getCabSummaryStatusBadgeHtml(order) {
+  if (isCabOrderCancelled(order)) {
+    return `<span class="cab-order-status-badge is-cancelled">⛔ Скасовано</span>`;
+  }
+  return order?.ttn
+    ? `<span class="cab-order-status-badge is-loading" data-ttn-status="${order.ttn}">⏳ Перевіряємо...</span>`
+    : `<span class="cab-order-status-badge is-neutral">ℹ️ ТТН відсутня</span>`;
+}
+
 function canCancelCabinetOrder(order) {
   if (!order) return false;
   if (String(order?.orderStatus || "").trim() === "cancelled") return false;
@@ -334,15 +347,13 @@ function renderCabinetOrders(data, profile) {
           ? (delivery?.address || delivery?.point || "-")
           : (delivery?.branchText || delivery?.point || delivery?.address || "-");
         return `
-          <article class="cab-order-card">
+          <article class="cab-order-card ${isCabOrderCancelled(order) ? "is-cancelled" : ""}">
             <button type="button" class="cab-order-summary" data-order-toggle="${orderUiId}">
               <div>
                 <span class="cab-order-number">${order?.orderNumber || `3D #${order?.id || "-"}`}</span>
                 <p class="cab-order-meta">${formatCabOrderDate(order?.createdAt)}</p>
                 <p class="cab-order-status-row">
-                  ${order?.ttn
-                    ? `<span class="cab-order-status-badge is-loading" data-ttn-status="${order.ttn}">⏳ Перевіряємо...</span>`
-                    : `<span class="cab-order-status-badge is-neutral">ℹ️ ТТН відсутня</span>`}
+                  ${getCabSummaryStatusBadgeHtml(order)}
                 </p>
               </div>
               <div class="cab-order-summary-right">
@@ -386,15 +397,13 @@ function renderCabinetOrders(data, profile) {
         )
         .join("");
       return `
-        <article class="cab-order-card">
+        <article class="cab-order-card ${isCabOrderCancelled(order) ? "is-cancelled" : ""}">
           <button type="button" class="cab-order-summary" data-order-toggle="${orderUiId}">
             <div>
               <span class="cab-order-number">№ ${order.orderNumber || "-"}</span>
               <p class="cab-order-meta">${formatCabOrderDate(order.createdAt)}</p>
               <p class="cab-order-status-row">
-                ${order?.ttn
-                  ? `<span class="cab-order-status-badge is-loading" data-ttn-status="${order.ttn}">⏳ Перевіряємо...</span>`
-                  : `<span class="cab-order-status-badge is-neutral">ℹ️ ТТН відсутня</span>`}
+                ${getCabSummaryStatusBadgeHtml(order)}
               </p>
             </div>
             <div class="cab-order-summary-right">

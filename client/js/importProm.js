@@ -1,117 +1,161 @@
 const fs = require("fs");
+const path = require("path");
 const https = require("https");
 const csv = require("csv-parser");
 
-const results = [];
+const DATA_CSV_PATH = "client/export-products-04-04-26_09-30-12.csv";
+const IMAGES_DIR = "client/images";
+const PRODUCTS_PATH = "server/data/products.json";
+const POPULARITY_PATH = "server/data/popularity.json";
+const rows = [];
 
-// 📁 створюємо папку для картинок
-if (!fs.existsSync("client/images")) {
-  fs.mkdirSync("client/images", { recursive: true });
+const CATEGORY_RU_TO_UA = {
+  "Инструменты": "Інструменти",
+  "Игрушки": "Іграшки",
+  "Товары для дома": "Товари для дому",
+  "Автотовары": "Автотовари",
+  "Сувениры и подарки": "Сувеніри та подарунки",
+  "Другое": "Інше"
+};
+
+if (!fs.existsSync(IMAGES_DIR)) {
+  fs.mkdirSync(IMAGES_DIR, { recursive: true });
 }
+fs.mkdirSync(path.dirname(PRODUCTS_PATH), { recursive: true });
 
-// 🔥 скачування фото
-function downloadImage(url, path) {
+function downloadImage(url, outputPath) {
   return new Promise((resolve) => {
     if (!url || !url.startsWith("http") || !url.includes("prom.ua")) {
-      return resolve();
+      return resolve(false);
     }
-
-    https.get(url, (res) => {
-      const file = fs.createWriteStream(path);
-      res.pipe(file);
-
-      file.on("finish", () => {
-        file.close(resolve);
-      });
-    }).on("error", () => resolve());
+    https
+      .get(url, (res) => {
+        const file = fs.createWriteStream(outputPath);
+        res.pipe(file);
+        file.on("finish", () => {
+          file.close(() => resolve(true));
+        });
+      })
+      .on("error", () => resolve(false));
   });
 }
 
-// 🔥 читаємо CSV
-fs.createReadStream("client/export-products-04-04-26_09-30-12.csv")
-  .pipe(csv({
-    separator: ",",
-    headers: false
-  }))
+function getCell(values, idx) {
+  if (!Number.isInteger(idx) || idx < 0 || idx >= values.length) return "";
+  return String(values[idx] || "").trim();
+}
 
+function parseNumber(text, fallback = 0) {
+  const normalized = String(text || "")
+    .replace(/\s+/g, "")
+    .replace(",", ".")
+    .trim();
+  const num = Number(normalized);
+  return Number.isFinite(num) ? num : fallback;
+}
+
+function getHeaderIndex(headers, name) {
+  return headers.findIndex((h) => String(h || "").trim() === name);
+}
+
+function translateCategory(raw) {
+  const value = String(raw || "").trim();
+  if (!value) return "Інше";
+  return CATEGORY_RU_TO_UA[value] || value;
+}
+
+function pickPopularityColumnIndex(headers) {
+  const candidates = headers
+    .map((header, idx) => ({ header: String(header || "").trim().toLowerCase(), idx }))
+    .filter((entry) => entry.header);
+
+  const preferred = candidates.find(({ header }) =>
+    /(замовлен|замовленн|продан|куплен|покупок|sales|sold|orders?)/i.test(header)
+  );
+  return preferred ? preferred.idx : -1;
+}
+
+fs.createReadStream(DATA_CSV_PATH)
+  .pipe(csv({ separator: ",", headers: false }))
   .on("data", (row) => {
-    results.push(row);
+    rows.push(Object.values(row));
   })
-
   .on("end", async () => {
+    if (!rows.length) {
+      console.error("❌ CSV порожній");
+      return;
+    }
+
+    const headers = rows[0].map((value) => String(value || "").trim());
+    const dataRows = rows.slice(1);
+
+    const idxCode = getHeaderIndex(headers, "Код_товару");
+    const idxName = getHeaderIndex(headers, "Назва_позиції_укр");
+    const idxDescription = getHeaderIndex(headers, "Опис_укр");
+    const idxCategory = getHeaderIndex(headers, "Назва_групи");
+    const idxPrice = getHeaderIndex(headers, "Ціна");
+    const idxCurrency = getHeaderIndex(headers, "Валюта");
+    const idxImageLinks = getHeaderIndex(headers, "Посилання_зображення");
+    const idxPopularity = pickPopularityColumnIndex(headers);
+
     const products = [];
+    const popularity = {};
 
-    for (let i = 0; i < results.length; i++) {
-      const row = results[i];
+    for (let i = 0; i < dataRows.length; i += 1) {
+      const values = dataRows[i];
+      const productCode = getCell(values, idxCode);
+      const nameUa = getCell(values, idxName);
+      const descriptionUa = getCell(values, idxDescription);
+      const categoryUa = translateCategory(getCell(values, idxCategory));
+      const currency = getCell(values, idxCurrency).toUpperCase();
+      const price = parseNumber(getCell(values, idxPrice), 0);
 
-      const name = row[2] || row[1] || "";
-      let description = "";
-    const category = row[18] || "Інше";
-// 🔥 шукаємо український опис
-Object.values(row).forEach(v => {
-  if (
-    v &&
-    v.length > 50 &&                 // нормальний текст
-    v.includes(" ") &&              // не одне слово
-    (v.includes("для") || v.includes("та") || v.includes("що")) // укр слова
-  ) {
-    description = v;
-  }
-});
+      if (!nameUa) continue; // беремо тільки українські назви
+      if (currency && currency !== "UAH") continue;
 
-      // ✅ ФІКС ЦІНИ (через UAH)
-      let price = 0;
-
-      Object.values(row).forEach((v, index) => {
-        if (v === "UAH" && row[index - 1]) {
-          price = Number(row[index - 1]);
-        }
-      });
-
-      // 🔥 картинки
-      let imagesRaw = "";
-
-      Object.values(row).forEach((v) => {
-        if (v && v.includes("images.prom.ua")) {
-          imagesRaw = v;
-        }
-      });
-
-      const imageUrls = (imagesRaw || "")
+      const imageUrls = getCell(values, idxImageLinks)
         .split(",")
-        .map(i => i.trim())
-        .filter(url => url.startsWith("http"));
+        .map((url) => url.trim())
+        .filter((url) => /^https?:\/\//i.test(url));
 
       const localImages = [];
-
-      for (let j = 0; j < imageUrls.length; j++) {
+      for (let j = 0; j < imageUrls.length; j += 1) {
         const url = imageUrls[j];
-
-        const filename = `product_${i}_${j}.jpg`;
-        const path = `client/images/${filename}`;
-
-        await downloadImage(url, path);
-
-        localImages.push(`/images/${filename}`);
+        const filename = `product_${i + 1}_${j}.jpg`;
+        const imagePath = path.join(IMAGES_DIR, filename);
+        const downloaded = await downloadImage(url, imagePath);
+        if (downloaded) {
+          localImages.push(`/images/${filename}`);
+        }
       }
 
-      if (!name) continue;
+      const fallbackId = products.length + 1;
+      const numericCode = Number(productCode);
+      const productId = Number.isFinite(numericCode) && numericCode > 0 ? numericCode : fallbackId;
+
+      const popularityValue = idxPopularity >= 0 ? Math.max(0, Math.round(parseNumber(getCell(values, idxPopularity), 0))) : 0;
+      if (popularityValue > 0) {
+        popularity[productId] = popularityValue;
+      }
 
       products.push({
-        id: i + 1,
-        name,
+        id: productId,
+        name: nameUa,
         price,
         images: localImages,
-        description,
-        category
+        description: descriptionUa || "",
+        category: categoryUa,
+        popularity: popularityValue
       });
     }
 
-    fs.writeFileSync(
-      "server/data/products.json",
-      JSON.stringify(products, null, 2)
-    );
+    fs.writeFileSync(PRODUCTS_PATH, JSON.stringify(products, null, 2), "utf8");
+    fs.writeFileSync(POPULARITY_PATH, JSON.stringify(popularity, null, 2), "utf8");
 
     console.log("✅ Імпорт завершено!");
     console.log("📦 Товарів:", products.length);
+    console.log("🔥 Популярність імпортовано для товарів:", Object.keys(popularity).length);
+    if (idxPopularity < 0) {
+      console.log("ℹ️ У CSV не знайдено колонки з кількістю замовлень/продажів.");
+    }
   });

@@ -46,7 +46,9 @@ router.get("/", (req, res) => {
       const popularity = readPopularity();
 
       list.sort((a, b) => {
-        return (popularity[b.id] || 0) - (popularity[a.id] || 0);
+        const aScore = Number(popularity?.[a.id] ?? a?.popularity ?? 0) || 0;
+        const bScore = Number(popularity?.[b.id] ?? b?.popularity ?? 0) || 0;
+        return bScore - aScore;
       });
     }
 
