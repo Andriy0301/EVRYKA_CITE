@@ -149,7 +149,7 @@ function initAuthEyes() {
     blinkTimer = window.setTimeout(() => {
       if (!isPrivate && modal.classList.contains("active")) {
         eyesRoot.classList.add("is-blinking");
-        window.setTimeout(() => eyesRoot.classList.remove("is-blinking"), 170);
+        window.setTimeout(() => eyesRoot.classList.remove("is-blinking"), 280);
       }
       scheduleBlink();
     }, nextBlinkDelay);
