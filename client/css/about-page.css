@@ -112,12 +112,60 @@
   background: #f8fafc;
 }
 
-.page-about .about-v2__card h2 {
-  margin: 0 0 10px;
+.page-about .about-v2__card h2.about-v2__h {
+  display: flex;
+  align-items: center;
+  gap: clamp(12px, 1.6vw, 16px);
+  margin: 0 0 14px;
   font-size: clamp(20px, 2vw, 26px);
   line-height: 1.2;
   font-weight: 800;
+  color: #0f172a;
+}
+
+.page-about .about-v2__h-icon {
+  flex: 0 0 auto;
+  width: clamp(44px, 5vw, 52px);
+  height: clamp(44px, 5vw, 52px);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 14px;
+  border: 1px solid rgba(15, 23, 42, 0.08);
+  box-shadow: 0 4px 14px rgba(15, 23, 42, 0.06);
+}
+
+.page-about .about-v2__h-icon svg {
+  width: 24px;
+  height: 24px;
+}
+
+.page-about .about-v2__h-text {
+  letter-spacing: -0.02em;
+}
+
+.page-about #about-v2-story.about-v2__h .about-v2__h-icon {
+  background: #fff7ed;
   color: #c2410c;
+  border-color: #fed7aa;
+}
+
+.page-about #about-v2-services.about-v2__h .about-v2__h-icon {
+  background: #eff6ff;
+  color: #1d4ed8;
+  border-color: #bfdbfe;
+}
+
+.page-about #about-v2-values.about-v2__h .about-v2__h-icon {
+  background: #f0fdf4;
+  color: #15803d;
+  border-color: #bbf7d0;
+}
+
+.page-about #about-v2-location.about-v2__h .about-v2__h-icon {
+  background: #faf5ff;
+  color: #7c3aed;
+  border-color: #e9d5ff;
 }
 
 .page-about .about-v2__card p {
