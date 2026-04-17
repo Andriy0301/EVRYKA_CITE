@@ -3787,6 +3787,20 @@ body.cart-open .header .cart {
   border-color: rgba(255, 255, 255, 0.28);
 }
 
+.footer .socials.socials--text {
+  flex-wrap: wrap;
+}
+
+.footer .socials.socials--text a {
+  width: auto;
+  min-width: 0;
+  height: auto;
+  min-height: 36px;
+  padding: 8px 12px;
+  font-size: 13px;
+  font-weight: 600;
+}
+
 /* оплата */
 .pay-text {
   margin-top: 10px;

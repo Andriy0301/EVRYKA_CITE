@@ -706,6 +706,15 @@ function scrollToCatalogFromHash() {
   }, 60);
 }
 
+function openFavoritesFromHash() {
+  const raw = (window.location.hash || "").replace(/^#/, "").toLowerCase();
+  if (raw !== "favorites" && raw !== "obrani") return;
+  if (typeof toggleFavorites !== "function") return;
+  requestAnimationFrame(() => {
+    toggleFavorites(true);
+  });
+}
+
 function initHeroCarousel() {
   const root = document.querySelector(".hero-carousel");
   if (!root) return;
@@ -783,6 +792,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   }
   updateCartCount();
   scrollToCatalogFromHash();
+  openFavoritesFromHash();
   initHeroCarousel();
 });
 

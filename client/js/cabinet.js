@@ -654,8 +654,38 @@ function setupCabinetSections() {
     });
   };
 
+  const applyHash = () => {
+    const raw = (window.location.hash || "").replace(/^#/, "").toLowerCase();
+    if (raw === "favorites" || raw === "obrani") {
+      show("personal");
+      toggleFavorites(true);
+      return;
+    }
+    if (raw === "orders" || raw === "zamovlennya") {
+      show("orders");
+      return;
+    }
+    if (raw === "personal" || raw === "profile") {
+      show("personal");
+      return;
+    }
+    show("personal");
+  };
+
+  applyHash();
+  window.addEventListener("hashchange", applyHash);
+
   buttons.forEach((btn) => {
-    btn.addEventListener("click", () => show(btn.dataset.section));
+    btn.addEventListener("click", () => {
+      const section = btn.dataset.section;
+      show(section);
+      try {
+        if (section === "orders") history.replaceState(null, "", "#orders");
+        else if (section === "personal") history.replaceState(null, "", "#personal");
+      } catch (_) {
+        // ignore
+      }
+    });
   });
 }
 
