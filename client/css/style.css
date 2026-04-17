@@ -4075,9 +4075,14 @@ body.cart-open .header .cart {
 }
 
 .cab-order-payment-badge.is-unpaid {
-  color: #334155;
-  background: #f8fafc;
-  border-color: #cbd5e1;
+  color: #b91c1c;
+  background: #fef2f2;
+  border-color: #fca5a5;
+}
+
+.cab-payment-status.is-unpaid {
+  color: #b91c1c;
+  font-weight: 700;
 }
 
 .cab-order-summary-right {
@@ -4257,7 +4262,10 @@ body.cart-open .header .cart {
 }
 
 .cab-cancel-modal__control {
+  display: block;
   width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
   margin-top: 6px;
   min-height: 42px;
   padding: 10px 12px;
@@ -4642,12 +4650,10 @@ body.cart-open .header .cart {
 }
 
 .page-catalog .catalog-reset-btn:hover {
-  background: rgba(251, 146, 60, 0.22);
-  border-color: rgba(251, 146, 60, 0.55);
+  background: rgba(251, 146, 60, 0.12);
+  border-color: rgba(251, 146, 60, 0.36);
   color: var(--ev-p-ink);
-  box-shadow:
-    0 4px 16px rgba(251, 146, 60, 0.28),
-    0 2px 6px rgba(0, 0, 0, 0.08);
+  box-shadow: 0 2px 8px rgba(var(--ev-rgb), 0.14);
 }
 
 .catalog-filter-block {

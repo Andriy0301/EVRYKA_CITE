@@ -159,6 +159,7 @@ function getCabPaymentMethod(order) {
 function getCabPaymentMethodLabel(order) {
   const method = getCabPaymentMethod(order);
   if (method === "cod") return "Оплата при отриманні";
+  if (method === "mono" || method === "monobank") return "Оплата через Monobank";
   if (!method) return "Не вказано";
   return "Оплата наперед";
 }
@@ -190,7 +191,12 @@ function getCabPaymentStatusMeta(order) {
 function getCabPaymentBadgeHtml(order) {
   const methodLabel = getCabPaymentMethodLabel(order);
   const statusMeta = getCabPaymentStatusMeta(order);
-  return `<span class="cab-order-payment-badge ${statusMeta.tone}">${statusMeta.icon} ${methodLabel}: ${statusMeta.label}</span>`;
+  return `<span class="cab-order-payment-badge ${statusMeta.tone}">${statusMeta.icon} Спосіб оплати: ${methodLabel}</span>`;
+}
+
+function getCabPaymentStatusHtml(order) {
+  const statusMeta = getCabPaymentStatusMeta(order);
+  return `<span class="cab-payment-status ${statusMeta.tone}">${statusMeta.label}</span>`;
 }
 
 function getCabSummaryStatusBadgeHtml(order) {
@@ -432,7 +438,7 @@ function renderCabinetOrders(data, profile) {
               <p><b>Колір замовлення:</b> ${order?.orderColor || "-"}</p>
               <p><b>Статус замовлення:</b> ${getCabOrderLifecycleLabel(order)}</p>
               <p><b>Спосіб оплати:</b> ${getCabPaymentMethodLabel(order)}</p>
-              <p><b>Статус оплати:</b> ${getCabPaymentStatusMeta(order).label}</p>
+              <p><b>Статус оплати:</b> ${getCabPaymentStatusHtml(order)}</p>
               <p><b>Доставка:</b> ${delivery?.city || "-"}, ${deliveryPoint}</p>
               ${order?.ttn ? `<p><b>ТТН:</b> ${order.ttn}</p>` : ""}
               <p><b>Статус доставки:</b> ${order?.ttn ? `<span data-ttn-status="${order.ttn}">Перевіряємо...</span>` : "ТТН відсутня"}</p>
@@ -482,7 +488,7 @@ function renderCabinetOrders(data, profile) {
             <p><b>Сума:</b> ${Number(order.total || 0)} грн</p>
             <p><b>Статус замовлення:</b> ${getCabOrderLifecycleLabel(order)}</p>
             <p><b>Спосіб оплати:</b> ${getCabPaymentMethodLabel(order)}</p>
-            <p><b>Статус оплати:</b> ${getCabPaymentStatusMeta(order).label}</p>
+            <p><b>Статус оплати:</b> ${getCabPaymentStatusHtml(order)}</p>
             <p><b>Доставка:</b> ${order?.customer?.delivery?.city || "-"}, ${order?.customer?.delivery?.branchText || "-"}</p>
             ${order?.ttn ? `<p><b>ТТН:</b> ${order.ttn}</p>` : ""}
             <p><b>Статус доставки:</b> ${order?.ttn ? `<span data-ttn-status="${order.ttn}">Перевіряємо...</span>` : "ТТН відсутня"}</p>

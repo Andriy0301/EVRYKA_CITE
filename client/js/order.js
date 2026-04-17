@@ -186,7 +186,6 @@ function getDeliveryTypeTitle(type) {
 function getPaymentMethodTitle(method) {
   if (method === "cod") return "Оплата при отриманні";
   if (method === "mono") return "Оплата Monobank";
-  if (method === "liqpay") return "Оплата LiqPay";
   return "-";
 }
 
