@@ -73,11 +73,33 @@
       </div>
     </div>
 
-    <h1 class="about-page-title">Про нас</h1>
+    <section class="about-hero" aria-labelledby="about-hero-title">
+      <div class="about-hero__badge">EVRYKA • 3D друк в Україні</div>
+      <h1 id="about-hero-title" class="about-page-title">Про нас</h1>
+      <p class="about-hero__lead">Створюємо 3D-вироби для побуту, ремонту, декору та бізнес-задач. Поєднуємо точність виробництва, швидкі строки та чесну комунікацію на кожному етапі.</p>
+      <div class="about-kpis" role="list" aria-label="Ключові показники EVRYKA">
+        <div class="about-kpi" role="listitem">
+          <b>5+ років</b>
+          <span>практичного досвіду</span>
+        </div>
+        <div class="about-kpi" role="listitem">
+          <b>Власна ферма</b>
+          <span>3D-принтерів</span>
+        </div>
+        <div class="about-kpi" role="listitem">
+          <b>Точний контроль</b>
+          <span>якості друку</span>
+        </div>
+        <div class="about-kpi" role="listitem">
+          <b>Вся Україна</b>
+          <span>доставка замовлень</span>
+        </div>
+      </div>
+    </section>
 
     <div class="about-page">
       <div class="about-page__grid">
-        <section class="about-card about-card--story" aria-labelledby="about-history-title">
+        <section class="about-card about-card--story about-card--wide" aria-labelledby="about-history-title">
           <div class="about-card__head">
             <div class="about-card__icon" aria-hidden="true">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -89,8 +111,8 @@
             <h2 id="about-history-title">Наша історія</h2>
           </div>
           <div class="about-card__body">
-            <p>Ми професійно займаємося 3D-друком уже понад п’ять років. Починали з невеликих проєктів і поступово нарощували досвід.</p>
-            <p>Сьогодні маємо власну ферму 3D-принтерів і стабільно виконуємо замовлення різної складності. Постійно вдосконалюємо технології, налаштування та контроль якості, щоб кожна деталь відповідала вашим очікуванням.</p>
+            <p>Ми професійно займаємося 3D-друком уже понад п’ять років. Починали з невеликих проєктів і поступово нарощували експертизу в різних типах виробів та матеріалів.</p>
+            <p>Сьогодні EVRYKA — це команда з власною 3D-фермою, чіткими процесами та стабільною якістю. Ми постійно вдосконалюємо налаштування друку, постобробку і контроль деталей, щоб ви отримували результат, який справді працює.</p>
           </div>
         </section>
 
@@ -101,13 +123,30 @@
                 <path d="M14.7 6.3a1 1 0 000 1.4l1.6 1.6a1 1 0 001.4 0l3.77-3.77a6 6 0 01-7.94 7.94l-6.91 6.91a2.12 2.12 0 01-3-3l6.91-6.91a6 6 0 017.94-7.94l-3.76 3.76z"></path>
               </svg>
             </div>
-            <h2 id="about-services-title">Чим ми займаємось</h2>
+            <h2 id="about-services-title">Що ми робимо</h2>
           </div>
           <ul class="about-list">
-            <li>Виготовлення 3D-друкованих товарів: іграшки, брелоки, декоративні та функціональні деталі.</li>
-            <li>Виробництво функціональних деталей для ремонту та відновлення.</li>
-            <li>Індивідуальні замовлення за вашими ескізами, розмірами та вимогами.</li>
-            <li>Якість, точність і швидкість виконання — наш пріоритет у кожному замовленні.</li>
+            <li>Виготовляємо 3D-товари: іграшки, брелоки, декоративні й функціональні деталі.</li>
+            <li>Друкуємо деталі для ремонту, відновлення та кастомізації.</li>
+            <li>Працюємо з індивідуальними замовленнями під ваші розміри та задачі.</li>
+            <li>Супроводжуємо проєкт від ідеї до готового виробу.</li>
+          </ul>
+        </section>
+
+        <section class="about-card" aria-labelledby="about-values-title">
+          <div class="about-card__head">
+            <div class="about-card__icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M12 3l2.7 5.46 6.03.88-4.36 4.25 1.03 6.01L12 17.77 6.6 19.6l1.03-6.01-4.36-4.25 6.03-.88L12 3z"></path>
+              </svg>
+            </div>
+            <h2 id="about-values-title">Наш підхід</h2>
+          </div>
+          <ul class="about-list">
+            <li>Пояснюємо простими словами, який варіант друку найкращий саме для вашої задачі.</li>
+            <li>Погоджуємо терміни та вартість до старту роботи.</li>
+            <li>Орієнтуємось на практичний результат, а не лише на «красиву модель».</li>
+            <li>Будуємо довгострокову співпрацю, де важлива якість сервісу і довіра.</li>
           </ul>
         </section>
 
@@ -119,24 +158,10 @@
                 <circle cx="12" cy="10" r="3"></circle>
               </svg>
             </div>
-            <h2 id="about-location-title">Локація</h2>
+            <h2 id="about-location-title">Локація та графік</h2>
           </div>
           <div class="about-card__body">
-            <p>Ми базуємося у <strong>Львові</strong> та працюємо з клієнтами <strong>по всій Україні</strong> — доставляємо зручними для вас способами.</p>
-          </div>
-        </section>
-
-        <section class="about-card" aria-labelledby="about-hours-title">
-          <div class="about-card__head">
-            <div class="about-card__icon" aria-hidden="true">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <circle cx="12" cy="12" r="10"></circle>
-                <path d="M12 6v6l4 2"></path>
-              </svg>
-            </div>
-            <h2 id="about-hours-title">Графік роботи</h2>
-          </div>
-          <div class="about-card__body">
+            <p>Працюємо у <strong>Львові</strong> та відправляємо замовлення <strong>по всій Україні</strong>.</p>
             <p class="about-hours-highlight">Пн–Пт: 9:00 – 20:00</p>
           </div>
         </section>
