@@ -293,6 +293,16 @@
   height: 17px;
 }
 
+.page-about .about-v2__messenger-svg--viber {
+  width: 18px;
+  height: 18px;
+  display: block;
+}
+
+.page-about .about-v2__messenger-svg--viber path {
+  fill: currentColor;
+}
+
 .page-about .about-v2__contact-tile--telegram {
   border-color: #bae6fd;
   background: #f0f9ff;
@@ -319,7 +329,7 @@
 }
 
 .page-about .about-v2__contact-tile--viber .about-v2__messenger-icon {
-  background: #7c3aed;
+  background: #665cac;
   color: #ffffff;
 }
 
