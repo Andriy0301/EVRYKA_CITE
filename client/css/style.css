@@ -4215,6 +4215,43 @@ body.cart-open .header .cart {
   box-shadow: none;
 }
 
+.cab-repay-order-btn {
+  margin-top: 12px;
+  margin-right: 10px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 40px;
+  padding: 10px 14px;
+  border-radius: 12px;
+  border: 1px solid #93c5fd;
+  background: linear-gradient(180deg, #eff6ff 0%, #dbeafe 100%);
+  color: #1d4ed8;
+  font-weight: 700;
+  font-size: 14px;
+  cursor: pointer;
+  transition: transform 0.16s ease, box-shadow 0.16s ease, background-color 0.16s ease, border-color 0.16s ease;
+}
+
+.cab-repay-order-btn:hover {
+  transform: translateY(-1px);
+  border-color: #60a5fa;
+  background: linear-gradient(180deg, #e8f1ff 0%, #cfe2ff 100%);
+  box-shadow: 0 10px 20px rgba(29, 78, 216, 0.16);
+}
+
+.cab-repay-order-btn:focus-visible {
+  outline: 3px solid rgba(37, 99, 235, 0.25);
+  outline-offset: 2px;
+}
+
+.cab-repay-order-btn:disabled {
+  opacity: 0.72;
+  cursor: wait;
+  transform: none;
+  box-shadow: none;
+}
+
 .cab-cancel-modal {
   position: fixed;
   inset: 0;

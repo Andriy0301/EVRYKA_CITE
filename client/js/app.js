@@ -646,17 +646,31 @@ function initCategoryTabs() {
   });
 }
 
+function normalizeCategoryToken(value) {
+  const raw = String(value || "").toLowerCase().trim();
+  if (!raw) return "";
+  if (raw === "all" || raw === "всі" || raw === "все") return "all";
+  if (["інструменти", "инструменты"].includes(raw)) return "tools";
+  if (["корпуси", "корпусы"].includes(raw)) return "cases";
+  if (["циклони", "циклоны"].includes(raw)) return "cyclones";
+  if (["іграшки", "игрушки"].includes(raw)) return "toys";
+  if (["брелоки"].includes(raw)) return "keychains";
+  if (["інше", "другое"].includes(raw)) return "other";
+  return raw;
+}
+
 // =========================
 // 🔹 ФІЛЬТР
 // =========================
 function applyFilters() {
   let filtered = [...allProducts];
 
-  if (currentCategory === "all") {
+  if (normalizeCategoryToken(currentCategory) === "all") {
     filtered = shuffleArray(filtered);
   } else {
+    const selectedCategory = normalizeCategoryToken(currentCategory);
     filtered = filtered.filter(p =>
-      p.category?.toLowerCase().trim() === currentCategory.toLowerCase().trim()
+      normalizeCategoryToken(p.category) === selectedCategory
     );
   }
 

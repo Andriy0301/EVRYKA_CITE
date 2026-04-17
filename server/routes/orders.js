@@ -406,7 +406,6 @@ router.get("/my", async (req, res) => {
   }
 
   const orders = await readOrders();
-  const users = await readUsers();
   const filtered = orders.filter((order) => {
     const customer = order?.customer || {};
     return (
@@ -416,16 +415,17 @@ router.get("/my", async (req, res) => {
     );
   });
 
-  const user = users.find((u) => {
+  const print3dOrdersFull = await readPrint3dOrders();
+  const filteredPrint3d = print3dOrdersFull.filter((order) => {
+    const customer = order?.customer || {};
     return (
-      (id && String(u.id || "").trim() === id) ||
-      (email && String(u.email || "").trim().toLowerCase() === email) ||
-      (phone && String(u.phone || "").trim() === phone)
+      (id && String(customer.id || "").trim() === id) ||
+      (email && String(customer.email || "").trim().toLowerCase() === email) ||
+      (phone && String(customer.phone || "").trim() === phone)
     );
   });
-  const print3dOrders = Array.isArray(user?.print3dOrders) ? user.print3dOrders : [];
 
-  return res.json({ orders: filtered, print3dOrders });
+  return res.json({ orders: filtered, print3dOrders: filteredPrint3d });
 });
 
 router.get("/all", async (req, res) => {

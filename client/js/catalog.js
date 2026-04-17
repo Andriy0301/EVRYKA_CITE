@@ -3,6 +3,44 @@ let catalogPopularList = null;
 let catalogMultiCats = null;
 /** Текстовий пошук з URL (?q=...) після переходу з живого пошуку в шапці */
 let catalogTextQuery = "";
+const CATALOG_FILTERS_STORAGE_KEY = "catalogFiltersState";
+
+function readCatalogFiltersState() {
+  try {
+    const raw = sessionStorage.getItem(CATALOG_FILTERS_STORAGE_KEY);
+    if (!raw) return null;
+    const parsed = JSON.parse(raw);
+    return parsed && typeof parsed === "object" ? parsed : null;
+  } catch {
+    return null;
+  }
+}
+
+function writeCatalogFiltersState() {
+  const sortEl = document.getElementById("catalogSort");
+  const catEl = document.getElementById("catalogFilterCategory");
+  const minEl = document.getElementById("catalogPriceMin");
+  const maxEl = document.getElementById("catalogPriceMax");
+
+  const state = {
+    sort: String(sortEl?.value || "default"),
+    category: String(catEl?.value || "all"),
+    min: String(minEl?.value || "").trim(),
+    max: String(maxEl?.value || "").trim(),
+    multiCats: Array.isArray(catalogMultiCats) ? catalogMultiCats : null,
+    textQuery: String(catalogTextQuery || "").trim()
+  };
+  sessionStorage.setItem(CATALOG_FILTERS_STORAGE_KEY, JSON.stringify(state));
+}
+
+function clearCatalogFiltersState() {
+  sessionStorage.removeItem(CATALOG_FILTERS_STORAGE_KEY);
+}
+
+function hasSelectOption(selectEl, value) {
+  if (!selectEl) return false;
+  return Array.from(selectEl.options || []).some((opt) => String(opt?.value || "") === String(value || ""));
+}
 
 function getCatalogCategories(products) {
   const set = new Set();
@@ -127,6 +165,7 @@ async function applyCatalogFilters() {
   }
 
   renderCatalogGrid(list);
+  writeCatalogFiltersState();
 }
 
 function initCatalogFilterControls() {
@@ -155,6 +194,7 @@ function initCatalogFilterControls() {
       }
       if (minEl) minEl.value = "";
       if (maxEl) maxEl.value = "";
+      clearCatalogFiltersState();
       document.querySelectorAll(".catalog-select-wrap").forEach((w) => syncCatalogSelectUI(w));
       applyCatalogFilters();
     });
@@ -179,17 +219,29 @@ function initCatalogPage() {
 
   const products = Array.isArray(allProducts) ? allProducts : [];
   const params = new URLSearchParams(window.location.search);
-  catalogTextQuery = (params.get("q") || "").trim();
+  const urlTextQuery = (params.get("q") || "").trim();
+  catalogTextQuery = urlTextQuery;
   const headerSearch = document.getElementById("search");
   if (headerSearch && catalogTextQuery) {
     headerSearch.value = catalogTextQuery;
   }
 
   const catsParam = params.get("cats");
-  if (catsParam) {
+  const hasCatsInUrl = Boolean(catsParam);
+  if (hasCatsInUrl) {
     catalogMultiCats = catsParam.split(",").map((s) => s.trim()).filter(Boolean);
   } else {
     catalogMultiCats = null;
+  }
+
+  const savedState = readCatalogFiltersState();
+  const shouldRestoreSavedState = savedState && !hasCatsInUrl && !urlTextQuery;
+  if (shouldRestoreSavedState) {
+    catalogTextQuery = String(savedState.textQuery || "").trim();
+    if (headerSearch) {
+      headerSearch.value = catalogTextQuery;
+    }
+    catalogMultiCats = Array.isArray(savedState.multiCats) ? savedState.multiCats.filter(Boolean) : null;
   }
 
   const catSelect = document.getElementById("catalogFilterCategory");
@@ -209,6 +261,17 @@ function initCatalogPage() {
       catSelect.appendChild(opt);
       catSelect.value = "__multi__";
     }
+
+    if (shouldRestoreSavedState) {
+      const savedCategory = String(savedState.category || "all");
+      if (savedCategory === "__multi__" && catalogMultiCats && catalogMultiCats.length > 0) {
+        catSelect.value = "__multi__";
+      } else if (savedCategory !== "__multi__" && hasSelectOption(catSelect, savedCategory)) {
+        catSelect.value = savedCategory;
+      } else {
+        catSelect.value = "all";
+      }
+    }
   }
 
   initCatalogCustomSelect("catalogFilterCategory");
@@ -218,8 +281,18 @@ function initCatalogPage() {
   const maxEl = document.getElementById("catalogPriceMax");
   if (minEl && Number.isFinite(min)) minEl.placeholder = `від ${min}`;
   if (maxEl && Number.isFinite(max)) maxEl.placeholder = `до ${max}`;
+  if (shouldRestoreSavedState) {
+    const savedSort = String(savedState.sort || "default");
+    const sortEl = document.getElementById("catalogSort");
+    if (sortEl && hasSelectOption(sortEl, savedSort)) {
+      sortEl.value = savedSort;
+    }
+    if (minEl) minEl.value = String(savedState.min || "");
+    if (maxEl) maxEl.value = String(savedState.max || "");
+  }
 
   initCatalogFilterControls();
+  document.querySelectorAll(".catalog-select-wrap").forEach((w) => syncCatalogSelectUI(w));
   applyCatalogFilters();
 
   const backBtn = document.getElementById("catalogBackBtn");

@@ -188,6 +188,16 @@ function getCabPaymentStatusMeta(order) {
   };
 }
 
+function isCabOrderMonoPayment(order) {
+  const method = getCabPaymentMethod(order);
+  return method === "mono" || method === "monobank";
+}
+
+function isCabOrderPaid(order) {
+  const rawStatus = String(order?.payment?.status || "").trim().toLowerCase();
+  return rawStatus === "paid" || rawStatus === "success";
+}
+
 function getCabPaymentBadgeHtml(order) {
   const methodLabel = getCabPaymentMethodLabel(order);
   const statusMeta = getCabPaymentStatusMeta(order);
@@ -197,6 +207,38 @@ function getCabPaymentBadgeHtml(order) {
 function getCabPaymentStatusHtml(order) {
   const statusMeta = getCabPaymentStatusMeta(order);
   return `<span class="cab-payment-status ${statusMeta.tone}">${statusMeta.label}</span>`;
+}
+
+function canRepayCabinetOrder(order) {
+  if (!order) return false;
+  if (isCabOrderCancelled(order)) return false;
+  if (!isCabOrderMonoPayment(order)) return false;
+  if (isCabOrderPaid(order)) return false;
+  const orderId = String(order?.id || "").trim();
+  const orderNumber = String(order?.orderNumber || "").trim();
+  return Boolean(orderId || orderNumber);
+}
+
+function getCabRepayButtonHtml(orderType, order) {
+  if (!canRepayCabinetOrder(order)) return "";
+  const total = Number(order?.total || 0);
+  return `
+    <button
+      type="button"
+      class="cab-repay-order-btn"
+      data-pay-type="${orderType}"
+      data-pay-id="${order?.id || ""}"
+      data-pay-number="${order?.orderNumber || ""}"
+      data-pay-total="${Number.isFinite(total) ? total : 0}"
+    >
+      <span aria-hidden="true">💳</span>
+      <span>Оплатити зараз</span>
+    </button>
+  `;
+}
+
+function getCabOrderDelivery(order) {
+  return order?.delivery || order?.customer?.delivery || {};
 }
 
 function getCabSummaryStatusBadgeHtml(order) {
@@ -406,8 +448,9 @@ function renderCabinetOrders(data, profile) {
       const orderUiId = String(entry.key || index);
 
       if (entry.type === "print3d") {
-        const delivery = order?.delivery || {};
+        const delivery = getCabOrderDelivery(order);
         const isAddress = delivery?.deliveryType === "address";
+        const modelsCount = Number(order?.models || order?.modelsMeta?.length || order?.files?.length || 0);
         const deliveryPoint = isAddress
           ? (delivery?.address || delivery?.point || "-")
           : (delivery?.branchText || delivery?.point || delivery?.address || "-");
@@ -434,7 +477,7 @@ function renderCabinetOrders(data, profile) {
             <div class="cab-order-details" data-order-details="${orderUiId}">
               <p><b>Тип:</b> 3D-друк</p>
               <p><b>Сума:</b> ${Number(order?.total || 0)} грн</p>
-              <p><b>Моделей:</b> ${Number(order?.models || 0)}</p>
+              <p><b>Моделей:</b> ${modelsCount}</p>
               <p><b>Колір замовлення:</b> ${order?.orderColor || "-"}</p>
               <p><b>Статус замовлення:</b> ${getCabOrderLifecycleLabel(order)}</p>
               <p><b>Спосіб оплати:</b> ${getCabPaymentMethodLabel(order)}</p>
@@ -442,6 +485,7 @@ function renderCabinetOrders(data, profile) {
               <p><b>Доставка:</b> ${delivery?.city || "-"}, ${deliveryPoint}</p>
               ${order?.ttn ? `<p><b>ТТН:</b> ${order.ttn}</p>` : ""}
               <p><b>Статус доставки:</b> ${order?.ttn ? `<span data-ttn-status="${order.ttn}">Перевіряємо...</span>` : "ТТН відсутня"}</p>
+              ${getCabRepayButtonHtml("print3d", order)}
               ${getCabCancelButtonHtml("print3d", order)}
             </div>
           </article>
@@ -493,6 +537,7 @@ function renderCabinetOrders(data, profile) {
             ${order?.ttn ? `<p><b>ТТН:</b> ${order.ttn}</p>` : ""}
             <p><b>Статус доставки:</b> ${order?.ttn ? `<span data-ttn-status="${order.ttn}">Перевіряємо...</span>` : "ТТН відсутня"}</p>
             <ul class="cab-order-items">${itemsHtml}</ul>
+            ${getCabRepayButtonHtml("shop", order)}
             ${getCabCancelButtonHtml("shop", order)}
           </div>
         </article>
@@ -534,6 +579,41 @@ function renderCabinetOrders(data, profile) {
         await loadCabinetOrders(profile);
       } catch (error) {
         showCabinetMessage(error.message || "Не вдалося скасувати замовлення");
+        btn.disabled = false;
+        btn.innerHTML = originalHtml;
+      }
+    });
+  });
+
+  list.querySelectorAll(".cab-repay-order-btn").forEach((btn) => {
+    btn.addEventListener("click", async () => {
+      if (typeof createMonoInvoice !== "function") return;
+      const orderType = String(btn.dataset.payType || "shop").trim();
+      const orderId = String(btn.dataset.payId || "").trim();
+      const orderNumber = String(btn.dataset.payNumber || "").trim();
+      const total = Number(btn.dataset.payTotal || 0);
+      const originalHtml = btn.innerHTML;
+      btn.disabled = true;
+      btn.innerText = "Готуємо оплату...";
+      try {
+        showCabinetMessage("Створюємо посилання на оплату...", false);
+        const invoice = await createMonoInvoice({
+          orderType,
+          orderId,
+          orderNumber,
+          total,
+          id: profile?.id,
+          email: profile?.email,
+          phone: profile?.phone,
+          items: []
+        });
+        if (!invoice?.pageUrl) {
+          throw new Error("Mono не повернув посилання на оплату");
+        }
+        showCabinetMessage("Переадресація на оплату Monobank...", false);
+        window.location.href = invoice.pageUrl;
+      } catch (error) {
+        showCabinetMessage(error.message || "Не вдалося сформувати повторну оплату");
         btn.disabled = false;
         btn.innerHTML = originalHtml;
       }
