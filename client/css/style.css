@@ -1911,16 +1911,49 @@ body.cart-open .header .cart {
 .auth-eye-lid {
   position: absolute;
   inset: 0;
+  pointer-events: none;
+}
+
+.auth-eye-lid::before,
+.auth-eye-lid::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  width: 100%;
   background: linear-gradient(180deg, #ffb36a 0%, #fb923c 52%, #ea7a1b 100%);
-  box-shadow: inset 0 -2px 8px rgba(154, 52, 18, 0.2);
-  transform: scaleY(0);
-  transform-origin: center;
   transition: transform 0.24s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.auth-eye-lid::before {
+  top: 0;
+  height: 64%;
+  box-shadow: inset 0 -2px 8px rgba(154, 52, 18, 0.2);
+  transform: translateY(-112%);
+}
+
+.auth-eye-lid::after {
+  bottom: 0;
+  height: 42%;
+  box-shadow: inset 0 2px 8px rgba(154, 52, 18, 0.2);
+  transform: translateY(112%);
 }
 
 .auth-eyes.is-private .auth-eye-lid,
 .auth-eyes.is-blinking .auth-eye-lid {
-  transform: scaleY(1);
+  transform: none;
+}
+
+.auth-eyes.is-private .auth-eye-lid::before,
+.auth-eyes.is-private .auth-eye-lid::after {
+  transform: translateY(0);
+}
+
+.auth-eyes.is-blinking .auth-eye-lid::before {
+  transform: translateY(0);
+}
+
+.auth-eyes.is-blinking .auth-eye-lid::after {
+  transform: translateY(26%);
 }
 
 .auth-modal-content:hover .auth-eye {
@@ -3976,6 +4009,10 @@ body.cart-open .header .cart {
   margin: 8px 0 0;
 }
 
+.cab-order-payment-row {
+  margin: 6px 0 0;
+}
+
 .cab-order-status-badge {
   display: inline-flex;
   align-items: center;
@@ -4011,6 +4048,36 @@ body.cart-open .header .cart {
   color: #374151;
   background: #f3f4f6;
   border-color: #d1d5db;
+}
+
+.cab-order-payment-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 10px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 1;
+  border: 1px solid transparent;
+}
+
+.cab-order-payment-badge.is-cod {
+  color: #7c2d12;
+  background: #fff7ed;
+  border-color: #fdba74;
+}
+
+.cab-order-payment-badge.is-paid {
+  color: #166534;
+  background: #ecfdf5;
+  border-color: #86efac;
+}
+
+.cab-order-payment-badge.is-unpaid {
+  color: #334155;
+  background: #f8fafc;
+  border-color: #cbd5e1;
 }
 
 .cab-order-summary-right {
@@ -4202,6 +4269,46 @@ body.cart-open .header .cart {
   transition: border-color 0.16s ease, box-shadow 0.16s ease;
 }
 
+.cab-cancel-modal__reason-grid {
+  margin-top: 8px;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.cab-cancel-modal__reason-option {
+  min-height: 42px;
+  border-radius: 11px;
+  border: 1px solid #d4dbe6;
+  background: #f8fafc;
+  color: #0f172a;
+  font-size: 14px;
+  font-weight: 600;
+  padding: 10px 12px;
+  text-align: left;
+  cursor: pointer;
+  transition: border-color 0.16s ease, box-shadow 0.16s ease, background-color 0.16s ease, transform 0.16s ease;
+}
+
+.cab-cancel-modal__reason-option:hover {
+  background: #ffffff;
+  border-color: #bfc9d8;
+  transform: translateY(-1px);
+}
+
+.cab-cancel-modal__reason-option.is-selected {
+  color: #7c2d12;
+  background: #fff7ed;
+  border-color: #fb923c;
+  box-shadow: 0 0 0 2px rgba(249, 115, 22, 0.15);
+}
+
+.cab-cancel-modal__reason-option:focus-visible {
+  outline: none;
+  border-color: #f97316;
+  box-shadow: 0 0 0 3px rgba(249, 115, 22, 0.2);
+}
+
 .cab-cancel-modal__field select.cab-cancel-modal__control {
   min-height: 56px;
   padding: 13px 44px 13px 14px;
@@ -4279,6 +4386,10 @@ body.cart-open .header .cart {
 }
 
 @media (max-width: 640px) {
+  .cab-cancel-modal__reason-grid {
+    grid-template-columns: 1fr;
+  }
+
   .cab-cancel-modal__field select.cab-cancel-modal__control {
     min-height: 52px;
     padding: 12px 40px 12px 12px;

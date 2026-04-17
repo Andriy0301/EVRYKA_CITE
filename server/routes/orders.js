@@ -1,4 +1,6 @@
 const express = require("express");
+const fs = require("fs");
+const path = require("path");
 const { ensureClientIds, findUserByIdentity } = require("../utils/client-id");
 const {
   syncOrderStatusesOnce
@@ -10,6 +12,7 @@ const { notifyNewOrder, sendTelegramText } = require("../utils/telegram");
 const ADMIN_ORDERS_KEY = process.env.ADMIN_ORDERS_KEY || "31415";
 const MONO_API_URL = "https://api.monobank.ua/api/merchant/invoice/create";
 const MONO_TOKEN = String(process.env.MONO_TOKEN || process.env.MONOBANK_TOKEN || "").trim();
+const POPULARITY_PATH = path.join(__dirname, "../data/popularity.json");
 
 async function readOrders() {
   try {
@@ -125,6 +128,41 @@ function getMonoStatusMeta(status) {
   return { paymentStatus: "pending", orderStatus: "awaiting_payment" };
 }
 
+function readPopularitySafe() {
+  try {
+    if (!fs.existsSync(POPULARITY_PATH)) {
+      fs.mkdirSync(path.dirname(POPULARITY_PATH), { recursive: true });
+      fs.writeFileSync(POPULARITY_PATH, "{}", "utf8");
+      return {};
+    }
+    const raw = fs.readFileSync(POPULARITY_PATH, "utf8");
+    const parsed = raw ? JSON.parse(raw) : {};
+    return parsed && typeof parsed === "object" && !Array.isArray(parsed) ? parsed : {};
+  } catch {
+    return {};
+  }
+}
+
+function writePopularitySafe(popularity) {
+  fs.mkdirSync(path.dirname(POPULARITY_PATH), { recursive: true });
+  fs.writeFileSync(POPULARITY_PATH, JSON.stringify(popularity || {}, null, 2), "utf8");
+}
+
+function incrementPopularityByItems(items) {
+  const popularity = readPopularitySafe();
+  let changed = false;
+  (Array.isArray(items) ? items : []).forEach((item) => {
+    const productId = Number(item?.id);
+    const qty = Math.max(1, Number(item?.qty || 1));
+    if (!Number.isFinite(productId) || productId <= 0) return;
+    popularity[productId] = Number(popularity[productId] || 0) + qty;
+    changed = true;
+  });
+  if (changed) {
+    writePopularitySafe(popularity);
+  }
+}
+
 router.post("/", async (req, res) => {
   const { customer = {}, items = [], total = 0, ttn = "", orderNumber: incomingOrderNumber = "" } = req.body || {};
   const normalizedItems = normalizeItems(items);
@@ -183,6 +221,11 @@ router.post("/", async (req, res) => {
   };
 
   await upsertListItem("orders", savedOrder);
+  try {
+    incrementPopularityByItems(normalizedItems);
+  } catch (error) {
+    console.error("[orders] popularity update failed:", error?.message || error);
+  }
 
   notifyNewOrder(savedOrder)
     .then((r) => {
@@ -244,7 +287,7 @@ router.post("/mono/invoice", async (req, res) => {
 
   const baseUrl = resolveBaseUrl(req);
   const safeOrderNumber = encodeURIComponent(String(currentOrder?.orderNumber || wantedOrderNumber || "").trim());
-  const redirectUrl = `${baseUrl}/order.html?monoPaid=1&order=${safeOrderNumber}`;
+  const redirectUrl = `${baseUrl}/cabinet.html?section=orders&monoPaid=1&order=${safeOrderNumber}`;
   const webhookUrl = `${baseUrl}/api/orders/mono/webhook`;
 
   const monoPayload = {

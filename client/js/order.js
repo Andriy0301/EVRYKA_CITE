@@ -774,7 +774,6 @@ async function submitOrder(e) {
     }
 
     showMessage("", false);
-    await trackPopularity(items.map((item) => ({ productId: item.id, qty: item.qty || 1 })));
     localStorage.removeItem(ORDER_CHECKOUT_ITEMS_KEY);
     localStorage.removeItem("cart");
     if (typeof saveUserCart === "function") {

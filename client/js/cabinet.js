@@ -150,6 +150,49 @@ function isCabOrderCancelled(order) {
   return String(order?.orderStatus || "").trim() === "cancelled";
 }
 
+function getCabPaymentMethod(order) {
+  return String(order?.customer?.delivery?.paymentMethod || order?.delivery?.paymentMethod || "")
+    .trim()
+    .toLowerCase();
+}
+
+function getCabPaymentMethodLabel(order) {
+  const method = getCabPaymentMethod(order);
+  if (method === "cod") return "Оплата при отриманні";
+  if (!method) return "Не вказано";
+  return "Оплата наперед";
+}
+
+function getCabPaymentStatusMeta(order) {
+  const method = getCabPaymentMethod(order);
+  const rawStatus = String(order?.payment?.status || "").trim().toLowerCase();
+  if (method === "cod") {
+    return {
+      label: "При отриманні",
+      icon: "💵",
+      tone: "is-cod"
+    };
+  }
+  if (rawStatus === "paid" || rawStatus === "success") {
+    return {
+      label: "Оплачено",
+      icon: "✅",
+      tone: "is-paid"
+    };
+  }
+  return {
+    label: "Не оплачено",
+    icon: "🕒",
+    tone: "is-unpaid"
+  };
+}
+
+function getCabPaymentBadgeHtml(order) {
+  const methodLabel = getCabPaymentMethodLabel(order);
+  const statusMeta = getCabPaymentStatusMeta(order);
+  return `<span class="cab-order-payment-badge ${statusMeta.tone}">${statusMeta.icon} ${methodLabel}: ${statusMeta.label}</span>`;
+}
+
 function getCabSummaryStatusBadgeHtml(order) {
   if (isCabOrderCancelled(order)) {
     return `<span class="cab-order-status-badge is-cancelled">⛔ Скасовано</span>`;
@@ -179,6 +222,12 @@ function getCabCancelButtonHtml(orderType, order) {
 
 function showCabCancelReasonDialog(orderLabel) {
   return new Promise((resolve) => {
+    const reasons = [
+      "Передумав(ла)",
+      "Хочу змінити замовлення",
+      "Довгий термін очікування",
+      "Інше"
+    ];
     const overlay = document.createElement("div");
     overlay.className = "cab-cancel-modal";
 
@@ -193,13 +242,11 @@ function showCabCancelReasonDialog(orderLabel) {
       </div>
       <label class="cab-cancel-modal__field">
         <span>Причина</span>
-        <select id="cabCancelReasonSelect" class="cab-cancel-modal__control">
-          <option value="">Оберіть причину</option>
-          <option value="Передумав(ла)">Передумав(ла)</option>
-          <option value="Хочу змінити замовлення">Хочу змінити замовлення</option>
-          <option value="Довгий термін очікування">Довгий термін очікування</option>
-          <option value="Інше">Інше</option>
-        </select>
+        <div class="cab-cancel-modal__reason-grid" role="listbox" aria-label="Причина скасування">
+          ${reasons
+            .map((reason) => `<button type="button" class="cab-cancel-modal__reason-option" data-reason="${reason}">${reason}</button>`)
+            .join("")}
+        </div>
       </label>
       <label class="cab-cancel-modal__field">
         <span>Коментар (необов'язково)</span>
@@ -227,16 +274,28 @@ function showCabCancelReasonDialog(orderLabel) {
 
     const closeBtn = modal.querySelector("#cabCancelReasonClose");
     const confirmBtn = modal.querySelector("#cabCancelReasonConfirm");
-    const reasonSelect = modal.querySelector("#cabCancelReasonSelect");
     const reasonComment = modal.querySelector("#cabCancelReasonComment");
+    const reasonButtons = Array.from(modal.querySelectorAll(".cab-cancel-modal__reason-option"));
+    let selectedReason = "";
+
+    const selectReason = (reason) => {
+      selectedReason = String(reason || "").trim();
+      reasonButtons.forEach((btn) => {
+        btn.classList.toggle("is-selected", btn.dataset.reason === selectedReason);
+        btn.setAttribute("aria-selected", btn.dataset.reason === selectedReason ? "true" : "false");
+      });
+    };
+
+    reasonButtons.forEach((btn) => {
+      btn.addEventListener("click", () => selectReason(btn.dataset.reason || ""));
+    });
 
     closeBtn?.addEventListener("click", () => close(null));
     confirmBtn?.addEventListener("click", () => {
-      const selected = String(reasonSelect?.value || "").trim();
       const comment = String(reasonComment?.value || "").trim();
-      const reason = comment || selected;
+      const reason = comment || selectedReason;
       if (!reason) {
-        reasonSelect?.focus();
+        reasonButtons[0]?.focus();
         return;
       }
       close(reason);
@@ -245,7 +304,7 @@ function showCabCancelReasonDialog(orderLabel) {
     overlay.appendChild(modal);
     document.body.appendChild(overlay);
     setTimeout(() => {
-      reasonSelect?.focus();
+      reasonButtons[0]?.focus();
     }, 0);
   });
 }
@@ -355,6 +414,9 @@ function renderCabinetOrders(data, profile) {
                 <p class="cab-order-status-row">
                   ${getCabSummaryStatusBadgeHtml(order)}
                 </p>
+                <p class="cab-order-payment-row">
+                  ${getCabPaymentBadgeHtml(order)}
+                </p>
               </div>
               <div class="cab-order-summary-right">
                 <p><b>${Number(order?.total || 0)} грн</b></p>
@@ -369,6 +431,8 @@ function renderCabinetOrders(data, profile) {
               <p><b>Моделей:</b> ${Number(order?.models || 0)}</p>
               <p><b>Колір замовлення:</b> ${order?.orderColor || "-"}</p>
               <p><b>Статус замовлення:</b> ${getCabOrderLifecycleLabel(order)}</p>
+              <p><b>Спосіб оплати:</b> ${getCabPaymentMethodLabel(order)}</p>
+              <p><b>Статус оплати:</b> ${getCabPaymentStatusMeta(order).label}</p>
               <p><b>Доставка:</b> ${delivery?.city || "-"}, ${deliveryPoint}</p>
               ${order?.ttn ? `<p><b>ТТН:</b> ${order.ttn}</p>` : ""}
               <p><b>Статус доставки:</b> ${order?.ttn ? `<span data-ttn-status="${order.ttn}">Перевіряємо...</span>` : "ТТН відсутня"}</p>
@@ -405,6 +469,9 @@ function renderCabinetOrders(data, profile) {
               <p class="cab-order-status-row">
                 ${getCabSummaryStatusBadgeHtml(order)}
               </p>
+              <p class="cab-order-payment-row">
+                ${getCabPaymentBadgeHtml(order)}
+              </p>
             </div>
             <div class="cab-order-summary-right">
               <p><b>${Number(order.total || 0)} грн</b></p>
@@ -414,6 +481,8 @@ function renderCabinetOrders(data, profile) {
           <div class="cab-order-details" data-order-details="${orderUiId}">
             <p><b>Сума:</b> ${Number(order.total || 0)} грн</p>
             <p><b>Статус замовлення:</b> ${getCabOrderLifecycleLabel(order)}</p>
+            <p><b>Спосіб оплати:</b> ${getCabPaymentMethodLabel(order)}</p>
+            <p><b>Статус оплати:</b> ${getCabPaymentStatusMeta(order).label}</p>
             <p><b>Доставка:</b> ${order?.customer?.delivery?.city || "-"}, ${order?.customer?.delivery?.branchText || "-"}</p>
             ${order?.ttn ? `<p><b>ТТН:</b> ${order.ttn}</p>` : ""}
             <p><b>Статус доставки:</b> ${order?.ttn ? `<span data-ttn-status="${order.ttn}">Перевіряємо...</span>` : "ТТН відсутня"}</p>
