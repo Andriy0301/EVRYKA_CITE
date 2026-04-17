@@ -219,11 +219,17 @@ function initCatalogPage() {
 
   const products = Array.isArray(allProducts) ? allProducts : [];
   const params = new URLSearchParams(window.location.search);
+  const savedState = readCatalogFiltersState();
   const urlTextQuery = (params.get("q") || "").trim();
-  catalogTextQuery = urlTextQuery;
+  catalogTextQuery = String(savedState?.textQuery || "").trim();
+  if (urlTextQuery) {
+    catalogTextQuery = urlTextQuery;
+  }
   const headerSearch = document.getElementById("search");
   if (headerSearch && catalogTextQuery) {
     headerSearch.value = catalogTextQuery;
+  } else if (headerSearch) {
+    headerSearch.value = "";
   }
 
   const catsParam = params.get("cats");
@@ -231,17 +237,12 @@ function initCatalogPage() {
   if (hasCatsInUrl) {
     catalogMultiCats = catsParam.split(",").map((s) => s.trim()).filter(Boolean);
   } else {
-    catalogMultiCats = null;
+    catalogMultiCats = Array.isArray(savedState?.multiCats) ? savedState.multiCats.filter(Boolean) : null;
   }
 
-  const savedState = readCatalogFiltersState();
-  const shouldRestoreSavedState = savedState && !hasCatsInUrl && !urlTextQuery;
+  const shouldRestoreSavedState = Boolean(savedState);
   if (shouldRestoreSavedState) {
-    catalogTextQuery = String(savedState.textQuery || "").trim();
-    if (headerSearch) {
-      headerSearch.value = catalogTextQuery;
-    }
-    catalogMultiCats = Array.isArray(savedState.multiCats) ? savedState.multiCats.filter(Boolean) : null;
+    if (headerSearch) headerSearch.value = catalogTextQuery;
   }
 
   const catSelect = document.getElementById("catalogFilterCategory");
@@ -264,7 +265,9 @@ function initCatalogPage() {
 
     if (shouldRestoreSavedState) {
       const savedCategory = String(savedState.category || "all");
-      if (savedCategory === "__multi__" && catalogMultiCats && catalogMultiCats.length > 0) {
+      if (hasCatsInUrl) {
+        catSelect.value = "__multi__";
+      } else if (savedCategory === "__multi__" && catalogMultiCats && catalogMultiCats.length > 0) {
         catSelect.value = "__multi__";
       } else if (savedCategory !== "__multi__" && hasSelectOption(catSelect, savedCategory)) {
         catSelect.value = savedCategory;
