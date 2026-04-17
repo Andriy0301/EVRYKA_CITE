@@ -7,9 +7,9 @@
 
 .page-about .about-v2__intro {
   padding: clamp(18px, 2.6vw, 28px);
-  border: 1px solid #e5e7eb;
+  border: 1px solid #fed7aa;
   border-radius: clamp(16px, 2vw, 22px);
-  background: #ffffff;
+  background: #fffaf5;
   box-shadow: 0 10px 24px rgba(15, 23, 42, 0.05);
 }
 
@@ -54,9 +54,25 @@
 .page-about .about-v2__stat {
   min-height: 98px;
   padding: 14px;
-  border: 1px solid #e5e7eb;
+  border: 1px solid #e2e8f0;
+  border-top: 3px solid #fdba74;
   border-radius: 14px;
   background: #ffffff;
+}
+
+.page-about .about-v2__stat:nth-child(2) {
+  border-top-color: #93c5fd;
+  background: #f8fbff;
+}
+
+.page-about .about-v2__stat:nth-child(3) {
+  border-top-color: #86efac;
+  background: #f7fef9;
+}
+
+.page-about .about-v2__stat:nth-child(4) {
+  border-top-color: #c4b5fd;
+  background: #faf9ff;
 }
 
 .page-about .about-v2__stat h3 {
@@ -101,7 +117,7 @@
   font-size: clamp(20px, 2vw, 26px);
   line-height: 1.2;
   font-weight: 800;
-  color: #0f172a;
+  color: #c2410c;
 }
 
 .page-about .about-v2__card p {
@@ -156,9 +172,9 @@
 
 .page-about .about-v2__contacts {
   padding: clamp(16px, 2.2vw, 24px);
-  border: 1px solid #e5e7eb;
+  border: 1px solid #fde68a;
   border-radius: 16px;
-  background: #ffffff;
+  background: #fffef8;
   box-shadow: 0 8px 20px rgba(15, 23, 42, 0.04);
 }
 
@@ -206,6 +222,57 @@
   line-height: 1.45;
   color: #111827;
   word-break: break-word;
+}
+
+.page-about .about-v2__messenger-row {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.page-about .about-v2__messenger-icon {
+  width: 30px;
+  height: 30px;
+  border-radius: 999px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.page-about .about-v2__messenger-icon svg {
+  width: 17px;
+  height: 17px;
+}
+
+.page-about .about-v2__contact-tile--telegram {
+  border-color: #bae6fd;
+  background: #f0f9ff;
+}
+
+.page-about .about-v2__contact-tile--telegram:hover {
+  border-color: #7dd3fc;
+  background: #e0f2fe;
+}
+
+.page-about .about-v2__contact-tile--telegram .about-v2__messenger-icon {
+  background: #0ea5e9;
+  color: #ffffff;
+}
+
+.page-about .about-v2__contact-tile--viber {
+  border-color: #ddd6fe;
+  background: #f5f3ff;
+}
+
+.page-about .about-v2__contact-tile--viber:hover {
+  border-color: #c4b5fd;
+  background: #ede9fe;
+}
+
+.page-about .about-v2__contact-tile--viber .about-v2__messenger-icon {
+  background: #7c3aed;
+  color: #ffffff;
 }
 
 @media (max-width: 980px) {
