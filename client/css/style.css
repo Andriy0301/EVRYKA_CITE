@@ -4683,14 +4683,15 @@ body.cart-open .header .cart {
   background: var(--ev-surface);
   color: var(--ev-p-ink);
   box-shadow: 0 1px 4px rgba(var(--ev-rgb), 0.08);
-  transition: background 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease, color 0.2s ease;
+  transition: background 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease, color 0.2s ease, transform 0.2s ease;
 }
 
 .page-catalog .catalog-reset-btn:hover {
-  background: rgba(251, 146, 60, 0.12);
-  border-color: rgba(251, 146, 60, 0.36);
-  color: var(--ev-p-ink);
-  box-shadow: 0 2px 8px rgba(var(--ev-rgb), 0.14);
+  background: #ffecec;
+  border-color: #ffbdbd;
+  color: #d10000;
+  box-shadow: none;
+  transform: none;
 }
 
 .catalog-filter-block {

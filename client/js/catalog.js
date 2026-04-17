@@ -4,6 +4,7 @@ let catalogMultiCats = null;
 /** Текстовий пошук з URL (?q=...) після переходу з живого пошуку в шапці */
 let catalogTextQuery = "";
 const CATALOG_FILTERS_STORAGE_KEY = "catalogFiltersState";
+let catalogFiltersStateReady = false;
 
 function readCatalogFiltersState() {
   try {
@@ -165,7 +166,9 @@ async function applyCatalogFilters() {
   }
 
   renderCatalogGrid(list);
-  writeCatalogFiltersState();
+  if (catalogFiltersStateReady) {
+    writeCatalogFiltersState();
+  }
 }
 
 function initCatalogFilterControls() {
@@ -214,6 +217,7 @@ function initCatalogFilterControls() {
 
 function initCatalogPage() {
   if (!document.getElementById("catalogPageGrid")) return;
+  catalogFiltersStateReady = false;
 
   initCatalogCustomSelect("catalogSort");
 
@@ -296,6 +300,7 @@ function initCatalogPage() {
 
   initCatalogFilterControls();
   document.querySelectorAll(".catalog-select-wrap").forEach((w) => syncCatalogSelectUI(w));
+  catalogFiltersStateReady = true;
   applyCatalogFilters();
 
   const backBtn = document.getElementById("catalogBackBtn");
