@@ -3787,18 +3787,61 @@ body.cart-open .header .cart {
   border-color: rgba(255, 255, 255, 0.28);
 }
 
-.footer .socials.socials--text {
+.footer .socials.socials--messengers {
   flex-wrap: wrap;
+  gap: 10px;
 }
 
-.footer .socials.socials--text a {
+.footer .socials.socials--messengers a.footer-messenger {
   width: auto;
   min-width: 0;
   height: auto;
-  min-height: 36px;
-  padding: 8px 12px;
+  min-height: 40px;
+  padding: 8px 14px 8px 12px;
+  margin-bottom: 0;
+  border-radius: 10px;
+  border: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
   font-size: 13px;
   font-weight: 600;
+  color: #fff;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.18);
+  transition: background 0.2s ease, transform 0.15s ease, box-shadow 0.2s ease;
+}
+
+.footer .socials.socials--messengers a.footer-messenger:hover {
+  color: #fff;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.22);
+}
+
+.footer .footer-messenger--telegram {
+  background: #229ed9;
+}
+
+.footer .footer-messenger--telegram:hover {
+  background: #1d8ebe;
+}
+
+.footer .footer-messenger--viber {
+  background: #7360f2;
+}
+
+.footer .footer-messenger--viber:hover {
+  background: #5e4bd6;
+}
+
+.footer .footer-messenger__icon {
+  flex: 0 0 auto;
+  width: 22px;
+  height: 22px;
+  display: block;
+}
+
+.footer .footer-messenger__icon path {
+  fill: currentColor;
 }
 
 /* оплата */
