@@ -8,6 +8,8 @@ const { getList, setList, getObject, upsertListItem } = require("../utils/data-s
 const router = express.Router();
 const { notifyNewOrder, sendTelegramText } = require("../utils/telegram");
 const ADMIN_ORDERS_KEY = process.env.ADMIN_ORDERS_KEY || "31415";
+const MONO_API_URL = "https://api.monobank.ua/api/merchant/invoice/create";
+const MONO_TOKEN = String(process.env.MONO_TOKEN || process.env.MONOBANK_TOKEN || "").trim();
 
 async function readOrders() {
   try {
@@ -99,6 +101,30 @@ function canCancelOrder(order) {
   return true;
 }
 
+function isMonoPayment(method) {
+  const value = String(method || "").trim().toLowerCase();
+  return value === "mono" || value === "monobank";
+}
+
+function toMinorCurrency(amount) {
+  return Math.max(0, Math.round(Number(amount || 0) * 100));
+}
+
+function resolveBaseUrl(req) {
+  const envBase = String(process.env.PUBLIC_BASE_URL || process.env.RENDER_EXTERNAL_URL || "").trim();
+  if (envBase) return envBase.replace(/\/+$/, "");
+  const protocol = req.headers["x-forwarded-proto"] || req.protocol || "https";
+  const host = req.headers["x-forwarded-host"] || req.get("host") || "";
+  return host ? `${protocol}://${host}` : "";
+}
+
+function getMonoStatusMeta(status) {
+  const normalized = String(status || "").trim().toLowerCase();
+  if (normalized === "success") return { paymentStatus: "paid", orderStatus: "paid" };
+  if (["failure", "reversed", "expired"].includes(normalized)) return { paymentStatus: "failed", orderStatus: "new" };
+  return { paymentStatus: "pending", orderStatus: "awaiting_payment" };
+}
+
 router.post("/", async (req, res) => {
   const { customer = {}, items = [], total = 0, ttn = "", orderNumber: incomingOrderNumber = "" } = req.body || {};
   const normalizedItems = normalizeItems(items);
@@ -140,7 +166,20 @@ router.post("/", async (req, res) => {
     items: normalizedItems,
     total: Math.max(0, Number(total || 0)),
     ttn: String(ttn || "").trim(),
-    orderStatus: "new"
+    orderStatus: isMonoPayment(customer?.delivery?.paymentMethod) ? "awaiting_payment" : "new",
+    payment: isMonoPayment(customer?.delivery?.paymentMethod)
+      ? {
+          provider: "mono",
+          status: "awaiting_invoice",
+          invoiceId: "",
+          pageUrl: "",
+          updatedAt: new Date().toISOString()
+        }
+      : {
+          provider: "cod",
+          status: "pending",
+          updatedAt: new Date().toISOString()
+        }
   };
 
   await upsertListItem("orders", savedOrder);
@@ -156,6 +195,162 @@ router.post("/", async (req, res) => {
     .catch((e) => console.error("[telegram]", e?.message || e));
 
   return res.json(savedOrder);
+});
+
+router.post("/mono/invoice", async (req, res) => {
+  if (!MONO_TOKEN) {
+    return res.status(503).json({ error: "Mono не налаштовано: відсутній MONO_TOKEN" });
+  }
+
+  const {
+    orderType = "shop",
+    orderId,
+    orderNumber,
+    total = 0,
+    id,
+    email,
+    phone,
+    items = []
+  } = req.body || {};
+
+  const identity = normalizeIdentity({ id, email, phone });
+  if (!identity.id && !identity.email && !identity.phone) {
+    return res.status(400).json({ error: "Потрібні дані користувача (id/email/phone)" });
+  }
+
+  const listName = orderType === "print3d" ? "print3dOrders" : "orders";
+  const orders = await getList(listName);
+  const wantedOrderId = String(orderId || "").trim();
+  const wantedOrderNumber = String(orderNumber || "").trim();
+  const idx = orders.findIndex((order) => {
+    const idMatch = wantedOrderId && String(order?.id || "").trim() === wantedOrderId;
+    const numMatch = wantedOrderNumber && String(order?.orderNumber || "").trim() === wantedOrderNumber;
+    return idMatch || numMatch;
+  });
+
+  if (idx < 0) {
+    return res.status(404).json({ error: "Замовлення не знайдено" });
+  }
+
+  const currentOrder = orders[idx];
+  if (!orderBelongsToIdentity(currentOrder, identity)) {
+    return res.status(403).json({ error: "Це замовлення належить іншому користувачу" });
+  }
+
+  const totalMinor = toMinorCurrency(total || currentOrder?.total || 0);
+  if (!totalMinor) {
+    return res.status(400).json({ error: "Некоректна сума замовлення" });
+  }
+
+  const baseUrl = resolveBaseUrl(req);
+  const safeOrderNumber = encodeURIComponent(String(currentOrder?.orderNumber || wantedOrderNumber || "").trim());
+  const redirectUrl = `${baseUrl}/order.html?monoPaid=1&order=${safeOrderNumber}`;
+  const webhookUrl = `${baseUrl}/api/orders/mono/webhook`;
+
+  const monoPayload = {
+    amount: totalMinor,
+    ccy: 980,
+    merchantPaymInfo: {
+      reference: String(currentOrder?.orderNumber || wantedOrderNumber || currentOrder?.id || Date.now()),
+      destination: `Оплата замовлення ${currentOrder?.orderNumber || wantedOrderNumber || ""}`.trim(),
+      basketOrder: Array.isArray(items)
+        ? items.slice(0, 20).map((item) => ({
+            name: String(item?.name || "Товар"),
+            qty: Math.max(1, Number(item?.qty || 1)),
+            sum: toMinorCurrency(Number(item?.price || 0))
+          }))
+        : []
+    },
+    redirectUrl,
+    webHookUrl: webhookUrl
+  };
+
+  const monoRes = await fetch(MONO_API_URL, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      "X-Token": MONO_TOKEN
+    },
+    body: JSON.stringify(monoPayload)
+  });
+
+  const monoData = await monoRes.json().catch(() => ({}));
+  if (!monoRes.ok || !monoData?.pageUrl) {
+    return res.status(502).json({
+      error: monoData?.errText || monoData?.errorDescription || "Mono тимчасово недоступний"
+    });
+  }
+
+  const nowIso = new Date().toISOString();
+  const payment = {
+    provider: "mono",
+    status: "created",
+    invoiceId: String(monoData.invoiceId || "").trim(),
+    pageUrl: String(monoData.pageUrl || "").trim(),
+    updatedAt: nowIso
+  };
+  const updatedOrder = {
+    ...currentOrder,
+    orderStatus: "awaiting_payment",
+    payment
+  };
+  orders[idx] = updatedOrder;
+  await setList(listName, orders);
+
+  return res.json({
+    ok: true,
+    orderId: updatedOrder.id,
+    orderNumber: updatedOrder.orderNumber,
+    invoiceId: payment.invoiceId,
+    pageUrl: payment.pageUrl
+  });
+});
+
+router.post("/mono/webhook", async (req, res) => {
+  const invoiceId = String(req.body?.invoiceId || "").trim();
+  const reference = String(req.body?.reference || "").trim();
+  const status = String(req.body?.status || "").trim().toLowerCase();
+
+  if (!invoiceId && !reference) {
+    return res.status(400).json({ error: "invoiceId або reference обов'язкові" });
+  }
+
+  const nowIso = new Date().toISOString();
+  const { paymentStatus, orderStatus } = getMonoStatusMeta(status);
+  let updated = false;
+
+  for (const listName of ["orders", "print3dOrders"]) {
+    const list = await getList(listName);
+    let touched = false;
+    for (let i = 0; i < list.length; i += 1) {
+      const order = list[i] || {};
+      const payment = order?.payment || {};
+      const byInvoiceId = invoiceId && String(payment?.invoiceId || "").trim() === invoiceId;
+      const byReference = reference && String(order?.orderNumber || "").trim() === reference;
+      if (!byInvoiceId && !byReference) continue;
+
+      list[i] = {
+        ...order,
+        orderStatus,
+        payment: {
+          ...payment,
+          provider: "mono",
+          status: paymentStatus,
+          invoiceId: invoiceId || String(payment?.invoiceId || "").trim(),
+          rawStatus: status || payment?.rawStatus || "",
+          paidAt: paymentStatus === "paid" ? nowIso : String(payment?.paidAt || ""),
+          updatedAt: nowIso
+        }
+      };
+      touched = true;
+      updated = true;
+    }
+    if (touched) {
+      await setList(listName, list);
+    }
+  }
+
+  return res.json({ ok: true, updated });
 });
 
 router.get("/my", async (req, res) => {

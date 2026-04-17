@@ -186,6 +186,7 @@ function providerLabel(value) {
 function paymentLabel(value) {
   const v = String(value || "").trim();
   if (v === "cod") return "Післяплата";
+  if (v === "mono") return "Оплата Monobank";
   if (v === "card_online") return "Оплата карткою онлайн";
   if (v === "bank_transfer") return "Безготівково";
   return v || "—";

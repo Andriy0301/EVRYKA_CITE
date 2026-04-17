@@ -17,6 +17,7 @@ function escapeHtml(input) {
 }
 
 function paymentLabel(value) {
+  if (value === "mono") return "Оплата Monobank";
   if (value === "liqpay") return "Оплата LiqPay";
   if (value === "cod") return "Оплата при отриманні";
   return value || "-";

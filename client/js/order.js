@@ -185,6 +185,7 @@ function getDeliveryTypeTitle(type) {
 
 function getPaymentMethodTitle(method) {
   if (method === "cod") return "Оплата при отриманні";
+  if (method === "mono") return "Оплата Monobank";
   if (method === "liqpay") return "Оплата LiqPay";
   return "-";
 }
@@ -751,6 +752,26 @@ async function submitOrder(e) {
       total: totalCost,
       ttn
     });
+
+    const paymentMethod = String(profile?.delivery?.paymentMethod || "cod").trim().toLowerCase();
+    if (paymentMethod === "mono") {
+      showMessage("Переадресація на оплату Monobank...", false);
+      const invoice = await createMonoInvoice({
+        orderType: "shop",
+        orderId: savedOrder?.id,
+        orderNumber: savedOrder?.orderNumber || orderNumber,
+        total: totalCost,
+        id: profile?.id,
+        email: profile?.email,
+        phone: profile?.phone,
+        items
+      });
+      if (!invoice?.pageUrl) {
+        throw new Error("Mono не повернув посилання на оплату");
+      }
+      window.location.href = invoice.pageUrl;
+      return;
+    }
 
     showMessage("", false);
     await trackPopularity(items.map((item) => ({ productId: item.id, qty: item.qty || 1 })));

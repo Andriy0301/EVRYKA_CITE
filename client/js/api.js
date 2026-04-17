@@ -321,6 +321,23 @@ async function createOrder(payload) {
   return res.json();
 }
 
+async function createMonoInvoice(payload) {
+  const res = await fetchWithTimeout(`/api/orders/mono/invoice`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify(payload || {})
+  }, ORDER_REQUEST_TIMEOUT_MS);
+
+  if (!res.ok) {
+    const body = await res.json().catch(() => ({}));
+    throw new Error(body.error || "Не вдалося створити посилання на оплату Mono");
+  }
+
+  return res.json();
+}
+
 async function getAllOrders(adminKey) {
   const res = await fetch(`/api/orders/all?key=${encodeURIComponent(String(adminKey || ""))}`);
   if (!res.ok) {

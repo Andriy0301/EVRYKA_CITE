@@ -115,6 +115,7 @@ function getDeliveryTypeTitle(type) {
 
 function getPaymentMethodTitle(method) {
   if (method === "cod") return "Оплата при отриманні";
+  if (method === "mono") return "Оплата Monobank";
   if (method === "liqpay") return "Оплата LiqPay";
   return "-";
 }
@@ -607,6 +608,32 @@ async function submitOrder(e) {
     const res = await fetch("/api/print3d/order", { method: "POST", body: fd });
     const data = await res.json().catch(() => ({}));
     if (!res.ok) throw new Error(data.error || "Не вдалося оформити 3D-замовлення");
+
+    const paymentMethod = String(profile?.delivery?.paymentMethod || "cod").trim().toLowerCase();
+    if (paymentMethod === "mono") {
+      await cleanupPending();
+      showMessage("Переадресація на оплату Monobank...", false);
+      renderItems();
+      const invoice = await createMonoInvoice({
+        orderType: "print3d",
+        orderId: data?.id,
+        orderNumber: data?.orderNumber || orderNumber,
+        total: totalCost,
+        id: profile?.id,
+        email: profile?.email,
+        phone: profile?.phone,
+        items: models.map((model) => ({
+          name: model.name,
+          qty: 1,
+          price: Number(model.price || 0)
+        }))
+      });
+      if (!invoice?.pageUrl) {
+        throw new Error("Mono не повернув посилання на оплату");
+      }
+      window.location.href = invoice.pageUrl;
+      return;
+    }
 
     await cleanupPending();
     showMessage("", false);
