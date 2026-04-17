@@ -3788,55 +3788,63 @@ body.cart-open .header .cart {
 }
 
 .footer .socials.socials--messengers {
-  flex-wrap: wrap;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
   gap: 10px;
+  width: 100%;
+  margin-bottom: 15px;
 }
 
 .footer .socials.socials--messengers a.footer-messenger {
-  width: auto;
+  width: 100%;
   min-width: 0;
-  height: auto;
-  min-height: 40px;
-  padding: 8px 14px 8px 12px;
+  height: 44px;
+  min-height: 44px;
+  max-height: 44px;
+  padding: 0 12px;
   margin-bottom: 0;
   border-radius: 10px;
   border: none;
   display: inline-flex;
   align-items: center;
+  justify-content: center;
   gap: 8px;
   font-size: 13px;
   font-weight: 600;
   color: #fff;
+  box-sizing: border-box;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.18);
-  transition: background 0.2s ease, transform 0.15s ease, box-shadow 0.2s ease;
+  transition: background 0.2s ease, box-shadow 0.2s ease, transform 0.15s ease;
 }
 
 .footer .socials.socials--messengers a.footer-messenger:hover {
   color: #fff;
+  border: none;
   transform: translateY(-1px);
   box-shadow: 0 4px 14px rgba(0, 0, 0, 0.22);
 }
 
+/* Фірмові кольори: Telegram — #0088cc, Viber — #665cac */
 .footer .footer-messenger--telegram {
-  background: #229ed9;
+  background: #0088cc;
 }
 
 .footer .footer-messenger--telegram:hover {
-  background: #1d8ebe;
+  background: #0077b5;
 }
 
 .footer .footer-messenger--viber {
-  background: #7360f2;
+  background: #665cac;
 }
 
 .footer .footer-messenger--viber:hover {
-  background: #5e4bd6;
+  background: #5b51a0;
 }
 
 .footer .footer-messenger__icon {
   flex: 0 0 auto;
-  width: 22px;
-  height: 22px;
+  width: 20px;
+  height: 20px;
   display: block;
 }
 
