@@ -59,6 +59,19 @@
       else openNavRef(toggle, panel);
     });
 
+    if (!panel.querySelector(".mobile-more-links")) {
+      const moreWrap = document.createElement("div");
+      moreWrap.className = "mobile-more-links";
+      moreWrap.innerHTML =
+        '<a href="index.html" class="mobile-more-link">Головна</a>' +
+        '<a href="catalog.html" class="mobile-more-link">Каталог</a>' +
+        '<a href="about.html" class="mobile-more-link">Про нас</a>' +
+        '<a href="order-3d-print.html" class="mobile-more-link">Замовити 3D друк</a>' +
+        '<a href="cabinet.html" class="mobile-more-link">Кабінет</a>' +
+        '<a href="index.html#contacts" class="mobile-more-link">Контакти</a>';
+      panel.appendChild(moreWrap);
+    }
+
     const mobileCount = document.getElementById("mobileBottomCartCount");
     const desktopCount = document.getElementById("cartCount");
     const syncCount = function () {

@@ -66,6 +66,9 @@
       </svg>
       Назад
     </button>
+    <button type="button" class="back-btn catalog-filters-open-btn" id="catalogFiltersOpenBtn" aria-label="Відкрити фільтри">
+      Фільтр
+    </button>
     <div class="breadcrumbs">
       <a href="index.html">Головна</a>
       <span>/</span>
@@ -76,6 +79,7 @@
   <div class="catalog-page-layout">
     <aside class="catalog-filters" aria-label="Фільтри каталогу">
       <h2 class="catalog-filters-title">Фільтри</h2>
+      <button type="button" class="catalog-filters-close" id="catalogFiltersCloseBtn" aria-label="Закрити фільтри">×</button>
 
       <div class="catalog-filter-block">
         <span class="catalog-filter-label" id="catalogSortLabel">Сортування</span>
@@ -129,6 +133,7 @@
       </div>
     </div>
   </div>
+  <div class="catalog-filters-overlay" id="catalogFiltersOverlay" hidden></div>
   </div>
 </div>
 
