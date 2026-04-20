@@ -9,8 +9,37 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="css/style.css">
-  <link rel="stylesheet" href="css/evryka-header-hero.css">
+  <link rel="stylesheet" href="css/style.css?v=20260420-3">
+  <link rel="stylesheet" href="css/evryka-header-hero.css?v=20260420-3">
+  <style>
+    @media (max-width: 768px) {
+      .page-home .hero-evryka--allbirds .hero-evryka__panel {
+        max-width: min(56%, 190px) !important;
+        padding: 0 !important;
+        border: 0 !important;
+        background: transparent !important;
+        box-shadow: none !important;
+        backdrop-filter: none !important;
+        -webkit-backdrop-filter: none !important;
+      }
+
+      .page-home .hero-evryka--allbirds .hero-evryka__title {
+        font-size: clamp(0.94rem, 3.6vw, 1.08rem) !important;
+        line-height: 1.1 !important;
+        margin-bottom: 2px !important;
+      }
+
+      .page-home .hero-evryka--allbirds .hero-evryka__lede {
+        display: none !important;
+      }
+
+      .page-home .hero-evryka--allbirds .hero-evryka__btn {
+        min-height: 32px !important;
+        padding: 7px 10px !important;
+        font-size: 9px !important;
+      }
+    }
+  </style>
   <script src="https://accounts.google.com/gsi/client" async defer></script>
 </head>
 
