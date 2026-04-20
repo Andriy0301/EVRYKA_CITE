@@ -348,4 +348,18 @@
   .page-about .about-v2__contact-grid {
     grid-template-columns: 1fr;
   }
+
+  .page-about .about-v2__intro,
+  .page-about .about-v2__card,
+  .page-about .about-v2__contacts {
+    padding: 14px;
+  }
+
+  .page-about .about-v2__title {
+    font-size: clamp(30px, 9vw, 38px);
+  }
+
+  .page-about .about-v2__contact-tile {
+    min-height: auto;
+  }
 }

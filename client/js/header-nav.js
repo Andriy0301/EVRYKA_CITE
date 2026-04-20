@@ -12,6 +12,11 @@
     toggle.classList.add("is-open");
     toggle.setAttribute("aria-expanded", "true");
     document.body.classList.add("header-nav-open");
+
+    const firstInteractive = panel.querySelector("a, button, input, [tabindex]:not([tabindex='-1'])");
+    if (firstInteractive) {
+      firstInteractive.focus({ preventScroll: true });
+    }
   }
 
   function init() {
@@ -28,6 +33,18 @@
       a.addEventListener("click", function () {
         closeNav(toggle, panel);
       });
+    });
+
+    document.addEventListener("click", function (event) {
+      if (!panel.classList.contains("is-open")) return;
+      const target = event.target;
+      if (panel.contains(target) || toggle.contains(target)) return;
+      closeNav(toggle, panel);
+    });
+
+    document.addEventListener("keydown", function (event) {
+      if (event.key !== "Escape") return;
+      closeNav(toggle, panel);
     });
 
     window.addEventListener("resize", function () {
