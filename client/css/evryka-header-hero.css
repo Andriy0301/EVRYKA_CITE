@@ -1271,7 +1271,8 @@ body.header-nav-open {
   }
 
   .hero-evryka--allbirds .hero-evryka__content {
-    justify-content: flex-end;
+    justify-content: flex-start;
+    align-items: flex-end;
     padding: 12px 12px 18px;
     text-align: left;
   }
@@ -1279,8 +1280,8 @@ body.header-nav-open {
   .hero-evryka--allbirds .hero-slide--repair .hero-evryka__content,
   .hero-evryka--allbirds .hero-slide--3d-print .hero-evryka__content,
   .hero-evryka--allbirds .hero-slide--gift .hero-evryka__content {
-    justify-content: flex-end;
-    align-items: stretch;
+    justify-content: flex-start;
+    align-items: flex-end;
     text-align: left;
     padding: 10px 12px 18px;
   }
