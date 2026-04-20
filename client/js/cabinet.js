@@ -731,6 +731,32 @@ function initCabinetMenuDrawer() {
   });
 }
 
+function bindCabinetMenuFallback() {
+  const sidebar = document.querySelector(".page-cabinet .catalog-filters.cabinet-sidebar");
+  const overlay = document.getElementById("cabinetMenuOverlay");
+  if (!sidebar || !overlay) return;
+
+  document.addEventListener("click", (event) => {
+    const target = event.target;
+    if (!(target instanceof Element)) return;
+    const openBtn = target.closest("#cabinetMenuOpenBtn");
+    const closeBtn = target.closest("#cabinetMenuCloseBtn");
+    const navBtn = target.closest(".page-cabinet .catalog-filters.cabinet-sidebar .cabinet-nav-btn");
+    const overlayHit = target.id === "cabinetMenuOverlay";
+
+    if (openBtn) {
+      overlay.hidden = false;
+      document.body.classList.add("cabinet-menu-open");
+      return;
+    }
+
+    if (closeBtn || overlayHit || navBtn) {
+      document.body.classList.remove("cabinet-menu-open");
+      overlay.hidden = true;
+    }
+  });
+}
+
 function renderInitials(profile) {
   const initialsEl = document.getElementById("authInitials");
   const authIcon = document.getElementById("authIcon");
@@ -1122,6 +1148,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   fillCabinet(profile);
   setupCabinetSections();
   initCabinetMenuDrawer();
+  bindCabinetMenuFallback();
   setupCabinetDeliveryUI();
   if (typeof initCatalogCustomSelect === "function") {
     initCatalogCustomSelect("cabProvider");

@@ -756,11 +756,68 @@ function initHeroCarousel() {
   if (prev) prev.addEventListener("click", () => goTo(idx - 1));
   if (next) next.addEventListener("click", () => goTo(idx + 1));
 
-  let timer = setInterval(() => goTo(idx + 1), 7000);
-  root.addEventListener("mouseenter", () => clearInterval(timer));
-  root.addEventListener("mouseleave", () => {
+  let timer = null;
+  const stopAuto = () => {
     clearInterval(timer);
+    timer = null;
+  };
+  const startAuto = () => {
+    stopAuto();
     timer = setInterval(() => goTo(idx + 1), 7000);
+  };
+
+  startAuto();
+  root.addEventListener("mouseenter", stopAuto);
+  root.addEventListener("mouseleave", startAuto);
+
+  // Дозволяємо вертикальний скрол, але додаємо свайп по горизонталі.
+  root.style.touchAction = "pan-y";
+  let touchStartX = 0;
+  let touchStartY = 0;
+  let touchMoveX = 0;
+  let touchMoveY = 0;
+  let touchActive = false;
+
+  root.addEventListener(
+    "touchstart",
+    (event) => {
+      if (!event.touches || event.touches.length !== 1) return;
+      const touch = event.touches[0];
+      touchStartX = touch.clientX;
+      touchStartY = touch.clientY;
+      touchMoveX = touchStartX;
+      touchMoveY = touchStartY;
+      touchActive = true;
+      stopAuto();
+    },
+    { passive: true }
+  );
+
+  root.addEventListener(
+    "touchmove",
+    (event) => {
+      if (!touchActive || !event.touches || event.touches.length !== 1) return;
+      const touch = event.touches[0];
+      touchMoveX = touch.clientX;
+      touchMoveY = touch.clientY;
+      const dx = touchMoveX - touchStartX;
+      const dy = touchMoveY - touchStartY;
+      if (Math.abs(dx) > Math.abs(dy) && Math.abs(dx) > 8) {
+        event.preventDefault();
+      }
+    },
+    { passive: false }
+  );
+
+  root.addEventListener("touchend", () => {
+    if (!touchActive) return;
+    const dx = touchMoveX - touchStartX;
+    const dy = touchMoveY - touchStartY;
+    if (Math.abs(dx) >= 40 && Math.abs(dx) > Math.abs(dy) * 1.2) {
+      goTo(dx < 0 ? idx + 1 : idx - 1);
+    }
+    touchActive = false;
+    startAuto();
   });
 
   goTo(idx);
