@@ -9,11 +9,11 @@
 
     nav.innerHTML =
       '<a href="catalog.html" class="mobile-bottom-nav__item" data-item="catalog">' +
-      '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>' +
+      '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 4h6v6H4zM14 4h6v6h-6zM4 14h6v6H4zM14 14h6v6h-6z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg>' +
       "<span>Каталог</span>" +
       "</a>" +
       '<button type="button" class="mobile-bottom-nav__item" data-item="favorites" aria-label="Відкрити обране">' +
-      '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-6.7-4.35-9.33-8.17C.6 9.94 2.2 6 6.05 6c2.2 0 3.5 1.28 3.95 2.18C10.45 7.28 11.75 6 13.95 6 17.8 6 19.4 9.94 21.33 12.83 18.7 16.65 12 21 12 21z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg>' +
+      '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20.4l-1.05-.95C6.9 15.8 4 13.2 4 9.95 4 7.35 6.02 5.4 8.55 5.4c1.45 0 2.84.68 3.45 1.77.61-1.09 2-1.77 3.45-1.77C17.98 5.4 20 7.35 20 9.95c0 3.25-2.9 5.85-6.95 9.5L12 20.4z" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"/></svg>' +
       "<span>Обране</span>" +
       "</button>" +
       '<button type="button" class="mobile-bottom-nav__item mobile-bottom-nav__item--cart" data-item="cart" aria-label="Відкрити кошик">' +
