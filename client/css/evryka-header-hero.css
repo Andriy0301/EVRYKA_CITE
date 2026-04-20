@@ -1296,14 +1296,15 @@ body.header-nav-open {
   }
 
   .hero-evryka--allbirds .hero-evryka__panel {
-    max-width: min(62%, 230px);
+    max-width: min(56%, 190px);
     text-align: left;
-    padding: 8px 8px 9px;
-    border-radius: 12px;
-    background: rgba(25, 25, 25, 0.28);
-    border: 1px solid rgba(255, 255, 255, 0.12);
-    backdrop-filter: blur(3px);
-    -webkit-backdrop-filter: blur(3px);
+    padding: 0;
+    border-radius: 0;
+    background: transparent;
+    border: 0;
+    box-shadow: none;
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
   }
 
   .hero-evryka--allbirds .hero-slide--repair .hero-evryka__panel,
@@ -1316,6 +1317,9 @@ body.header-nav-open {
 
   .hero-evryka--allbirds .hero-evryka__title {
     max-width: 18ch;
+    font-size: clamp(0.94rem, 3.6vw, 1.08rem);
+    line-height: 1.1;
+    margin-bottom: 2px;
     margin-left: 0;
     margin-right: 0;
   }
@@ -1329,6 +1333,23 @@ body.header-nav-open {
 
   .hero-evryka--allbirds .hero-evryka__actions {
     align-items: flex-start;
+    gap: 6px;
+  }
+
+  .hero-evryka--allbirds .hero-evryka__lede {
+    display: none;
+    margin: 0;
+  }
+
+  .hero-evryka--allbirds .hero-evryka__btn {
+    min-height: 32px;
+    padding: 7px 10px;
+    font-size: 9px;
+    letter-spacing: 0.03em;
+  }
+
+  .hero-evryka--allbirds .hero-evryka__btn--ghost {
+    display: none;
   }
 
   .hero-evryka--allbirds .hero-evryka-carousel .hero-carousel-dots {
