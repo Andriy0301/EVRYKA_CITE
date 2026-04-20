@@ -29,6 +29,40 @@
     document.body.appendChild(nav);
     document.body.classList.add("has-mobile-bottom-nav");
 
+    let moreSheet = document.getElementById("mobileMoreSheet");
+    if (!moreSheet) {
+      moreSheet = document.createElement("div");
+      moreSheet.id = "mobileMoreSheet";
+      moreSheet.className = "mobile-more-sheet";
+      moreSheet.setAttribute("aria-hidden", "true");
+      moreSheet.innerHTML =
+        '<button type="button" class="mobile-more-sheet__backdrop" aria-label="Закрити меню"></button>' +
+        '<div class="mobile-more-sheet__panel" role="dialog" aria-modal="true" aria-label="Додаткове меню">' +
+        '<div class="mobile-more-sheet__head">' +
+        '<strong>Меню</strong>' +
+        '<button type="button" class="mobile-more-sheet__close" aria-label="Закрити меню">×</button>' +
+        "</div>" +
+        '<a href="index.html" class="mobile-more-sheet__link">Головна</a>' +
+        '<a href="catalog.html" class="mobile-more-sheet__link">Каталог</a>' +
+        '<a href="about.html" class="mobile-more-sheet__link">Про нас</a>' +
+        '<a href="order-3d-print.html" class="mobile-more-sheet__link">Замовити 3D друк</a>' +
+        '<a href="cabinet.html" class="mobile-more-sheet__link">Кабінет</a>' +
+        '<a href="index.html#contacts" class="mobile-more-sheet__link">Контакти</a>' +
+        "</div>";
+      document.body.appendChild(moreSheet);
+    }
+
+    const closeMoreSheet = function () {
+      document.body.classList.remove("mobile-more-open");
+      if (moreSheet) moreSheet.setAttribute("aria-hidden", "true");
+    };
+
+    const openMoreSheet = function () {
+      closeNavRef(toggle, panel);
+      document.body.classList.add("mobile-more-open");
+      if (moreSheet) moreSheet.setAttribute("aria-hidden", "false");
+    };
+
     const path = (window.location.pathname.split("/").pop() || "index.html").toLowerCase();
     const activeItem =
       path === "catalog.html" || path === "product.html"
@@ -55,22 +89,15 @@
 
     const moreBtn = nav.querySelector('[data-item="more"]');
     moreBtn?.addEventListener("click", function () {
-      if (panel.classList.contains("is-open")) closeNavRef(toggle, panel);
-      else openNavRef(toggle, panel);
+      if (document.body.classList.contains("mobile-more-open")) closeMoreSheet();
+      else openMoreSheet();
     });
 
-    if (!panel.querySelector(".mobile-more-links")) {
-      const moreWrap = document.createElement("div");
-      moreWrap.className = "mobile-more-links";
-      moreWrap.innerHTML =
-        '<a href="index.html" class="mobile-more-link">Головна</a>' +
-        '<a href="catalog.html" class="mobile-more-link">Каталог</a>' +
-        '<a href="about.html" class="mobile-more-link">Про нас</a>' +
-        '<a href="order-3d-print.html" class="mobile-more-link">Замовити 3D друк</a>' +
-        '<a href="cabinet.html" class="mobile-more-link">Кабінет</a>' +
-        '<a href="index.html#contacts" class="mobile-more-link">Контакти</a>';
-      panel.appendChild(moreWrap);
-    }
+    moreSheet?.querySelector(".mobile-more-sheet__backdrop")?.addEventListener("click", closeMoreSheet);
+    moreSheet?.querySelector(".mobile-more-sheet__close")?.addEventListener("click", closeMoreSheet);
+    moreSheet?.querySelectorAll(".mobile-more-sheet__link").forEach(function (link) {
+      link.addEventListener("click", closeMoreSheet);
+    });
 
     const mobileCount = document.getElementById("mobileBottomCartCount");
     const desktopCount = document.getElementById("cartCount");
@@ -144,11 +171,15 @@
 
     document.addEventListener("keydown", function (event) {
       if (event.key !== "Escape") return;
+      closeMoreSheet();
       closeNav(toggle, panel);
     });
 
     window.addEventListener("resize", function () {
-      if (window.innerWidth > 768) closeNav(toggle, panel);
+      if (window.innerWidth > 768) {
+        closeNav(toggle, panel);
+        closeMoreSheet();
+      }
     });
   }
 

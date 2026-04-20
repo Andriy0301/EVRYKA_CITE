@@ -905,6 +905,14 @@ body.header-nav-open {
     display: none !important;
   }
 
+  .header #authBtn #authIcon {
+    display: block !important;
+  }
+
+  .header #authBtn #authIcon path {
+    fill: currentColor;
+  }
+
   .header .auth-icon-btn {
     width: 36px;
     height: 36px;

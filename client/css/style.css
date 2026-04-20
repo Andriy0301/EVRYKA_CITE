@@ -7093,9 +7093,13 @@ body.evryka-site.page-print3d {
   }
 
   .page-home #products {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 10px;
-    padding: 10px 2px 16px;
+    grid-template-columns: 1fr;
+    gap: 12px;
+    padding: 10px 0 16px;
+  }
+
+  .page-home #products .product {
+    width: 100%;
   }
 
   .page-catalog .catalog-filters {
@@ -7298,11 +7302,101 @@ body.evryka-site.page-print3d {
   }
 
   body.cart-open .mobile-bottom-nav,
-  body.header-nav-open .mobile-bottom-nav {
+  body.header-nav-open .mobile-bottom-nav,
+  body.mobile-more-open .mobile-bottom-nav {
     opacity: 0;
     pointer-events: none;
     transform: translateY(12px);
     transition: opacity 0.16s ease, transform 0.16s ease;
+  }
+
+  .mobile-more-sheet {
+    position: fixed;
+    inset: 0;
+    z-index: 1250;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.2s ease;
+  }
+
+  .mobile-more-sheet__backdrop {
+    position: absolute;
+    inset: 0;
+    border: none;
+    background: rgba(0, 0, 0, 0.32);
+    margin: 0;
+    padding: 0;
+  }
+
+  .mobile-more-sheet__panel {
+    position: absolute;
+    left: 10px;
+    right: 10px;
+    bottom: calc(72px + env(safe-area-inset-bottom, 0px));
+    display: grid;
+    gap: 7px;
+    background: #fff;
+    border: 1px solid var(--border-light);
+    border-radius: 14px;
+    padding: 10px;
+    transform: translateY(12px);
+    transition: transform 0.22s ease;
+    box-shadow: 0 14px 34px rgba(0, 0, 0, 0.18);
+  }
+
+  .mobile-more-sheet__head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 2px 2px 6px;
+    color: var(--text-primary);
+    font-size: 15px;
+  }
+
+  .mobile-more-sheet__close {
+    width: 32px;
+    height: 32px;
+    border: 1px solid var(--border-light);
+    border-radius: 10px;
+    background: #fff;
+    color: var(--text-primary);
+    font-size: 20px;
+    line-height: 1;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .mobile-more-sheet__link {
+    display: flex;
+    align-items: center;
+    min-height: 44px;
+    padding: 10px 12px;
+    border-radius: 10px;
+    text-decoration: none;
+    color: var(--text-primary);
+    background: #f7f7f7;
+    font-size: 14px;
+    font-weight: 600;
+  }
+
+  .mobile-more-sheet__link:hover,
+  .mobile-more-sheet__link:focus-visible {
+    background: #efefef;
+    color: var(--text-primary);
+  }
+
+  body.mobile-more-open {
+    overflow: hidden;
+  }
+
+  body.mobile-more-open .mobile-more-sheet {
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  body.mobile-more-open .mobile-more-sheet__panel {
+    transform: translateY(0);
   }
 
   .chat-widget-root {
@@ -7317,6 +7411,10 @@ body.evryka-site.page-print3d {
 
 @media (min-width: 769px) {
   .mobile-bottom-nav {
+    display: none;
+  }
+
+  .mobile-more-sheet {
     display: none;
   }
 }

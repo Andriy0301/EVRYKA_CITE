@@ -219,9 +219,8 @@ function initCatalogMobileFilterDrawer() {
   const openBtn = document.getElementById("catalogFiltersOpenBtn");
   const closeBtn = document.getElementById("catalogFiltersCloseBtn");
   const overlay = document.getElementById("catalogFiltersOverlay");
+  const drawer = document.querySelector(".page-catalog .catalog-filters");
   if (!openBtn || !closeBtn || !overlay) return;
-
-  const isMobile = () => window.matchMedia("(max-width: 768px)").matches;
 
   const closeDrawer = () => {
     document.body.classList.remove("catalog-filters-open");
@@ -229,7 +228,7 @@ function initCatalogMobileFilterDrawer() {
   };
 
   const openDrawer = () => {
-    if (!isMobile()) return;
+    if (!drawer) return;
     overlay.hidden = false;
     document.body.classList.add("catalog-filters-open");
   };
@@ -243,7 +242,7 @@ function initCatalogMobileFilterDrawer() {
   });
 
   window.addEventListener("resize", () => {
-    if (!isMobile()) closeDrawer();
+    if (!window.matchMedia("(max-width: 768px)").matches) closeDrawer();
   });
 }
 
