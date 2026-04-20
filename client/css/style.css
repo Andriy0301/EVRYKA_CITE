@@ -363,6 +363,20 @@ a:hover {
   pointer-events: all;
 }
 
+@media (max-width: 768px) {
+  .cart-sidebar {
+    top: max(8px, env(safe-area-inset-top, 0px));
+    right: max(8px, env(safe-area-inset-right, 0px));
+    bottom: max(8px, env(safe-area-inset-bottom, 0px));
+    width: min(360px, calc(100vw - 16px - env(safe-area-inset-right, 0px)));
+    z-index: 1302;
+  }
+
+  .cart-overlay {
+    z-index: 1301;
+  }
+}
+
 /* 🔥 items — скрол у межах панелі кошика / обраних */
 #cartItems,
 #favoritesItems {

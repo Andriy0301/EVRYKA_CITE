@@ -479,9 +479,17 @@ function toggleFavorite(e, product, pulseHeader) {
 function toggleFavorites(open) {
   const sidebar = document.getElementById("favoritesSidebar");
   const overlay = document.getElementById("favoritesOverlay");
+  const navPanel = document.getElementById("headerNavPanel");
+  const navToggle = document.getElementById("navToggle");
   if (!sidebar || !overlay) return;
 
   if (open) {
+    if (navPanel) navPanel.classList.remove("is-open");
+    if (navToggle) {
+      navToggle.classList.remove("is-open");
+      navToggle.setAttribute("aria-expanded", "false");
+    }
+    document.body.classList.remove("header-nav-open");
     sidebar.classList.add("active");
     overlay.classList.add("active");
     renderFavoritesList();

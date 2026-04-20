@@ -91,8 +91,17 @@ function toggleCart(open) {
   const sidebar = document.getElementById("cartSidebar");
   const overlay = document.getElementById("cartOverlay");
   const chatRoot = document.getElementById("chatWidgetRoot");
+  const navPanel = document.getElementById("headerNavPanel");
+  const navToggle = document.getElementById("navToggle");
 
   if (open) {
+    if (navPanel) navPanel.classList.remove("is-open");
+    if (navToggle) {
+      navToggle.classList.remove("is-open");
+      navToggle.setAttribute("aria-expanded", "false");
+    }
+    document.body.classList.remove("header-nav-open");
+
     if (sidebar) sidebar.classList.add("active");
     if (overlay) overlay.classList.add("active");
     if (sidebar) {
