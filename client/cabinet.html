@@ -97,6 +97,9 @@
           </svg>
           Назад
         </a>
+        <button type="button" class="back-btn cabinet-menu-open-btn" id="cabinetMenuOpenBtn" aria-label="Відкрити меню кабінету">
+          Меню
+        </button>
         <div class="breadcrumbs">
           <a href="index.html">Головна</a>
           <span>/</span>
@@ -109,6 +112,7 @@
       <div class="catalog-page-layout">
         <aside class="catalog-filters cabinet-sidebar" aria-label="Меню кабінету">
           <h2 class="catalog-filters-title">Меню</h2>
+          <button type="button" class="cabinet-menu-close" id="cabinetMenuCloseBtn" aria-label="Закрити меню кабінету">×</button>
           <button class="cabinet-nav-btn active" type="button" data-section="personal">Особисті дані</button>
           <button class="cabinet-nav-btn" type="button" data-section="orders">Мої замовлення</button>
           <button class="cabinet-nav-btn" type="button">Бонуси</button>
@@ -180,6 +184,7 @@
           </div>
         </div>
       </div>
+      <div class="cabinet-menu-overlay" id="cabinetMenuOverlay" hidden></div>
     </div>
   </main>
 

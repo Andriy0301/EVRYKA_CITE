@@ -697,6 +697,40 @@ function setupCabinetSections() {
   });
 }
 
+function initCabinetMenuDrawer() {
+  const openBtn = document.getElementById("cabinetMenuOpenBtn");
+  const closeBtn = document.getElementById("cabinetMenuCloseBtn");
+  const overlay = document.getElementById("cabinetMenuOverlay");
+  const sidebar = document.querySelector(".page-cabinet .catalog-filters.cabinet-sidebar");
+  if (!openBtn || !closeBtn || !overlay || !sidebar) return;
+
+  const closeDrawer = () => {
+    document.body.classList.remove("cabinet-menu-open");
+    overlay.hidden = true;
+  };
+
+  const openDrawer = () => {
+    overlay.hidden = false;
+    document.body.classList.add("cabinet-menu-open");
+  };
+
+  openBtn.addEventListener("click", openDrawer);
+  closeBtn.addEventListener("click", closeDrawer);
+  overlay.addEventListener("click", closeDrawer);
+
+  sidebar.querySelectorAll(".cabinet-nav-btn").forEach((btn) => {
+    btn.addEventListener("click", closeDrawer);
+  });
+
+  document.addEventListener("keydown", (event) => {
+    if (event.key === "Escape") closeDrawer();
+  });
+
+  window.addEventListener("resize", () => {
+    if (!window.matchMedia("(max-width: 768px)").matches) closeDrawer();
+  });
+}
+
 function renderInitials(profile) {
   const initialsEl = document.getElementById("authInitials");
   const authIcon = document.getElementById("authIcon");
@@ -1087,6 +1121,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   fillCabinet(profile);
   setupCabinetSections();
+  initCabinetMenuDrawer();
   setupCabinetDeliveryUI();
   if (typeof initCatalogCustomSelect === "function") {
     initCatalogCustomSelect("cabProvider");

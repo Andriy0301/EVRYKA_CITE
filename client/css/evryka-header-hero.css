@@ -901,18 +901,6 @@ body.header-nav-open {
     gap: 2px;
   }
 
-  .header .auth-initials {
-    display: none !important;
-  }
-
-  .header #authBtn #authIcon {
-    display: block !important;
-  }
-
-  .header #authBtn #authIcon path {
-    fill: currentColor;
-  }
-
   .header .auth-icon-btn {
     width: 36px;
     height: 36px;
@@ -1217,7 +1205,7 @@ body.header-nav-open {
   }
 
   .hero-evryka {
-    min-height: min(56vh, 500px);
+    min-height: clamp(210px, 34vh, 280px);
     align-items: flex-end;
   }
 
@@ -1226,25 +1214,25 @@ body.header-nav-open {
   }
 
   .hero-evryka__overlay {
-    background: rgba(0, 0, 0, 0.45);
+    background: rgba(0, 0, 0, 0.26);
   }
 
   .hero-evryka__content {
-    padding: 10px 12px 14px;
+    padding: 12px 12px 16px;
     text-align: left;
   }
 
   .hero-evryka__title {
     max-width: none;
-    font-size: clamp(1.45rem, 5.3vw, 1.85rem);
-    line-height: 1.1;
-    margin-bottom: 6px;
+    font-size: clamp(1.2rem, 4.8vw, 1.45rem);
+    line-height: 1.15;
+    margin-bottom: 4px;
   }
 
   .hero-evryka__lede {
-    font-size: clamp(0.9rem, 3.2vw, 0.98rem);
+    font-size: clamp(0.82rem, 2.9vw, 0.92rem);
     line-height: 1.3;
-    margin-bottom: 10px;
+    margin-bottom: 8px;
   }
 
   .hero-evryka__actions {
@@ -1253,15 +1241,16 @@ body.header-nav-open {
   }
 
   .hero-evryka__btn {
-    width: 100%;
-    min-height: 40px;
-    font-size: 11px;
-    padding: 9px 14px;
+    width: auto;
+    min-height: 36px;
+    font-size: 10px;
+    padding: 8px 12px;
+    border-radius: 10px;
   }
 
   /* Allbirds home: центр, кнопки стовпчиком */
   .hero-evryka.hero-evryka--allbirds {
-    min-height: min(58vh, 520px);
+    min-height: clamp(220px, 35vh, 290px);
   }
 
   .hero-evryka--allbirds {
@@ -1270,21 +1259,21 @@ body.header-nav-open {
   }
 
   .hero-evryka--allbirds .hero-evryka-carousel .hero-carousel-track {
-    min-height: min(58vh, 520px);
+    min-height: clamp(220px, 35vh, 290px);
   }
 
   .hero-evryka--allbirds .hero-slide--evryka .hero-evryka__content {
-    min-height: min(58vh, 520px);
+    min-height: clamp(220px, 35vh, 290px);
   }
 
   .hero-evryka--allbirds .hero-evryka__overlay {
-    background: rgba(0, 0, 0, 0.34);
+    background: rgba(0, 0, 0, 0.2);
   }
 
   .hero-evryka--allbirds .hero-evryka__content {
-    justify-content: center;
-    padding: 8px 12px 10px;
-    text-align: center;
+    justify-content: flex-end;
+    padding: 12px 12px 18px;
+    text-align: left;
   }
 
   .hero-evryka--allbirds .hero-slide--repair .hero-evryka__content,
@@ -1293,22 +1282,28 @@ body.header-nav-open {
     justify-content: flex-start;
     align-items: stretch;
     text-align: left;
-    padding: 46px 12px 10px;
+    padding: 12px 12px 18px;
   }
 
   .page-home .evryka-hero-stack .hero-evryka--allbirds .hero-evryka__content {
-    padding-top: 46px;
+    padding-top: 12px;
   }
 
   .hero-evryka--allbirds .hero-evryka-carousel .hero-carousel-prev,
   .hero-evryka--allbirds .hero-evryka-carousel .hero-carousel-next {
-    width: 42px;
-    height: 42px;
+    width: 34px;
+    height: 34px;
   }
 
   .hero-evryka--allbirds .hero-evryka__panel {
-    max-width: none;
-    text-align: center;
+    max-width: min(72%, 280px);
+    text-align: left;
+    padding: 10px 10px 11px;
+    border-radius: 12px;
+    background: rgba(25, 25, 25, 0.28);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    backdrop-filter: blur(3px);
+    -webkit-backdrop-filter: blur(3px);
   }
 
   .hero-evryka--allbirds .hero-slide--repair .hero-evryka__panel,
@@ -1320,9 +1315,9 @@ body.header-nav-open {
   }
 
   .hero-evryka--allbirds .hero-evryka__title {
-    max-width: none;
-    margin-left: auto;
-    margin-right: auto;
+    max-width: 18ch;
+    margin-left: 0;
+    margin-right: 0;
   }
 
   .hero-evryka--allbirds .hero-slide--repair .hero-evryka__title,
@@ -1333,6 +1328,10 @@ body.header-nav-open {
   }
 
   .hero-evryka--allbirds .hero-evryka__actions {
-    align-items: stretch;
+    align-items: flex-start;
+  }
+
+  .hero-evryka--allbirds .hero-evryka-carousel .hero-carousel-dots {
+    bottom: 8px;
   }
 }

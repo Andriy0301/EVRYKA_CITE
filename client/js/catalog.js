@@ -246,6 +246,29 @@ function initCatalogMobileFilterDrawer() {
   });
 }
 
+function bindCatalogFilterFallback() {
+  const drawer = document.querySelector(".page-catalog .catalog-filters");
+  const overlay = document.getElementById("catalogFiltersOverlay");
+  if (!drawer || !overlay) return;
+
+  document.addEventListener("click", (event) => {
+    const target = event.target;
+    if (!(target instanceof Element)) return;
+    const openBtn = target.closest("#catalogFiltersOpenBtn");
+    const closeBtn = target.closest("#catalogFiltersCloseBtn");
+    const overlayHit = target.id === "catalogFiltersOverlay";
+    if (openBtn) {
+      overlay.hidden = false;
+      document.body.classList.add("catalog-filters-open");
+      return;
+    }
+    if (closeBtn || overlayHit) {
+      document.body.classList.remove("catalog-filters-open");
+      overlay.hidden = true;
+    }
+  });
+}
+
 function initCatalogPage() {
   if (!document.getElementById("catalogPageGrid")) return;
   catalogFiltersStateReady = false;
@@ -342,3 +365,11 @@ function initCatalogPage() {
     });
   }
 }
+
+document.addEventListener("DOMContentLoaded", () => {
+  if (!document.querySelector(".page-catalog")) return;
+  // Fallback bindings so mobile filter button works
+  // even if initCatalogPage exits early.
+  initCatalogMobileFilterDrawer();
+  bindCatalogFilterFallback();
+});
