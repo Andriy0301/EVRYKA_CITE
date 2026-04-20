@@ -861,15 +861,15 @@ body.header-nav-open {
 
   .header-inner {
     display: grid;
-    grid-template-columns: auto auto 1fr;
+    grid-template-columns: auto 1fr;
     align-items: center;
     padding: 8px 12px;
-    gap: 8px 10px;
+    gap: 8px 12px;
     min-height: 50px;
   }
 
   .header .header-logo {
-    grid-column: 2;
+    grid-column: 1;
     margin: 0;
     justify-self: start;
   }
@@ -880,15 +880,13 @@ body.header-nav-open {
   }
 
   .header-burger {
-    grid-column: 1;
-    display: flex;
-    justify-self: start;
+    display: none;
     width: 40px;
     height: 40px;
   }
 
   .header-utilities {
-    grid-column: 3;
+    grid-column: 2;
     gap: 6px;
     min-width: 0;
     margin-left: auto;
@@ -900,7 +898,7 @@ body.header-nav-open {
   }
 
   .header .auth-initials {
-    display: none;
+    display: none !important;
   }
 
   .header .auth-icon-btn {
@@ -1180,7 +1178,7 @@ body.header-nav-open {
 
 @media (max-width: 768px) {
   .hero-evryka {
-    min-height: min(74vh, 700px);
+    min-height: min(62vh, 560px);
     align-items: flex-end;
   }
 
@@ -1193,12 +1191,21 @@ body.header-nav-open {
   }
 
   .hero-evryka__content {
-    padding: 18px 16px 30px;
+    padding: 12px 14px 18px;
     text-align: left;
   }
 
   .hero-evryka__title {
     max-width: none;
+    font-size: clamp(1.7rem, 6vw, 2.1rem);
+    line-height: 1.1;
+    margin-bottom: 8px;
+  }
+
+  .hero-evryka__lede {
+    font-size: clamp(0.95rem, 3.6vw, 1.04rem);
+    line-height: 1.35;
+    margin-bottom: 14px;
   }
 
   .hero-evryka__actions {
@@ -1208,11 +1215,14 @@ body.header-nav-open {
 
   .hero-evryka__btn {
     width: 100%;
+    min-height: 42px;
+    font-size: 12px;
+    padding: 10px 16px;
   }
 
   /* Allbirds home: центр, кнопки стовпчиком */
   .hero-evryka.hero-evryka--allbirds {
-    min-height: min(76vh, 720px);
+    min-height: min(64vh, 580px);
   }
 
   .hero-evryka--allbirds {
@@ -1221,11 +1231,11 @@ body.header-nav-open {
   }
 
   .hero-evryka--allbirds .hero-evryka-carousel .hero-carousel-track {
-    min-height: min(76vh, 720px);
+    min-height: min(64vh, 580px);
   }
 
   .hero-evryka--allbirds .hero-slide--evryka .hero-evryka__content {
-    min-height: min(76vh, 720px);
+    min-height: min(64vh, 580px);
   }
 
   .hero-evryka--allbirds .hero-evryka__overlay {
@@ -1234,7 +1244,7 @@ body.header-nav-open {
 
   .hero-evryka--allbirds .hero-evryka__content {
     justify-content: center;
-    padding: 16px 16px 24px;
+    padding: 10px 14px 14px;
     text-align: center;
   }
 
@@ -1244,11 +1254,17 @@ body.header-nav-open {
     justify-content: flex-start;
     align-items: stretch;
     text-align: left;
-    padding: 72px 16px 24px;
+    padding: 52px 14px 14px;
   }
 
   .page-home .evryka-hero-stack .hero-evryka--allbirds .hero-evryka__content {
-    padding-top: 72px;
+    padding-top: 52px;
+  }
+
+  .hero-evryka--allbirds .hero-evryka-carousel .hero-carousel-prev,
+  .hero-evryka--allbirds .hero-evryka-carousel .hero-carousel-next {
+    width: 44px;
+    height: 44px;
   }
 
   .hero-evryka--allbirds .hero-evryka__panel {
