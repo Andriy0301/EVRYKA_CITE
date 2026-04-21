@@ -264,6 +264,45 @@
   <script src="js/api.js?v=20260422"></script>
   <script src="js/custom-select.js?v=1"></script>
   <script src="js/cabinet.js?v=20260420-4"></script>
+  <script>
+    (function () {
+      function setOpen(open) {
+        const overlay = document.getElementById("cabinetMenuOverlay");
+        document.body.classList.toggle("cabinet-menu-open", Boolean(open));
+        if (overlay) overlay.hidden = !open;
+      }
+
+      function bind() {
+        const openBtn = document.getElementById("cabinetMenuOpenBtn");
+        const closeBtn = document.getElementById("cabinetMenuCloseBtn");
+        const overlay = document.getElementById("cabinetMenuOverlay");
+        if (!openBtn || !closeBtn || !overlay) return;
+
+        openBtn.addEventListener("click", function (e) {
+          e.preventDefault();
+          e.stopPropagation();
+          setOpen(true);
+        });
+        closeBtn.addEventListener("click", function (e) {
+          e.preventDefault();
+          e.stopPropagation();
+          setOpen(false);
+        });
+        overlay.addEventListener("click", function () {
+          setOpen(false);
+        });
+        document.addEventListener("keydown", function (e) {
+          if (e.key === "Escape") setOpen(false);
+        });
+      }
+
+      if (document.readyState === "loading") {
+        document.addEventListener("DOMContentLoaded", bind);
+      } else {
+        bind();
+      }
+    })();
+  </script>
   <script src="js/cart.js?v=20260430"></script>
   <script src="js/chat-widget.js?v=20260409"></script>
 </body>
