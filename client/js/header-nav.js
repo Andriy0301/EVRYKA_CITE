@@ -1,4 +1,21 @@
 (function () {
+  let closeMoreSheetGlobal = function () {
+    document.body.classList.remove("mobile-more-open");
+    const sheet = document.getElementById("mobileMoreSheet");
+    if (sheet) sheet.setAttribute("aria-hidden", "true");
+  };
+
+  function setDrawerState(bodyClass, overlayId, open) {
+    const overlay = document.getElementById(overlayId);
+    if (open) {
+      document.body.classList.add(bodyClass);
+      if (overlay) overlay.hidden = false;
+      return;
+    }
+    document.body.classList.remove(bodyClass);
+    if (overlay) overlay.hidden = true;
+  }
+
   function buildMobileBottomNav(toggle, panel, closeNavRef, openNavRef) {
     if (document.getElementById("mobileBottomNav")) return;
 
@@ -56,6 +73,7 @@
       document.body.classList.remove("mobile-more-open");
       if (moreSheet) moreSheet.setAttribute("aria-hidden", "true");
     };
+    closeMoreSheetGlobal = closeMoreSheet;
 
     const openMoreSheet = function () {
       closeNavRef(toggle, panel);
@@ -171,14 +189,50 @@
 
     document.addEventListener("keydown", function (event) {
       if (event.key !== "Escape") return;
-      closeMoreSheet();
+      closeMoreSheetGlobal();
+      setDrawerState("catalog-filters-open", "catalogFiltersOverlay", false);
+      setDrawerState("cabinet-menu-open", "cabinetMenuOverlay", false);
       closeNav(toggle, panel);
     });
 
     window.addEventListener("resize", function () {
       if (window.innerWidth > 768) {
         closeNav(toggle, panel);
-        closeMoreSheet();
+        closeMoreSheetGlobal();
+        setDrawerState("catalog-filters-open", "catalogFiltersOverlay", false);
+        setDrawerState("cabinet-menu-open", "cabinetMenuOverlay", false);
+      }
+    });
+
+    // Глобальний fallback: відкриття/закриття мобільних drawer-кнопок
+    // навіть якщо специфічні ініціалізатори сторінок не спрацювали.
+    document.addEventListener("click", function (event) {
+      const target = event.target;
+      if (!(target instanceof Element)) return;
+
+      if (target.closest("#catalogFiltersOpenBtn")) {
+        closeNav(toggle, panel);
+        closeMoreSheetGlobal();
+        setDrawerState("catalog-filters-open", "catalogFiltersOverlay", true);
+        return;
+      }
+      if (target.closest("#catalogFiltersCloseBtn") || target.id === "catalogFiltersOverlay") {
+        setDrawerState("catalog-filters-open", "catalogFiltersOverlay", false);
+        return;
+      }
+
+      if (target.closest("#cabinetMenuOpenBtn")) {
+        closeNav(toggle, panel);
+        closeMoreSheetGlobal();
+        setDrawerState("cabinet-menu-open", "cabinetMenuOverlay", true);
+        return;
+      }
+      if (
+        target.closest("#cabinetMenuCloseBtn") ||
+        target.id === "cabinetMenuOverlay" ||
+        target.closest(".page-cabinet .catalog-filters.cabinet-sidebar .cabinet-nav-btn")
+      ) {
+        setDrawerState("cabinet-menu-open", "cabinetMenuOverlay", false);
       }
     });
   }

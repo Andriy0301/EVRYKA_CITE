@@ -7036,11 +7036,17 @@ body.evryka-site.page-print3d {
   .catalog-filters-open-btn {
     display: inline-flex;
     margin-left: auto;
+    position: relative;
+    z-index: 1405;
+    pointer-events: auto;
   }
 
   .cabinet-menu-open-btn {
     display: inline-flex;
     margin-left: auto;
+    position: relative;
+    z-index: 1405;
+    pointer-events: auto;
   }
 
   .page-catalog .catalog-filters-close {
@@ -7174,12 +7180,15 @@ body.evryka-site.page-print3d {
 
   .page-home #products {
     grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 12px;
+    gap: 10px;
     padding: 10px 8px 16px;
+    width: 100%;
+    box-sizing: border-box;
   }
 
   .page-home #products .product {
     width: 100%;
+    min-width: 0;
   }
 
   .page-catalog .catalog-filters {
@@ -7190,6 +7199,8 @@ body.evryka-site.page-print3d {
     grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 10px;
     padding: 10px 12px 16px;
+    width: 100%;
+    box-sizing: border-box;
   }
 
   .page-home #products .product,
@@ -7211,6 +7222,7 @@ body.evryka-site.page-print3d {
     line-height: 1.28;
     min-height: 34px;
     margin: 7px 0 6px;
+    overflow-wrap: anywhere;
   }
 
   .page-home #products .product .price,
@@ -7487,6 +7499,31 @@ body.evryka-site.page-print3d {
   body.page-catalog .scroll-to-top-btn,
   body.page-print3d .scroll-to-top-btn {
     bottom: calc(82px + 52px + 10px + env(safe-area-inset-bottom, 0px));
+  }
+}
+
+/* На touch-пристроях hover може "залипати" після тапу.
+   Прибираємо hover-підняття картки/кнопки, щоб стан не зависав. */
+@media (hover: none) {
+  .product:hover {
+    transform: none;
+    box-shadow:
+      0 12px 40px rgba(0, 0, 0, 0.12),
+      0 4px 16px rgba(0, 0, 0, 0.06);
+  }
+
+  .button:hover,
+  .buy-btn:hover {
+    transform: none;
+    background: var(--accent-main);
+  }
+
+  .load-more .buy-btn:hover {
+    transform: none;
+    background: var(--accent-main);
+    box-shadow:
+      0 12px 40px rgba(0, 0, 0, 0.12),
+      0 4px 16px rgba(0, 0, 0, 0.06);
   }
 }
 
