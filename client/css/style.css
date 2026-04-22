@@ -7164,6 +7164,7 @@ body.evryka-site.page-print3d {
 @media (max-width: 640px) {
   body.evryka-site.page-home {
     --ev-shell-margin: 8px;
+    --home-hero-to-content-gap: 12px;
   }
 
   .container {
@@ -7192,7 +7193,7 @@ body.evryka-site.page-print3d {
     grid-template-columns: repeat(2, minmax(0, 1fr));
     column-gap: 8px;
     row-gap: 12px;
-    padding: 10px calc(var(--ev-shell-margin) + env(safe-area-inset-right, 0px))
+    padding: 12px calc(var(--ev-shell-margin) + env(safe-area-inset-right, 0px))
       16px calc(var(--ev-shell-margin) + env(safe-area-inset-left, 0px));
     width: 100%;
     box-sizing: border-box;
@@ -7333,7 +7334,7 @@ body.evryka-site.page-print3d {
 
 @media (max-width: 768px) {
   body.evryka-site.has-mobile-bottom-nav {
-    padding-bottom: calc(76px + env(safe-area-inset-bottom, 0px));
+    padding-bottom: calc(84px + env(safe-area-inset-bottom, 0px));
   }
 
   .mobile-bottom-nav {
@@ -7349,7 +7350,7 @@ body.evryka-site.page-print3d {
     border-top: 1px solid var(--border-light);
     backdrop-filter: blur(12px);
     -webkit-backdrop-filter: blur(12px);
-    padding: 6px 8px calc(6px + env(safe-area-inset-bottom, 0px));
+    padding: 7px 8px calc(8px + env(safe-area-inset-bottom, 0px));
     box-shadow: 0 -10px 24px rgba(0, 0, 0, 0.08);
   }
 
@@ -7359,7 +7360,7 @@ body.evryka-site.page-print3d {
     background: transparent;
     color: var(--text-secondary);
     text-decoration: none;
-    min-height: 52px;
+    min-height: 56px;
     display: inline-flex;
     flex-direction: column;
     align-items: center;
@@ -7369,9 +7370,15 @@ body.evryka-site.page-print3d {
     font-family: var(--ev-font);
     font-size: 12px;
     font-weight: 600;
-    line-height: 1.1;
+    line-height: 1.2;
     cursor: pointer;
     border-radius: 10px;
+  }
+
+  .mobile-bottom-nav__item span {
+    display: block;
+    line-height: 1.2;
+    white-space: nowrap;
   }
 
   .mobile-bottom-nav__item svg {
