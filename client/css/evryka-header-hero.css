@@ -943,8 +943,10 @@ body.header-nav-open {
     background: var(--surface-primary);
     border: 1px solid var(--border-light);
     border-radius: 14px;
-    transform: translateX(100%);
-    transition: transform 0.28s ease;
+    transform: translateX(calc(100% + 24px));
+    transition: transform 0.28s ease, opacity 0.2s ease;
+    opacity: 0;
+    visibility: hidden;
     z-index: 1001;
     overflow-y: auto;
     box-shadow: 0 12px 36px rgba(0, 0, 0, 0.12);
@@ -957,11 +959,15 @@ body.header-nav-open {
 
   .header .header-nav.is-open {
     transform: translateX(0);
+    opacity: 1;
+    visibility: visible;
   }
 
   body.header-nav-open .header .header-nav {
     top: calc(var(--ev-header-h) + 8px);
     transform: translateX(0);
+    opacity: 1;
+    visibility: visible;
   }
 
   .header nav a {
