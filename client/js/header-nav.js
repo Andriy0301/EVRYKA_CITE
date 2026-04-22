@@ -117,6 +117,16 @@
       link.addEventListener("click", closeMoreSheet);
     });
 
+    const sheetPath = (window.location.pathname.split("/").pop() || "index.html").toLowerCase();
+    moreSheet?.querySelectorAll(".mobile-more-sheet__link").forEach(function (link) {
+      const href = (link.getAttribute("href") || "").toLowerCase();
+      const normalizedHref = href.split("#")[0];
+      const isCurrent =
+        (sheetPath === "index.html" && (normalizedHref === "index.html" || normalizedHref === "")) ||
+        normalizedHref === sheetPath;
+      link.classList.toggle("is-current", isCurrent);
+    });
+
     const mobileCount = document.getElementById("mobileBottomCartCount");
     const desktopCount = document.getElementById("cartCount");
     const syncCount = function () {
