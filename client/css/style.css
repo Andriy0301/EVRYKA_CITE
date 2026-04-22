@@ -7008,7 +7008,7 @@ body.evryka-site.page-print3d {
     top: calc(var(--ev-header-h) + 8px);
     bottom: calc(82px + env(safe-area-inset-bottom, 0px));
     z-index: 1302;
-    display: grid;
+    display: none;
     grid-template-columns: repeat(2, minmax(0, 1fr));
     align-content: start;
     gap: 10px;
@@ -7080,6 +7080,7 @@ body.evryka-site.page-print3d {
     top: calc(var(--ev-header-h) + 8px);
     bottom: calc(82px + env(safe-area-inset-bottom, 0px));
     z-index: 1302;
+    display: none;
     opacity: 0;
     pointer-events: none;
     transform: translateY(16px);
@@ -7141,6 +7142,7 @@ body.evryka-site.page-print3d {
   }
 
   body.catalog-filters-open .page-catalog .catalog-filters {
+    display: grid;
     opacity: 1;
     pointer-events: auto;
     transform: translateY(0);
@@ -7152,6 +7154,7 @@ body.evryka-site.page-print3d {
   }
 
   body.cabinet-menu-open .page-cabinet .catalog-filters.cabinet-sidebar {
+    display: block;
     opacity: 1;
     pointer-events: auto;
     transform: translateY(0);
@@ -7218,19 +7221,21 @@ body.evryka-site.page-print3d {
 
   /* Каталог на мобілці: без темного контейнера, як на головній */
   .page-catalog .catalog-shell {
-    background: transparent;
-    border: none;
-    box-shadow: none;
+    background: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+    border-radius: 0 !important;
     padding-left: 0;
     padding-right: 0;
   }
 
+  .page-catalog .catalog-page-layout,
   .page-catalog .catalog-main,
   .page-catalog .catalog-products-inner {
-    background: transparent;
-    border: none;
-    box-shadow: none;
-    border-radius: 0;
+    background: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+    border-radius: 0 !important;
   }
 
   .page-catalog .catalog-products-inner {
