@@ -7166,6 +7166,12 @@ body.evryka-site.page-print3d {
     padding: 0 12px;
   }
 
+  .page-home .products {
+    padding-left: 0;
+    padding-right: 0;
+    max-width: none;
+  }
+
   .page-home .container,
   .page-catalog .container {
     padding-left: 0;
