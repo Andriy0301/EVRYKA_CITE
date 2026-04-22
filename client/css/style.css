@@ -7191,10 +7191,8 @@ body.evryka-site.page-print3d {
 
   .page-home #products {
     grid-template-columns: repeat(2, minmax(0, 1fr));
-    column-gap: 8px;
-    row-gap: 12px;
-    padding: 12px calc(var(--ev-shell-margin) + env(safe-area-inset-right, 0px))
-      16px calc(var(--ev-shell-margin) + env(safe-area-inset-left, 0px));
+    gap: 8px;
+    padding: 12px 8px 16px;
     width: 100%;
     box-sizing: border-box;
   }
@@ -7218,7 +7216,7 @@ body.evryka-site.page-print3d {
 
   .page-home #products .product,
   .page-catalog .catalog-products-grid .product {
-    padding: 6px;
+    padding: 5px;
   }
 
   .page-home #products .product img,
@@ -7247,8 +7245,8 @@ body.evryka-site.page-print3d {
 
   .page-home #products .product .buy-btn,
   .page-catalog .catalog-products-grid .product .buy-btn {
-    min-height: 34px;
-    padding: 8px 10px;
+    min-height: 32px;
+    padding: 7px 9px;
     border-radius: 10px;
     font-size: 12px;
     letter-spacing: 0.04em;
