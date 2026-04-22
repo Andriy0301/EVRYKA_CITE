@@ -7180,7 +7180,8 @@ body.evryka-site.page-print3d {
 
   .page-home #products {
     grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 8px;
+    column-gap: 10px;
+    row-gap: 10px;
     padding: 10px 4px 16px;
     width: 100%;
     box-sizing: border-box;
@@ -7307,6 +7308,15 @@ body.evryka-site.page-print3d {
 
   .page-product .similar-card p {
     font-size: 13px;
+  }
+
+  /* На телефоні вимикаємо підйом картки при hover, щоб не було візуального "налазання". */
+  .page-home #products .product:hover,
+  .page-catalog .catalog-products-grid .product:hover {
+    transform: none;
+    box-shadow:
+      0 12px 40px rgba(0, 0, 0, 0.12),
+      0 4px 16px rgba(0, 0, 0, 0.06);
   }
 }
 
