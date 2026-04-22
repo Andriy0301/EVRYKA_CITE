@@ -1303,9 +1303,9 @@ body.header-nav-open {
   }
 
   .hero-evryka--allbirds .hero-evryka__panel {
-    max-width: min(66%, 230px);
+    max-width: min(52%, 180px);
     text-align: left;
-    padding: 7px 8px;
+    padding: 4px 6px;
     border-radius: 9px;
     background: transparent;
     border: 0;
@@ -1317,7 +1317,7 @@ body.header-nav-open {
   .hero-evryka--allbirds .hero-slide--repair .hero-evryka__panel,
   .hero-evryka--allbirds .hero-slide--3d-print .hero-evryka__panel,
   .hero-evryka--allbirds .hero-slide--gift .hero-evryka__panel {
-    max-width: 100%;
+    max-width: min(52%, 180px);
     text-align: left;
     margin-right: auto;
     padding: 0;
