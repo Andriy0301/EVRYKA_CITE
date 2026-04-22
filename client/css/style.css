@@ -7190,9 +7190,10 @@ body.evryka-site.page-print3d {
 
   .page-home #products {
     grid-template-columns: repeat(2, minmax(0, 1fr));
-    column-gap: 10px;
-    row-gap: 10px;
-    padding: 10px 4px 16px;
+    column-gap: 8px;
+    row-gap: 12px;
+    padding: 10px calc(var(--ev-shell-margin) + env(safe-area-inset-right, 0px))
+      16px calc(var(--ev-shell-margin) + env(safe-area-inset-left, 0px));
     width: 100%;
     box-sizing: border-box;
   }
