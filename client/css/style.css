@@ -7180,8 +7180,8 @@ body.evryka-site.page-print3d {
 
   .page-home #products {
     grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 10px;
-    padding: 10px 8px 16px;
+    gap: 8px;
+    padding: 10px 4px 16px;
     width: 100%;
     box-sizing: border-box;
   }
@@ -7205,7 +7205,7 @@ body.evryka-site.page-print3d {
 
   .page-home #products .product,
   .page-catalog .catalog-products-grid .product {
-    padding: 8px;
+    padding: 6px;
   }
 
   .page-home #products .product img,
