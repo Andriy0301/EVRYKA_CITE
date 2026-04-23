@@ -2,7 +2,16 @@
   let closeMoreSheetGlobal = function () {
     document.body.classList.remove("mobile-more-open");
     const sheet = document.getElementById("mobileMoreSheet");
-    if (sheet) sheet.setAttribute("aria-hidden", "true");
+    if (sheet) {
+      const activeEl = document.activeElement;
+      if (activeEl instanceof Element && sheet.contains(activeEl)) {
+        const moreBtn = document.querySelector('#mobileBottomNav [data-item="more"]');
+        if (moreBtn instanceof HTMLElement) moreBtn.focus({ preventScroll: true });
+        else if (activeEl instanceof HTMLElement) activeEl.blur();
+      }
+      sheet.setAttribute("aria-hidden", "true");
+      sheet.setAttribute("inert", "");
+    }
   };
 
   function setDrawerState(bodyClass, overlayId, open) {
@@ -52,6 +61,7 @@
       moreSheet.id = "mobileMoreSheet";
       moreSheet.className = "mobile-more-sheet";
       moreSheet.setAttribute("aria-hidden", "true");
+      moreSheet.setAttribute("inert", "");
       moreSheet.innerHTML =
         '<button type="button" class="mobile-more-sheet__backdrop" aria-label="Закрити меню"></button>' +
         '<div class="mobile-more-sheet__panel" role="dialog" aria-modal="true" aria-label="Додаткове меню">' +
@@ -71,14 +81,26 @@
 
     const closeMoreSheet = function () {
       document.body.classList.remove("mobile-more-open");
-      if (moreSheet) moreSheet.setAttribute("aria-hidden", "true");
+      if (moreSheet) {
+        const activeEl = document.activeElement;
+        if (activeEl instanceof Element && moreSheet.contains(activeEl)) {
+          const moreBtn = document.querySelector('#mobileBottomNav [data-item="more"]');
+          if (moreBtn instanceof HTMLElement) moreBtn.focus({ preventScroll: true });
+          else if (activeEl instanceof HTMLElement) activeEl.blur();
+        }
+        moreSheet.setAttribute("aria-hidden", "true");
+        moreSheet.setAttribute("inert", "");
+      }
     };
     closeMoreSheetGlobal = closeMoreSheet;
 
     const openMoreSheet = function () {
       closeNavRef(toggle, panel);
       document.body.classList.add("mobile-more-open");
-      if (moreSheet) moreSheet.setAttribute("aria-hidden", "false");
+      if (moreSheet) {
+        moreSheet.setAttribute("aria-hidden", "false");
+        moreSheet.removeAttribute("inert");
+      }
     };
 
     const path = (window.location.pathname.split("/").pop() || "index.html").toLowerCase();
