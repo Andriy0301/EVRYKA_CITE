@@ -1344,6 +1344,15 @@ body.header-nav-open {
   .hero-evryka--allbirds .hero-slide--repair .hero-evryka__title,
   .hero-evryka--allbirds .hero-slide--3d-print .hero-evryka__title,
   .hero-evryka--allbirds .hero-slide--gift .hero-evryka__title {
+    max-width: 10ch;
+    font-size: clamp(0.64rem, 2.5vw, 0.76rem);
+    line-height: 1.03;
+    margin-bottom: 2px;
+  }
+
+  .hero-evryka--allbirds .hero-slide--repair .hero-evryka__title,
+  .hero-evryka--allbirds .hero-slide--3d-print .hero-evryka__title,
+  .hero-evryka--allbirds .hero-slide--gift .hero-evryka__title {
     margin-left: 0;
     margin-right: 0;
   }
@@ -1359,6 +1368,14 @@ body.header-nav-open {
     line-height: 1.12;
     margin: 0 0 3px;
     color: rgba(255, 255, 255, 0.88);
+  }
+
+  .hero-evryka--allbirds .hero-slide--repair .hero-evryka__lede,
+  .hero-evryka--allbirds .hero-slide--3d-print .hero-evryka__lede,
+  .hero-evryka--allbirds .hero-slide--gift .hero-evryka__lede {
+    font-size: clamp(0.5rem, 1.95vw, 0.58rem);
+    line-height: 1.12;
+    margin: 0 0 3px;
   }
 
   .hero-evryka--allbirds .hero-evryka__btn {
@@ -1411,7 +1428,23 @@ body.header-nav-open {
     line-height: 1.02;
   }
 
+  .hero-evryka--allbirds .hero-slide--repair .hero-evryka__title,
+  .hero-evryka--allbirds .hero-slide--3d-print .hero-evryka__title,
+  .hero-evryka--allbirds .hero-slide--gift .hero-evryka__title {
+    max-width: 9ch;
+    font-size: clamp(0.58rem, 2.4vw, 0.68rem);
+    line-height: 1.02;
+  }
+
   .hero-evryka--allbirds .hero-evryka__lede {
+    font-size: clamp(0.46rem, 1.85vw, 0.54rem);
+    line-height: 1.1;
+    margin-bottom: 2px;
+  }
+
+  .hero-evryka--allbirds .hero-slide--repair .hero-evryka__lede,
+  .hero-evryka--allbirds .hero-slide--3d-print .hero-evryka__lede,
+  .hero-evryka--allbirds .hero-slide--gift .hero-evryka__lede {
     font-size: clamp(0.46rem, 1.85vw, 0.54rem);
     line-height: 1.1;
     margin-bottom: 2px;
