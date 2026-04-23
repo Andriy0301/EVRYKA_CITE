@@ -521,6 +521,14 @@ body.evryka-site.page-print3d {
   box-shadow: none;
 }
 
+/* Користувач прибрав текст з hero повністю: лишаємо тільки зображення банера */
+.hero-evryka--allbirds .hero-evryka__panel,
+.hero-evryka--allbirds .hero-slide--repair .hero-evryka__panel,
+.hero-evryka--allbirds .hero-slide--3d-print .hero-evryka__panel,
+.hero-evryka--allbirds .hero-slide--gift .hero-evryka__panel {
+  display: none !important;
+}
+
 .hero-evryka--allbirds .hero-evryka__eyebrow {
   margin-bottom: 12px;
   color: rgba(255, 255, 255, 0.92);

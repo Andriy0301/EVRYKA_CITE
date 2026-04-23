@@ -5054,6 +5054,13 @@ body.cart-open .header .cart {
   padding: 0;
 }
 
+.catalog-products-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+
 .catalog-products-section.products h2 {
   text-align: left;
   margin-bottom: 18px;
@@ -5069,6 +5076,10 @@ body.cart-open .header .cart {
   margin-top: 0;
   /* Той самий зазор, що й padding-top контейнера — до заголовка і під ним до сітки */
   margin-bottom: var(--catalog-heading-gap, clamp(9px, 1.1vw, 12px));
+}
+
+.page-catalog .catalog-products-head .catalog-filters-open-btn {
+  margin-left: auto;
 }
 
 .catalog-products-grid {
@@ -7023,16 +7034,20 @@ body.evryka-site.page-print3d {
 
   .page-catalog .catalog-filters {
     position: fixed;
-    left: 10px;
-    right: 10px;
+    left: 8px;
+    right: 8px;
     top: calc(var(--ev-header-h) + 8px);
-    bottom: calc(82px + env(safe-area-inset-bottom, 0px));
+    bottom: calc(86px + env(safe-area-inset-bottom, 0px));
     z-index: 1302;
     display: none;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-template-columns: 1fr;
     align-content: start;
-    gap: 10px;
+    gap: 12px;
     padding: 14px;
+    background: rgba(255, 255, 255, 0.98);
+    border: 1px solid rgba(17, 17, 17, 0.1);
+    border-radius: 16px;
+    box-shadow: 0 16px 40px rgba(0, 0, 0, 0.2), 0 4px 14px rgba(0, 0, 0, 0.1);
     opacity: 0;
     pointer-events: none;
     transform: translateY(16px);
@@ -7043,6 +7058,33 @@ body.evryka-site.page-print3d {
   .page-catalog .catalog-filters-title,
   .page-catalog .catalog-reset-btn {
     grid-column: 1 / -1;
+  }
+
+  .page-catalog .catalog-filters-title {
+    margin: 0;
+    margin-right: 46px;
+    color: var(--text-primary);
+    font-size: 16px;
+    letter-spacing: 0.06em;
+  }
+
+  .page-catalog .catalog-filter-block {
+    display: grid;
+    gap: 8px;
+    padding: 0;
+  }
+
+  .page-catalog .catalog-filter-label {
+    color: rgba(17, 17, 17, 0.72);
+    font-size: 12px;
+    letter-spacing: 0.05em;
+  }
+
+  .page-catalog .catalog-filter-input,
+  .page-catalog .catalog-select-trigger {
+    background: #fff;
+    border: 1px solid rgba(17, 17, 17, 0.16);
+    color: var(--text-primary);
   }
 
   .page-catalog .catalog-price-row {
@@ -7063,6 +7105,13 @@ body.evryka-site.page-print3d {
     pointer-events: auto;
   }
 
+  body.catalog-filters-open .page-catalog .catalog-products-head .catalog-filters-open-btn {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transform: translateY(-4px);
+  }
+
   .cabinet-menu-open-btn {
     display: inline-flex;
     margin-left: auto;
@@ -7078,9 +7127,9 @@ body.evryka-site.page-print3d {
     right: 12px;
     width: 34px;
     height: 34px;
-    border: 1px solid var(--border-light);
+    border: 1px solid rgba(17, 17, 17, 0.14);
     border-radius: 10px;
-    background: #fff;
+    background: rgba(255, 255, 255, 0.98);
     color: var(--text-primary);
     align-items: center;
     justify-content: center;
@@ -7090,7 +7139,7 @@ body.evryka-site.page-print3d {
   }
 
   .page-catalog .catalog-filters-title {
-    margin-right: 42px;
+    margin-right: 46px;
   }
 
   .page-cabinet .catalog-filters.cabinet-sidebar {
@@ -7265,6 +7314,11 @@ body.evryka-site.page-print3d {
 
   .page-catalog .catalog-products-section.products h2 {
     color: var(--text-primary);
+    margin-bottom: 0;
+    padding: 0;
+  }
+
+  .page-catalog .catalog-products-head {
     margin-bottom: var(--mobile-card-gap);
     padding: 0 var(--mobile-card-gap);
   }
@@ -7506,8 +7560,8 @@ body.evryka-site.page-print3d {
 
   .mobile-bottom-nav__badge {
     position: absolute;
-    top: 3px;
-    right: calc(50% - 20px);
+    top: 2px;
+    right: calc(50% - 19px);
     min-width: 16px;
     height: 16px;
     border-radius: 999px;
@@ -7520,6 +7574,15 @@ body.evryka-site.page-print3d {
     align-items: center;
     justify-content: center;
     box-sizing: border-box;
+    border: 1px solid rgba(255, 255, 255, 0.92);
+    line-height: 1;
+  }
+
+  .mobile-bottom-nav__item--cart .mobile-bottom-nav__badge {
+    top: 1px;
+    left: calc(50% + 8px);
+    right: auto;
+    transform: translateX(-50%);
   }
 
   body.cart-open .mobile-bottom-nav,
@@ -7544,7 +7607,7 @@ body.evryka-site.page-print3d {
     left: 0;
     right: 0;
     top: 0;
-    bottom: calc(74px + env(safe-area-inset-bottom, 0px));
+    bottom: 0;
     border: none;
     background: rgba(10, 14, 20, 0.44);
     margin: 0;
@@ -7552,6 +7615,7 @@ body.evryka-site.page-print3d {
     backdrop-filter: blur(5px);
     -webkit-backdrop-filter: blur(5px);
     pointer-events: auto;
+    z-index: 0;
   }
 
   .mobile-more-sheet__panel {
@@ -7573,6 +7637,7 @@ body.evryka-site.page-print3d {
     transition: transform 0.24s cubic-bezier(0.22, 0.88, 0.32, 1), opacity 0.2s ease;
     box-shadow: 0 20px 44px rgba(0, 0, 0, 0.24), 0 6px 16px rgba(0, 0, 0, 0.12);
     pointer-events: auto;
+    z-index: 2;
   }
 
   .mobile-more-sheet__panel::after {
@@ -7689,6 +7754,7 @@ body.evryka-site.page-print3d {
     opacity: 1;
     transform: translateY(0);
     pointer-events: auto;
+    z-index: 1251;
   }
 
   body.mobile-more-open .chat-widget-root {
@@ -7700,12 +7766,12 @@ body.evryka-site.page-print3d {
 
   .chat-widget-root {
     right: calc(8px + env(safe-area-inset-right, 0px));
-    bottom: calc(82px + env(safe-area-inset-bottom, 0px));
+    bottom: calc(96px + env(safe-area-inset-bottom, 0px));
   }
 
   body.page-catalog .scroll-to-top-btn,
   body.page-print3d .scroll-to-top-btn {
-    bottom: calc(82px + 52px + 10px + env(safe-area-inset-bottom, 0px));
+    bottom: calc(96px + 52px + 10px + env(safe-area-inset-bottom, 0px));
   }
 }
 

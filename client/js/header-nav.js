@@ -147,12 +147,22 @@
     });
 
     const sheetPath = (window.location.pathname.split("/").pop() || "index.html").toLowerCase();
+    const sheetHash = String(window.location.hash || "").toLowerCase();
     moreSheet?.querySelectorAll(".mobile-more-sheet__link").forEach(function (link) {
-      const href = (link.getAttribute("href") || "").toLowerCase();
-      const normalizedHref = href.split("#")[0];
-      const isCurrent =
-        (sheetPath === "index.html" && (normalizedHref === "index.html" || normalizedHref === "")) ||
-        normalizedHref === sheetPath;
+      const href = String(link.getAttribute("href") || "").trim();
+      let linkPath = "";
+      let linkHash = "";
+      try {
+        const parsed = new URL(href, window.location.href);
+        linkPath = (parsed.pathname.split("/").pop() || "index.html").toLowerCase();
+        linkHash = String(parsed.hash || "").toLowerCase();
+      } catch {
+        linkPath = (href.split("#")[0] || "index.html").toLowerCase();
+        linkHash = href.includes("#") ? `#${href.split("#")[1] || ""}`.toLowerCase() : "";
+      }
+
+      const isCurrentPath = linkPath === sheetPath || (sheetPath === "index.html" && linkPath === "");
+      const isCurrent = linkHash ? isCurrentPath && linkHash === sheetHash : isCurrentPath;
       link.classList.toggle("is-current", isCurrent);
     });
 

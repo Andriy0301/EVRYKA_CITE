@@ -9,8 +9,8 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="css/style.css?v=20260420-31">
-  <link rel="stylesheet" href="css/evryka-header-hero.css?v=20260420-20">
+  <link rel="stylesheet" href="css/style.css?v=20260420-37">
+  <link rel="stylesheet" href="css/evryka-header-hero.css?v=20260420-21">
   <script src="https://accounts.google.com/gsi/client" async defer></script>
 </head>
 <body class="evryka-site page-catalog">
@@ -65,9 +65,6 @@
         <path d="M15 6l-6 6 6 6"></path>
       </svg>
       Назад
-    </button>
-    <button type="button" class="back-btn catalog-filters-open-btn" id="catalogFiltersOpenBtn" aria-label="Відкрити фільтри" onclick="document.body.classList.add('catalog-filters-open');document.getElementById('catalogFiltersOverlay').hidden=false;">
-      Фільтр
     </button>
     <div class="breadcrumbs">
       <a href="index.html">Головна</a>
@@ -127,7 +124,12 @@
     <div class="catalog-main">
       <div class="catalog-products-inner">
         <section class="products catalog-products-section">
-          <h2>Каталог товарів</h2>
+          <div class="catalog-products-head">
+            <h2>Каталог товарів</h2>
+            <button type="button" class="back-btn catalog-filters-open-btn" id="catalogFiltersOpenBtn" aria-label="Відкрити фільтри" onclick="document.body.classList.add('catalog-filters-open');document.getElementById('catalogFiltersOverlay').hidden=false;">
+              Фільтр
+            </button>
+          </div>
           <div id="catalogPageGrid" class="catalog-products-grid"></div>
         </section>
       </div>
@@ -273,7 +275,7 @@
 
 <script src="js/api.js?v=20260426"></script>
 <script src="js/cart.js?v=20260430"></script>
-<script src="js/header-nav.js?v=20260420-29"></script>
+<script src="js/header-nav.js?v=20260420-30"></script>
 <script src="js/app.js?v=20260417"></script>
 <script src="js/custom-select.js?v=1"></script>
 <script src="js/catalog.js?v=20260420-5"></script>
