@@ -273,16 +273,28 @@
 
 <script src="js/api.js?v=20260426"></script>
 <script src="js/cart.js?v=20260430"></script>
-<script src="js/header-nav.js?v=20260420-25"></script>
+<script src="js/header-nav.js?v=20260420-26"></script>
 <script src="js/app.js?v=20260417"></script>
 <script src="js/custom-select.js?v=1"></script>
-<script src="js/catalog.js?v=20260420-4"></script>
+<script src="js/catalog.js?v=20260420-5"></script>
 <script>
   (function () {
     function setOpen(open) {
+      const drawer = document.querySelector(".page-catalog .catalog-filters");
       const overlay = document.getElementById("catalogFiltersOverlay");
       document.body.classList.toggle("catalog-filters-open", Boolean(open));
-      if (overlay) overlay.hidden = !open;
+      if (overlay) {
+        overlay.hidden = !open;
+        overlay.style.display = open ? "block" : "";
+        overlay.style.opacity = open ? "1" : "";
+        overlay.style.pointerEvents = open ? "auto" : "";
+      }
+      if (drawer) {
+        drawer.style.display = open ? "grid" : "";
+        drawer.style.opacity = open ? "1" : "";
+        drawer.style.pointerEvents = open ? "auto" : "";
+        drawer.style.transform = open ? "translateY(0)" : "";
+      }
     }
 
     function bind() {
@@ -291,19 +303,33 @@
       const overlay = document.getElementById("catalogFiltersOverlay");
       if (!openBtn || !closeBtn || !overlay) return;
 
-      openBtn.addEventListener("click", function (e) {
+      const onOpen = function (e) {
         e.preventDefault();
         e.stopPropagation();
         setOpen(true);
-      });
-      closeBtn.addEventListener("click", function (e) {
+      };
+      const onClose = function (e) {
         e.preventDefault();
         e.stopPropagation();
         setOpen(false);
-      });
-      overlay.addEventListener("click", function () {
+      };
+
+      openBtn.addEventListener("click", onOpen);
+      openBtn.addEventListener("touchend", onOpen, { passive: false });
+      closeBtn.addEventListener("click", onClose);
+      closeBtn.addEventListener("touchend", onClose, { passive: false });
+      overlay.addEventListener("click", function (e) {
+        e.preventDefault();
         setOpen(false);
       });
+      overlay.addEventListener(
+        "touchend",
+        function (e) {
+          e.preventDefault();
+          setOpen(false);
+        },
+        { passive: false }
+      );
       document.addEventListener("keydown", function (e) {
         if (e.key === "Escape") setOpen(false);
       });
