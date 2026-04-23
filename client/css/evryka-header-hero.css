@@ -1279,7 +1279,7 @@ body.header-nav-open {
   .hero-evryka--allbirds .hero-evryka__content {
     justify-content: flex-start;
     align-items: flex-end;
-    padding: 10px 10px 14px;
+    padding: 10px 14px 14px;
     text-align: left;
   }
 
@@ -1289,7 +1289,15 @@ body.header-nav-open {
     justify-content: flex-start;
     align-items: flex-end;
     text-align: left;
-    padding: 10px 10px 14px;
+    padding: 10px 14px 14px;
+  }
+
+  /* Перший банер: не обрізати фон на мобілці */
+  .hero-evryka--allbirds .hero-slide--repair .hero-slide__bg {
+    background-size: contain;
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-color: var(--ev-shell-bg);
   }
 
   .page-home .evryka-hero-stack .hero-evryka--allbirds .hero-evryka__content {
@@ -1298,8 +1306,7 @@ body.header-nav-open {
 
   .hero-evryka--allbirds .hero-evryka-carousel .hero-carousel-prev,
   .hero-evryka--allbirds .hero-evryka-carousel .hero-carousel-next {
-    width: 34px;
-    height: 34px;
+    display: none !important;
   }
 
   .hero-evryka--allbirds .hero-evryka__panel {
