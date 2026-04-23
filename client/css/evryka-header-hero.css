@@ -1294,10 +1294,18 @@ body.header-nav-open {
 
   /* Перший банер: не обрізати фон на мобілці */
   .hero-evryka--allbirds .hero-slide--repair .hero-slide__bg {
-    background-size: contain;
-    background-position: center 60%;
-    background-repeat: no-repeat;
-    background-color: var(--ev-shell-bg);
+    background-size: 100% auto !important;
+    background-position: center bottom !important;
+    background-repeat: no-repeat !important;
+    background-color: var(--ev-shell-bg) !important;
+  }
+
+  .hero-evryka--allbirds .hero-slide--3d-print .hero-slide__bg,
+  .hero-evryka--allbirds .hero-slide--gift .hero-slide__bg {
+    background-size: auto 100% !important;
+    background-position: center center !important;
+    background-repeat: no-repeat !important;
+    background-color: var(--ev-shell-bg) !important;
   }
 
   .page-home .evryka-hero-stack .hero-evryka--allbirds .hero-evryka__content {
@@ -1424,6 +1432,21 @@ body.header-nav-open {
     background-position: center 60%;
     background-repeat: no-repeat;
     background-color: var(--ev-shell-bg);
+  }
+
+  .hero-evryka--allbirds .hero-slide--repair .hero-slide__bg {
+    background-size: 100% auto !important;
+    background-position: center bottom !important;
+    background-repeat: no-repeat !important;
+    background-color: var(--ev-shell-bg) !important;
+  }
+
+  .hero-evryka--allbirds .hero-slide--3d-print .hero-slide__bg,
+  .hero-evryka--allbirds .hero-slide--gift .hero-slide__bg {
+    background-size: auto 100% !important;
+    background-position: center center !important;
+    background-repeat: no-repeat !important;
+    background-color: var(--ev-shell-bg) !important;
   }
 
   .hero-evryka--allbirds .hero-evryka__panel,

@@ -34,7 +34,7 @@
       "<span>Обране</span>" +
       "</button>" +
       '<button type="button" class="mobile-bottom-nav__item mobile-bottom-nav__item--cart" data-item="cart" aria-label="Відкрити кошик">' +
-      '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 4h2l2.1 10.1a2 2 0 0 0 2 1.6h7.6a2 2 0 0 0 2-1.6L21 7H7" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="10" cy="19" r="1.5"/><circle cx="18" cy="19" r="1.5"/></svg>' +
+      '<img src="images/cart-icon.svg" class="mobile-bottom-nav__cart-icon" alt="" aria-hidden="true">' +
       "<span>Кошик</span>" +
       '<span class="mobile-bottom-nav__badge" id="mobileBottomCartCount">0</span>' +
       "</button>" +
@@ -96,13 +96,20 @@
     const favoritesBtn = nav.querySelector('[data-item="favorites"]');
     favoritesBtn?.addEventListener("click", function () {
       closeNavRef(toggle, panel);
+      closeMoreSheet();
       if (typeof window.toggleFavorites === "function") window.toggleFavorites(true);
     });
 
     const cartBtn = nav.querySelector('[data-item="cart"]');
     cartBtn?.addEventListener("click", function () {
       closeNavRef(toggle, panel);
+      closeMoreSheet();
       if (typeof window.toggleCart === "function") window.toggleCart(true);
+    });
+
+    const catalogBtn = nav.querySelector('[data-item="catalog"]');
+    catalogBtn?.addEventListener("click", function () {
+      closeMoreSheet();
     });
 
     const moreBtn = nav.querySelector('[data-item="more"]');

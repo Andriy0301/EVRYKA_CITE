@@ -7486,6 +7486,12 @@ body.evryka-site.page-print3d {
     height: 24px;
   }
 
+  .mobile-bottom-nav__cart-icon {
+    width: 24px;
+    height: 24px;
+    display: block;
+  }
+
   .mobile-bottom-nav__item:hover,
   .mobile-bottom-nav__item.is-active {
     color: var(--ev-accent);
@@ -7511,8 +7517,7 @@ body.evryka-site.page-print3d {
   }
 
   body.cart-open .mobile-bottom-nav,
-  body.header-nav-open .mobile-bottom-nav,
-  body.mobile-more-open .mobile-bottom-nav {
+  body.header-nav-open .mobile-bottom-nav {
     opacity: 0;
     pointer-events: none;
     transform: translateY(12px);
@@ -7530,13 +7535,17 @@ body.evryka-site.page-print3d {
 
   .mobile-more-sheet__backdrop {
     position: absolute;
-    inset: 0;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: calc(74px + env(safe-area-inset-bottom, 0px));
     border: none;
     background: rgba(10, 14, 20, 0.44);
     margin: 0;
     padding: 0;
     backdrop-filter: blur(5px);
     -webkit-backdrop-filter: blur(5px);
+    pointer-events: auto;
   }
 
   .mobile-more-sheet__panel {
@@ -7557,6 +7566,7 @@ body.evryka-site.page-print3d {
     transform-origin: 50% 100%;
     transition: transform 0.24s cubic-bezier(0.22, 0.88, 0.32, 1), opacity 0.2s ease;
     box-shadow: 0 20px 44px rgba(0, 0, 0, 0.24), 0 6px 16px rgba(0, 0, 0, 0.12);
+    pointer-events: auto;
   }
 
   .mobile-more-sheet__panel::after {
@@ -7663,7 +7673,6 @@ body.evryka-site.page-print3d {
 
   body.mobile-more-open .mobile-more-sheet {
     opacity: 1;
-    pointer-events: auto;
   }
 
   body.mobile-more-open .mobile-more-sheet__panel {
@@ -7673,7 +7682,7 @@ body.evryka-site.page-print3d {
   body.mobile-more-open .mobile-bottom-nav {
     opacity: 1;
     transform: translateY(0);
-    pointer-events: none;
+    pointer-events: auto;
   }
 
   .chat-widget-root {
