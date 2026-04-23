@@ -1256,7 +1256,7 @@ body.header-nav-open {
 
   /* Allbirds home: центр, кнопки стовпчиком */
   .hero-evryka.hero-evryka--allbirds {
-    min-height: clamp(220px, 35vh, 290px);
+    min-height: clamp(238px, 38vh, 320px);
   }
 
   .hero-evryka--allbirds {
@@ -1265,11 +1265,11 @@ body.header-nav-open {
   }
 
   .hero-evryka--allbirds .hero-evryka-carousel .hero-carousel-track {
-    min-height: clamp(220px, 35vh, 290px);
+    min-height: clamp(238px, 38vh, 320px);
   }
 
   .hero-evryka--allbirds .hero-slide--evryka .hero-evryka__content {
-    min-height: clamp(220px, 35vh, 290px);
+    min-height: clamp(238px, 38vh, 320px);
   }
 
   .hero-evryka--allbirds .hero-evryka__overlay {
@@ -1295,7 +1295,7 @@ body.header-nav-open {
   /* Перший банер: не обрізати фон на мобілці */
   .hero-evryka--allbirds .hero-slide--repair .hero-slide__bg {
     background-size: contain;
-    background-position: center center;
+    background-position: center 60%;
     background-repeat: no-repeat;
     background-color: var(--ev-shell-bg);
   }
@@ -1310,9 +1310,9 @@ body.header-nav-open {
   }
 
   .hero-evryka--allbirds .hero-evryka__panel {
-    width: 25%;
-    max-width: 25%;
-    min-width: 92px;
+    width: 30%;
+    max-width: 30%;
+    min-width: 114px;
     text-align: left;
     padding: 2px 4px;
     border-radius: 9px;
@@ -1326,9 +1326,9 @@ body.header-nav-open {
   .hero-evryka--allbirds .hero-slide--repair .hero-evryka__panel,
   .hero-evryka--allbirds .hero-slide--3d-print .hero-evryka__panel,
   .hero-evryka--allbirds .hero-slide--gift .hero-evryka__panel {
-    width: 25%;
-    max-width: 25%;
-    min-width: 92px;
+    width: 30%;
+    max-width: 30%;
+    min-width: 114px;
     text-align: left;
     margin-right: auto;
     padding: 0;
@@ -1341,20 +1341,22 @@ body.header-nav-open {
 
   .hero-evryka--allbirds .hero-evryka__title {
     max-width: 10ch;
-    font-size: clamp(0.64rem, 2.5vw, 0.76rem);
-    line-height: 1.03;
-    margin-bottom: 2px;
+    font-size: clamp(0.8rem, 3vw, 0.96rem);
+    line-height: 1.08;
+    margin-bottom: 4px;
     margin-left: 0;
     margin-right: 0;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.45);
   }
 
   .hero-evryka--allbirds .hero-slide--repair .hero-evryka__title,
   .hero-evryka--allbirds .hero-slide--3d-print .hero-evryka__title,
   .hero-evryka--allbirds .hero-slide--gift .hero-evryka__title {
     max-width: 10ch;
-    font-size: clamp(0.64rem, 2.5vw, 0.76rem);
-    line-height: 1.03;
-    margin-bottom: 2px;
+    font-size: clamp(0.8rem, 3vw, 0.96rem);
+    line-height: 1.08;
+    margin-bottom: 4px;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.45);
   }
 
   .hero-evryka--allbirds .hero-slide--repair .hero-evryka__title,
@@ -1371,27 +1373,31 @@ body.header-nav-open {
 
   .hero-evryka--allbirds .hero-evryka__lede {
     display: block;
-    font-size: clamp(0.5rem, 1.95vw, 0.58rem);
-    line-height: 1.12;
-    margin: 0 0 3px;
+    font-size: clamp(0.62rem, 2.3vw, 0.72rem);
+    line-height: 1.18;
+    margin: 0 0 5px;
     color: rgba(255, 255, 255, 0.88);
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.42);
   }
 
   .hero-evryka--allbirds .hero-slide--repair .hero-evryka__lede,
   .hero-evryka--allbirds .hero-slide--3d-print .hero-evryka__lede,
   .hero-evryka--allbirds .hero-slide--gift .hero-evryka__lede {
-    font-size: clamp(0.5rem, 1.95vw, 0.58rem);
-    line-height: 1.12;
-    margin: 0 0 3px;
+    font-size: clamp(0.62rem, 2.3vw, 0.72rem);
+    line-height: 1.18;
+    margin: 0 0 5px;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.42);
   }
 
   .hero-evryka--allbirds .hero-evryka__btn {
-    min-height: 26px;
-    padding: 4px 8px;
-    font-size: 9px;
-    letter-spacing: 0.01em;
+    min-height: 30px;
+    padding: 6px 10px;
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0;
     text-transform: none;
-    border-radius: 10px;
+    border-radius: 8px;
+    line-height: 1.1;
   }
 
   .hero-evryka--allbirds .hero-evryka__btn--ghost {
@@ -1415,7 +1421,7 @@ body.header-nav-open {
 
   .hero-evryka--allbirds .hero-slide__bg {
     background-size: contain;
-    background-position: center center;
+    background-position: center 60%;
     background-repeat: no-repeat;
     background-color: var(--ev-shell-bg);
   }
@@ -1424,42 +1430,44 @@ body.header-nav-open {
   .hero-evryka--allbirds .hero-slide--repair .hero-evryka__panel,
   .hero-evryka--allbirds .hero-slide--3d-print .hero-evryka__panel,
   .hero-evryka--allbirds .hero-slide--gift .hero-evryka__panel {
-    width: 25%;
-    max-width: 25%;
-    min-width: 82px;
+    width: 30%;
+    max-width: 30%;
+    min-width: 104px;
   }
 
   .hero-evryka--allbirds .hero-evryka__title {
     max-width: 9ch;
-    font-size: clamp(0.58rem, 2.4vw, 0.68rem);
-    line-height: 1.02;
+    font-size: clamp(0.72rem, 2.8vw, 0.84rem);
+    line-height: 1.06;
   }
 
   .hero-evryka--allbirds .hero-slide--repair .hero-evryka__title,
   .hero-evryka--allbirds .hero-slide--3d-print .hero-evryka__title,
   .hero-evryka--allbirds .hero-slide--gift .hero-evryka__title {
     max-width: 9ch;
-    font-size: clamp(0.58rem, 2.4vw, 0.68rem);
-    line-height: 1.02;
+    font-size: clamp(0.72rem, 2.8vw, 0.84rem);
+    line-height: 1.06;
   }
 
   .hero-evryka--allbirds .hero-evryka__lede {
-    font-size: clamp(0.46rem, 1.85vw, 0.54rem);
-    line-height: 1.1;
-    margin-bottom: 2px;
+    font-size: clamp(0.56rem, 2.15vw, 0.64rem);
+    line-height: 1.16;
+    margin-bottom: 4px;
   }
 
   .hero-evryka--allbirds .hero-slide--repair .hero-evryka__lede,
   .hero-evryka--allbirds .hero-slide--3d-print .hero-evryka__lede,
   .hero-evryka--allbirds .hero-slide--gift .hero-evryka__lede {
-    font-size: clamp(0.46rem, 1.85vw, 0.54rem);
-    line-height: 1.1;
-    margin-bottom: 2px;
+    font-size: clamp(0.56rem, 2.15vw, 0.64rem);
+    line-height: 1.16;
+    margin-bottom: 4px;
   }
 
   .hero-evryka--allbirds .hero-evryka__btn {
-    min-height: 24px;
-    padding: 4px 7px;
-    font-size: 8px;
+    min-height: 28px;
+    padding: 5px 9px;
+    font-size: 9px;
+    border-radius: 7px;
+    line-height: 1.1;
   }
 }
