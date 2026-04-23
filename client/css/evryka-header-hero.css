@@ -1398,14 +1398,17 @@ body.header-nav-open {
   }
 
   .hero-evryka--allbirds .hero-evryka__btn {
-    min-height: 30px;
-    padding: 6px 10px;
-    font-size: 10px;
+    min-height: 24px;
+    padding: 4px 8px;
+    font-size: 8px;
     font-weight: 600;
     letter-spacing: 0;
     text-transform: none;
     border-radius: 8px;
     line-height: 1.1;
+    white-space: nowrap;
+    width: max-content;
+    max-width: 100%;
   }
 
   .hero-evryka--allbirds .hero-evryka__btn--ghost {
@@ -1487,10 +1490,13 @@ body.header-nav-open {
   }
 
   .hero-evryka--allbirds .hero-evryka__btn {
-    min-height: 28px;
-    padding: 5px 9px;
-    font-size: 9px;
+    min-height: 22px;
+    padding: 3px 7px;
+    font-size: 7px;
     border-radius: 7px;
     line-height: 1.1;
+    white-space: nowrap;
+    width: max-content;
+    max-width: 100%;
   }
 }
