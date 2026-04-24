@@ -80,6 +80,29 @@ function addToCart(product, qty = 1) {
   }
 
   saveCart(cart);
+  pulseCartIcons();
+}
+
+function pulseCartIcons() {
+  const desktopIcon = document.querySelector(".cart .cart-icon");
+  const mobileIcon = document.querySelector(".mobile-bottom-nav__item--cart .mobile-bottom-nav__cart-icon");
+  const icons = [desktopIcon, mobileIcon].filter(Boolean);
+
+  icons.forEach((icon) => {
+    clearTimeout(icon._cartPulseTimer);
+    icon.classList.remove("cart-icon--pulse");
+    void icon.offsetWidth;
+    icon.classList.add("cart-icon--pulse");
+
+    const cleanup = () => {
+      clearTimeout(icon._cartPulseTimer);
+      icon._cartPulseTimer = 0;
+      icon.classList.remove("cart-icon--pulse");
+    };
+
+    icon.addEventListener("animationend", cleanup, { once: true });
+    icon._cartPulseTimer = setTimeout(cleanup, 460);
+  });
 }
 
 
