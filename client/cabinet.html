@@ -97,9 +97,6 @@
           </svg>
           Назад
         </a>
-        <button type="button" class="back-btn cabinet-menu-open-btn" id="cabinetMenuOpenBtn" aria-label="Відкрити меню кабінету" onclick="document.body.classList.add('cabinet-menu-open');document.getElementById('cabinetMenuOverlay').hidden=false;">
-          Меню
-        </button>
         <div class="breadcrumbs">
           <a href="index.html">Головна</a>
           <span>/</span>
@@ -108,7 +105,12 @@
           <span>Особистий кабінет</span>
         </div>
       </div>
-      <h1 class="cabinet-page-title">Особистий кабінет</h1>
+      <div class="cabinet-page-head">
+        <h1 class="cabinet-page-title">Особистий кабінет</h1>
+        <button type="button" class="back-btn cabinet-menu-open-btn" id="cabinetMenuOpenBtn" aria-label="Відкрити меню кабінету" onclick="document.body.classList.add('cabinet-menu-open');document.getElementById('cabinetMenuOverlay').hidden=false;">
+          Меню
+        </button>
+      </div>
       <div class="catalog-page-layout">
         <aside class="catalog-filters cabinet-sidebar" aria-label="Меню кабінету">
           <h2 class="catalog-filters-title">Меню</h2>
