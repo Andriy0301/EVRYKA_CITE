@@ -7153,7 +7153,7 @@ body.evryka-site.page-print3d {
     left: calc(8px + env(safe-area-inset-left, 0px));
     right: calc(8px + env(safe-area-inset-right, 0px));
     top: auto;
-    bottom: calc(96px + env(safe-area-inset-bottom, 0px));
+    bottom: calc(12px + env(safe-area-inset-bottom, 0px));
     z-index: 1302;
     display: none;
     gap: 9px;
@@ -7250,6 +7250,13 @@ body.evryka-site.page-print3d {
     overflow: hidden;
   }
 
+  body.cabinet-menu-open .chat-widget-root,
+  body.cabinet-menu-open .scroll-to-top-btn {
+    opacity: 0 !important;
+    visibility: hidden !important;
+    pointer-events: none !important;
+  }
+
   body.catalog-filters-open .page-catalog .catalog-filters {
     display: grid;
     opacity: 1;
@@ -7276,6 +7283,10 @@ body.evryka-site.page-print3d {
 }
 
 @media (max-width: 640px) {
+  .breadcrumbs {
+    display: none !important;
+  }
+
   body.evryka-site.page-home {
     --ev-shell-margin: 8px;
     --home-hero-to-content-gap: 8px;
