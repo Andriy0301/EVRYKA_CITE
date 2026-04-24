@@ -7044,8 +7044,8 @@ body.evryka-site.page-print3d {
     align-content: start;
     gap: 12px;
     padding: 14px;
-    background: rgba(255, 255, 255, 0.98);
-    border: 1px solid rgba(17, 17, 17, 0.1);
+    background: rgba(255, 255, 255, 0.98) !important;
+    border: 1px solid rgba(17, 17, 17, 0.1) !important;
     border-radius: 16px;
     box-shadow: 0 16px 40px rgba(0, 0, 0, 0.2), 0 4px 14px rgba(0, 0, 0, 0.1);
     opacity: 0;
@@ -7063,7 +7063,7 @@ body.evryka-site.page-print3d {
   .page-catalog .catalog-filters-title {
     margin: 0;
     margin-right: 46px;
-    color: var(--text-primary);
+    color: var(--text-primary) !important;
     font-size: 16px;
     letter-spacing: 0.06em;
   }
@@ -7075,16 +7075,16 @@ body.evryka-site.page-print3d {
   }
 
   .page-catalog .catalog-filter-label {
-    color: rgba(17, 17, 17, 0.72);
+    color: rgba(17, 17, 17, 0.72) !important;
     font-size: 12px;
     letter-spacing: 0.05em;
   }
 
   .page-catalog .catalog-filter-input,
   .page-catalog .catalog-select-trigger {
-    background: #fff;
-    border: 1px solid rgba(17, 17, 17, 0.16);
-    color: var(--text-primary);
+    background: #fff !important;
+    border: 1px solid rgba(17, 17, 17, 0.16) !important;
+    color: var(--text-primary) !important;
   }
 
   .page-catalog .catalog-price-row {
@@ -7105,11 +7105,9 @@ body.evryka-site.page-print3d {
     pointer-events: auto;
   }
 
-  body.catalog-filters-open .page-catalog .catalog-products-head .catalog-filters-open-btn {
-    opacity: 0;
-    visibility: hidden;
-    pointer-events: none;
-    transform: translateY(-4px);
+  body.catalog-filters-open .page-catalog .catalog-products-head .catalog-filters-open-btn,
+  body.catalog-filters-open .catalog-filters-open-btn {
+    display: none !important;
   }
 
   .cabinet-menu-open-btn {
