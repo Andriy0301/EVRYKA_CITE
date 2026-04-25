@@ -5656,7 +5656,7 @@ body.evryka-site.page-print3d {
 }
 
 .page-cabinet .cabinet-page-head .cabinet-menu-open-btn {
-  margin-left: auto;
+  margin-right: auto;
   flex-shrink: 0;
 }
 
@@ -7340,7 +7340,11 @@ body.evryka-site.page-print3d {
   body.cabinet-menu-open .page-cabinet .cabinet-menu-open-btn {
     opacity: 0.45;
     pointer-events: none;
-    filter: saturate(0.75);
+    filter: saturate(0.75) grayscale(0.15);
+    background: rgba(243, 244, 246, 0.92);
+    color: rgba(107, 114, 128, 0.95);
+    border-color: rgba(156, 163, 175, 0.45);
+    box-shadow: none;
   }
 
   body.catalog-filters-open .page-catalog .catalog-filters {
@@ -7356,7 +7360,8 @@ body.evryka-site.page-print3d {
   }
 
   body.cabinet-menu-open .page-cabinet .catalog-filters.cabinet-sidebar {
-    display: block;
+    display: flex;
+    flex-direction: column;
     opacity: 1;
     pointer-events: auto;
     transform: translateY(0);
@@ -7768,7 +7773,7 @@ body.evryka-site.page-print3d {
     background: linear-gradient(180deg, rgba(255, 255, 255, 0.98), rgba(248, 250, 252, 0.98));
     border: 1px solid rgba(17, 17, 17, 0.08);
     border-radius: 18px;
-    padding: 10px;
+    padding: 10px 12px;
     max-height: min(72vh, 520px);
     overflow-y: auto;
     overscroll-behavior: contain;
@@ -7794,7 +7799,7 @@ body.evryka-site.page-print3d {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 2px 4px 6px;
+    padding: 2px 0 6px;
     color: var(--text-primary);
     font-size: 16px;
     font-weight: 700;
@@ -7827,8 +7832,8 @@ body.evryka-site.page-print3d {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    min-height: 42px;
-    padding: 9px 12px;
+    min-height: 40px;
+    padding: 8px 12px;
     border-radius: 12px;
     text-decoration: none;
     color: var(--text-primary);
