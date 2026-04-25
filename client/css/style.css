@@ -5655,6 +5655,11 @@ body.evryka-site.page-print3d {
   min-width: 0;
 }
 
+.page-cabinet .cabinet-page-head .cabinet-menu-open-btn {
+  margin-left: auto;
+  flex-shrink: 0;
+}
+
 .page-about .about-page-title,
 .page-print3d .about-page-title {
   flex: 1 1 100%;
@@ -7073,7 +7078,7 @@ body.evryka-site.page-print3d {
     left: 8px;
     right: 8px;
     top: auto;
-    bottom: calc(80px + env(safe-area-inset-bottom, 0px));
+    bottom: calc(88px + env(safe-area-inset-bottom, 0px));
     z-index: 1302;
     display: none;
     grid-template-columns: 1fr;
@@ -7191,10 +7196,10 @@ body.evryka-site.page-print3d {
     left: calc(8px + env(safe-area-inset-left, 0px));
     right: calc(8px + env(safe-area-inset-right, 0px));
     top: auto;
-    bottom: calc(80px + env(safe-area-inset-bottom, 0px));
+    bottom: calc(88px + env(safe-area-inset-bottom, 0px));
     z-index: 1302;
     display: none;
-    gap: 8px;
+    gap: 12px;
     max-height: min(72vh, 520px);
     opacity: 0;
     pointer-events: none;
@@ -7240,7 +7245,7 @@ body.evryka-site.page-print3d {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    min-height: 42px;
+    min-height: 44px;
     padding: 9px 12px;
     background: rgba(255, 255, 255, 0.82);
     border: 1px solid rgba(17, 17, 17, 0.08);
@@ -7330,6 +7335,12 @@ body.evryka-site.page-print3d {
     opacity: 0 !important;
     visibility: hidden !important;
     pointer-events: none !important;
+  }
+
+  body.cabinet-menu-open .page-cabinet .cabinet-menu-open-btn {
+    opacity: 0.45;
+    pointer-events: none;
+    filter: saturate(0.75);
   }
 
   body.catalog-filters-open .page-catalog .catalog-filters {
@@ -7751,7 +7762,7 @@ body.evryka-site.page-print3d {
     position: absolute;
     left: calc(8px + env(safe-area-inset-left, 0px));
     right: calc(8px + env(safe-area-inset-right, 0px));
-    bottom: calc(80px + env(safe-area-inset-bottom, 0px));
+    bottom: calc(88px + env(safe-area-inset-bottom, 0px));
     display: grid;
     gap: 8px;
     background: linear-gradient(180deg, rgba(255, 255, 255, 0.98), rgba(248, 250, 252, 0.98));
