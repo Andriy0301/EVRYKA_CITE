@@ -1,314 +1,1682 @@
 ﻿<!DOCTYPE html>
 <html lang="uk">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>EVRYKA</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>EVRYKA — 3D-друк деталей та виробів</title>
   <link rel="icon" href="images/favicon.png" type="image/png">
-  <link rel="apple-touch-icon" href="images/favicon.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Manrope:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/style.css?v=20260420-49">
   <link rel="stylesheet" href="css/evryka-header-hero.css?v=20260420-21">
   <script src="https://accounts.google.com/gsi/client" async defer></script>
-</head>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
+    :root {
+      --orange: #F07A1A;
+      --orange-light: #FF9840;
+      --orange-dark: #C05E0A;
+      --black: #111110;
+      --dark: #1A1917;
+      --gray: #2C2B28;
+      --muted: #6B6A65;
+      --light: #F5F3EE;
+      --white: #FFFFFF;
+      --font-display: 'Bebas Neue', sans-serif;
+      --font-body: 'Manrope', sans-serif;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: var(--font-body);
+      background: var(--light);
+      color: var(--black);
+      overflow-x: hidden;
+    }
+
+    /* ── HEADER ── */
+    header {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      background: rgba(245, 243, 238, 0.9);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(17,17,16,0.08);
+      padding: 0 2rem;
+      height: 64px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      transition: background 0.3s;
+    }
+
+    header.scrolled {
+      background: rgba(245, 243, 238, 0.98);
+      box-shadow: 0 1px 20px rgba(0,0,0,0.06);
+    }
+
+    .logo {
+      font-family: var(--font-display);
+      font-size: 28px;
+      letter-spacing: 0.12em;
+      color: var(--black);
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .logo-icon {
+      width: 36px;
+      height: 36px;
+      background: var(--orange);
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .logo-icon svg { width: 20px; height: 20px; fill: white; }
+
+    nav { display: flex; align-items: center; gap: 2rem; }
+
+    nav a {
+      font-size: 13px;
+      font-weight: 500;
+      letter-spacing: 0.04em;
+      color: var(--black);
+      text-decoration: none;
+      opacity: 0.7;
+      transition: opacity 0.2s;
+    }
+
+    nav a:hover { opacity: 1; }
+
+    .nav-cta {
+      background: var(--orange) !important;
+      color: white !important;
+      opacity: 1 !important;
+      padding: 8px 18px;
+      border-radius: 8px;
+      font-weight: 600 !important;
+      font-size: 12px !important;
+      letter-spacing: 0.06em !important;
+      transition: background 0.2s, transform 0.15s !important;
+    }
+
+    .nav-cta:hover {
+      background: var(--orange-light) !important;
+      transform: translateY(-1px);
+    }
+
+    .header-actions { display: flex; align-items: center; gap: 16px; }
+
+    .icon-btn {
+      width: 36px; height: 36px;
+      border: none; background: none; cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      border-radius: 8px;
+      transition: background 0.2s;
+      position: relative;
+      color: var(--black);
+    }
+
+    .icon-btn:hover { background: rgba(0,0,0,0.06); }
+
+    .cart-badge {
+      position: absolute;
+      top: 4px; right: 4px;
+      background: var(--orange);
+      color: white;
+      font-size: 9px;
+      font-weight: 700;
+      width: 16px; height: 16px;
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+    }
+
+    /* ── HERO ── */
+    .hero {
+      min-height: 100svh;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      padding-top: 64px;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .hero-left {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 5rem 4rem 5rem 5rem;
+      position: relative;
+      z-index: 2;
+    }
+
+    .hero-eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--orange);
+      margin-bottom: 1.5rem;
+    }
+
+    .hero-eyebrow::before {
+      content: '';
+      width: 24px; height: 2px;
+      background: var(--orange);
+      border-radius: 2px;
+    }
+
+    .hero-title {
+      font-family: var(--font-display);
+      font-size: clamp(72px, 8vw, 120px);
+      line-height: 0.9;
+      letter-spacing: 0.02em;
+      color: var(--black);
+      margin-bottom: 1.5rem;
+    }
+
+    .hero-title span { color: var(--orange); }
+
+    .hero-sub {
+      font-size: 16px;
+      font-weight: 400;
+      line-height: 1.65;
+      color: var(--muted);
+      max-width: 420px;
+      margin-bottom: 2.5rem;
+    }
+
+    .hero-actions { display: flex; align-items: center; gap: 16px; flex-wrap: wrap; }
+
+    .btn-primary {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      background: var(--orange);
+      color: white;
+      font-family: var(--font-body);
+      font-size: 14px;
+      font-weight: 600;
+      letter-spacing: 0.04em;
+      padding: 14px 28px;
+      border-radius: 10px;
+      text-decoration: none;
+      border: none;
+      cursor: pointer;
+      transition: background 0.2s, transform 0.15s, box-shadow 0.2s;
+      box-shadow: 0 4px 24px rgba(240,122,26,0.3);
+    }
+
+    .btn-primary:hover {
+      background: var(--orange-light);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 32px rgba(240,122,26,0.4);
+    }
+
+    .btn-primary svg { width: 18px; height: 18px; }
+
+    .btn-ghost {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: transparent;
+      color: var(--black);
+      font-family: var(--font-body);
+      font-size: 14px;
+      font-weight: 500;
+      padding: 14px 20px;
+      border-radius: 10px;
+      text-decoration: none;
+      border: 1.5px solid rgba(17,17,16,0.15);
+      transition: border-color 0.2s, background 0.2s;
+    }
+
+    .btn-ghost:hover {
+      border-color: var(--orange);
+      background: rgba(240,122,26,0.04);
+      color: var(--orange);
+    }
+
+    .hero-stats {
+      display: flex;
+      gap: 2rem;
+      margin-top: 3rem;
+      padding-top: 2rem;
+      border-top: 1px solid rgba(17,17,16,0.1);
+    }
+
+    .stat-item { display: flex; flex-direction: column; gap: 2px; }
+
+    .stat-num {
+      font-family: var(--font-display);
+      font-size: 36px;
+      letter-spacing: 0.04em;
+      color: var(--black);
+      line-height: 1;
+    }
+
+    .stat-num span { color: var(--orange); }
+
+    .stat-label {
+      font-size: 11px;
+      font-weight: 500;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+
+    /* ── HERO RIGHT / VISUAL ── */
+    .hero-right {
+      position: relative;
+      overflow: hidden;
+      background: var(--dark);
+    }
+
+    .hero-right::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(circle at 70% 30%, rgba(240,122,26,0.15) 0%, transparent 60%),
+        radial-gradient(circle at 30% 80%, rgba(240,122,26,0.08) 0%, transparent 50%);
+    }
+
+    .hero-grid-pattern {
+      position: absolute;
+      inset: 0;
+      opacity: 0.04;
+      background-image:
+        linear-gradient(var(--white) 1px, transparent 1px),
+        linear-gradient(90deg, var(--white) 1px, transparent 1px);
+      background-size: 40px 40px;
+    }
+
+    .hero-img-container {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 60px 40px 40px;
+    }
+
+    .hero-product-card {
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 20px;
+      padding: 2rem;
+      width: 100%;
+      max-width: 380px;
+      backdrop-filter: blur(8px);
+      animation: float 4s ease-in-out infinite;
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0px); }
+      50% { transform: translateY(-10px); }
+    }
+
+    .hero-product-img {
+      width: 100%;
+      aspect-ratio: 1;
+      border-radius: 12px;
+      object-fit: cover;
+      background: rgba(255,255,255,0.06);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+
+    .hero-product-img img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-radius: 12px;
+    }
+
+    .hero-product-info { margin-top: 1.25rem; }
+
+    .hero-product-tag {
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--orange);
+      margin-bottom: 6px;
+    }
+
+    .hero-product-name {
+      font-size: 15px;
+      font-weight: 600;
+      color: white;
+      margin-bottom: 10px;
+    }
+
+    .hero-product-bottom {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .hero-product-price {
+      font-family: var(--font-display);
+      font-size: 28px;
+      letter-spacing: 0.04em;
+      color: white;
+    }
+
+    .hero-product-price span {
+      font-family: var(--font-body);
+      font-size: 14px;
+      font-weight: 400;
+      opacity: 0.5;
+      margin-left: 4px;
+    }
+
+    .hero-add-btn {
+      background: var(--orange);
+      border: none;
+      border-radius: 10px;
+      width: 44px; height: 44px;
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer;
+      transition: background 0.2s, transform 0.15s;
+      color: white;
+    }
+
+    .hero-add-btn:hover {
+      background: var(--orange-light);
+      transform: scale(1.05);
+    }
+
+    .hero-floating-badge {
+      position: absolute;
+      background: white;
+      border-radius: 12px;
+      padding: 10px 14px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--black);
+      box-shadow: 0 8px 30px rgba(0,0,0,0.2);
+    }
+
+    .hero-floating-badge.badge-1 {
+      top: 25%;
+      right: -20px;
+      animation: float 3s ease-in-out infinite 0.5s;
+    }
+
+    .hero-floating-badge.badge-2 {
+      bottom: 25%;
+      left: -20px;
+      animation: float 3.5s ease-in-out infinite 1s;
+    }
+
+    .badge-dot {
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      background: #22C55E;
+    }
+
+    /* ── TRUST BAR ── */
+    .trust-bar {
+      background: var(--dark);
+      padding: 1.25rem 5rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 3rem;
+      flex-wrap: wrap;
+      overflow: hidden;
+    }
+
+    .trust-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      white-space: nowrap;
+    }
+
+    .trust-icon {
+      width: 32px; height: 32px;
+      background: rgba(240,122,26,0.15);
+      border-radius: 8px;
+      display: flex; align-items: center; justify-content: center;
+      color: var(--orange);
+      flex-shrink: 0;
+    }
+
+    .trust-text { line-height: 1.2; }
+    .trust-text strong { display: block; font-size: 13px; font-weight: 600; color: white; }
+    .trust-text small { font-size: 11px; color: rgba(255,255,255,0.4); }
+
+    .trust-divider {
+      width: 1px;
+      height: 32px;
+      background: rgba(255,255,255,0.08);
+    }
+
+    /* ── CATEGORIES ── */
+    .section { padding: 6rem 5rem; }
+    .section-sm { padding: 4rem 5rem; }
+
+    .section-header {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      margin-bottom: 3rem;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+
+    .section-label {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--orange);
+      margin-bottom: 8px;
+    }
+
+    .section-title {
+      font-family: var(--font-display);
+      font-size: clamp(40px, 4vw, 58px);
+      letter-spacing: 0.03em;
+      color: var(--black);
+      line-height: 0.95;
+    }
+
+    .section-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--orange);
+      text-decoration: none;
+      letter-spacing: 0.04em;
+      transition: gap 0.2s;
+    }
+
+    .section-link:hover { gap: 10px; }
+
+    /* ── CATEGORY GRID ── */
+    .cat-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+    }
+
+    .cat-card {
+      background: var(--white);
+      border-radius: 16px;
+      padding: 2rem 1.5rem;
+      text-decoration: none;
+      color: var(--black);
+      border: 1px solid rgba(17,17,16,0.06);
+      transition: border-color 0.2s, transform 0.2s, box-shadow 0.2s;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .cat-card::after {
+      content: '';
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      height: 3px;
+      background: var(--orange);
+      transform: scaleX(0);
+      transition: transform 0.3s;
+    }
+
+    .cat-card:hover {
+      border-color: rgba(240,122,26,0.2);
+      transform: translateY(-4px);
+      box-shadow: 0 16px 40px rgba(0,0,0,0.08);
+    }
+
+    .cat-card:hover::after { transform: scaleX(1); }
+
+    .cat-icon {
+      width: 52px; height: 52px;
+      background: rgba(240,122,26,0.1);
+      border-radius: 12px;
+      display: flex; align-items: center; justify-content: center;
+      color: var(--orange);
+    }
+
+    .cat-name {
+      font-size: 15px;
+      font-weight: 700;
+      letter-spacing: -0.01em;
+    }
+
+    .cat-count {
+      font-size: 12px;
+      color: var(--muted);
+      margin-top: -6px;
+    }
+
+    .cat-arrow {
+      margin-top: auto;
+      color: var(--orange);
+      opacity: 0;
+      transition: opacity 0.2s, transform 0.2s;
+    }
+
+    .cat-card:hover .cat-arrow {
+      opacity: 1;
+      transform: translateX(4px);
+    }
+
+    /* ── PRODUCTS ── */
+    .products-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+    }
+
+    .product-card {
+      background: var(--white);
+      border-radius: 18px;
+      overflow: hidden;
+      border: 1px solid rgba(17,17,16,0.06);
+      transition: transform 0.25s, box-shadow 0.25s;
+      text-decoration: none;
+      color: var(--black);
+      display: flex;
+      flex-direction: column;
+    }
+
+    .product-card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 20px 50px rgba(0,0,0,0.1);
+    }
+
+    .product-img-wrap {
+      position: relative;
+      aspect-ratio: 1;
+      overflow: hidden;
+      background: #F0EDE8;
+    }
+
+    .product-img-wrap img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.4s;
+    }
+
+    .product-card:hover .product-img-wrap img { transform: scale(1.06); }
+
+    .product-badge {
+      position: absolute;
+      top: 12px; left: 12px;
+      background: var(--black);
+      color: white;
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      padding: 4px 10px;
+      border-radius: 6px;
+    }
+
+    .product-badge.orange { background: var(--orange); }
+
+    .product-fav {
+      position: absolute;
+      top: 12px; right: 12px;
+      width: 34px; height: 34px;
+      background: white;
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      border: none;
+      cursor: pointer;
+      color: var(--muted);
+      transition: color 0.2s, transform 0.2s;
+      font-size: 16px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+
+    .product-fav:hover { color: #e44; transform: scale(1.1); }
+    .product-fav.active { color: #e44; }
+
+    .product-body { padding: 1.25rem; flex: 1; display: flex; flex-direction: column; }
+
+    .product-name {
+      font-size: 14px;
+      font-weight: 600;
+      line-height: 1.4;
+      color: var(--black);
+      margin-bottom: 0.75rem;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+
+    .product-bottom {
+      margin-top: auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .product-price {
+      font-family: var(--font-display);
+      font-size: 26px;
+      letter-spacing: 0.03em;
+      color: var(--black);
+    }
+
+    .product-price small {
+      font-family: var(--font-body);
+      font-size: 12px;
+      font-weight: 500;
+      color: var(--muted);
+      margin-left: 2px;
+    }
+
+    .product-price.on-order {
+      font-family: var(--font-body);
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--orange);
+      letter-spacing: 0;
+    }
+
+    .add-btn {
+      width: 40px; height: 40px;
+      background: var(--orange);
+      border: none;
+      border-radius: 10px;
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer;
+      color: white;
+      transition: background 0.2s, transform 0.15s;
+      flex-shrink: 0;
+    }
+
+    .add-btn:hover { background: var(--orange-light); transform: scale(1.05); }
+
+    /* ── 3D PRINT CTA ── */
+    .print-cta {
+      background: var(--dark);
+      border-radius: 28px;
+      margin: 0 5rem;
+      padding: 5rem;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 4rem;
+      align-items: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .print-cta::before {
+      content: '';
+      position: absolute;
+      top: -100px; right: -100px;
+      width: 400px; height: 400px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(240,122,26,0.12) 0%, transparent 70%);
+    }
+
+    .print-cta-eyebrow {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--orange);
+      margin-bottom: 1rem;
+    }
+
+    .print-cta-title {
+      font-family: var(--font-display);
+      font-size: clamp(40px, 4vw, 60px);
+      letter-spacing: 0.03em;
+      color: white;
+      line-height: 0.95;
+      margin-bottom: 1.25rem;
+    }
+
+    .print-cta-desc {
+      font-size: 15px;
+      line-height: 1.65;
+      color: rgba(255,255,255,0.5);
+      margin-bottom: 2rem;
+    }
+
+    .print-cta-steps {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .print-step {
+      display: flex;
+      align-items: flex-start;
+      gap: 14px;
+    }
+
+    .print-step-num {
+      width: 28px; height: 28px;
+      background: rgba(240,122,26,0.15);
+      border: 1px solid rgba(240,122,26,0.3);
+      border-radius: 8px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--orange);
+      flex-shrink: 0;
+    }
+
+    .print-step-text { font-size: 14px; color: rgba(255,255,255,0.6); padding-top: 4px; }
+    .print-step-text strong { color: rgba(255,255,255,0.9); display: block; font-weight: 600; }
+
+    /* ── HOW IT WORKS ── */
+    .how-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 2px;
+      background: rgba(17,17,16,0.06);
+      border-radius: 20px;
+      overflow: hidden;
+    }
+
+    .how-item {
+      background: var(--white);
+      padding: 2.5rem 2rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      transition: background 0.2s;
+    }
+
+    .how-item:hover { background: #FEFCF9; }
+
+    .how-num {
+      font-family: var(--font-display);
+      font-size: 60px;
+      letter-spacing: 0.02em;
+      color: rgba(17,17,16,0.06);
+      line-height: 1;
+    }
+
+    .how-icon {
+      width: 44px; height: 44px;
+      background: rgba(240,122,26,0.1);
+      border-radius: 10px;
+      display: flex; align-items: center; justify-content: center;
+      color: var(--orange);
+    }
+
+    .how-title { font-size: 16px; font-weight: 700; }
+    .how-desc { font-size: 13px; line-height: 1.6; color: var(--muted); }
+
+    /* ── TESTIMONIALS ── */
+    .testimonials-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+    }
+
+    .testimonial-card {
+      background: var(--white);
+      border-radius: 18px;
+      padding: 2rem;
+      border: 1px solid rgba(17,17,16,0.06);
+    }
+
+    .stars { color: var(--orange); font-size: 14px; margin-bottom: 1rem; letter-spacing: 2px; }
+
+    .testimonial-text {
+      font-size: 14px;
+      line-height: 1.7;
+      color: var(--muted);
+      margin-bottom: 1.5rem;
+      font-style: italic;
+    }
+
+    .testimonial-author {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .author-avatar {
+      width: 38px; height: 38px;
+      border-radius: 50%;
+      background: rgba(240,122,26,0.15);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--orange);
+      flex-shrink: 0;
+    }
+
+    .author-name { font-size: 13px; font-weight: 600; }
+    .author-role { font-size: 11px; color: var(--muted); }
+
+    /* ── FOOTER ── */
+    footer {
+      background: var(--dark);
+      padding: 4rem 5rem 2rem;
+      margin-top: 6rem;
+    }
+
+    .footer-grid {
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr 1fr;
+      gap: 3rem;
+      padding-bottom: 3rem;
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+      margin-bottom: 2rem;
+    }
+
+    .footer-logo {
+      font-family: var(--font-display);
+      font-size: 32px;
+      letter-spacing: 0.12em;
+      color: white;
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 1rem;
+    }
+
+    .footer-desc {
+      font-size: 13px;
+      line-height: 1.7;
+      color: rgba(255,255,255,0.4);
+      margin-bottom: 1.5rem;
+    }
+
+    .footer-contacts { display: flex; flex-direction: column; gap: 8px; }
+
+    .footer-contact {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 13px;
+      color: rgba(255,255,255,0.5);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+
+    .footer-contact:hover { color: var(--orange); }
+
+    .footer-col-title {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.3);
+      margin-bottom: 1rem;
+    }
+
+    .footer-links { display: flex; flex-direction: column; gap: 8px; }
+
+    .footer-link {
+      font-size: 13px;
+      color: rgba(255,255,255,0.5);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+
+    .footer-link:hover { color: white; }
+
+    .footer-bottom {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+
+    .footer-copy { font-size: 12px; color: rgba(255,255,255,0.25); }
+
+    .footer-payments { display: flex; align-items: center; gap: 8px; }
+
+    .payment-badge {
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 6px;
+      padding: 4px 10px;
+      font-size: 11px;
+      font-weight: 700;
+      color: rgba(255,255,255,0.4);
+      letter-spacing: 0.04em;
+    }
+
+    /* ── CHAT BTN ── */
+    .chat-fab {
+      position: fixed;
+      bottom: 24px; right: 24px;
+      width: 52px; height: 52px;
+      background: var(--orange);
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      color: white;
+      cursor: pointer;
+      border: none;
+      box-shadow: 0 8px 24px rgba(240,122,26,0.4);
+      transition: transform 0.2s, box-shadow 0.2s;
+      z-index: 99;
+    }
+
+    .chat-fab:hover {
+      transform: scale(1.08);
+      box-shadow: 0 12px 32px rgba(240,122,26,0.5);
+    }
+
+    /* ── MOBILE MENU ── */
+    .burger {
+      display: none;
+      flex-direction: column;
+      gap: 5px;
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 4px;
+    }
+
+    .burger span {
+      width: 22px; height: 2px;
+      background: var(--black);
+      border-radius: 2px;
+      transition: 0.3s;
+    }
+
+    /* ── ANIMATIONS ── */
+    .fade-up {
+      opacity: 0;
+      transform: translateY(30px);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+
+    .fade-up.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 1024px) {
+      .hero { grid-template-columns: 1fr; }
+      .hero-right { display: none; }
+      .cat-grid { grid-template-columns: repeat(2, 1fr); }
+      .products-grid { grid-template-columns: repeat(2, 1fr); }
+      .how-grid { grid-template-columns: repeat(2, 1fr); }
+      .footer-grid { grid-template-columns: 1fr 1fr; }
+      .print-cta { grid-template-columns: 1fr; }
+      .testimonials-grid { grid-template-columns: 1fr 1fr; }
+    }
+
+    @media (max-width: 768px) {
+      .section, .section-sm { padding: 4rem 1.5rem; }
+      .hero-left { padding: 3rem 1.5rem; }
+      .trust-bar { padding: 1.25rem 1.5rem; gap: 1.5rem; }
+      .trust-divider { display: none; }
+      nav { display: none; }
+      .burger { display: flex; }
+      .print-cta { margin: 0 1.5rem; padding: 2.5rem 1.5rem; }
+      footer { padding: 3rem 1.5rem 1.5rem; }
+      .footer-grid { grid-template-columns: 1fr; gap: 2rem; }
+      .cat-grid { grid-template-columns: 1fr 1fr; gap: 10px; }
+      .products-grid { grid-template-columns: 1fr; }
+      .how-grid { grid-template-columns: 1fr; }
+      .testimonials-grid { grid-template-columns: 1fr; }
+      .hero-stats { gap: 1.5rem; }
+    }
+  </style>
+</head>
 <body class="page-home evryka-site">
 
-<div class="evryka-hero-stack">
-<header class="header header--in-shell header--home-detached">
-  <div class="header-inner">
-    <a href="index.html" class="logo header-logo">
-      <img src="images/text_logo.png" alt="EVRYKA" class="header-logo-img">
+  <!-- ── HEADER ── -->
+  <header id="header">
+    <a href="index.html" class="logo">
+      <div class="logo-icon">
+        <svg viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+      </div>
+      EVRYKA
     </a>
-    <button type="button" class="header-burger" id="navToggle" aria-label="Відкрити меню" aria-expanded="false" aria-controls="headerNavPanel">
-      <span class="header-burger__line"></span>
-      <span class="header-burger__line"></span>
-      <span class="header-burger__line"></span>
-    </button>
-    <nav class="nav header-nav" id="headerNavPanel" aria-label="Головна навігація">
-      <a href="index.html" class="active">Головна</a>
-      <a href="catalog.html">Каталог</a>
-      <a href="about.html">Про нас</a>
-      <a href="order-3d-print.html">Замовити 3D друк</a>
-    </nav>
-    <div class="header-utilities">
-      <div class="search-box">
-        <input type="search" placeholder="Пошук" id="search" name="q" autocomplete="off">
-        <div id="searchResults" class="search-results"></div>
-      </div>
-      <div class="header-actions">
-        <button type="button" id="authBtn" class="auth-icon-btn" title="Профіль">
-          <svg id="authIcon" viewBox="0 0 24 24" aria-hidden="true">
-            <path d="M12 12c2.8 0 5-2.2 5-5s-2.2-5-5-5-5 2.2-5 5 2.2 5 5 5Zm0 2c-4.4 0-8 2.7-8 6v2h16v-2c0-3.3-3.6-6-8-6Z"></path>
-          </svg>
-          <span id="authInitials" class="auth-initials"></span>
-        </button>
-        <button type="button" id="favoritesBtn" class="auth-icon-btn" title="Обрані" onclick="toggleFavorites(true)">
-          <svg class="heart-icon" viewBox="0 0 512 512" aria-hidden="true">
-            <path d="M257 88L255 88C248.355 74.9828 235.475 63.8415 224 55.1304C173.114 16.5016 99.2988 19.267 51 61.2894C-1.26738 106.765 -12.8083 185.773 13.0116 248C25.4527 277.984 45.9981 303.467 67.9105 327C103.494 365.215 144.281 398.581 184 432.421C198.063 444.402 211.938 456.598 226 468.579C233.971 475.37 241.993 483.022 253 483.907C268.121 485.122 278.342 475.197 289 466C306.641 450.778 324.263 435.533 342 420.421C356.437 408.121 370.854 395.797 385 383.166C443.359 331.055 512 269.827 512 185C512 178.072 512.538 170.886 511.715 164C506.476 120.199 486.854 78.636 450 52.7207C401.715 18.7669 334.983 19.4645 288 55.1304C276.525 63.8415 263.645 74.9828 257 88z"></path>
-          </svg>
-        </button>
-        <div class="cart" onclick="toggleCart(true)">
-          <img src="images/cart-icon.svg" class="cart-icon" alt="Кошик">
-          <span id="cartCount">0</span>
-        </div>
-      </div>
-    </div>
-  </div>
-</header>
 
-<div class="evryka-shell">
-<section class="hero-evryka hero-evryka--allbirds" aria-label="EVRYKA — головний банер">
-  <div class="hero-carousel hero-evryka-carousel" aria-roledescription="карусель">
-    <div class="hero-carousel-track">
-      <article class="hero-slide hero-slide--evryka hero-slide--repair is-active">
-        <div class="hero-slide__bg" style="background-image: url('images/hero-banner-repair.png');" role="img" aria-label="Деталі EVRYKA на верстаку, майстерня з інструментами та полицями"></div>
-        <div class="hero-evryka__overlay" aria-hidden="true"></div>
-        <div class="hero-evryka__content">
-          <div class="hero-evryka__panel">
-            <h1 class="hero-evryka__title">Все, що потрібно для ремонту — в одному місці</h1>
-            <p class="hero-evryka__lede">Допоміжні деталі та готові вбудовані рішення</p>
-            <div class="hero-evryka__actions">
-              <a class="hero-evryka__btn hero-evryka__btn--primary" href="#catalog">До каталогу</a>
-            </div>
-          </div>
-        </div>
-      </article>
-      <article class="hero-slide hero-slide--evryka hero-slide--3d-print">
-        <div class="hero-slide__bg" style="background-image: url('images/hero-banner-3d-print.png');" role="img" aria-label="3D-принтер на робочому столі — послуги друку EVRYKA"></div>
-        <div class="hero-evryka__overlay" aria-hidden="true"></div>
-        <div class="hero-evryka__content">
-          <div class="hero-evryka__panel">
-            <p class="hero-evryka__eyebrow">Під замовлення</p>
-            <h1 class="hero-evryka__title">Потрібен проект?</h1>
-            <p class="hero-evryka__lede">Замовляйте 3D-друк: корпуси, деталі та прототипи під ваші задачі.</p>
-            <div class="hero-evryka__actions">
-              <a class="hero-evryka__btn hero-evryka__btn--primary" href="order-3d-print.html">Замовити 3D друк</a>
-            </div>
-          </div>
-        </div>
-      </article>
-      <article class="hero-slide hero-slide--evryka hero-slide--gift">
-        <div class="hero-slide__bg" style="background-image: url('images/hero-banner-gift-toys.png');" role="img" aria-label="Кольорові 3D-друковані фігурки та брелоки — іграшки EVRYKA"></div>
-        <div class="hero-evryka__overlay" aria-hidden="true"></div>
-        <div class="hero-evryka__content">
-          <div class="hero-evryka__panel">
-            <h1 class="hero-evryka__title">Маленький подарунок — зроблений саме для тебе</h1>
-            <div class="hero-evryka__actions">
-              <a class="hero-evryka__btn hero-evryka__btn--primary" href="catalog.html?cats=Игрушки,Брелоки">Іграшки та брелоки</a>
-            </div>
-          </div>
-        </div>
-      </article>
-    </div>
-    <button type="button" class="hero-carousel-prev" aria-label="Попередній слайд">
-      <svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true"><path d="M15 6l-6 6 6 6"></path></svg>
-    </button>
-    <button type="button" class="hero-carousel-next" aria-label="Наступний слайд">
-      <svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true"><path d="M9 6l6 6-6 6"></path></svg>
-    </button>
-    <div class="hero-carousel-dots" role="tablist" aria-label="Слайди банера"></div>
-  </div>
-</section>
-</div>
-</div>
-
-<!-- 🔥 ОСНОВНИЙ КОНТЕНТ -->
-<div class="container">
-
-<div class="category-tabs">
-  <button class="tab active" data-cat="all">ВСІ</button><!--
-  --><button class="tab" data-cat="Инструменты">ІНСТРУМЕНТИ</button><!--
-  --><button class="tab" data-cat="Корпусы">КОРПУСИ</button><!--
-  --><button class="tab" data-cat="Циклоны">ЦИКЛОНИ</button><!--
-  --><button class="tab" data-cat="Игрушки">ІГРАШКИ</button><!--
-  --><button class="tab" data-cat="Брелоки">БРЕЛКИ</button>
-</div>
-  <!-- 🔥 КАТАЛОГ -->
-  <section id="catalog" class="products">
-
-    <!-- 🔥 товари -->
-    <div id="products"></div>
-
-  </section>
-
-</div>
-
-<!-- 🔥 КОШИК -->
-<div id="cartOverlay" class="cart-overlay" onclick="toggleCart(false)"></div>
-
-<div id="cartSidebar" class="cart-sidebar">
-
-  <div class="cart-head-float">
-    <h3 id="cartPanelTitle">Кошик</h3>
-    <button type="button" class="cart-head-float-close" onclick="toggleCart(false)" aria-label="Закрити кошик">×</button>
-  </div>
-
-  <!-- ITEMS -->
-  <div id="cartItems" class="cart-items"></div>
-
-  <!-- FOOTER -->
-  <div class="cart-footer">
-
-    <div class="cart-total">
-      <span>Разом</span>
-      <div>
-        <b id="cartTotal">0</b>
-        <span>грн</span>
-      </div>
-    </div>
-
-    <button class="checkout-btn" onclick="checkout()">
-      Оформити
-    </button>
-
-    <button class="clear-btn" onclick="clearCart()">
-      Очистити кошик
-    </button>
-
-  </div>
-
-</div>
-
-<div id="favoritesOverlay" class="cart-overlay" onclick="toggleFavorites(false)"></div>
-<div id="favoritesSidebar" class="cart-sidebar">
-  <div class="cart-head-float">
-    <h3>Обрані</h3>
-    <button type="button" class="cart-head-float-close" onclick="toggleFavorites(false)" aria-label="Закрити обрані">×</button>
-  </div>
-  <div id="favoritesItems" class="cart-items"></div>
-  <div class="cart-footer">
-    <button class="clear-btn" onclick="clearFavorites()">
-      Очистити обрані
-    </button>
-  </div>
-</div>
-
-<div id="authModal" class="auth-modal">
-  <div class="auth-modal-content auth-light">
-    <button id="closeAuthBtn" class="close-btn">✖</button>
-    <div id="authEyes" class="auth-eyes" aria-hidden="true">
-      <div class="auth-eye">
-        <span class="auth-eye-pupil"></span>
-        <span class="auth-eye-lid"></span>
-      </div>
-      <div class="auth-eye">
-        <span class="auth-eye-pupil"></span>
-        <span class="auth-eye-lid"></span>
-      </div>
-    </div>
-    <h3 id="authTitle" class="auth-title">Log In</h3>
-    <form id="registerForm">
-      <input id="regName" class="auth-input auth-register-only" type="text" placeholder="Ім'я">
-      <input id="regLastName" class="auth-input auth-register-only" type="text" placeholder="Прізвище">
-      <input id="regPhone" class="auth-input auth-register-only" type="tel" placeholder="Телефон">
-      <input id="regEmail" class="auth-input" type="email" placeholder="Email Address*">
-      <input id="authPassword" class="auth-input" type="password" placeholder="Password*">
-      <input id="authPasswordConfirm" class="auth-input auth-register-only" type="password" placeholder="Repeat password*">
-      <button id="authSubmitBtn" type="submit" class="auth-submit-btn">Log In</button>
-      <p id="authMessage" class="auth-message"></p>
-      <div class="auth-links">
-        <button id="switchRegisterBtn" type="button" class="auth-link-btn">Create Your Account</button>
-        <button id="switchLoginBtn" type="button" class="auth-link-btn">Back to Log In</button>
-      </div>
-      <label class="auth-terms auth-register-only">
-        <input id="termsCheck" type="checkbox">
-        <span>I agree to Terms of Use and Privacy Policy</span>
-      </label>
-      <div class="auth-divider">
-        <span id="authOauthLabel">Login with Google</span>
-      </div>
-      <div id="googleSignInBtn" class="google-btn-wrap"></div>
-    </form>
-  </div>
-</div>
-
-<div class="load-more">
-  <button type="button" class="buy-btn" onclick="window.location.href='catalog.html'">
-    Відкрити каталог
-  </button>
-</div>
-
-<footer class="footer">
-  <div class="footer-container">
-    <div class="footer-col">
-      <h4>Меню</h4>
+    <nav id="headerNavPanel">
       <a href="index.html">Головна</a>
       <a href="catalog.html">Каталог</a>
       <a href="about.html">Про нас</a>
-      <a href="order-3d-print.html">Замовити 3D друк</a>
-    </div>
-    <div class="footer-col">
-      <h4>Особистий кабінет</h4>
-      <a href="cabinet.html#orders">Мої замовлення</a>
-      <a href="cabinet.html#personal">Особисті дані</a>
-      <a href="catalog.html#favorites">Обране</a>
-    </div>
-    <div class="footer-col" id="contacts">
-      <h4>Контакти</h4>
-      <a href="tel:+380501662271" class="phone">+38 (050) 166 22 71</a>
-      <a href="mailto:andrysejko22@gmail.com">andrysejko22@gmail.com</a>
-      <a href="about.html#about-v2-location">Локація й графік</a>
-    </div>
-    <div class="footer-col">
-      <h4>Мессенджери</h4>
-      <div class="socials socials--messengers">
-        <a class="footer-messenger footer-messenger--telegram" href="https://t.me/+380501662271" target="_blank" rel="noopener noreferrer">
-          <svg class="footer-messenger__icon" viewBox="0 0 24 24" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"><path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/></svg>
-          <span>Telegram</span>
-        </a>
-        <a class="footer-messenger footer-messenger--viber" href="viber://chat?number=%2B380501662271">
-          <svg class="footer-messenger__icon" viewBox="0 0 24 24" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"><path d="M11.4 0C9.473.028 5.333.344 3.02 2.467 1.302 4.187.696 6.7.633 9.817.57 12.933.488 18.776 6.12 20.36h.003l-.004 2.416s-.037.977.61 1.177c.777.242 1.234-.5 1.98-1.302.407-.44.972-1.084 1.397-1.58 3.85.326 6.812-.416 7.15-.525.776-.252 5.176-.816 5.892-6.657.74-6.02-.36-9.83-2.34-11.546-.596-.55-3.006-2.3-8.375-2.323 0 0-.395-.025-1.037-.017zm.058 1.693c.545-.004.88.017.88.017 4.542.02 6.717 1.388 7.222 1.846 1.675 1.435 2.53 4.868 1.906 9.897v.002c-.604 4.878-4.174 5.184-4.832 5.395-.28.09-2.882.737-6.153.524 0 0-2.436 2.94-3.197 3.704-.12.12-.26.167-.352.144-.13-.033-.166-.188-.165-.414l.02-4.018c-4.762-1.32-4.485-6.292-4.43-8.895.054-2.604.543-4.738 1.996-6.173 1.96-1.773 5.474-2.018 7.11-2.03zm.38 2.602c-.167 0-.303.135-.304.302 0 .167.133.303.3.305 1.624.01 2.946.537 4.028 1.592 1.073 1.046 1.62 2.468 1.633 4.334.002.167.14.3.307.3.166-.002.3-.138.3-.304-.014-1.984-.618-3.596-1.816-4.764-1.19-1.16-2.692-1.753-4.447-1.765zm-3.96.695c-.19-.032-.4.005-.616.117l-.01.002c-.43.247-.816.562-1.146.932-.002.004-.006.004-.008.008-.267.323-.42.638-.46.948-.008.046-.01.093-.007.14 0 .136.022.27.065.4l.013.01c.135.48.473 1.276 1.205 2.604.42.768.903 1.5 1.446 2.186.27.344.56.673.87.984l.132.132c.31.308.64.6.984.87.686.543 1.418 1.027 2.186 1.447 1.328.733 2.126 1.07 2.604 1.206l.01.014c.13.042.265.064.402.063.046.002.092 0 .138-.008.31-.036.627-.19.948-.46.004 0 .003-.002.008-.005.37-.33.683-.72.93-1.148l.003-.01c.225-.432.15-.842-.18-1.12-.004 0-.698-.58-1.037-.83-.36-.255-.73-.492-1.113-.71-.51-.285-1.032-.106-1.248.174l-.447.564c-.23.283-.657.246-.657.246-3.12-.796-3.955-3.955-3.955-3.955s-.037-.426.248-.656l.563-.448c.277-.215.456-.737.17-1.248-.217-.383-.454-.756-.71-1.115-.25-.34-.826-1.033-.83-1.035-.137-.165-.31-.265-.502-.297zm4.49.88c-.158.002-.29.124-.3.282-.01.167.115.312.282.324 1.16.085 2.017.466 2.645 1.15.63.688.93 1.524.906 2.57-.002.168.13.306.3.31.166.003.305-.13.31-.297.025-1.175-.334-2.193-1.067-2.994-.74-.81-1.777-1.253-3.05-1.346h-.024zm.463 1.63c-.16.002-.29.127-.3.287-.008.167.12.31.288.32.523.028.875.175 1.113.422.24.245.388.62.416 1.164.01.167.15.295.318.287.167-.008.295-.15.287-.317-.03-.644-.215-1.178-.58-1.557-.367-.378-.893-.574-1.52-.607h-.018z"/></svg>
-          <span>Viber</span>
-        </a>
-      </div>
-      <p class="pay-text">Оплата</p>
-      <div class="payments">
-        <span>VISA</span>
-        <span>MasterCard</span>
-      </div>
-    </div>
-  </div>
-  <div class="footer-bottom">
-    <p>© 2026 EVRYKA</p>
-    <span>Українська</span>
-  </div>
-</footer>
+      <a href="order-3d-print.html" class="nav-cta">Замовити 3D друк</a>
+    </nav>
 
-<div id="chatWidgetRoot" class="chat-widget-root">
-  <button type="button" id="chatWidgetToggle" class="chat-widget-toggle" aria-expanded="false" aria-controls="chatWidgetPanel" title="Написати нам">
-    <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true">
-      <path fill="currentColor" d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm0 14H5.17L4 17.17V4h16v12z"></path>
-    </svg>
-  </button>
-  <div id="chatWidgetPanel" class="chat-widget-panel" role="dialog" aria-modal="true" aria-labelledby="chatWidgetTitle" aria-hidden="true">
-    <div class="chat-widget-card">
-    <div class="chat-widget-head-float">
-      <span id="chatWidgetTitle">Напишіть нам</span>
-      <button type="button" class="chat-widget-close" aria-label="Закрити чат">×</button>
+    <div class="header-actions">
+      <button type="button" id="authBtn" class="icon-btn" title="Профіль">
+        <svg id="authIcon" width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+          <path d="M12 12c2.8 0 5-2.2 5-5s-2.2-5-5-5-5 2.2-5 5 2.2 5 5 5Zm0 2c-4.4 0-8 2.7-8 6v2h16v-2c0-3.3-3.6-6-8-6Z"></path>
+        </svg>
+        <span id="authInitials" class="auth-initials"></span>
+      </button>
+      <button type="button" id="favoritesBtn" class="icon-btn" title="Обране" onclick="toggleFavorites(true)">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+      </button>
+      <button type="button" class="icon-btn cart" title="Кошик" style="position:relative" onclick="toggleCart(true)">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+        <span class="cart-badge" id="cartCount">0</span>
+      </button>
+      <button type="button" class="burger" id="navToggle" aria-label="Відкрити меню" aria-expanded="false" aria-controls="headerNavPanel">
+        <span></span><span></span><span></span>
+      </button>
     </div>
-    <div class="chat-widget-sheet">
-      <div id="chatWidgetMessages" class="chat-widget-messages" aria-live="polite"></div>
-      <div class="chat-widget-compose-float">
-        <div class="chat-widget-compose">
-          <input type="text" id="chatWidgetText" class="chat-widget-field" placeholder="Ваше запитання…" maxlength="2000" autocomplete="off">
-          <button type="button" id="chatWidgetSend" class="chat-widget-send">Надіслати</button>
+  </header>
+
+  <!-- ── HERO ── -->
+  <section class="hero">
+    <div class="hero-left">
+      <div class="hero-eyebrow">3D-друк у Львові</div>
+      <h1 class="hero-title">
+        ДЕТАЛІ<br>
+        ЯКІ<br>
+        <span>ВИРІШУЮТЬ</span>
+      </h1>
+      <p class="hero-sub">
+        3D-друковані вироби для ремонту, творчості та прототипів.
+        Готові рішення — або під ваше замовлення.
+      </p>
+      <div class="hero-actions">
+        <a href="catalog.html" class="btn-primary">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+          До каталогу
+        </a>
+        <a href="order-3d-print.html" class="btn-ghost">Замовити 3D друк</a>
+      </div>
+      <div class="hero-stats">
+        <div class="stat-item">
+          <div class="stat-num">50<span>+</span></div>
+          <div class="stat-label">Замовлень</div>
         </div>
-        <p id="chatWidgetStatus" class="chat-widget-status" role="status"></p>
+        <div class="stat-item">
+          <div class="stat-num">3<span>D</span></div>
+          <div class="stat-label">Принтери</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-num">2<span>год</span></div>
+          <div class="stat-label">Відповідь</div>
+        </div>
       </div>
     </div>
+
+    <div class="hero-right">
+      <div class="hero-grid-pattern"></div>
+      <div class="hero-img-container">
+        <!-- Floating badges -->
+        <div class="hero-floating-badge badge-1">
+          <div class="badge-dot"></div>
+          Виробляємо у Львові
+        </div>
+        <div class="hero-floating-badge badge-2">
+          ⚡ Замовлення від 1 дня
+        </div>
+
+        <!-- Product card -->
+        <div class="hero-product-card">
+          <div class="hero-product-img">
+            <img
+              src="https://evryka-cite.onrender.com/images/products/product-1.jpg"
+              alt="Продукт"
+              onerror="this.parentElement.innerHTML='<div style=\'display:flex;align-items:center;justify-content:center;height:100%;color:rgba(255,255,255,0.2);font-size:48px;\'>⬡</div>'"
+            />
+          </div>
+          <div class="hero-product-info">
+            <div class="hero-product-tag">Популярне</div>
+            <div class="hero-product-name">Шаблон кондуктор для отворів під інсталяцію</div>
+            <div class="hero-product-bottom">
+              <div class="hero-product-price">325 <span>грн</span></div>
+              <button class="hero-add-btn" onclick='addToCart({id: 1, name: "Шаблон кондуктор для отворів під інсталяцію", price: 325, images: ["/images/products/product-1.jpg"]})'>
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── TRUST BAR ── -->
+  <div class="trust-bar">
+    <div class="trust-item">
+      <div class="trust-icon">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+      </div>
+      <div class="trust-text">
+        <strong>Гарантія якості</strong>
+        <small>На всі вироби</small>
+      </div>
+    </div>
+    <div class="trust-divider"></div>
+    <div class="trust-item">
+      <div class="trust-icon">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+      </div>
+      <div class="trust-text">
+        <strong>Відповідь за 2 години</strong>
+        <small>Пн–Сб 9:00–20:00</small>
+      </div>
+    </div>
+    <div class="trust-divider"></div>
+    <div class="trust-item">
+      <div class="trust-icon">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+      </div>
+      <div class="trust-text">
+        <strong>Львів, самовивіз</strong>
+        <small>Або Нова пошта</small>
+      </div>
+    </div>
+    <div class="trust-divider"></div>
+    <div class="trust-item">
+      <div class="trust-icon">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>
+      </div>
+      <div class="trust-text">
+        <strong>Visa / MasterCard</strong>
+        <small>Безпечна оплата</small>
+      </div>
     </div>
   </div>
-</div>
 
-<!-- 🔥 JS -->
-<script src="js/api.js?v=20260426"></script>
-<script src="js/cart.js?v=20260430"></script>
-<script src="js/header-nav.js?v=20260420-32"></script>
-<script src="js/app.js?v=20260420-4"></script>
-<script src="js/chat-widget.js?v=20260409"></script>
+  <!-- ── CATEGORIES ── -->
+  <section class="section">
+    <div class="section-header fade-up">
+      <div>
+        <div class="section-label">Що шукаєте?</div>
+        <h2 class="section-title">КАТЕГОРІЇ</h2>
+      </div>
+      <a href="catalog.html" class="section-link">
+        Весь каталог
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      </a>
+    </div>
 
+    <div class="cat-grid fade-up">
+      <a href="catalog.html?cats=Інструменти" class="cat-card">
+        <div class="cat-icon">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>
+        </div>
+        <div>
+          <div class="cat-name">Інструменти</div>
+          <div class="cat-count">Шаблони, кондуктори</div>
+        </div>
+        <div class="cat-arrow">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </div>
+      </a>
+
+      <a href="catalog.html?cats=Корпуси" class="cat-card">
+        <div class="cat-icon">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+        </div>
+        <div>
+          <div class="cat-name">Корпуси</div>
+          <div class="cat-count">Монтаж, вентиляція</div>
+        </div>
+        <div class="cat-arrow">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </div>
+      </a>
+
+      <a href="catalog.html?cats=Іграшки" class="cat-card">
+        <div class="cat-icon">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+        </div>
+        <div>
+          <div class="cat-name">Іграшки</div>
+          <div class="cat-count">Фігурки, колекційне</div>
+        </div>
+        <div class="cat-arrow">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </div>
+      </a>
+
+      <a href="catalog.html?cats=Брелоки" class="cat-card">
+        <div class="cat-icon">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="12" r="3"/><path d="M12 1v4M12 19v4M4.22 4.22l2.83 2.83M16.95 16.95l2.83 2.83M1 12h4M19 12h4M4.22 19.78l2.83-2.83M16.95 7.05l2.83-2.83"/></svg>
+        </div>
+        <div>
+          <div class="cat-name">Брелоки</div>
+          <div class="cat-count">Сувеніри, подарунки</div>
+        </div>
+        <div class="cat-arrow">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </div>
+      </a>
+    </div>
+  </section>
+
+  <!-- ── PRODUCTS ── -->
+  <section id="catalog" class="section-sm" style="padding-top: 0;">
+    <div class="section-header fade-up">
+      <div>
+        <div class="section-label">З каталогу</div>
+        <h2 class="section-title">ПОПУЛЯРНІ<br>ТОВАРИ</h2>
+      </div>
+      <a href="catalog.html" class="section-link">
+        Всі товари
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      </a>
+    </div>
+
+    <div class="products-grid fade-up">
+      <!-- Product 1 -->
+      <a href="catalog.html" class="product-card">
+        <div class="product-img-wrap">
+          <img
+            src="https://evryka-cite.onrender.com/images/products/product-1.jpg"
+            alt="Шаблон кондуктор"
+            onerror="this.src='https://via.placeholder.com/400x400/F0EDE8/999?text=EVRYKA'"
+          />
+          <div class="product-badge orange">Хіт</div>
+          <button class="product-fav" onclick='event.preventDefault(); toggleFavorite(event, {id: 1, name: "Шаблон кондуктор для отворів під інсталяцію", price: 325, images: ["/images/products/product-1.jpg"]}, true)' title="В обране">♡</button>
+        </div>
+        <div class="product-body">
+          <div class="product-name">Шаблон кондуктор для отворів під інсталяцію</div>
+          <div class="product-bottom">
+            <div class="product-price">325 <small>грн</small></div>
+            <button class="add-btn" onclick='event.preventDefault(); addToCart({id: 1, name: "Шаблон кондуктор для отворів під інсталяцію", price: 325, images: ["/images/products/product-1.jpg"]})'>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>
+            </button>
+          </div>
+        </div>
+      </a>
+
+      <!-- Product 2 -->
+      <a href="catalog.html" class="product-card">
+        <div class="product-img-wrap">
+          <img
+            src="https://evryka-cite.onrender.com/images/products/product-2.jpg"
+            alt="Корпус вентиляція"
+            onerror="this.src='https://via.placeholder.com/400x400/F0EDE8/999?text=EVRYKA'"
+          />
+          <button class="product-fav" onclick='event.preventDefault(); toggleFavorite(event, {id: 2, name: "Корпус прихованого монтажу для вентиляції під вентилятор 125 мм", price: 799, images: ["/images/products/product-2.jpg"]}, true)' title="В обране">♡</button>
+        </div>
+        <div class="product-body">
+          <div class="product-name">Корпус прихованого монтажу для вентиляції під вентилятор 125 мм</div>
+          <div class="product-bottom">
+            <div class="product-price">799 <small>грн</small></div>
+            <button class="add-btn" onclick='event.preventDefault(); addToCart({id: 2, name: "Корпус прихованого монтажу для вентиляції під вентилятор 125 мм", price: 799, images: ["/images/products/product-2.jpg"]})'>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>
+            </button>
+          </div>
+        </div>
+      </a>
+
+      <!-- Product 3 -->
+      <a href="catalog.html" class="product-card">
+        <div class="product-img-wrap">
+          <img
+            src="https://evryka-cite.onrender.com/images/products/product-3.jpg"
+            alt="Брілок Лабубу"
+            onerror="this.src='https://via.placeholder.com/400x400/F0EDE8/999?text=EVRYKA'"
+          />
+          <div class="product-badge">Новинка</div>
+          <button class="product-fav" onclick='event.preventDefault(); toggleFavorite(event, {id: 3, name: "Брілок Лабубу (Labubu) — стильна колекційна іграшка", price: 350, images: ["/images/products/product-3.jpg"]}, true)' title="В обране">♡</button>
+        </div>
+        <div class="product-body">
+          <div class="product-name">Брілок Лабубу (Labubu) — стильна колекційна іграшка</div>
+          <div class="product-bottom">
+            <div class="product-price">350 <small>грн</small></div>
+            <button class="add-btn" onclick='event.preventDefault(); addToCart({id: 3, name: "Брілок Лабубу (Labubu) — стильна колекційна іграшка", price: 350, images: ["/images/products/product-3.jpg"]})'>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>
+            </button>
+          </div>
+        </div>
+      </a>
+    </div>
+  </section>
+
+  <!-- ── 3D PRINT CTA ── -->
+  <div class="print-cta fade-up">
+    <div>
+      <div class="print-cta-eyebrow">Послуга 3D-друку</div>
+      <h2 class="print-cta-title">ПОТРІБЕН<br>СВІЙ<br><span style="color:var(--orange)">ПРОЕКТ?</span></h2>
+      <p class="print-cta-desc">
+        Замовляйте 3D-друк будь-якої складності.
+        Корпуси, запчастини, прототипи, сувеніри —
+        надрукуємо за вашими кресленнями або допоможемо з моделлю.
+      </p>
+      <a href="order-3d-print.html" class="btn-primary" style="display:inline-flex">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" style="width:18px;height:18px"><path d="M12 5v14M5 12h14"/></svg>
+        Залишити заявку
+      </a>
+    </div>
+
+    <div class="print-cta-steps">
+      <div class="print-step">
+        <div class="print-step-num">1</div>
+        <div class="print-step-text">
+          <strong>Надішліть файл або опис</strong>
+          Приймаємо STL, OBJ або текстовий опис що потрібно
+        </div>
+      </div>
+      <div class="print-step">
+        <div class="print-step-num">2</div>
+        <div class="print-step-text">
+          <strong>Отримайте розрахунок</strong>
+          Повідомимо вартість і терміни протягом 2 годин
+        </div>
+      </div>
+      <div class="print-step">
+        <div class="print-step-num">3</div>
+        <div class="print-step-text">
+          <strong>Заберіть готовий виріб</strong>
+          Самовивіз у Львові або доставка Новою поштою
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── HOW IT WORKS ── -->
+  <section class="section">
+    <div class="section-header fade-up">
+      <div>
+        <div class="section-label">Як це працює</div>
+        <h2 class="section-title">ВІД ЗАМОВЛЕННЯ<br>ДО ДВЕРЕЙ</h2>
+      </div>
+    </div>
+
+    <div class="how-grid fade-up">
+      <div class="how-item">
+        <div class="how-num">01</div>
+        <div class="how-icon">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+        </div>
+        <div class="how-title">Оберіть товар</div>
+        <div class="how-desc">Знайдіть потрібний виріб у каталозі або замовте 3D-друк під власне завдання.</div>
+      </div>
+      <div class="how-item">
+        <div class="how-num">02</div>
+        <div class="how-icon">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>
+        </div>
+        <div class="how-title">Оплатіть</div>
+        <div class="how-desc">Visa, MasterCard онлайн або переказ на картку після підтвердження.</div>
+      </div>
+      <div class="how-item">
+        <div class="how-num">03</div>
+        <div class="how-icon">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 .49-3.51"/></svg>
+        </div>
+        <div class="how-title">Виробляємо</div>
+        <div class="how-desc">Друкуємо у Львові на якісних принтерах. Стандартні замовлення — 1–3 дні.</div>
+      </div>
+      <div class="how-item">
+        <div class="how-num">04</div>
+        <div class="how-icon">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M1 3h15v13H1z"/><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>
+        </div>
+        <div class="how-title">Отримайте</div>
+        <div class="how-desc">Самовивіз у Львові або відправка Новою поштою по всій Україні.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── TESTIMONIALS ── -->
+  <section class="section-sm" style="padding-top:0; background: transparent;">
+    <div class="section-header fade-up">
+      <div>
+        <div class="section-label">Відгуки</div>
+        <h2 class="section-title">ЩО<br>КАЖУТЬ КЛІЄНТИ</h2>
+      </div>
+    </div>
+
+    <div class="testimonials-grid fade-up">
+      <div class="testimonial-card">
+        <div class="stars">★★★★★</div>
+        <p class="testimonial-text">
+          "Замовляв шаблон кондуктор — все прийшло дуже швидко, якість відмінна.
+          Деталь підійшла ідеально, майстер задоволений. Рекомендую!"
+        </p>
+        <div class="testimonial-author">
+          <div class="author-avatar">МК</div>
+          <div>
+            <div class="author-name">Михайло К.</div>
+            <div class="author-role">Майстер-сантехнік</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="testimonial-card">
+        <div class="stars">★★★★★</div>
+        <p class="testimonial-text">
+          "Замовляла Labubu для дочки — вийшло просто чудово, кольори яскраві,
+          деталі чіткі. Дитина в захваті. Дякую за якість і швидку доставку!"
+        </p>
+        <div class="testimonial-author">
+          <div class="author-avatar">ОП</div>
+          <div>
+            <div class="author-name">Оксана П.</div>
+            <div class="author-role">Постійний клієнт</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="testimonial-card">
+        <div class="stars">★★★★★</div>
+        <p class="testimonial-text">
+          "Замовляли корпуси для вентиляції під наш проект. Хлопці оперативно
+          відповіли, зробили точно під розмір. Будемо замовляти ще."
+        </p>
+        <div class="testimonial-author">
+          <div class="author-avatar">АД</div>
+          <div>
+            <div class="author-name">Андрій Д.</div>
+            <div class="author-role">Будівельна компанія</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── FOOTER ── -->
+  <footer>
+    <div class="footer-grid">
+      <div>
+        <a href="index.html" class="footer-logo">
+          <div class="logo-icon" style="flex-shrink:0">
+            <svg viewBox="0 0 24 24" width="20" height="20" fill="white"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+          </div>
+          EVRYKA
+        </a>
+        <p class="footer-desc">
+          3D-друковані вироби для ремонту, творчості та прототипів.
+          Якісно. Швидко. З Любові до деталей.
+        </p>
+        <div class="footer-contacts">
+          <a href="tel:+380501662271" class="footer-contact">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.61 3.4 2 2 0 0 1 3.6 1.22h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L7.91 8.96a16 16 0 0 0 6.29 6.29l1.41-1.41a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+            +38 (050) 166 22 71
+          </a>
+          <a href="mailto:andrysejko22@gmail.com" class="footer-contact">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+            andrysejko22@gmail.com
+          </a>
+        </div>
+      </div>
+
+      <div>
+        <div class="footer-col-title">Навігація</div>
+        <div class="footer-links">
+          <a href="index.html" class="footer-link">Головна</a>
+          <a href="catalog.html" class="footer-link">Каталог</a>
+          <a href="about.html" class="footer-link">Про нас</a>
+          <a href="order-3d-print.html" class="footer-link">Замовити 3D друк</a>
+        </div>
+      </div>
+
+      <div>
+        <div class="footer-col-title">Категорії</div>
+        <div class="footer-links">
+          <a href="catalog.html" class="footer-link">Інструменти</a>
+          <a href="catalog.html" class="footer-link">Корпуси</a>
+          <a href="catalog.html" class="footer-link">Іграшки</a>
+          <a href="catalog.html" class="footer-link">Брелоки</a>
+        </div>
+      </div>
+
+      <div>
+        <div class="footer-col-title">Месенджери</div>
+        <div class="footer-links">
+          <a href="https://t.me/+380501662271" class="footer-link" target="_blank">Telegram</a>
+          <a href="viber://chat?number=%2B380501662271" class="footer-link">Viber</a>
+          <a href="about.html#about-v2-location" class="footer-link">Де нас знайти</a>
+          <a href="cabinet.html#orders" class="footer-link">Мої замовлення</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <div class="footer-copy">© 2026 EVRYKA — Всі права захищено</div>
+      <div class="footer-payments">
+        <span class="payment-badge">VISA</span>
+        <span class="payment-badge">MASTERCARD</span>
+      </div>
+    </div>
+  </footer>
+
+  <div id="cartOverlay" class="cart-overlay" onclick="toggleCart(false)"></div>
+  <div id="cartSidebar" class="cart-sidebar">
+    <div class="cart-head-float">
+      <h3 id="cartPanelTitle">Кошик</h3>
+      <button type="button" class="cart-head-float-close" onclick="toggleCart(false)" aria-label="Закрити кошик">×</button>
+    </div>
+    <div id="cartItems" class="cart-items"></div>
+    <div class="cart-footer">
+      <div class="cart-total">
+        <span>Разом</span>
+        <div>
+          <b id="cartTotal">0</b>
+          <span>грн</span>
+        </div>
+      </div>
+      <button class="checkout-btn" onclick="checkout()">Оформити</button>
+      <button class="clear-btn" onclick="clearCart()">Очистити кошик</button>
+    </div>
+  </div>
+
+  <div id="favoritesOverlay" class="cart-overlay" onclick="toggleFavorites(false)"></div>
+  <div id="favoritesSidebar" class="cart-sidebar">
+    <div class="cart-head-float">
+      <h3>Обрані</h3>
+      <button type="button" class="cart-head-float-close" onclick="toggleFavorites(false)" aria-label="Закрити обрані">×</button>
+    </div>
+    <div id="favoritesItems" class="cart-items"></div>
+    <div class="cart-footer">
+      <button class="clear-btn" onclick="clearFavorites()">Очистити обрані</button>
+    </div>
+  </div>
+
+  <div id="authModal" class="auth-modal">
+    <div class="auth-modal-content auth-light">
+      <button id="closeAuthBtn" class="close-btn">✖</button>
+      <div id="authEyes" class="auth-eyes" aria-hidden="true">
+        <div class="auth-eye"><span class="auth-eye-pupil"></span><span class="auth-eye-lid"></span></div>
+        <div class="auth-eye"><span class="auth-eye-pupil"></span><span class="auth-eye-lid"></span></div>
+      </div>
+      <h3 id="authTitle" class="auth-title">Log In</h3>
+      <form id="registerForm">
+        <input id="regName" class="auth-input auth-register-only" type="text" placeholder="Ім'я">
+        <input id="regLastName" class="auth-input auth-register-only" type="text" placeholder="Прізвище">
+        <input id="regPhone" class="auth-input auth-register-only" type="tel" placeholder="Телефон">
+        <input id="regEmail" class="auth-input" type="email" placeholder="Email Address*">
+        <input id="authPassword" class="auth-input" type="password" placeholder="Password*">
+        <input id="authPasswordConfirm" class="auth-input auth-register-only" type="password" placeholder="Repeat password*">
+        <button id="authSubmitBtn" type="submit" class="auth-submit-btn">Log In</button>
+        <p id="authMessage" class="auth-message"></p>
+        <div class="auth-links">
+          <button id="switchRegisterBtn" type="button" class="auth-link-btn">Create Your Account</button>
+          <button id="switchLoginBtn" type="button" class="auth-link-btn">Back to Log In</button>
+        </div>
+        <label class="auth-terms auth-register-only">
+          <input id="termsCheck" type="checkbox">
+          <span>I agree to Terms of Use and Privacy Policy</span>
+        </label>
+        <div class="auth-divider"><span id="authOauthLabel">Login with Google</span></div>
+        <div id="googleSignInBtn" class="google-btn-wrap"></div>
+      </form>
+    </div>
+  </div>
+
+  <div id="chatWidgetRoot" class="chat-widget-root">
+    <button type="button" id="chatWidgetToggle" class="chat-widget-toggle" aria-expanded="false" aria-controls="chatWidgetPanel" title="Написати нам">
+      <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path fill="currentColor" d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm0 14H5.17L4 17.17V4h16v12z"></path></svg>
+    </button>
+    <div id="chatWidgetPanel" class="chat-widget-panel" role="dialog" aria-modal="true" aria-labelledby="chatWidgetTitle" aria-hidden="true">
+      <div class="chat-widget-card">
+        <div class="chat-widget-head-float">
+          <span id="chatWidgetTitle">Напишіть нам</span>
+          <button type="button" class="chat-widget-close" aria-label="Закрити чат">×</button>
+        </div>
+        <div class="chat-widget-sheet">
+          <div id="chatWidgetMessages" class="chat-widget-messages" aria-live="polite"></div>
+          <div class="chat-widget-compose-float">
+            <div class="chat-widget-compose">
+              <input type="text" id="chatWidgetText" class="chat-widget-field" placeholder="Ваше запитання..." maxlength="2000" autocomplete="off">
+              <button type="button" id="chatWidgetSend" class="chat-widget-send">Надіслати</button>
+            </div>
+            <p id="chatWidgetStatus" class="chat-widget-status" role="status"></p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Header scroll effect
+    const header = document.getElementById('header');
+    window.addEventListener('scroll', () => {
+      header.classList.toggle('scrolled', window.scrollY > 20);
+    });
+
+    // Fade-up on scroll
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry, i) => {
+        if (entry.isIntersecting) {
+          setTimeout(() => entry.target.classList.add('visible'), i * 80);
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.12 });
+
+    document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
+
+    // Stagger children
+    document.querySelectorAll('.cat-grid, .products-grid, .testimonials-grid, .how-grid').forEach(grid => {
+      Array.from(grid.children).forEach((child, i) => {
+        child.style.transitionDelay = `${i * 80}ms`;
+      });
+    });
+  </script>
+  <script src="js/api.js?v=20260426"></script>
+  <script src="js/cart.js?v=20260430"></script>
+  <script src="js/header-nav.js?v=20260420-32"></script>
+  <script src="js/app.js?v=20260420-4"></script>
+  <script src="js/chat-widget.js?v=20260409"></script>
 </body>
 </html>
