@@ -140,7 +140,7 @@
     }
 
     .hero-shell {
-      margin: 82px 16px 0;
+      margin: 0 16px;
       border-radius: var(--shell-radius);
       overflow: hidden;
       background: #FFFFFF;
@@ -150,10 +150,10 @@
 
     /* ── HERO ── */
     .hero {
-      min-height: calc(100svh - 82px);
+      min-height: 100svh;
       display: grid;
       grid-template-columns: 1fr 1fr;
-      padding-top: 0;
+      padding-top: 64px;
       overflow: hidden;
       position: relative;
     }
@@ -1048,7 +1048,6 @@
 
     /* ── RESPONSIVE ── */
     @media (max-width: 1024px) {
-      .hero-shell { margin-top: 78px; }
       .hero { grid-template-columns: 1fr; }
       .hero-right { display: none; }
       .cat-grid { grid-template-columns: repeat(2, 1fr); }
@@ -1060,7 +1059,7 @@
     }
 
     @media (max-width: 768px) {
-      .hero-shell { margin: 74px 10px 0; }
+      .hero-shell { margin: 0 10px; }
       .section, .section-sm { padding: 4rem 1.5rem; }
       .hero-left { padding: 3rem 1.5rem; }
       .trust-bar { padding: 1.25rem 1.5rem; gap: 1.5rem; }
@@ -1324,7 +1323,7 @@
 
     <div class="products-grid fade-up">
       <!-- Product 1 -->
-      <a href="catalog.html" class="product-card">
+      <a href="product.html?id=1" class="product-card" id="homeCardLink1">
         <div class="product-img-wrap">
           <img
             id="homeCardImage1"
@@ -1351,7 +1350,7 @@
       </a>
 
       <!-- Product 2 -->
-      <a href="catalog.html" class="product-card">
+      <a href="product.html?id=2" class="product-card" id="homeCardLink2">
         <div class="product-img-wrap">
           <img
             id="homeCardImage2"
@@ -1377,7 +1376,7 @@
       </a>
 
       <!-- Product 3 -->
-      <a href="catalog.html" class="product-card">
+      <a href="product.html?id=3" class="product-card" id="homeCardLink3">
         <div class="product-img-wrap">
           <img
             id="homeCardImage3"
@@ -1734,12 +1733,13 @@
     }
 
     function wireCard(index, product) {
+      const link = document.getElementById(`homeCardLink${index}`);
       const img = document.getElementById(`homeCardImage${index}`);
       const name = document.getElementById(`homeCardName${index}`);
       const price = document.getElementById(`homeCardPrice${index}`);
       const fav = document.getElementById(`homeCardFav${index}`);
       const add = document.getElementById(`homeCardAdd${index}`);
-      if (!img || !name || !price || !fav || !add || !product) return;
+      if (!link || !img || !name || !price || !fav || !add || !product) return;
 
       const safeProduct = {
         id: Number(product.id) || index,
@@ -1753,6 +1753,7 @@
       img.onerror = () => {
         img.src = "images/text_logo.png";
       };
+      link.href = `product.html?id=${safeProduct.id}`;
       name.textContent = safeProduct.name;
       price.innerHTML = `${safeProduct.price} <small>грн</small>`;
       fav.setAttribute("onclick", `event.preventDefault(); toggleFavorite(event, ${JSON.stringify(safeProduct)}, true)`);
