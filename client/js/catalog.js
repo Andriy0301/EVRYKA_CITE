@@ -87,32 +87,67 @@ function renderCatalogGrid(products) {
     return;
   }
 
+  const normalizeImageSrc = (item) => {
+    const raw = String(item?.images?.[0] || "").trim();
+    if (!raw) return "images/text_logo.png";
+    if (/^https?:\/\//i.test(raw)) return raw;
+    if (raw.startsWith("/")) return `${API_URL}${raw}`;
+    return `${API_URL}/${raw}`;
+  };
+
   products.forEach((p) => {
-    const div = document.createElement("div");
-    div.className = "product";
-    div.onclick = () => goToProduct(p.id);
+    const product = {
+      ...p,
+      id: Number(p?.id) || 0,
+      name: p?.name || "Без назви",
+      price: Number(p?.price || 0),
+      images: Array.isArray(p?.images) ? p.images : []
+    };
 
-    div.innerHTML = `
-      <img src="${API_URL}${p.images?.[0] || ""}" alt="">
+    const card = document.createElement("a");
+    card.className = "catalog-product-card";
+    card.href = `product.html?id=${product.id}`;
 
-      <div class="product-content">
-        <h3>${p.name || "Без назви"}</h3>
-        <div class="price-row">
-          <p class="price">${p.price || 0} грн</p>
-          <button class="favorite-btn ${isFavorite(p.id) ? "active" : ""}" onclick='toggleFavorite(event, ${JSON.stringify(p)}, true)'>
-            <svg class="heart-icon" viewBox="0 0 512 512" aria-hidden="true">
-              <path d="M257 88L255 88C248.355 74.9828 235.475 63.8415 224 55.1304C173.114 16.5016 99.2988 19.267 51 61.2894C-1.26738 106.765 -12.8083 185.773 13.0116 248C25.4527 277.984 45.9981 303.467 67.9105 327C103.494 365.215 144.281 398.581 184 432.421C198.063 444.402 211.938 456.598 226 468.579C233.971 475.37 241.993 483.022 253 483.907C268.121 485.122 278.342 475.197 289 466C306.641 450.778 324.263 435.533 342 420.421C356.437 408.121 370.854 395.797 385 383.166C443.359 331.055 512 269.827 512 185C512 178.072 512.538 170.886 511.715 164C506.476 120.199 486.854 78.636 450 52.7207C401.715 18.7669 334.983 19.4645 288 55.1304C276.525 63.8415 263.645 74.9828 257 88z"></path>
-            </svg>
+    card.innerHTML = `
+      <div class="catalog-product-img-wrap">
+        <img src="${normalizeImageSrc(product)}" alt="${product.name}">
+        <button class="catalog-product-fav ${isFavorite(product.id) ? "active" : ""}" type="button" title="В обране" aria-label="В обране">
+          <svg class="heart-icon" viewBox="0 0 512 512" aria-hidden="true">
+            <path d="M257 88L255 88C248.355 74.9828 235.475 63.8415 224 55.1304C173.114 16.5016 99.2988 19.267 51 61.2894C-1.26738 106.765 -12.8083 185.773 13.0116 248C25.4527 277.984 45.9981 303.467 67.9105 327C103.494 365.215 144.281 398.581 184 432.421C198.063 444.402 211.938 456.598 226 468.579C233.971 475.37 241.993 483.022 253 483.907C268.121 485.122 278.342 475.197 289 466C306.641 450.778 324.263 435.533 342 420.421C356.437 408.121 370.854 395.797 385 383.166C443.359 331.055 512 269.827 512 185C512 178.072 512.538 170.886 511.715 164C506.476 120.199 486.854 78.636 450 52.7207C401.715 18.7669 334.983 19.4645 288 55.1304C276.525 63.8415 263.645 74.9828 257 88z"></path>
+          </svg>
+        </button>
+      </div>
+      <div class="catalog-product-body">
+        <div class="catalog-product-name">${product.name}</div>
+        <div class="catalog-product-bottom">
+          <div class="catalog-product-price">${product.price} <small>грн</small></div>
+          <button class="catalog-add-btn" type="button" aria-label="Додати в кошик">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>
           </button>
         </div>
       </div>
-
-      <button class="buy-btn" onclick='buy(event, ${JSON.stringify(p)})'>
-        Купити
-      </button>
     `;
 
-    container.appendChild(div);
+    const imageEl = card.querySelector("img");
+    imageEl.onerror = () => {
+      imageEl.src = "images/text_logo.png";
+    };
+
+    const favBtn = card.querySelector(".catalog-product-fav");
+    favBtn.addEventListener("click", (event) => {
+      event.preventDefault();
+      event.stopPropagation();
+      toggleFavorite(event, product, true);
+    });
+
+    const addBtn = card.querySelector(".catalog-add-btn");
+    addBtn.addEventListener("click", (event) => {
+      event.preventDefault();
+      event.stopPropagation();
+      buy(event, product);
+    });
+
+    container.appendChild(card);
   });
 }
 
