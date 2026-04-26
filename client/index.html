@@ -59,7 +59,7 @@
       box-shadow: 0 1px 20px rgba(0,0,0,0.06);
     }
 
-    .logo {
+    header:not(.header) .logo {
       font-family: var(--font-display);
       font-size: 28px;
       letter-spacing: 0.12em;
@@ -70,7 +70,7 @@
       gap: 10px;
     }
 
-    .logo-icon {
+    header:not(.header) .logo-icon {
       width: 36px;
       height: 36px;
       background: var(--orange);
@@ -80,11 +80,11 @@
       justify-content: center;
     }
 
-    .logo-icon svg { width: 20px; height: 20px; fill: white; }
+    header:not(.header) .logo-icon svg { width: 20px; height: 20px; fill: white; }
 
-    nav { display: flex; align-items: center; gap: 2rem; }
+    header:not(.header) nav { display: flex; align-items: center; gap: 2rem; }
 
-    nav a {
+    header:not(.header) nav a {
       font-size: 13px;
       font-weight: 500;
       letter-spacing: 0.04em;
@@ -94,9 +94,9 @@
       transition: opacity 0.2s;
     }
 
-    nav a:hover { opacity: 1; }
+    header:not(.header) nav a:hover { opacity: 1; }
 
-    .nav-cta {
+    header:not(.header) .nav-cta {
       background: var(--orange) !important;
       color: white !important;
       opacity: 1 !important;
@@ -108,14 +108,14 @@
       transition: background 0.2s, transform 0.15s !important;
     }
 
-    .nav-cta:hover {
+    header:not(.header) .nav-cta:hover {
       background: var(--orange-light) !important;
       transform: translateY(-1px);
     }
 
-    .header-actions { display: flex; align-items: center; gap: 16px; }
+    header:not(.header) .header-actions { display: flex; align-items: center; gap: 16px; }
 
-    .icon-btn {
+    header:not(.header) .icon-btn {
       width: 36px; height: 36px;
       border: none; background: none; cursor: pointer;
       display: flex; align-items: center; justify-content: center;
@@ -125,9 +125,9 @@
       color: var(--black);
     }
 
-    .icon-btn:hover { background: rgba(0,0,0,0.06); }
+    header:not(.header) .icon-btn:hover { background: rgba(0,0,0,0.06); }
 
-    .cart-badge {
+    header:not(.header) .cart-badge {
       position: absolute;
       top: 4px; right: 4px;
       background: var(--orange);
@@ -1033,7 +1033,7 @@
     }
 
     /* ── MOBILE MENU ── */
-    .burger {
+    header:not(.header) .burger {
       display: none;
       flex-direction: column;
       gap: 5px;
@@ -1043,7 +1043,7 @@
       padding: 4px;
     }
 
-    .burger span {
+    header:not(.header) .burger span {
       width: 22px; height: 2px;
       background: var(--black);
       border-radius: 2px;
@@ -1080,8 +1080,8 @@
       .hero-left { padding: 3rem 1.5rem; }
       .trust-bar { padding: 1.25rem 1.5rem; gap: 1.5rem; }
       .trust-divider { display: none; }
-      nav { display: none; }
-      .burger { display: flex; }
+      header:not(.header) nav { display: none; }
+      header:not(.header) .burger { display: flex; }
       .print-cta { margin: 0 1.5rem; padding: 2.5rem 1.5rem; }
       footer { padding: 3rem 1.5rem 1.5rem; }
       .footer-grid { grid-template-columns: 1fr; gap: 2rem; }
@@ -1161,12 +1161,12 @@
       </div>
       <div class="hero-stats">
         <div class="stat-item">
-          <div class="stat-num">50<span>+</span></div>
+          <div class="stat-num">3000<span>+</span></div>
           <div class="stat-label">Замовлень</div>
         </div>
         <div class="stat-item">
           <div class="stat-num">3<span>D</span></div>
-          <div class="stat-label">Принтери</div>
+          <div class="stat-label">Ферма</div>
         </div>
         <div class="stat-item">
           <div class="stat-num">2<span>год</span></div>
