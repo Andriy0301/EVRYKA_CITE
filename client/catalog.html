@@ -75,8 +75,10 @@
 
   <div class="catalog-page-layout">
     <aside class="catalog-filters neo-drawer neo-drawer--filters" aria-label="Фільтри каталогу">
-      <h2 class="catalog-filters-title neo-drawer__title">Фільтри</h2>
-      <button type="button" class="catalog-filters-close neo-drawer__close" id="catalogFiltersCloseBtn" aria-label="Закрити фільтри" onclick="document.body.classList.remove('catalog-filters-open');document.getElementById('catalogFiltersOverlay').hidden=true;">×</button>
+      <div class="neo-drawer__title-row">
+        <h2 class="catalog-filters-title neo-drawer__title">Фільтри</h2>
+        <button type="button" class="catalog-filters-close neo-drawer__close" id="catalogFiltersCloseBtn" aria-label="Закрити фільтри" onclick="document.body.classList.remove('catalog-filters-open');document.getElementById('catalogFiltersOverlay').hidden=true;">×</button>
+      </div>
 
       <div class="catalog-filter-block">
         <span class="catalog-filter-label" id="catalogSortLabel">Сортування</span>

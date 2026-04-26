@@ -113,8 +113,10 @@
       </div>
       <div class="catalog-page-layout">
         <aside class="catalog-filters cabinet-sidebar neo-drawer neo-drawer--cabinet" aria-label="Меню кабінету">
-          <h2 class="catalog-filters-title neo-drawer__title">Меню</h2>
-          <button type="button" class="cabinet-menu-close neo-drawer__close" id="cabinetMenuCloseBtn" aria-label="Закрити меню кабінету" onclick="document.body.classList.remove('cabinet-menu-open');document.getElementById('cabinetMenuOverlay').hidden=true;">×</button>
+          <div class="neo-drawer__title-row">
+            <h2 class="catalog-filters-title neo-drawer__title">Меню</h2>
+            <button type="button" class="cabinet-menu-close neo-drawer__close" id="cabinetMenuCloseBtn" aria-label="Закрити меню кабінету" onclick="document.body.classList.remove('cabinet-menu-open');document.getElementById('cabinetMenuOverlay').hidden=true;">×</button>
+          </div>
           <button class="cabinet-nav-btn neo-drawer__item active" type="button" data-section="personal">Особисті дані</button>
           <button class="cabinet-nav-btn neo-drawer__item" type="button" data-section="orders">Мої замовлення</button>
           <button class="cabinet-nav-btn neo-drawer__item" type="button">Бонуси</button>
