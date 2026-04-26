@@ -59,22 +59,22 @@
     if (!moreSheet) {
       moreSheet = document.createElement("div");
       moreSheet.id = "mobileMoreSheet";
-      moreSheet.className = "mobile-more-sheet";
+      moreSheet.className = "mobile-more-sheet neo-drawer-shell";
       moreSheet.setAttribute("aria-hidden", "true");
       moreSheet.setAttribute("inert", "");
       moreSheet.innerHTML =
-        '<button type="button" class="mobile-more-sheet__backdrop" aria-label="Закрити меню"></button>' +
-        '<div class="mobile-more-sheet__panel" role="dialog" aria-modal="true" aria-label="Додаткове меню">' +
-        '<div class="mobile-more-sheet__head">' +
+        '<button type="button" class="mobile-more-sheet__backdrop neo-drawer-overlay" aria-label="Закрити меню"></button>' +
+        '<div class="mobile-more-sheet__panel neo-drawer neo-drawer--more" role="dialog" aria-modal="true" aria-label="Додаткове меню">' +
+        '<div class="mobile-more-sheet__head neo-drawer__title-row">' +
         '<strong>Меню</strong>' +
-        '<button type="button" class="mobile-more-sheet__close" aria-label="Закрити меню">×</button>' +
+        '<button type="button" class="mobile-more-sheet__close neo-drawer__close" aria-label="Закрити меню">×</button>' +
         "</div>" +
-        '<a href="index.html" class="mobile-more-sheet__link">Головна</a>' +
-        '<a href="catalog.html" class="mobile-more-sheet__link">Каталог</a>' +
-        '<a href="about.html" class="mobile-more-sheet__link">Про нас</a>' +
-        '<a href="order-3d-print.html" class="mobile-more-sheet__link">Замовити 3D друк</a>' +
-        '<a href="cabinet.html" class="mobile-more-sheet__link">Кабінет</a>' +
-        '<a href="index.html#contacts" class="mobile-more-sheet__link">Контакти</a>' +
+        '<a href="index.html" class="mobile-more-sheet__link neo-drawer__item">Головна</a>' +
+        '<a href="catalog.html" class="mobile-more-sheet__link neo-drawer__item">Каталог</a>' +
+        '<a href="about.html" class="mobile-more-sheet__link neo-drawer__item">Про нас</a>' +
+        '<a href="order-3d-print.html" class="mobile-more-sheet__link neo-drawer__item">Замовити 3D друк</a>' +
+        '<a href="cabinet.html" class="mobile-more-sheet__link neo-drawer__item">Кабінет</a>' +
+        '<a href="index.html#contacts" class="mobile-more-sheet__link neo-drawer__item">Контакти</a>' +
         "</div>";
       document.body.appendChild(moreSheet);
     }

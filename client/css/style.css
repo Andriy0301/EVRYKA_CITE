@@ -7475,6 +7475,185 @@ body.evryka-site.page-print3d {
   }
 }
 
+/* Brand-new drawer system (neo) */
+@media (max-width: 768px) {
+  :root {
+    --neo-drawer-side: 12px;
+    --neo-drawer-bottom: 92px;
+    --neo-drawer-radius: 22px;
+    --neo-drawer-pad: 16px;
+    --neo-drawer-gap: 10px;
+    --neo-drawer-bg: linear-gradient(180deg, #ffffff 0%, #f3f6fb 100%);
+    --neo-drawer-border: 1px solid rgba(30, 41, 59, 0.12);
+    --neo-drawer-shadow: 0 24px 56px rgba(2, 8, 23, 0.26), 0 10px 26px rgba(15, 23, 42, 0.12);
+  }
+
+  .neo-drawer-overlay {
+    background: rgba(7, 12, 20, 0.48) !important;
+    backdrop-filter: blur(6px) !important;
+    -webkit-backdrop-filter: blur(6px) !important;
+  }
+
+  .neo-drawer {
+    position: fixed !important;
+    left: calc(var(--neo-drawer-side) + env(safe-area-inset-left, 0px)) !important;
+    right: calc(var(--neo-drawer-side) + env(safe-area-inset-right, 0px)) !important;
+    bottom: calc(var(--neo-drawer-bottom) + env(safe-area-inset-bottom, 0px)) !important;
+    z-index: 1302 !important;
+    border-radius: var(--neo-drawer-radius) !important;
+    border: var(--neo-drawer-border) !important;
+    background: var(--neo-drawer-bg) !important;
+    box-shadow: var(--neo-drawer-shadow) !important;
+    padding: var(--neo-drawer-pad) !important;
+    gap: var(--neo-drawer-gap) !important;
+    max-height: min(74vh, 560px) !important;
+    overflow-y: auto !important;
+    transform-origin: 50% 100% !important;
+    transform: translateY(28px) scale(0.92) !important;
+    transition: transform 0.26s cubic-bezier(0.2, 0.85, 0.25, 1), opacity 0.2s ease !important;
+  }
+
+  .neo-drawer__title,
+  .neo-drawer__title-row {
+    color: #0f172a !important;
+    font-size: 17px !important;
+    font-weight: 800 !important;
+    letter-spacing: 0 !important;
+  }
+
+  .neo-drawer__title {
+    margin: 0 46px 4px 0 !important;
+  }
+
+  .neo-drawer__title-row {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    margin: 0 0 4px 0 !important;
+  }
+
+  .neo-drawer__close {
+    position: static !important;
+    width: 36px !important;
+    height: 36px !important;
+    border-radius: 12px !important;
+    border: 1px solid rgba(15, 23, 42, 0.14) !important;
+    background: #f8fafc !important;
+    color: #111827 !important;
+    font-size: 20px !important;
+    line-height: 1 !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    transition: transform 0.18s ease, background 0.18s ease, border-color 0.18s ease !important;
+  }
+
+  .neo-drawer__close:hover,
+  .neo-drawer__close:focus-visible {
+    transform: translateY(-1px) !important;
+    background: #fff !important;
+    border-color: rgba(15, 23, 42, 0.24) !important;
+  }
+
+  .neo-drawer__item {
+    min-height: 44px !important;
+    padding: 10px 13px !important;
+    border-radius: 14px !important;
+    border: 1px solid rgba(15, 23, 42, 0.11) !important;
+    background: rgba(255, 255, 255, 0.92) !important;
+    color: #0f172a !important;
+    font-size: 15px !important;
+    font-weight: 650 !important;
+    letter-spacing: 0 !important;
+    box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.5);
+    transition: transform 0.16s ease, border-color 0.16s ease, background 0.16s ease, box-shadow 0.16s ease !important;
+  }
+
+  .neo-drawer__item + .neo-drawer__item {
+    margin-top: 2px !important;
+  }
+
+  .neo-drawer__item:hover,
+  .neo-drawer__item:focus-visible {
+    background: #fff !important;
+    border-color: rgba(15, 23, 42, 0.18) !important;
+    box-shadow: 0 7px 16px rgba(15, 23, 42, 0.08) !important;
+    transform: translateY(-1px) !important;
+  }
+
+  .neo-drawer--filters .catalog-filter-label {
+    color: rgba(15, 23, 42, 0.72) !important;
+    font-size: 12px !important;
+    font-weight: 700 !important;
+    letter-spacing: 0.05em !important;
+  }
+
+  .neo-drawer--filters .catalog-filter-input,
+  .neo-drawer--filters .catalog-select-trigger,
+  .neo-drawer--filters .catalog-reset-btn {
+    min-height: 44px !important;
+    padding: 10px 13px !important;
+    border-radius: 14px !important;
+    border: 1px solid rgba(15, 23, 42, 0.11) !important;
+    background: rgba(255, 255, 255, 0.92) !important;
+    color: #0f172a !important;
+    box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.5);
+  }
+
+  .neo-drawer-trigger {
+    min-height: 42px !important;
+    padding: 9px 16px !important;
+    border-radius: 14px !important;
+    border: 1px solid rgba(15, 23, 42, 0.16) !important;
+    background: linear-gradient(180deg, #ffffff 0%, #edf3f9 100%) !important;
+    color: #0f172a !important;
+    box-shadow: 0 6px 16px rgba(15, 23, 42, 0.1) !important;
+    transition: transform 0.18s ease, box-shadow 0.18s ease, border-color 0.18s ease, filter 0.18s ease,
+      background 0.18s ease, color 0.18s ease !important;
+  }
+
+  .neo-drawer-trigger:hover {
+    transform: translateY(-1px) !important;
+    box-shadow: 0 8px 18px rgba(15, 23, 42, 0.12) !important;
+    border-color: rgba(15, 23, 42, 0.24) !important;
+  }
+
+  .page-cabinet .cabinet-page-head {
+    display: flex !important;
+    align-items: center !important;
+    gap: 10px !important;
+  }
+
+  .page-cabinet .cabinet-page-title {
+    flex: 1 1 auto !important;
+    min-width: 0 !important;
+  }
+
+  .page-cabinet .cabinet-page-head .neo-drawer-trigger {
+    margin-left: auto !important;
+  }
+
+  body.catalog-filters-open .page-catalog .neo-drawer,
+  body.cabinet-menu-open .page-cabinet .neo-drawer,
+  body.mobile-more-open .neo-drawer {
+    transform: translateY(0) scale(1) !important;
+    opacity: 1 !important;
+    pointer-events: auto !important;
+  }
+
+  body.catalog-filters-open .page-catalog .neo-drawer-trigger,
+  body.cabinet-menu-open .page-cabinet .neo-drawer-trigger {
+    pointer-events: none !important;
+    cursor: default !important;
+    filter: grayscale(1) saturate(0.15) !important;
+    background: #e8edf3 !important;
+    color: #8c95a3 !important;
+    border-color: #c7d1dd !important;
+    box-shadow: none !important;
+    transform: none !important;
+  }
+}
+
 @media (max-width: 640px) {
   .breadcrumbs {
     display: none !important;

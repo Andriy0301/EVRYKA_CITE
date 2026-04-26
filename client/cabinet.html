@@ -107,19 +107,19 @@
       </div>
       <div class="cabinet-page-head">
         <h1 class="cabinet-page-title">Особистий кабінет</h1>
-        <button type="button" class="back-btn cabinet-menu-open-btn" id="cabinetMenuOpenBtn" aria-label="Відкрити меню кабінету" onclick="document.body.classList.add('cabinet-menu-open');document.getElementById('cabinetMenuOverlay').hidden=false;">
+        <button type="button" class="back-btn cabinet-menu-open-btn neo-drawer-trigger" id="cabinetMenuOpenBtn" aria-label="Відкрити меню кабінету" onclick="document.body.classList.add('cabinet-menu-open');document.getElementById('cabinetMenuOverlay').hidden=false;">
           Меню
         </button>
       </div>
       <div class="catalog-page-layout">
-        <aside class="catalog-filters cabinet-sidebar" aria-label="Меню кабінету">
-          <h2 class="catalog-filters-title">Меню</h2>
-          <button type="button" class="cabinet-menu-close" id="cabinetMenuCloseBtn" aria-label="Закрити меню кабінету" onclick="document.body.classList.remove('cabinet-menu-open');document.getElementById('cabinetMenuOverlay').hidden=true;">×</button>
-          <button class="cabinet-nav-btn active" type="button" data-section="personal">Особисті дані</button>
-          <button class="cabinet-nav-btn" type="button" data-section="orders">Мої замовлення</button>
-          <button class="cabinet-nav-btn" type="button">Бонуси</button>
-          <button class="cabinet-nav-btn" type="button">Обрані</button>
-          <button id="logoutBtn" class="cabinet-nav-btn logout" type="button">Вийти</button>
+        <aside class="catalog-filters cabinet-sidebar neo-drawer neo-drawer--cabinet" aria-label="Меню кабінету">
+          <h2 class="catalog-filters-title neo-drawer__title">Меню</h2>
+          <button type="button" class="cabinet-menu-close neo-drawer__close" id="cabinetMenuCloseBtn" aria-label="Закрити меню кабінету" onclick="document.body.classList.remove('cabinet-menu-open');document.getElementById('cabinetMenuOverlay').hidden=true;">×</button>
+          <button class="cabinet-nav-btn neo-drawer__item active" type="button" data-section="personal">Особисті дані</button>
+          <button class="cabinet-nav-btn neo-drawer__item" type="button" data-section="orders">Мої замовлення</button>
+          <button class="cabinet-nav-btn neo-drawer__item" type="button">Бонуси</button>
+          <button class="cabinet-nav-btn neo-drawer__item" type="button">Обрані</button>
+          <button id="logoutBtn" class="cabinet-nav-btn neo-drawer__item logout" type="button">Вийти</button>
         </aside>
         <div class="catalog-main">
           <div class="catalog-products-inner">
@@ -186,7 +186,7 @@
           </div>
         </div>
       </div>
-      <div class="cabinet-menu-overlay" id="cabinetMenuOverlay" hidden onclick="document.body.classList.remove('cabinet-menu-open');this.hidden=true;"></div>
+      <div class="cabinet-menu-overlay neo-drawer-overlay" id="cabinetMenuOverlay" hidden onclick="document.body.classList.remove('cabinet-menu-open');this.hidden=true;"></div>
     </div>
   </main>
 

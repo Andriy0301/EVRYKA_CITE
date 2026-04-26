@@ -74,9 +74,9 @@
   </div>
 
   <div class="catalog-page-layout">
-    <aside class="catalog-filters" aria-label="Фільтри каталогу">
-      <h2 class="catalog-filters-title">Фільтри</h2>
-      <button type="button" class="catalog-filters-close" id="catalogFiltersCloseBtn" aria-label="Закрити фільтри" onclick="document.body.classList.remove('catalog-filters-open');document.getElementById('catalogFiltersOverlay').hidden=true;">×</button>
+    <aside class="catalog-filters neo-drawer neo-drawer--filters" aria-label="Фільтри каталогу">
+      <h2 class="catalog-filters-title neo-drawer__title">Фільтри</h2>
+      <button type="button" class="catalog-filters-close neo-drawer__close" id="catalogFiltersCloseBtn" aria-label="Закрити фільтри" onclick="document.body.classList.remove('catalog-filters-open');document.getElementById('catalogFiltersOverlay').hidden=true;">×</button>
 
       <div class="catalog-filter-block">
         <span class="catalog-filter-label" id="catalogSortLabel">Сортування</span>
@@ -126,7 +126,7 @@
         <section class="products catalog-products-section">
           <div class="catalog-products-head">
             <h2>Каталог товарів</h2>
-            <button type="button" class="back-btn catalog-filters-open-btn" id="catalogFiltersOpenBtn" aria-label="Відкрити фільтри" onclick="document.body.classList.add('catalog-filters-open');document.getElementById('catalogFiltersOverlay').hidden=false;">
+            <button type="button" class="back-btn catalog-filters-open-btn neo-drawer-trigger" id="catalogFiltersOpenBtn" aria-label="Відкрити фільтри" onclick="document.body.classList.add('catalog-filters-open');document.getElementById('catalogFiltersOverlay').hidden=false;">
               Фільтр
             </button>
           </div>
@@ -135,7 +135,7 @@
       </div>
     </div>
   </div>
-  <div class="catalog-filters-overlay" id="catalogFiltersOverlay" hidden onclick="document.body.classList.remove('catalog-filters-open');this.hidden=true;"></div>
+  <div class="catalog-filters-overlay neo-drawer-overlay" id="catalogFiltersOverlay" hidden onclick="document.body.classList.remove('catalog-filters-open');this.hidden=true;"></div>
   </div>
 </div>
 
