@@ -5772,6 +5772,11 @@ body.evryka-site.page-print3d {
   border-radius: clamp(18px, 2.8vw, 30px);
 }
 
+.page-catalog .catalog-shell {
+  background: #67625d;
+  border-color: rgba(255, 255, 255, 0.08);
+}
+
 .page-cabinet .catalog-products-inner > .cabinet-card {
   width: 100%;
   max-width: 100%;
