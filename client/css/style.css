@@ -8242,7 +8242,10 @@ body.evryka-site.page-print3d {
     --neo-final-gap: 10px;
   }
 
-  .neo-drawer-overlay {
+  .neo-drawer-overlay,
+  .mobile-more-sheet__backdrop,
+  .catalog-filters-overlay,
+  .cabinet-menu-overlay {
     background: rgba(7, 12, 20, 0.48) !important;
     backdrop-filter: blur(6px) !important;
     -webkit-backdrop-filter: blur(6px) !important;
@@ -8251,7 +8254,10 @@ body.evryka-site.page-print3d {
   .neo-drawer,
   .neo-drawer--filters,
   .neo-drawer--cabinet,
-  .neo-drawer--more {
+  .neo-drawer--more,
+  .mobile-more-sheet__panel,
+  .page-catalog .catalog-filters,
+  .page-cabinet .catalog-filters.cabinet-sidebar {
     left: calc(var(--neo-final-side) + env(safe-area-inset-left, 0px)) !important;
     right: calc(var(--neo-final-side) + env(safe-area-inset-right, 0px)) !important;
     bottom: calc(var(--neo-final-bottom) + env(safe-area-inset-bottom, 0px)) !important;
@@ -8268,7 +8274,10 @@ body.evryka-site.page-print3d {
   }
 
   .neo-drawer__title,
-  .neo-drawer__title-row {
+  .neo-drawer__title-row,
+  .mobile-more-sheet__head,
+  .page-catalog .catalog-filters-title,
+  .page-cabinet .catalog-filters.cabinet-sidebar .catalog-filters-title {
     color: #0f172a !important;
     font-size: 17px !important;
     font-weight: 800 !important;
@@ -8276,18 +8285,24 @@ body.evryka-site.page-print3d {
     text-transform: none !important;
   }
 
-  .neo-drawer__title {
+  .neo-drawer__title,
+  .page-catalog .catalog-filters-title,
+  .page-cabinet .catalog-filters.cabinet-sidebar .catalog-filters-title {
     margin: 0 !important;
   }
 
-  .neo-drawer__title-row {
+  .neo-drawer__title-row,
+  .mobile-more-sheet__head {
     display: flex !important;
     align-items: center !important;
     justify-content: space-between !important;
     margin: 0 0 4px 0 !important;
   }
 
-  .neo-drawer__close {
+  .neo-drawer__close,
+  .mobile-more-sheet__close,
+  .page-catalog .catalog-filters-close,
+  .page-cabinet .cabinet-menu-close {
     position: static !important;
     width: 34px !important;
     height: 34px !important;
@@ -8300,9 +8315,14 @@ body.evryka-site.page-print3d {
   }
 
   .neo-drawer__item,
+  .mobile-more-sheet__link,
+  .page-cabinet .catalog-filters.cabinet-sidebar .cabinet-nav-btn,
   .neo-drawer--filters .catalog-filter-input,
   .neo-drawer--filters .catalog-select-trigger,
-  .neo-drawer--filters .catalog-reset-btn {
+  .neo-drawer--filters .catalog-reset-btn,
+  .page-catalog .catalog-filter-input,
+  .page-catalog .catalog-select-trigger,
+  .page-catalog .catalog-reset-btn {
     min-height: 42px !important;
     padding: 9px 12px !important;
     border-radius: 13px !important;
@@ -8314,7 +8334,9 @@ body.evryka-site.page-print3d {
     letter-spacing: 0 !important;
   }
 
-  .neo-drawer-trigger {
+  .neo-drawer-trigger,
+  .catalog-filters-open-btn,
+  .cabinet-menu-open-btn {
     min-height: 40px !important;
     padding: 8px 14px !important;
     border-radius: 13px !important;
@@ -8334,16 +8356,25 @@ body.evryka-site.page-print3d {
     margin-left: auto !important;
   }
 
+  .page-cabinet .cabinet-page-head .cabinet-menu-open-btn {
+    margin-left: auto !important;
+  }
+
   body.catalog-filters-open .page-catalog .neo-drawer,
   body.cabinet-menu-open .page-cabinet .neo-drawer,
-  body.mobile-more-open .neo-drawer {
+  body.mobile-more-open .neo-drawer,
+  body.catalog-filters-open .page-catalog .catalog-filters,
+  body.cabinet-menu-open .page-cabinet .catalog-filters.cabinet-sidebar,
+  body.mobile-more-open .mobile-more-sheet__panel {
     transform: translateY(0) scale(1) !important;
     opacity: 1 !important;
     pointer-events: auto !important;
   }
 
   body.catalog-filters-open .page-catalog .neo-drawer-trigger,
-  body.cabinet-menu-open .page-cabinet .neo-drawer-trigger {
+  body.cabinet-menu-open .page-cabinet .neo-drawer-trigger,
+  body.catalog-filters-open .catalog-filters-open-btn,
+  body.cabinet-menu-open .cabinet-menu-open-btn {
     pointer-events: none !important;
     filter: grayscale(1) saturate(0.15) !important;
     background: #e8edf3 !important;
