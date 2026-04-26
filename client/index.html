@@ -658,6 +658,12 @@
 
     .product-fav:hover { color: #e44; transform: scale(1.1); }
     .product-fav.active { color: #e44; }
+    .product-fav .heart-icon {
+      width: 16px;
+      height: 16px;
+      fill: currentColor;
+      display: block;
+    }
 
     .product-body { padding: 1.25rem; flex: 1; display: flex; flex-direction: column; }
 
@@ -909,6 +915,9 @@
       width: 150px;
       height: auto;
       display: block;
+      background: #fff;
+      border-radius: 10px;
+      padding: 8px 10px;
     }
 
     .footer-desc {
@@ -1153,17 +1162,18 @@
         <div class="hero-product-card">
           <div class="hero-product-img">
             <img
-              src="https://evryka-cite.onrender.com/images/products/product-1.jpg"
+              id="homeHeroImage"
+              src="images/text_logo.png"
               alt="Продукт"
-              onerror="this.parentElement.innerHTML='<div style=\'display:flex;align-items:center;justify-content:center;height:100%;color:rgba(255,255,255,0.2);font-size:48px;\'>⬡</div>'"
+              onerror="this.src='images/text_logo.png'"
             />
           </div>
           <div class="hero-product-info">
             <div class="hero-product-tag">Популярне</div>
-            <div class="hero-product-name">Шаблон кондуктор для отворів під інсталяцію</div>
+            <div class="hero-product-name" id="homeHeroName">Шаблон кондуктор для отворів під інсталяцію</div>
             <div class="hero-product-bottom">
-              <div class="hero-product-price">325 <span>грн</span></div>
-              <button class="hero-add-btn" onclick='addToCart({id: 1, name: "Шаблон кондуктор для отворів під інсталяцію", price: 325, images: ["/images/products/product-1.jpg"]})'>
+              <div class="hero-product-price" id="homeHeroPrice">325 <span>грн</span></div>
+              <button class="hero-add-btn" id="homeHeroAddBtn" onclick='addToCart({id: 1, name: "Шаблон кондуктор для отворів під інсталяцію", price: 325, images: ["images/text_logo.png"]})'>
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>
               </button>
             </div>
@@ -1302,18 +1312,23 @@
       <a href="catalog.html" class="product-card">
         <div class="product-img-wrap">
           <img
-            src="https://evryka-cite.onrender.com/images/products/product-1.jpg"
+            id="homeCardImage1"
+            src="images/text_logo.png"
             alt="Шаблон кондуктор"
-            onerror="this.src='https://via.placeholder.com/400x400/F0EDE8/999?text=EVRYKA'"
+            onerror="this.src='images/text_logo.png'"
           />
           <div class="product-badge orange">Хіт</div>
-          <button class="product-fav" onclick='event.preventDefault(); toggleFavorite(event, {id: 1, name: "Шаблон кондуктор для отворів під інсталяцію", price: 325, images: ["/images/products/product-1.jpg"]}, true)' title="В обране">♡</button>
+          <button class="product-fav" id="homeCardFav1" onclick='event.preventDefault(); toggleFavorite(event, {id: 1, name: "Шаблон кондуктор для отворів під інсталяцію", price: 325, images: ["images/text_logo.png"]}, true)' title="В обране">
+            <svg class="heart-icon" viewBox="0 0 512 512" aria-hidden="true">
+              <path d="M257 88L255 88C248.355 74.9828 235.475 63.8415 224 55.1304C173.114 16.5016 99.2988 19.267 51 61.2894C-1.26738 106.765 -12.8083 185.773 13.0116 248C25.4527 277.984 45.9981 303.467 67.9105 327C103.494 365.215 144.281 398.581 184 432.421C198.063 444.402 211.938 456.598 226 468.579C233.971 475.37 241.993 483.022 253 483.907C268.121 485.122 278.342 475.197 289 466C306.641 450.778 324.263 435.533 342 420.421C356.437 408.121 370.854 395.797 385 383.166C443.359 331.055 512 269.827 512 185C512 178.072 512.538 170.886 511.715 164C506.476 120.199 486.854 78.636 450 52.7207C401.715 18.7669 334.983 19.4645 288 55.1304C276.525 63.8415 263.645 74.9828 257 88z"></path>
+            </svg>
+          </button>
         </div>
         <div class="product-body">
-          <div class="product-name">Шаблон кондуктор для отворів під інсталяцію</div>
+          <div class="product-name" id="homeCardName1">Шаблон кондуктор для отворів під інсталяцію</div>
           <div class="product-bottom">
-            <div class="product-price">325 <small>грн</small></div>
-            <button class="add-btn" onclick='event.preventDefault(); addToCart({id: 1, name: "Шаблон кондуктор для отворів під інсталяцію", price: 325, images: ["/images/products/product-1.jpg"]})'>
+            <div class="product-price" id="homeCardPrice1">325 <small>грн</small></div>
+            <button class="add-btn" id="homeCardAdd1" onclick='event.preventDefault(); addToCart({id: 1, name: "Шаблон кондуктор для отворів під інсталяцію", price: 325, images: ["images/text_logo.png"]})'>
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>
             </button>
           </div>
@@ -1324,17 +1339,22 @@
       <a href="catalog.html" class="product-card">
         <div class="product-img-wrap">
           <img
-            src="https://evryka-cite.onrender.com/images/products/product-2.jpg"
+            id="homeCardImage2"
+            src="images/text_logo.png"
             alt="Корпус вентиляція"
-            onerror="this.src='https://via.placeholder.com/400x400/F0EDE8/999?text=EVRYKA'"
+            onerror="this.src='images/text_logo.png'"
           />
-          <button class="product-fav" onclick='event.preventDefault(); toggleFavorite(event, {id: 2, name: "Корпус прихованого монтажу для вентиляції під вентилятор 125 мм", price: 799, images: ["/images/products/product-2.jpg"]}, true)' title="В обране">♡</button>
+          <button class="product-fav" id="homeCardFav2" onclick='event.preventDefault(); toggleFavorite(event, {id: 2, name: "Корпус прихованого монтажу для вентиляції під вентилятор 125 мм", price: 799, images: ["images/text_logo.png"]}, true)' title="В обране">
+            <svg class="heart-icon" viewBox="0 0 512 512" aria-hidden="true">
+              <path d="M257 88L255 88C248.355 74.9828 235.475 63.8415 224 55.1304C173.114 16.5016 99.2988 19.267 51 61.2894C-1.26738 106.765 -12.8083 185.773 13.0116 248C25.4527 277.984 45.9981 303.467 67.9105 327C103.494 365.215 144.281 398.581 184 432.421C198.063 444.402 211.938 456.598 226 468.579C233.971 475.37 241.993 483.022 253 483.907C268.121 485.122 278.342 475.197 289 466C306.641 450.778 324.263 435.533 342 420.421C356.437 408.121 370.854 395.797 385 383.166C443.359 331.055 512 269.827 512 185C512 178.072 512.538 170.886 511.715 164C506.476 120.199 486.854 78.636 450 52.7207C401.715 18.7669 334.983 19.4645 288 55.1304C276.525 63.8415 263.645 74.9828 257 88z"></path>
+            </svg>
+          </button>
         </div>
         <div class="product-body">
-          <div class="product-name">Корпус прихованого монтажу для вентиляції під вентилятор 125 мм</div>
+          <div class="product-name" id="homeCardName2">Корпус прихованого монтажу для вентиляції під вентилятор 125 мм</div>
           <div class="product-bottom">
-            <div class="product-price">799 <small>грн</small></div>
-            <button class="add-btn" onclick='event.preventDefault(); addToCart({id: 2, name: "Корпус прихованого монтажу для вентиляції під вентилятор 125 мм", price: 799, images: ["/images/products/product-2.jpg"]})'>
+            <div class="product-price" id="homeCardPrice2">799 <small>грн</small></div>
+            <button class="add-btn" id="homeCardAdd2" onclick='event.preventDefault(); addToCart({id: 2, name: "Корпус прихованого монтажу для вентиляції під вентилятор 125 мм", price: 799, images: ["images/text_logo.png"]})'>
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>
             </button>
           </div>
@@ -1345,18 +1365,23 @@
       <a href="catalog.html" class="product-card">
         <div class="product-img-wrap">
           <img
-            src="https://evryka-cite.onrender.com/images/products/product-3.jpg"
+            id="homeCardImage3"
+            src="images/text_logo.png"
             alt="Брілок Лабубу"
-            onerror="this.src='https://via.placeholder.com/400x400/F0EDE8/999?text=EVRYKA'"
+            onerror="this.src='images/text_logo.png'"
           />
           <div class="product-badge">Новинка</div>
-          <button class="product-fav" onclick='event.preventDefault(); toggleFavorite(event, {id: 3, name: "Брілок Лабубу (Labubu) — стильна колекційна іграшка", price: 350, images: ["/images/products/product-3.jpg"]}, true)' title="В обране">♡</button>
+          <button class="product-fav" id="homeCardFav3" onclick='event.preventDefault(); toggleFavorite(event, {id: 3, name: "Брілок Лабубу (Labubu) — стильна колекційна іграшка", price: 350, images: ["images/text_logo.png"]}, true)' title="В обране">
+            <svg class="heart-icon" viewBox="0 0 512 512" aria-hidden="true">
+              <path d="M257 88L255 88C248.355 74.9828 235.475 63.8415 224 55.1304C173.114 16.5016 99.2988 19.267 51 61.2894C-1.26738 106.765 -12.8083 185.773 13.0116 248C25.4527 277.984 45.9981 303.467 67.9105 327C103.494 365.215 144.281 398.581 184 432.421C198.063 444.402 211.938 456.598 226 468.579C233.971 475.37 241.993 483.022 253 483.907C268.121 485.122 278.342 475.197 289 466C306.641 450.778 324.263 435.533 342 420.421C356.437 408.121 370.854 395.797 385 383.166C443.359 331.055 512 269.827 512 185C512 178.072 512.538 170.886 511.715 164C506.476 120.199 486.854 78.636 450 52.7207C401.715 18.7669 334.983 19.4645 288 55.1304C276.525 63.8415 263.645 74.9828 257 88z"></path>
+            </svg>
+          </button>
         </div>
         <div class="product-body">
-          <div class="product-name">Брілок Лабубу (Labubu) — стильна колекційна іграшка</div>
+          <div class="product-name" id="homeCardName3">Брілок Лабубу (Labubu) — стильна колекційна іграшка</div>
           <div class="product-bottom">
-            <div class="product-price">350 <small>грн</small></div>
-            <button class="add-btn" onclick='event.preventDefault(); addToCart({id: 3, name: "Брілок Лабубу (Labubu) — стильна колекційна іграшка", price: 350, images: ["/images/products/product-3.jpg"]})'>
+            <div class="product-price" id="homeCardPrice3">350 <small>грн</small></div>
+            <button class="add-btn" id="homeCardAdd3" onclick='event.preventDefault(); addToCart({id: 3, name: "Брілок Лабубу (Labubu) — стильна колекційна іграшка", price: 350, images: ["images/text_logo.png"]})'>
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>
             </button>
           </div>
@@ -1683,6 +1708,77 @@
         child.style.transitionDelay = `${i * 80}ms`;
       });
     });
+
+    function normalizeImageSrc(image) {
+      const fallback = "images/text_logo.png";
+      const candidate = String(image || "").trim();
+      if (!candidate) return fallback;
+      if (/^https?:\/\//i.test(candidate)) return candidate;
+      if (candidate.startsWith("/")) return candidate;
+      return `/${candidate}`;
+    }
+
+    function wireCard(index, product) {
+      const img = document.getElementById(`homeCardImage${index}`);
+      const name = document.getElementById(`homeCardName${index}`);
+      const price = document.getElementById(`homeCardPrice${index}`);
+      const fav = document.getElementById(`homeCardFav${index}`);
+      const add = document.getElementById(`homeCardAdd${index}`);
+      if (!img || !name || !price || !fav || !add || !product) return;
+
+      const safeProduct = {
+        id: Number(product.id) || index,
+        name: product.name || "Товар",
+        price: Number(product.price) || 0,
+        images: [String(product.images?.[0] || "")]
+      };
+
+      img.src = normalizeImageSrc(safeProduct.images[0]);
+      img.alt = safeProduct.name;
+      img.onerror = () => {
+        img.src = "images/text_logo.png";
+      };
+      name.textContent = safeProduct.name;
+      price.innerHTML = `${safeProduct.price} <small>грн</small>`;
+      fav.setAttribute("onclick", `event.preventDefault(); toggleFavorite(event, ${JSON.stringify(safeProduct)}, true)`);
+      add.setAttribute("onclick", `event.preventDefault(); addToCart(${JSON.stringify(safeProduct)})`);
+    }
+
+    function wireHero(product) {
+      const img = document.getElementById("homeHeroImage");
+      const name = document.getElementById("homeHeroName");
+      const price = document.getElementById("homeHeroPrice");
+      const add = document.getElementById("homeHeroAddBtn");
+      if (!img || !name || !price || !add || !product) return;
+
+      const safeProduct = {
+        id: Number(product.id) || 1,
+        name: product.name || "Товар",
+        price: Number(product.price) || 0,
+        images: [String(product.images?.[0] || "")]
+      };
+
+      img.src = normalizeImageSrc(safeProduct.images[0]);
+      img.alt = safeProduct.name;
+      img.onerror = () => {
+        img.src = "images/text_logo.png";
+      };
+      name.textContent = safeProduct.name;
+      price.innerHTML = `${safeProduct.price} <span>грн</span>`;
+      add.setAttribute("onclick", `addToCart(${JSON.stringify(safeProduct)})`);
+    }
+
+    fetch("/api/products?sort=popular", { cache: "no-store" })
+      .then((res) => (res.ok ? res.json() : []))
+      .then((items) => {
+        const products = Array.isArray(items) ? items.slice(0, 3) : [];
+        if (!products.length) return;
+        wireHero(products[0]);
+        products.forEach((product, idx) => wireCard(idx + 1, product));
+      })
+      .catch(() => {
+        // Keep static fallbacks if API is unavailable.
+      });
   </script>
   <script src="js/api.js?v=20260426"></script>
   <script src="js/cart.js?v=20260430"></script>
