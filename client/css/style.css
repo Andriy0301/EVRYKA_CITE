@@ -8052,3 +8052,17 @@ body.evryka-site.page-print3d {
     display: none;
   }
 }
+
+/* User request: fully remove flyout menus/filters UI. */
+.page-catalog .catalog-filters,
+.page-catalog .catalog-filters-open-btn,
+.page-catalog .catalog-filters-close,
+.page-catalog .catalog-filters-overlay,
+.page-cabinet .catalog-filters.cabinet-sidebar,
+.page-cabinet .cabinet-menu-open-btn,
+.page-cabinet .cabinet-menu-close,
+.page-cabinet .cabinet-menu-overlay,
+.mobile-more-sheet,
+.mobile-bottom-nav__item[data-item="more"] {
+  display: none !important;
+}
