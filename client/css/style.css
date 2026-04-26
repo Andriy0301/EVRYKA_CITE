@@ -5773,8 +5773,8 @@ body.evryka-site.page-print3d {
 }
 
 .page-catalog .catalog-shell {
-  background: #67625d;
-  border-color: rgba(255, 255, 255, 0.08);
+  background: var(--ev-p-card, var(--surface-primary));
+  border-color: var(--ev-p-line-soft, rgba(17, 17, 17, 0.06));
 }
 
 .page-cabinet .catalog-products-inner > .cabinet-card {
