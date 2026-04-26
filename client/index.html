@@ -24,6 +24,7 @@
       --muted: #6B6A65;
       --light: #F5F3EE;
       --white: #FFFFFF;
+      --shell-radius: 18px;
       --font-display: 'Bebas Neue', sans-serif;
       --font-body: 'Manrope', sans-serif;
     }
@@ -138,12 +139,19 @@
       display: flex; align-items: center; justify-content: center;
     }
 
+    .hero-shell {
+      margin: 82px 16px 0;
+      border-radius: var(--shell-radius);
+      overflow: hidden;
+      background: #F8F6F2;
+    }
+
     /* ── HERO ── */
     .hero {
-      min-height: 100svh;
+      min-height: calc(100svh - 82px);
       display: grid;
       grid-template-columns: 1fr 1fr;
-      padding-top: 64px;
+      padding-top: 0;
       overflow: hidden;
       position: relative;
     }
@@ -1037,6 +1045,7 @@
 
     /* ── RESPONSIVE ── */
     @media (max-width: 1024px) {
+      .hero-shell { margin-top: 78px; }
       .hero { grid-template-columns: 1fr; }
       .hero-right { display: none; }
       .cat-grid { grid-template-columns: repeat(2, 1fr); }
@@ -1048,6 +1057,7 @@
     }
 
     @media (max-width: 768px) {
+      .hero-shell { margin: 74px 10px 0; }
       .section, .section-sm { padding: 4rem 1.5rem; }
       .hero-left { padding: 3rem 1.5rem; }
       .trust-bar { padding: 1.25rem 1.5rem; gap: 1.5rem; }
@@ -1111,6 +1121,7 @@
   </header>
 
   <!-- ── HERO ── -->
+  <div class="hero-shell">
   <section class="hero">
     <div class="hero-left">
       <div class="hero-eyebrow">3D-друк у Львові</div>
@@ -1182,6 +1193,7 @@
       </div>
     </div>
   </section>
+  </div>
 
   <!-- ── TRUST BAR ── -->
   <div class="trust-bar">
