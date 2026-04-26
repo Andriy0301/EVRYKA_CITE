@@ -5192,7 +5192,7 @@ body.cart-open .header .cart {
   background: #ffffff;
   border-radius: 18px;
   overflow: hidden;
-  border: 1px solid rgba(17, 17, 16, 0.12);
+  border: none;
   transition: transform 0.25s, box-shadow 0.25s;
   text-decoration: none;
   color: var(--black);
