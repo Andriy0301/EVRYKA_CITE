@@ -5314,7 +5314,7 @@ body.cart-open .header .cart {
 .page-catalog .catalog-add-btn {
   width: 40px;
   height: 40px;
-  background: var(--orange);
+  background: var(--accent-main);
   border: none;
   border-radius: 10px;
   display: flex;
@@ -5327,7 +5327,7 @@ body.cart-open .header .cart {
 }
 
 .page-catalog .catalog-add-btn:hover {
-  background: var(--orange-light);
+  background: var(--accent-btn-hover);
   transform: scale(1.05);
 }
 
