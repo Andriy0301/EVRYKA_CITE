@@ -172,15 +172,6 @@
       pointer-events: none;
     }
 
-    .hero-shell::after {
-      content: "";
-      position: absolute;
-      inset: 0;
-      z-index: 0;
-      background: transparent;
-      pointer-events: none;
-    }
-
     /* -- HERO -- */
     .hero {
       min-height: 100svh;
@@ -231,24 +222,24 @@
       font-weight: 600;
       letter-spacing: 0.15em;
       text-transform: uppercase;
-      color: var(--orange);
+      color: var(--black);
       margin-bottom: 0.6rem;
     }
 
     .hero-eyebrow::before {
       content: '';
       width: 24px; height: 2px;
-      background: var(--orange);
+      background: var(--black);
       border-radius: 2px;
     }
 
     .hero-title {
       font-family: var(--font-display);
-      font-size: clamp(12px, 1.45vw, 20px);
-      line-height: 0.9;
+      font-size: clamp(20px, 2.4vw, 34px);
+      line-height: 1.05;
       letter-spacing: 0.01em;
       color: var(--black);
-      margin-bottom: 0.65rem;
+      margin-bottom: 1rem;
       text-shadow: none;
       overflow-wrap: normal;
       word-break: normal;
@@ -256,9 +247,10 @@
 
     /* Force hero heading size (prevents external style overrides) */
     .hero .hero-left .hero-title {
-      font-size: clamp(12px, 1.45vw, 20px) !important;
-      line-height: 0.9 !important;
+      font-size: clamp(20px, 2.4vw, 34px) !important;
+      line-height: 1.05 !important;
       letter-spacing: 0.01em !important;
+      margin-bottom: 1rem !important;
     }
 
     .hero-title span { color: var(--orange); }
@@ -343,7 +335,7 @@
       line-height: 1;
     }
 
-    .stat-num span { color: var(--orange); }
+    .stat-num span { color: var(--black); }
 
     .stat-label {
       font-size: 9px;
