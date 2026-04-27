@@ -643,6 +643,18 @@ a:hover {
   margin-top: auto;
 }
 
+.product .product-card-add-btn {
+  width: 44px;
+  height: 44px;
+  min-width: 44px;
+  padding: 0;
+  border-radius: 12px;
+  font-size: 34px;
+  font-weight: 400;
+  line-height: 1;
+  letter-spacing: 0;
+}
+
 #products {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
