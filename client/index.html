@@ -862,7 +862,12 @@
     /* ── TRUST BAR ── */
     .trust-bar {
       background: var(--dark);
-      margin: 0 5rem;
+      margin-left: calc(
+        var(--ev-stack-outer, clamp(0px, 0.65vw, 10px)) + env(safe-area-inset-left, 0px)
+      );
+      margin-right: calc(
+        var(--ev-stack-outer, clamp(0px, 0.65vw, 10px)) + env(safe-area-inset-right, 0px)
+      );
       padding: 1.25rem 5rem;
       display: flex;
       align-items: center;
@@ -870,6 +875,7 @@
       gap: 3rem;
       flex-wrap: wrap;
       overflow: hidden;
+      border-radius: var(--shell-radius);
     }
 
     .trust-item {
@@ -1500,7 +1506,13 @@
       }
       .section, .section-sm { padding: 4rem 1.5rem; }
       .hero-left { padding: 3rem 1.5rem; }
-      .trust-bar { margin: 0 1.5rem; padding: 1.25rem 1.5rem; gap: 1.5rem; }
+      .trust-bar {
+        margin-left: calc(var(--ev-stack-outer, 0px) + env(safe-area-inset-left, 0px));
+        margin-right: calc(var(--ev-stack-outer, 0px) + env(safe-area-inset-right, 0px));
+        padding: 1.25rem 1.5rem;
+        gap: 1.5rem;
+        border-radius: var(--shell-radius);
+      }
       .trust-divider { display: none; }
       header:not(.header) nav { display: none; }
       header:not(.header) .burger { display: flex; }
