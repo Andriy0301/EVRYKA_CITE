@@ -197,27 +197,30 @@
       display: flex;
       flex-direction: column;
       justify-content: center;
+      align-items: flex-start;
       padding: 3.5rem 3.25rem 4rem 3.75rem;
       position: relative;
       z-index: 2;
+      width: fit-content;
+      max-width: min(640px, 100%);
+      border-radius: 22px;
+      background: rgba(255, 255, 255, 0.34);
+      -webkit-backdrop-filter: blur(8px);
+      backdrop-filter: blur(8px);
+      border: 1px solid rgba(255, 255, 255, 0.32);
+    }
+
+    .hero-copy {
+      display: inline-block;
+      width: 100%;
+      max-width: 100%;
+      padding: 0;
       border-radius: 0;
       background: transparent;
       -webkit-backdrop-filter: none;
       backdrop-filter: none;
       border: none;
-    }
-
-    .hero-copy {
-      display: inline-block;
-      width: fit-content;
-      max-width: min(560px, 100%);
-      padding: 1.1rem 1.25rem 1.2rem;
-      border-radius: 20px;
-      background: rgba(255, 255, 255, 0.34);
-      -webkit-backdrop-filter: blur(8px);
-      backdrop-filter: blur(8px);
-      border: 1px solid rgba(255, 255, 255, 0.32);
-      margin-bottom: 1.2rem;
+      margin-bottom: 0;
     }
 
     .hero-eyebrow {
