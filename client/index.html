@@ -168,8 +168,7 @@
       background-size: cover;
       background-position: center;
       background-repeat: no-repeat;
-      opacity: 0.22;
-      animation: heroBannerCycle 18s steps(1, end) infinite;
+      opacity: 0.48;
       pointer-events: none;
     }
 
@@ -178,20 +177,8 @@
       position: absolute;
       inset: 0;
       z-index: 0;
-      background: linear-gradient(180deg, rgba(255, 255, 255, 0.84) 0%, rgba(255, 255, 255, 0.9) 100%);
+      background: linear-gradient(180deg, rgba(255, 255, 255, 0.52) 0%, rgba(255, 255, 255, 0.58) 100%);
       pointer-events: none;
-    }
-
-    @keyframes heroBannerCycle {
-      0%, 33.333% {
-        background-image: url("images/hero-banner-repair.png");
-      }
-      33.334%, 66.666% {
-        background-image: url("images/hero-banner-3d-print.png");
-      }
-      66.667%, 100% {
-        background-image: url("images/hero-banner-gift-toys.png");
-      }
     }
 
     /* -- HERO -- */
