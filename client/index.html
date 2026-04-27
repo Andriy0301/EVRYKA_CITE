@@ -3,12 +3,12 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>EVRYKA — 3D-друк деталей та виробів</title>
+  <title>EVRYKA � 3D-���� ������� �� �������</title>
   <link rel="icon" href="images/text_logo.png" type="image/png">
   <link rel="apple-touch-icon" href="images/text_logo.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Manrope:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="css/style.css?v=20260427-4">
+  <link rel="stylesheet" href="css/style.css?v=20260427-6">
   <link rel="stylesheet" href="css/evryka-header-hero.css?v=20260420-21">
   <script src="https://accounts.google.com/gsi/client" async defer></script>
   <style>
@@ -38,7 +38,7 @@
       overflow-x: hidden;
     }
 
-    /* ── HEADER ── */
+    /* -- HEADER -- */
     header:not(.header) {
       position: fixed;
       top: 0; left: 0; right: 0;
@@ -140,6 +140,8 @@
     }
 
     .hero-shell {
+      position: relative;
+      isolation: isolate;
       margin-left: calc(
         var(--ev-stack-outer, clamp(0px, 0.65vw, 10px)) + env(safe-area-inset-left, 0px)
       );
@@ -157,7 +159,42 @@
       box-sizing: border-box;
     }
 
-    /* ── HERO ── */
+    .hero-shell::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      z-index: 0;
+      background-image: url("images/hero-banner-repair.png");
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      opacity: 0.22;
+      animation: heroBannerCycle 18s steps(1, end) infinite;
+      pointer-events: none;
+    }
+
+    .hero-shell::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      z-index: 0;
+      background: linear-gradient(180deg, rgba(255, 255, 255, 0.84) 0%, rgba(255, 255, 255, 0.9) 100%);
+      pointer-events: none;
+    }
+
+    @keyframes heroBannerCycle {
+      0%, 33.333% {
+        background-image: url("images/hero-banner-repair.png");
+      }
+      33.334%, 66.666% {
+        background-image: url("images/hero-banner-3d-print.png");
+      }
+      66.667%, 100% {
+        background-image: url("images/hero-banner-gift-toys.png");
+      }
+    }
+
+    /* -- HERO -- */
     .hero {
       min-height: 100svh;
       display: grid;
@@ -165,6 +202,7 @@
       padding-top: 0;
       overflow: hidden;
       position: relative;
+      z-index: 1;
       border-radius: var(--ev-shell-radius, clamp(18px, 2.3vw, 26px));
     }
 
@@ -295,7 +333,7 @@
       letter-spacing: 0.08em;
     }
 
-    /* ── HERO RIGHT / VISUAL ── */
+    /* -- HERO RIGHT / VISUAL -- */
     .hero-right {
       position: relative;
       overflow: hidden;
@@ -859,7 +897,7 @@
       background: #22C55E;
     }
 
-    /* ── TRUST BAR ── */
+    /* -- TRUST BAR -- */
     .trust-bar {
       background: var(--dark);
       margin-left: calc(
@@ -904,7 +942,7 @@
       background: rgba(255,255,255,0.08);
     }
 
-    /* ── CATEGORIES ── */
+    /* -- CATEGORIES -- */
     .section { padding: 6rem 5rem; }
     .section-sm { padding: 4rem 5rem; }
 
@@ -948,7 +986,7 @@
 
     .section-link:hover { gap: 10px; }
 
-    /* ── CATEGORY GRID ── */
+    /* -- CATEGORY GRID -- */
     .cat-grid {
       display: grid;
       grid-template-columns: repeat(4, 1fr);
@@ -1020,7 +1058,7 @@
       transform: translateX(4px);
     }
 
-    /* ── PRODUCTS ── */
+    /* -- PRODUCTS -- */
     .products-grid {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
@@ -1158,7 +1196,7 @@
 
     .add-btn:hover { background: var(--orange-light); transform: scale(1.05); }
 
-    /* ── 3D PRINT CTA ── */
+    /* -- 3D PRINT CTA -- */
     .print-cta {
       background: var(--dark);
       border-radius: 28px;
@@ -1233,7 +1271,7 @@
     .print-step-text { font-size: 14px; color: rgba(255,255,255,0.6); padding-top: 4px; }
     .print-step-text strong { color: rgba(255,255,255,0.9); display: block; font-weight: 600; }
 
-    /* ── HOW IT WORKS ── */
+    /* -- HOW IT WORKS -- */
     .how-grid {
       display: grid;
       grid-template-columns: repeat(4, 1fr);
@@ -1290,7 +1328,7 @@
     .how-title { font-size: 16px; font-weight: 700; }
     .how-desc { font-size: 13px; line-height: 1.6; color: var(--muted); }
 
-    /* ── TESTIMONIALS ── */
+    /* -- TESTIMONIALS -- */
     .testimonials-grid {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
@@ -1334,7 +1372,7 @@
     .author-name { font-size: 13px; font-weight: 600; }
     .author-role { font-size: 11px; color: var(--muted); }
 
-    /* ── FOOTER ── */
+    /* -- FOOTER -- */
     footer {
       background: var(--dark);
       padding: 4rem 5rem 2rem;
@@ -1435,7 +1473,7 @@
       letter-spacing: 0.04em;
     }
 
-    /* ── CHAT BTN ── */
+    /* -- CHAT BTN -- */
     .chat-fab {
       position: fixed;
       bottom: 24px; right: 24px;
@@ -1456,7 +1494,7 @@
       box-shadow: 0 12px 32px rgba(240,122,26,0.5);
     }
 
-    /* ── MOBILE MENU ── */
+    /* -- MOBILE MENU -- */
     header:not(.header) .burger {
       display: none;
       flex-direction: column;
@@ -1474,7 +1512,7 @@
       transition: 0.3s;
     }
 
-    /* ── ANIMATIONS ── */
+    /* -- ANIMATIONS -- */
     .fade-up {
       opacity: 0;
       transform: translateY(30px);
@@ -1486,7 +1524,7 @@
       transform: translateY(0);
     }
 
-    /* ── RESPONSIVE ── */
+    /* -- RESPONSIVE -- */
     @media (max-width: 1024px) {
       .hero { grid-template-columns: 1fr; }
       .hero-right { min-height: 360px; }
@@ -1499,6 +1537,10 @@
     }
 
     @media (max-width: 768px) {
+      .hero-shell::before {
+        opacity: 0.18;
+      }
+
       .hero-shell {
         margin-left: calc(var(--ev-stack-outer, 0px) + env(safe-area-inset-left, 0px));
         margin-right: calc(var(--ev-stack-outer, 0px) + env(safe-area-inset-right, 0px));
@@ -1506,14 +1548,45 @@
       }
       .section, .section-sm { padding: 4rem 1.5rem; }
       .hero-left { padding: 3rem 1.5rem; }
+      .hero-actions {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 10px;
+      }
+      .hero-actions .btn-primary,
+      .hero-actions .btn-ghost {
+        width: 100%;
+        justify-content: center;
+        text-align: center;
+        padding: 12px 14px;
+      }
       .trust-bar {
         margin-left: calc(var(--ev-stack-outer, 0px) + env(safe-area-inset-left, 0px));
         margin-right: calc(var(--ev-stack-outer, 0px) + env(safe-area-inset-right, 0px));
-        padding: 1.25rem 1.5rem;
-        gap: 1.5rem;
+        padding: 12px;
+        gap: 10px;
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        align-items: stretch;
         border-radius: var(--shell-radius);
       }
       .trust-divider { display: none; }
+      .trust-item {
+        min-height: 56px;
+        padding: 8px 10px;
+        border-radius: 10px;
+        background: rgba(255, 255, 255, 0.03);
+        white-space: normal;
+      }
+      .trust-text {
+        min-width: 0;
+      }
+      .trust-text strong,
+      .trust-text small {
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
       header:not(.header) nav { display: none; }
       header:not(.header) .burger { display: flex; }
       .print-cta { margin: 0 1.5rem; padding: 2.5rem 1.5rem; }
@@ -1529,42 +1602,42 @@
 </head>
 <body class="page-home evryka-site">
 
-  <!-- ── HEADER ── -->
+  <!-- -- HEADER -- -->
   <header class="header header--in-shell header--home-detached" id="header">
     <div class="header-inner">
       <a href="index.html" class="logo header-logo">
         <img src="images/text_logo.png" alt="EVRYKA" class="header-logo-img">
       </a>
-      <button type="button" class="header-burger" id="navToggle" aria-label="Відкрити меню" aria-expanded="false" aria-controls="headerNavPanel">
+      <button type="button" class="header-burger" id="navToggle" aria-label="³������ ����" aria-expanded="false" aria-controls="headerNavPanel">
         <span class="header-burger__line"></span>
         <span class="header-burger__line"></span>
         <span class="header-burger__line"></span>
       </button>
-      <nav class="nav header-nav" id="headerNavPanel" aria-label="Головна навігація">
-        <a href="index.html" class="active">Головна</a>
-        <a href="catalog.html">Каталог</a>
-        <a href="about.html">Про нас</a>
-        <a href="order-3d-print.html">Замовити 3D друк</a>
+      <nav class="nav header-nav" id="headerNavPanel" aria-label="������� ���������">
+        <a href="index.html" class="active">�������</a>
+        <a href="catalog.html">�������</a>
+        <a href="about.html">��� ���</a>
+        <a href="order-3d-print.html">�������� 3D ����</a>
       </nav>
       <div class="header-utilities">
         <div class="search-box">
-          <input type="search" placeholder="Пошук" id="search" name="q" autocomplete="off">
+          <input type="search" placeholder="�����" id="search" name="q" autocomplete="off">
           <div id="searchResults" class="search-results"></div>
         </div>
         <div class="header-actions">
-          <button type="button" id="authBtn" class="auth-icon-btn" title="Профіль">
+          <button type="button" id="authBtn" class="auth-icon-btn" title="�������">
             <svg id="authIcon" viewBox="0 0 24 24" aria-hidden="true">
               <path d="M12 12c2.8 0 5-2.2 5-5s-2.2-5-5-5-5 2.2-5 5 2.2 5 5 5Zm0 2c-4.4 0-8 2.7-8 6v2h16v-2c0-3.3-3.6-6-8-6Z"></path>
             </svg>
             <span id="authInitials" class="auth-initials"></span>
           </button>
-          <button type="button" id="favoritesBtn" class="auth-icon-btn" title="Обрані" onclick="toggleFavorites(true)">
+          <button type="button" id="favoritesBtn" class="auth-icon-btn" title="������" onclick="toggleFavorites(true)">
             <svg class="heart-icon" viewBox="0 0 512 512" aria-hidden="true">
               <path d="M257 88L255 88C248.355 74.9828 235.475 63.8415 224 55.1304C173.114 16.5016 99.2988 19.267 51 61.2894C-1.26738 106.765 -12.8083 185.773 13.0116 248C25.4527 277.984 45.9981 303.467 67.9105 327C103.494 365.215 144.281 398.581 184 432.421C198.063 444.402 211.938 456.598 226 468.579C233.971 475.37 241.993 483.022 253 483.907C268.121 485.122 278.342 475.197 289 466C306.641 450.778 324.263 435.533 342 420.421C356.437 408.121 370.854 395.797 385 383.166C443.359 331.055 512 269.827 512 185C512 178.072 512.538 170.886 511.715 164C506.476 120.199 486.854 78.636 450 52.7207C401.715 18.7669 334.983 19.4645 288 55.1304C276.525 63.8415 263.645 74.9828 257 88z"></path>
             </svg>
           </button>
           <div class="cart" onclick="toggleCart(true)">
-            <img src="images/cart-icon.svg" class="cart-icon" alt="Кошик">
+            <img src="images/cart-icon.svg" class="cart-icon" alt="�����">
             <span id="cartCount">0</span>
           </div>
         </div>
@@ -1572,39 +1645,39 @@
     </div>
   </header>
 
-  <!-- ── HERO ── -->
+  <!-- -- HERO -- -->
   <div class="hero-shell">
   <section class="hero">
     <div class="hero-left">
-      <div class="hero-eyebrow">3D-друк у Львові</div>
+      <div class="hero-eyebrow">3D-���� � ������</div>
       <h1 class="hero-title">
-        ДЕТАЛІ<br>
-        ЯКІ<br>
-        <span>ВИРІШУЮТЬ</span>
+        ����˲<br>
+        �ʲ<br>
+        <span>��в�����</span>
       </h1>
       <p class="hero-sub">
-        3D-друковані вироби для ремонту, творчості та прототипів.
-        Готові рішення — або під ваше замовлення.
+        3D-��������� ������ ��� �������, ��������� �� ����������.
+        ������ ������� � ��� ��� ���� ����������.
       </p>
       <div class="hero-actions">
         <a href="catalog.html" class="btn-primary">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-          До каталогу
+          �� ��������
         </a>
-        <a href="order-3d-print.html" class="btn-ghost">Замовити 3D друк</a>
+        <a href="order-3d-print.html" class="btn-ghost">�������� 3D ����</a>
       </div>
       <div class="hero-stats">
         <div class="stat-item">
           <div class="stat-num">3000<span>+</span></div>
-          <div class="stat-label">Замовлень</div>
+          <div class="stat-label">���������</div>
         </div>
         <div class="stat-item">
           <div class="stat-num">3<span>D</span></div>
-          <div class="stat-label">Ферма</div>
+          <div class="stat-label">�����</div>
         </div>
         <div class="stat-item">
-          <div class="stat-num">2<span>год</span></div>
-          <div class="stat-label">Відповідь</div>
+          <div class="stat-num">2<span>���</span></div>
+          <div class="stat-label">³�������</div>
         </div>
       </div>
     </div>
@@ -1612,15 +1685,15 @@
   </section>
   </div>
 
-  <!-- ── TRUST BAR ── -->
+  <!-- -- TRUST BAR -- -->
   <div class="trust-bar">
     <div class="trust-item">
       <div class="trust-icon">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
       </div>
       <div class="trust-text">
-        <strong>Гарантія якості</strong>
-        <small>На всі вироби</small>
+        <strong>�������� ������</strong>
+        <small>�� ��� ������</small>
       </div>
     </div>
     <div class="trust-divider"></div>
@@ -1629,8 +1702,8 @@
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
       </div>
       <div class="trust-text">
-        <strong>Відповідь за 2 години</strong>
-        <small>Пн–Сб 9:00–20:00</small>
+        <strong>³������� �� 2 ������</strong>
+        <small>����� 9:00�20:00</small>
       </div>
     </div>
     <div class="trust-divider"></div>
@@ -1639,8 +1712,8 @@
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
       </div>
       <div class="trust-text">
-        <strong>Львів, самовивіз</strong>
-        <small>Або Нова пошта</small>
+        <strong>�����, ���������</strong>
+        <small>��� ���� �����</small>
       </div>
     </div>
     <div class="trust-divider"></div>
@@ -1650,71 +1723,71 @@
       </div>
       <div class="trust-text">
         <strong>Visa / MasterCard</strong>
-        <small>Безпечна оплата</small>
+        <small>�������� ������</small>
       </div>
     </div>
   </div>
 
-  <!-- ── CATEGORIES ── -->
+  <!-- -- CATEGORIES -- -->
   <section class="section">
     <div class="section-header fade-up">
       <div>
-        <div class="section-label">Що шукаєте?</div>
-        <h2 class="section-title">КАТЕГОРІЇ</h2>
+        <div class="section-label">�� �������?</div>
+        <h2 class="section-title">������в�</h2>
       </div>
       <a href="catalog.html" class="section-link">
-        Весь каталог
+        ���� �������
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
       </a>
     </div>
 
     <div class="cat-grid fade-up">
-      <a href="catalog.html?cats=Інструменти" class="cat-card">
+      <a href="catalog.html?cats=�����������" class="cat-card">
         <div class="cat-icon">
           <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>
         </div>
         <div>
-          <div class="cat-name">Інструменти</div>
-          <div class="cat-count">Шаблони, кондуктори</div>
+          <div class="cat-name">�����������</div>
+          <div class="cat-count">�������, ����������</div>
         </div>
         <div class="cat-arrow">
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
         </div>
       </a>
 
-      <a href="catalog.html?cats=Корпуси" class="cat-card">
+      <a href="catalog.html?cats=�������" class="cat-card">
         <div class="cat-icon">
           <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
         </div>
         <div>
-          <div class="cat-name">Корпуси</div>
-          <div class="cat-count">Монтаж, вентиляція</div>
+          <div class="cat-name">�������</div>
+          <div class="cat-count">������, ����������</div>
         </div>
         <div class="cat-arrow">
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
         </div>
       </a>
 
-      <a href="catalog.html?cats=Іграшки" class="cat-card">
+      <a href="catalog.html?cats=�������" class="cat-card">
         <div class="cat-icon">
           <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
         </div>
         <div>
-          <div class="cat-name">Іграшки</div>
-          <div class="cat-count">Фігурки, колекційне</div>
+          <div class="cat-name">�������</div>
+          <div class="cat-count">Գ�����, ����������</div>
         </div>
         <div class="cat-arrow">
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
         </div>
       </a>
 
-      <a href="catalog.html?cats=Брелоки" class="cat-card">
+      <a href="catalog.html?cats=�������" class="cat-card">
         <div class="cat-icon">
           <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="12" r="3"/><path d="M12 1v4M12 19v4M4.22 4.22l2.83 2.83M16.95 16.95l2.83 2.83M1 12h4M19 12h4M4.22 19.78l2.83-2.83M16.95 7.05l2.83-2.83"/></svg>
         </div>
         <div>
-          <div class="cat-name">Брелоки</div>
-          <div class="cat-count">Сувеніри, подарунки</div>
+          <div class="cat-name">�������</div>
+          <div class="cat-count">��������, ���������</div>
         </div>
         <div class="cat-arrow">
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
@@ -1723,15 +1796,15 @@
     </div>
   </section>
 
-  <!-- ── PRODUCTS ── -->
+  <!-- -- PRODUCTS -- -->
   <section id="catalog" class="section-sm" style="padding-top: 0;">
     <div class="section-header fade-up">
       <div>
-        <div class="section-label">З каталогу</div>
-        <h2 class="section-title">ПОПУЛЯРНІ<br>ТОВАРИ</h2>
+        <div class="section-label">� ��������</div>
+        <h2 class="section-title">�������Ͳ<br>������</h2>
       </div>
       <a href="catalog.html" class="section-link">
-        Всі товари
+        ��� ������
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
       </a>
     </div>
@@ -1743,21 +1816,21 @@
           <img
             id="homeCardImage1"
             src="images/text_logo.png"
-            alt="Шаблон кондуктор"
+            alt="������ ���������"
             onerror="this.src='images/text_logo.png'"
           />
-          <div class="product-badge orange">Хіт</div>
-          <button class="product-fav" id="homeCardFav1" onclick='event.preventDefault(); toggleFavorite(event, {id: 1, name: "Шаблон кондуктор для отворів під інсталяцію", price: 325, images: ["images/text_logo.png"]}, true)' title="В обране">
+          <div class="product-badge orange">ճ�</div>
+          <button class="product-fav" id="homeCardFav1" data-product-id="1" onclick='event.preventDefault(); toggleFavorite(event, {id: 1, name: "������ ��������� ��� ������� ��� ����������", price: 325, images: ["images/text_logo.png"]}, true)' title="� ������">
             <svg class="heart-icon" viewBox="0 0 512 512" aria-hidden="true">
               <path d="M257 88L255 88C248.355 74.9828 235.475 63.8415 224 55.1304C173.114 16.5016 99.2988 19.267 51 61.2894C-1.26738 106.765 -12.8083 185.773 13.0116 248C25.4527 277.984 45.9981 303.467 67.9105 327C103.494 365.215 144.281 398.581 184 432.421C198.063 444.402 211.938 456.598 226 468.579C233.971 475.37 241.993 483.022 253 483.907C268.121 485.122 278.342 475.197 289 466C306.641 450.778 324.263 435.533 342 420.421C356.437 408.121 370.854 395.797 385 383.166C443.359 331.055 512 269.827 512 185C512 178.072 512.538 170.886 511.715 164C506.476 120.199 486.854 78.636 450 52.7207C401.715 18.7669 334.983 19.4645 288 55.1304C276.525 63.8415 263.645 74.9828 257 88z"></path>
             </svg>
           </button>
         </div>
         <div class="product-body">
-          <div class="product-name" id="homeCardName1">Шаблон кондуктор для отворів під інсталяцію</div>
+          <div class="product-name" id="homeCardName1">������ ��������� ��� ������� ��� ����������</div>
           <div class="product-bottom">
-            <div class="product-price" id="homeCardPrice1">325 <small>грн</small></div>
-            <button class="add-btn" id="homeCardAdd1" onclick='event.preventDefault(); addToCart({id: 1, name: "Шаблон кондуктор для отворів під інсталяцію", price: 325, images: ["images/text_logo.png"]})'>
+            <div class="product-price" id="homeCardPrice1">325 <small>���</small></div>
+            <button class="add-btn" id="homeCardAdd1" onclick='event.preventDefault(); addToCart({id: 1, name: "������ ��������� ��� ������� ��� ����������", price: 325, images: ["images/text_logo.png"]})'>
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>
             </button>
           </div>
@@ -1770,20 +1843,20 @@
           <img
             id="homeCardImage2"
             src="images/text_logo.png"
-            alt="Корпус вентиляція"
+            alt="������ ����������"
             onerror="this.src='images/text_logo.png'"
           />
-          <button class="product-fav" id="homeCardFav2" onclick='event.preventDefault(); toggleFavorite(event, {id: 2, name: "Корпус прихованого монтажу для вентиляції під вентилятор 125 мм", price: 799, images: ["images/text_logo.png"]}, true)' title="В обране">
+          <button class="product-fav" id="homeCardFav2" data-product-id="2" onclick='event.preventDefault(); toggleFavorite(event, {id: 2, name: "������ ����������� ������� ��� ���������� ��� ���������� 125 ��", price: 799, images: ["images/text_logo.png"]}, true)' title="� ������">
             <svg class="heart-icon" viewBox="0 0 512 512" aria-hidden="true">
               <path d="M257 88L255 88C248.355 74.9828 235.475 63.8415 224 55.1304C173.114 16.5016 99.2988 19.267 51 61.2894C-1.26738 106.765 -12.8083 185.773 13.0116 248C25.4527 277.984 45.9981 303.467 67.9105 327C103.494 365.215 144.281 398.581 184 432.421C198.063 444.402 211.938 456.598 226 468.579C233.971 475.37 241.993 483.022 253 483.907C268.121 485.122 278.342 475.197 289 466C306.641 450.778 324.263 435.533 342 420.421C356.437 408.121 370.854 395.797 385 383.166C443.359 331.055 512 269.827 512 185C512 178.072 512.538 170.886 511.715 164C506.476 120.199 486.854 78.636 450 52.7207C401.715 18.7669 334.983 19.4645 288 55.1304C276.525 63.8415 263.645 74.9828 257 88z"></path>
             </svg>
           </button>
         </div>
         <div class="product-body">
-          <div class="product-name" id="homeCardName2">Корпус прихованого монтажу для вентиляції під вентилятор 125 мм</div>
+          <div class="product-name" id="homeCardName2">������ ����������� ������� ��� ���������� ��� ���������� 125 ��</div>
           <div class="product-bottom">
-            <div class="product-price" id="homeCardPrice2">799 <small>грн</small></div>
-            <button class="add-btn" id="homeCardAdd2" onclick='event.preventDefault(); addToCart({id: 2, name: "Корпус прихованого монтажу для вентиляції під вентилятор 125 мм", price: 799, images: ["images/text_logo.png"]})'>
+            <div class="product-price" id="homeCardPrice2">799 <small>���</small></div>
+            <button class="add-btn" id="homeCardAdd2" onclick='event.preventDefault(); addToCart({id: 2, name: "������ ����������� ������� ��� ���������� ��� ���������� 125 ��", price: 799, images: ["images/text_logo.png"]})'>
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>
             </button>
           </div>
@@ -1796,21 +1869,21 @@
           <img
             id="homeCardImage3"
             src="images/text_logo.png"
-            alt="Брілок Лабубу"
+            alt="������ ������"
             onerror="this.src='images/text_logo.png'"
           />
-          <div class="product-badge">Новинка</div>
-          <button class="product-fav" id="homeCardFav3" onclick='event.preventDefault(); toggleFavorite(event, {id: 3, name: "Брілок Лабубу (Labubu) — стильна колекційна іграшка", price: 350, images: ["images/text_logo.png"]}, true)' title="В обране">
+          <div class="product-badge">�������</div>
+          <button class="product-fav" id="homeCardFav3" data-product-id="3" onclick='event.preventDefault(); toggleFavorite(event, {id: 3, name: "������ ������ (Labubu) � ������� ���������� �������", price: 350, images: ["images/text_logo.png"]}, true)' title="� ������">
             <svg class="heart-icon" viewBox="0 0 512 512" aria-hidden="true">
               <path d="M257 88L255 88C248.355 74.9828 235.475 63.8415 224 55.1304C173.114 16.5016 99.2988 19.267 51 61.2894C-1.26738 106.765 -12.8083 185.773 13.0116 248C25.4527 277.984 45.9981 303.467 67.9105 327C103.494 365.215 144.281 398.581 184 432.421C198.063 444.402 211.938 456.598 226 468.579C233.971 475.37 241.993 483.022 253 483.907C268.121 485.122 278.342 475.197 289 466C306.641 450.778 324.263 435.533 342 420.421C356.437 408.121 370.854 395.797 385 383.166C443.359 331.055 512 269.827 512 185C512 178.072 512.538 170.886 511.715 164C506.476 120.199 486.854 78.636 450 52.7207C401.715 18.7669 334.983 19.4645 288 55.1304C276.525 63.8415 263.645 74.9828 257 88z"></path>
             </svg>
           </button>
         </div>
         <div class="product-body">
-          <div class="product-name" id="homeCardName3">Брілок Лабубу (Labubu) — стильна колекційна іграшка</div>
+          <div class="product-name" id="homeCardName3">������ ������ (Labubu) � ������� ���������� �������</div>
           <div class="product-bottom">
-            <div class="product-price" id="homeCardPrice3">350 <small>грн</small></div>
-            <button class="add-btn" id="homeCardAdd3" onclick='event.preventDefault(); addToCart({id: 3, name: "Брілок Лабубу (Labubu) — стильна колекційна іграшка", price: 350, images: ["images/text_logo.png"]})'>
+            <div class="product-price" id="homeCardPrice3">350 <small>���</small></div>
+            <button class="add-btn" id="homeCardAdd3" onclick='event.preventDefault(); addToCart({id: 3, name: "������ ������ (Labubu) � ������� ���������� �������", price: 350, images: ["images/text_logo.png"]})'>
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>
             </button>
           </div>
@@ -1819,19 +1892,19 @@
     </div>
   </section>
 
-  <!-- ── 3D PRINT CTA ── -->
+  <!-- -- 3D PRINT CTA -- -->
   <div class="print-cta fade-up">
     <div>
-      <div class="print-cta-eyebrow">Послуга 3D-друку</div>
-      <h2 class="print-cta-title">ПОТРІБЕН<br>СВІЙ<br><span style="color:var(--orange)">ПРОЕКТ?</span></h2>
+      <div class="print-cta-eyebrow">������� 3D-�����</div>
+      <h2 class="print-cta-title">���в���<br>�²�<br><span style="color:var(--orange)">������?</span></h2>
       <p class="print-cta-desc">
-        Замовляйте 3D-друк будь-якої складності.
-        Корпуси, запчастини, прототипи, сувеніри —
-        надрукуємо за вашими кресленнями або допоможемо з моделлю.
+        ���������� 3D-���� ����-���� ����������.
+        �������, ����������, ���������, �������� �
+        ���������� �� ������ ����������� ��� ���������� � �������.
       </p>
       <a href="order-3d-print.html" class="btn-primary" style="display:inline-flex">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" style="width:18px;height:18px"><path d="M12 5v14M5 12h14"/></svg>
-        Залишити заявку
+        �������� ������
       </a>
     </div>
 
@@ -1839,33 +1912,33 @@
       <div class="print-step">
         <div class="print-step-num">1</div>
         <div class="print-step-text">
-          <strong>Надішліть файл або опис</strong>
-          Приймаємо STL, OBJ або текстовий опис що потрібно
+          <strong>��������� ���� ��� ����</strong>
+          ��������� STL, OBJ ��� ��������� ���� �� ��������
         </div>
       </div>
       <div class="print-step">
         <div class="print-step-num">2</div>
         <div class="print-step-text">
-          <strong>Отримайте розрахунок</strong>
-          Повідомимо вартість і терміни протягом 2 годин
+          <strong>��������� ����������</strong>
+          ���������� �������� � ������� �������� 2 �����
         </div>
       </div>
       <div class="print-step">
         <div class="print-step-num">3</div>
         <div class="print-step-text">
-          <strong>Заберіть готовий виріб</strong>
-          Самовивіз у Львові або доставка Новою поштою
+          <strong>�������� ������� �����</strong>
+          ��������� � ������ ��� �������� ����� ������
         </div>
       </div>
     </div>
   </div>
 
-  <!-- ── HOW IT WORKS ── -->
+  <!-- -- HOW IT WORKS -- -->
   <section class="section">
     <div class="section-header fade-up">
       <div>
-        <div class="section-label">Як це працює</div>
-        <h2 class="section-title">ВІД ЗАМОВЛЕННЯ<br>ДО ДВЕРЕЙ</h2>
+        <div class="section-label">�� �� ������</div>
+        <h2 class="section-title">²� ����������<br>�� ������</h2>
       </div>
     </div>
 
@@ -1875,94 +1948,94 @@
         <div class="how-icon">
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
         </div>
-        <div class="how-title">Оберіть товар</div>
-        <div class="how-desc">Знайдіть потрібний виріб у каталозі або замовте 3D-друк під власне завдання.</div>
+        <div class="how-title">������� �����</div>
+        <div class="how-desc">�������� ��������� ����� � �������� ��� ������� 3D-���� ��� ������ ��������.</div>
       </div>
       <div class="how-item">
         <div class="how-num">02</div>
         <div class="how-icon">
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>
         </div>
-        <div class="how-title">Оплатіть</div>
-        <div class="how-desc">Visa, MasterCard онлайн або переказ на картку після підтвердження.</div>
+        <div class="how-title">��������</div>
+        <div class="how-desc">Visa, MasterCard ������ ��� ������� �� ������ ����� �������������.</div>
       </div>
       <div class="how-item">
         <div class="how-num">03</div>
         <div class="how-icon">
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2 3 7l9 5 9-5-9-5z"/><path d="M3 12l9 5 9-5"/><path d="M3 17l9 5 9-5"/></svg>
         </div>
-        <div class="how-title">Виробляємо</div>
-        <div class="how-desc">Друкуємо у Львові на якісних принтерах. Стандартні замовлення — 1–3 дні.</div>
+        <div class="how-title">����������</div>
+        <div class="how-desc">�������� � ������ �� ������� ���������. ���������� ���������� � 1�3 ���.</div>
       </div>
       <div class="how-item">
         <div class="how-num">04</div>
         <div class="how-icon">
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M1 3h15v13H1z"/><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>
         </div>
-        <div class="how-title">Отримайте</div>
-        <div class="how-desc">Самовивіз у Львові або відправка Новою поштою по всій Україні.</div>
+        <div class="how-title">���������</div>
+        <div class="how-desc">��������� � ������ ��� ��������� ����� ������ �� ���� �������.</div>
       </div>
     </div>
   </section>
 
-  <!-- ── TESTIMONIALS ── -->
+  <!-- -- TESTIMONIALS -- -->
   <section class="section-sm" style="padding-top:0; background: transparent;">
     <div class="section-header fade-up">
       <div>
-        <div class="section-label">Відгуки</div>
-        <h2 class="section-title">ЩО<br>КАЖУТЬ КЛІЄНТИ</h2>
+        <div class="section-label">³�����</div>
+        <h2 class="section-title">��<br>������ �˲����</h2>
       </div>
     </div>
 
     <div class="testimonials-grid fade-up">
       <div class="testimonial-card">
-        <div class="stars">★★★★★</div>
+        <div class="stars">?????</div>
         <p class="testimonial-text">
-          "Замовляв шаблон кондуктор — все прийшло дуже швидко, якість відмінна.
-          Деталь підійшла ідеально, майстер задоволений. Рекомендую!"
+          "�������� ������ ��������� � ��� ������� ���� ������, ������ ��������.
+          ������ �������� ��������, ������� �����������. ����������!"
         </p>
         <div class="testimonial-author">
-          <div class="author-avatar">МК</div>
+          <div class="author-avatar">��</div>
           <div>
-            <div class="author-name">Михайло К.</div>
-            <div class="author-role">Майстер-сантехнік</div>
+            <div class="author-name">������� �.</div>
+            <div class="author-role">�������-���������</div>
           </div>
         </div>
       </div>
 
       <div class="testimonial-card">
-        <div class="stars">★★★★★</div>
+        <div class="stars">?????</div>
         <p class="testimonial-text">
-          "Замовляла Labubu для дочки — вийшло просто чудово, кольори яскраві,
-          деталі чіткі. Дитина в захваті. Дякую за якість і швидку доставку!"
+          "��������� Labubu ��� ����� � ������ ������ ������, ������� �������,
+          ������ �����. ������ � �������. ����� �� ������ � ������ ��������!"
         </p>
         <div class="testimonial-author">
-          <div class="author-avatar">ОП</div>
+          <div class="author-avatar">��</div>
           <div>
-            <div class="author-name">Оксана П.</div>
-            <div class="author-role">Постійний клієнт</div>
+            <div class="author-name">������ �.</div>
+            <div class="author-role">��������� �볺��</div>
           </div>
         </div>
       </div>
 
       <div class="testimonial-card">
-        <div class="stars">★★★★★</div>
+        <div class="stars">?????</div>
         <p class="testimonial-text">
-          "Замовляли корпуси для вентиляції під наш проект. Хлопці оперативно
-          відповіли, зробили точно під розмір. Будемо замовляти ще."
+          "��������� ������� ��� ���������� ��� ��� ������. ������ ����������
+          ���������, ������� ����� ��� ������. ������ ��������� ��."
         </p>
         <div class="testimonial-author">
-          <div class="author-avatar">АД</div>
+          <div class="author-avatar">��</div>
           <div>
-            <div class="author-name">Андрій Д.</div>
-            <div class="author-role">Будівельна компанія</div>
+            <div class="author-name">������ �.</div>
+            <div class="author-role">���������� ��������</div>
           </div>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- ── FOOTER ── -->
+  <!-- -- FOOTER -- -->
   <footer>
     <div class="footer-grid">
       <div>
@@ -1970,8 +2043,8 @@
           <img src="images/text_logo.png" alt="EVRYKA" class="footer-brand-img">
         </a>
         <p class="footer-desc">
-          3D-друковані вироби для ремонту, творчості та прототипів.
-          Якісно. Швидко. З Любові до деталей.
+          3D-��������� ������ ��� �������, ��������� �� ����������.
+          ������. ������. � ������ �� �������.
         </p>
         <div class="footer-contacts">
           <a href="tel:+380501662271" class="footer-contact">
@@ -1986,38 +2059,38 @@
       </div>
 
       <div>
-        <div class="footer-col-title">Навігація</div>
+        <div class="footer-col-title">���������</div>
         <div class="footer-links">
-          <a href="index.html" class="footer-link">Головна</a>
-          <a href="catalog.html" class="footer-link">Каталог</a>
-          <a href="about.html" class="footer-link">Про нас</a>
-          <a href="order-3d-print.html" class="footer-link">Замовити 3D друк</a>
+          <a href="index.html" class="footer-link">�������</a>
+          <a href="catalog.html" class="footer-link">�������</a>
+          <a href="about.html" class="footer-link">��� ���</a>
+          <a href="order-3d-print.html" class="footer-link">�������� 3D ����</a>
         </div>
       </div>
 
       <div>
-        <div class="footer-col-title">Категорії</div>
+        <div class="footer-col-title">���������</div>
         <div class="footer-links">
-          <a href="catalog.html" class="footer-link">Інструменти</a>
-          <a href="catalog.html" class="footer-link">Корпуси</a>
-          <a href="catalog.html" class="footer-link">Іграшки</a>
-          <a href="catalog.html" class="footer-link">Брелоки</a>
+          <a href="catalog.html" class="footer-link">�����������</a>
+          <a href="catalog.html" class="footer-link">�������</a>
+          <a href="catalog.html" class="footer-link">�������</a>
+          <a href="catalog.html" class="footer-link">�������</a>
         </div>
       </div>
 
       <div>
-        <div class="footer-col-title">Месенджери</div>
+        <div class="footer-col-title">����������</div>
         <div class="footer-links">
           <a href="https://t.me/+380501662271" class="footer-link" target="_blank">Telegram</a>
           <a href="viber://chat?number=%2B380501662271" class="footer-link">Viber</a>
-          <a href="about.html#about-v2-location" class="footer-link">Де нас знайти</a>
-          <a href="cabinet.html#orders" class="footer-link">Мої замовлення</a>
+          <a href="about.html#about-v2-location" class="footer-link">�� ��� ������</a>
+          <a href="cabinet.html#orders" class="footer-link">��� ����������</a>
         </div>
       </div>
     </div>
 
     <div class="footer-bottom">
-      <div class="footer-copy">© 2026 EVRYKA — Всі права захищено</div>
+      <div class="footer-copy">� 2026 EVRYKA � ��� ����� ��������</div>
       <div class="footer-payments">
         <span class="payment-badge">VISA</span>
         <span class="payment-badge">MASTERCARD</span>
@@ -2028,47 +2101,47 @@
   <div id="cartOverlay" class="cart-overlay" onclick="toggleCart(false)"></div>
   <div id="cartSidebar" class="cart-sidebar">
     <div class="cart-head-float">
-      <h3 id="cartPanelTitle">Кошик</h3>
-      <button type="button" class="cart-head-float-close" onclick="toggleCart(false)" aria-label="Закрити кошик">×</button>
+      <h3 id="cartPanelTitle">�����</h3>
+      <button type="button" class="cart-head-float-close" onclick="toggleCart(false)" aria-label="������� �����">?</button>
     </div>
     <div id="cartItems" class="cart-items"></div>
     <div class="cart-footer">
       <div class="cart-total">
-        <span>Разом</span>
+        <span>�����</span>
         <div>
           <b id="cartTotal">0</b>
-          <span>грн</span>
+          <span>���</span>
         </div>
       </div>
-      <button class="checkout-btn" onclick="checkout()">Оформити</button>
-      <button class="clear-btn" onclick="clearCart()">Очистити кошик</button>
+      <button class="checkout-btn" onclick="checkout()">��������</button>
+      <button class="clear-btn" onclick="clearCart()">�������� �����</button>
     </div>
   </div>
 
   <div id="favoritesOverlay" class="cart-overlay" onclick="toggleFavorites(false)"></div>
   <div id="favoritesSidebar" class="cart-sidebar">
     <div class="cart-head-float">
-      <h3>Обрані</h3>
-      <button type="button" class="cart-head-float-close" onclick="toggleFavorites(false)" aria-label="Закрити обрані">×</button>
+      <h3>������</h3>
+      <button type="button" class="cart-head-float-close" onclick="toggleFavorites(false)" aria-label="������� ������">?</button>
     </div>
     <div id="favoritesItems" class="cart-items"></div>
     <div class="cart-footer">
-      <button class="clear-btn" onclick="clearFavorites()">Очистити обрані</button>
+      <button class="clear-btn" onclick="clearFavorites()">�������� ������</button>
     </div>
   </div>
 
   <div id="authModal" class="auth-modal">
     <div class="auth-modal-content auth-light">
-      <button id="closeAuthBtn" class="close-btn">✖</button>
+      <button id="closeAuthBtn" class="close-btn">?</button>
       <div id="authEyes" class="auth-eyes" aria-hidden="true">
         <div class="auth-eye"><span class="auth-eye-pupil"></span><span class="auth-eye-lid"></span></div>
         <div class="auth-eye"><span class="auth-eye-pupil"></span><span class="auth-eye-lid"></span></div>
       </div>
       <h3 id="authTitle" class="auth-title">Log In</h3>
       <form id="registerForm">
-        <input id="regName" class="auth-input auth-register-only" type="text" placeholder="Ім'я">
-        <input id="regLastName" class="auth-input auth-register-only" type="text" placeholder="Прізвище">
-        <input id="regPhone" class="auth-input auth-register-only" type="tel" placeholder="Телефон">
+        <input id="regName" class="auth-input auth-register-only" type="text" placeholder="��'�">
+        <input id="regLastName" class="auth-input auth-register-only" type="text" placeholder="��������">
+        <input id="regPhone" class="auth-input auth-register-only" type="tel" placeholder="�������">
         <input id="regEmail" class="auth-input" type="email" placeholder="Email Address*">
         <input id="authPassword" class="auth-input" type="password" placeholder="Password*">
         <input id="authPasswordConfirm" class="auth-input auth-register-only" type="password" placeholder="Repeat password*">
@@ -2089,21 +2162,21 @@
   </div>
 
   <div id="chatWidgetRoot" class="chat-widget-root">
-    <button type="button" id="chatWidgetToggle" class="chat-widget-toggle" aria-expanded="false" aria-controls="chatWidgetPanel" title="Написати нам">
+    <button type="button" id="chatWidgetToggle" class="chat-widget-toggle" aria-expanded="false" aria-controls="chatWidgetPanel" title="�������� ���">
       <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path fill="currentColor" d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm0 14H5.17L4 17.17V4h16v12z"></path></svg>
     </button>
     <div id="chatWidgetPanel" class="chat-widget-panel" role="dialog" aria-modal="true" aria-labelledby="chatWidgetTitle" aria-hidden="true">
       <div class="chat-widget-card">
         <div class="chat-widget-head-float">
-          <span id="chatWidgetTitle">Напишіть нам</span>
-          <button type="button" class="chat-widget-close" aria-label="Закрити чат">×</button>
+          <span id="chatWidgetTitle">�������� ���</span>
+          <button type="button" class="chat-widget-close" aria-label="������� ���">?</button>
         </div>
         <div class="chat-widget-sheet">
           <div id="chatWidgetMessages" class="chat-widget-messages" aria-live="polite"></div>
           <div class="chat-widget-compose-float">
             <div class="chat-widget-compose">
-              <input type="text" id="chatWidgetText" class="chat-widget-field" placeholder="Ваше запитання..." maxlength="2000" autocomplete="off">
-              <button type="button" id="chatWidgetSend" class="chat-widget-send">Надіслати</button>
+              <input type="text" id="chatWidgetText" class="chat-widget-field" placeholder="���� ���������..." maxlength="2000" autocomplete="off">
+              <button type="button" id="chatWidgetSend" class="chat-widget-send">���������</button>
             </div>
             <p id="chatWidgetStatus" class="chat-widget-status" role="status"></p>
           </div>
@@ -2158,7 +2231,7 @@
 
       const safeProduct = {
         id: Number(product.id) || index,
-        name: product.name || "Товар",
+        name: product.name || "�����",
         price: Number(product.price) || 0,
         images: [String(product.images?.[0] || "")]
       };
@@ -2170,7 +2243,8 @@
       };
       link.href = `product.html?id=${safeProduct.id}`;
       name.textContent = safeProduct.name;
-      price.innerHTML = `${safeProduct.price} <small>грн</small>`;
+      price.innerHTML = `${safeProduct.price} <small>���</small>`;
+      fav.setAttribute("data-product-id", String(safeProduct.id));
       fav.setAttribute("onclick", `event.preventDefault(); toggleFavorite(event, ${JSON.stringify(safeProduct)}, true)`);
       add.setAttribute("onclick", `event.preventDefault(); addToCart(${JSON.stringify(safeProduct)})`);
     }
@@ -2184,7 +2258,7 @@
 
       const safeProduct = {
         id: Number(product.id) || 1,
-        name: product.name || "Товар",
+        name: product.name || "�����",
         price: Number(product.price) || 0,
         images: [String(product.images?.[0] || "")]
       };
@@ -2195,7 +2269,7 @@
         img.src = "images/text_logo.png";
       };
       name.textContent = safeProduct.name;
-      price.innerHTML = `${safeProduct.price} <span>грн</span>`;
+      price.innerHTML = `${safeProduct.price} <span>���</span>`;
       add.setAttribute("onclick", `addToCart(${JSON.stringify(safeProduct)})`);
     }
 
@@ -2214,7 +2288,8 @@
   <script src="js/api.js?v=20260426"></script>
   <script src="js/cart.js?v=20260430"></script>
   <script src="js/header-nav.js?v=20260427-4"></script>
-  <script src="js/app.js?v=20260420-4"></script>
+  <script src="js/app.js?v=20260427-5"></script>
   <script src="js/chat-widget.js?v=20260409"></script>
 </body>
 </html>
+

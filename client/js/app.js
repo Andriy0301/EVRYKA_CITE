@@ -236,6 +236,7 @@ async function handleGoogleCredential(response) {
     setSavedProfile(saved);
     localStorage.setItem(FAVORITES_STORAGE_KEY, "[]");
     renderFavoritesList();
+    syncHomeFavoritesButtons();
     await hydrateFavoritesFromAccount(saved);
     if (typeof hydrateCartFromAccount === "function") {
       await hydrateCartFromAccount(saved);
@@ -313,6 +314,7 @@ async function submitAuthForm(e) {
     setSavedProfile(saved);
     localStorage.setItem(FAVORITES_STORAGE_KEY, "[]");
     renderFavoritesList();
+    syncHomeFavoritesButtons();
     await hydrateFavoritesFromAccount(saved);
     if (typeof hydrateCartFromAccount === "function") {
       await hydrateCartFromAccount(saved);
@@ -410,6 +412,7 @@ async function hydrateFavoritesFromAccount(profile = getSavedProfile()) {
     const favorites = Array.isArray(data?.items) ? data.items : [];
     localStorage.setItem(FAVORITES_STORAGE_KEY, JSON.stringify(favorites));
     renderFavoritesList();
+    syncHomeFavoritesButtons();
     if (allProducts.length) {
       renderProducts(currentFiltered.length ? currentFiltered : allProducts);
     }
@@ -420,6 +423,7 @@ async function hydrateFavoritesFromAccount(profile = getSavedProfile()) {
     console.error("Favorites hydrate failed:", error);
     localStorage.setItem(FAVORITES_STORAGE_KEY, "[]");
     renderFavoritesList();
+    syncHomeFavoritesButtons();
     if (allProducts.length) {
       renderProducts(currentFiltered.length ? currentFiltered : allProducts);
     }
@@ -431,6 +435,16 @@ async function hydrateFavoritesFromAccount(profile = getSavedProfile()) {
 
 function isFavorite(productId) {
   return getFavorites().some((item) => Number(item.id) === Number(productId));
+}
+
+function syncHomeFavoritesButtons() {
+  const buttons = document.querySelectorAll(".product-fav[data-product-id]");
+  if (!buttons.length) return;
+  buttons.forEach((button) => {
+    const productId = Number(button.getAttribute("data-product-id"));
+    if (!Number.isFinite(productId)) return;
+    button.classList.toggle("active", isFavorite(productId));
+  });
 }
 
 function pulseHeaderFavoritesBtn() {
@@ -469,6 +483,7 @@ function toggleFavorite(e, product, pulseHeader) {
   saveFavorites(favorites);
   renderProducts(currentFiltered.length ? currentFiltered : allProducts);
   renderFavoritesList();
+  syncHomeFavoritesButtons();
   if (typeof applyCatalogFilters === "function") {
     void applyCatalogFilters();
   }
@@ -548,6 +563,7 @@ function resolveProductImageSrc(item) {
 function clearFavorites() {
   saveFavorites([]);
   renderFavoritesList();
+  syncHomeFavoritesButtons();
   renderProducts(currentFiltered.length ? currentFiltered : allProducts);
   if (typeof applyCatalogFilters === "function") {
     void applyCatalogFilters();
@@ -859,6 +875,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   updateCartCount();
   scrollToCatalogFromHash();
   openFavoritesFromHash();
+  syncHomeFavoritesButtons();
   initHeroCarousel();
 });
 

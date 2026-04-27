@@ -8605,5 +8605,49 @@ body.evryka-site.page-print3d {
     border-color: #c7d1dd !important;
     box-shadow: none !important;
   }
+
+  .page-catalog [data-uflyout-trigger],
+  .page-cabinet [data-uflyout-trigger] {
+    pointer-events: auto !important;
+  }
+
+  .page-catalog [data-uflyout="panel"] {
+    display: none !important;
+    opacity: 0 !important;
+    pointer-events: none !important;
+  }
+
+  .page-cabinet [data-uflyout="panel"] {
+    display: none !important;
+    opacity: 0 !important;
+    pointer-events: none !important;
+  }
+
+  body.catalog-filters-open .page-catalog [data-uflyout="panel"] {
+    display: grid !important;
+    opacity: 1 !important;
+    pointer-events: auto !important;
+    transform: translateY(0) scale(1) !important;
+  }
+
+  body.cabinet-menu-open .page-cabinet [data-uflyout="panel"] {
+    display: flex !important;
+    flex-direction: column !important;
+    opacity: 1 !important;
+    pointer-events: auto !important;
+    transform: translateY(0) scale(1) !important;
+  }
+
+  .page-catalog [data-uflyout-overlay],
+  .page-cabinet [data-uflyout-overlay] {
+    opacity: 0 !important;
+    pointer-events: none !important;
+  }
+
+  body.catalog-filters-open .page-catalog [data-uflyout-overlay],
+  body.cabinet-menu-open .page-cabinet [data-uflyout-overlay] {
+    opacity: 1 !important;
+    pointer-events: auto !important;
+  }
 }
 
