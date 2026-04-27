@@ -417,6 +417,13 @@ a:hover {
 }
 
 /* Shared homepage footer layout for all pages */
+footer {
+  background: var(--dark, #1a1917);
+  color: #fff;
+  padding: 4rem 5rem 2rem;
+  margin-top: 6rem;
+}
+
 footer > .footer-grid {
   display: grid;
   grid-template-columns: 2fr 1fr 1fr 1fr;
@@ -537,6 +544,10 @@ footer .footer-bottom {
 }
 
 @media (max-width: 768px) {
+  footer {
+    padding: 3rem 1.5rem 1.5rem;
+  }
+
   footer > .footer-grid {
     grid-template-columns: 1fr;
     gap: 2rem;

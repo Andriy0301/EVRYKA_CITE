@@ -286,7 +286,82 @@
   <script src="js/cabinet.js?v=20260420-5"></script>
   <script>
     (function () {
-      function recoverCabinetText() {}
+      function recoverCabinetText() {
+        document.title = "Особистий кабінет - EVRYKA";
+
+        const setText = (selector, text) => {
+          const el = document.querySelector(selector);
+          if (el) el.textContent = text;
+        };
+        const setAttr = (selector, attr, value) => {
+          const el = document.querySelector(selector);
+          if (el) el.setAttribute(attr, value);
+        };
+
+        setAttr("#navToggle", "aria-label", "Відкрити меню");
+        setAttr("#headerNavPanel", "aria-label", "Головна навігація");
+        setText('#headerNavPanel a[href="index.html"]', "Головна");
+        setText('#headerNavPanel a[href="catalog.html"]', "Каталог");
+        setText('#headerNavPanel a[href="about.html"]', "Про нас");
+        setText('#headerNavPanel a[href="order-3d-print.html"]', "Замовити 3D друк");
+        setAttr("#search", "placeholder", "Пошук");
+        setAttr("#authBtn", "title", "Профіль");
+        setAttr("#favoritesBtn", "title", "Обрані");
+        setAttr(".cart .cart-icon", "alt", "Кошик");
+
+        setText(".product-nav .back-btn", "Назад");
+        const breadcrumbLinks = document.querySelectorAll(".breadcrumbs a");
+        if (breadcrumbLinks[0]) breadcrumbLinks[0].textContent = "Головна";
+        if (breadcrumbLinks[1]) breadcrumbLinks[1].textContent = "Каталог";
+        setText(".breadcrumbs span:last-child", "Особистий кабінет");
+
+        setText(".cabinet-page-title", "Особистий кабінет");
+        setText("#cabinetMenuOpenBtn", "Меню");
+        setAttr("#cabinetMenuOpenBtn", "aria-label", "Відкрити меню кабінету");
+        setAttr(".page-cabinet .cabinet-sidebar", "aria-label", "Меню кабінету");
+        setText(".page-cabinet .cabinet-sidebar .catalog-filters-title", "Меню");
+        setAttr("#cabinetMenuCloseBtn", "aria-label", "Закрити меню кабінету");
+
+        const navBtns = document.querySelectorAll(".page-cabinet .cabinet-nav-btn");
+        const navTexts = ["Особисті дані", "Мої замовлення", "Бонуси", "Обрані", "Вийти"];
+        navBtns.forEach((btn, i) => {
+          if (navTexts[i]) btn.textContent = navTexts[i];
+        });
+
+        setText("#cabPersonalSection h2", "Мої дані");
+        setText("#cabPersonalSection h3", "Доставка");
+        setText("#cabOrdersSection h2", "Мої замовлення");
+        setText("#cabProviderValue", "Оберіть службу доставки");
+        setText("#cabDeliveryTypeValue", "Відділення");
+        setAttr("#cabBranch", "placeholder", "Почніть вводити відділення...");
+
+        const labels = document.querySelectorAll("#cabinetForm > label");
+        const labelTexts = [
+          "Ім'я", "Прізвище", "Телефон", "Email",
+          "Служба доставки", "Тип доставки", "Оберіть місто", "Оберіть відділення", "Адреса"
+        ];
+        labels.forEach((label, i) => {
+          if (labelTexts[i] && label.childNodes?.[0]) label.childNodes[0].textContent = labelTexts[i];
+        });
+        setText("#cabinetForm .checkout-btn", "Зберегти");
+
+        setText("#cartPanelTitle", "Кошик");
+        const closeBtns = document.querySelectorAll(".cart-head-float-close");
+        closeBtns.forEach((b) => (b.textContent = "✕"));
+        setText(".cart-total > span", "Разом");
+        const cartCurrency = document.querySelector(".cart-total div span");
+        if (cartCurrency) cartCurrency.textContent = "грн";
+        setText("#cartSidebar .checkout-btn", "Оформити");
+        setText("#cartSidebar .clear-btn", "Очистити кошик");
+        setText("#favoritesSidebar h3", "Обрані");
+        setText("#favoritesSidebar .clear-btn", "Очистити обране");
+
+        setText("#chatWidgetTitle", "Онлайн чат");
+        setAttr("#chatWidgetToggle", "title", "Написати нам");
+        setAttr(".chat-widget-close", "aria-label", "Закрити чат");
+        setAttr("#chatWidgetText", "placeholder", "Ваше запитання?");
+        setText("#chatWidgetSend", "Надіслати");
+      }
 
       function setOpen(open) {
         const drawer = document.querySelector(".page-cabinet .catalog-filters.cabinet-sidebar");
