@@ -31,13 +31,6 @@ const ordersRoute = require("./routes/orders");
 const inquiriesRoute = require("./routes/inquiries");
 const print3dRoute = require("./routes/print3d");
 
-// Prom.ua integration endpoints:
-// - GET /api/products
-// - GET /api/product-sales
-// - GET /api/products-with-sales
-// - GET /api/top-products
-app.use("/api", promProductsRoute);
-
 app.use("/api/products", productsRoute);
 app.use("/api/users", usersRoute);
 app.use("/api/popularity", popularityRoute);
@@ -45,6 +38,14 @@ app.use("/api/shipping", shippingRoute);
 app.use("/api/orders", ordersRoute);
 app.use("/api/inquiries", inquiriesRoute);
 app.use("/api/print3d", print3dRoute);
+
+// Prom.ua integration endpoints (must not override /api/products):
+// - GET /api/product-sales
+// - GET /api/products-with-sales
+// - GET /api/top-products
+// NOTE: keep this after /api/products router, otherwise external API failures
+// can break main catalog loading.
+app.use("/api", promProductsRoute);
 
 // 🔥 КАРТИНКИ
 app.use("/images", express.static(path.join(__dirname, "../client/images")));
