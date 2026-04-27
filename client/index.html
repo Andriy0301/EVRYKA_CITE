@@ -150,12 +150,12 @@
       );
       margin-top: var(--ev-stack-outer, clamp(0px, 0.65vw, 10px));
       margin-bottom: 12px;
-      border-radius: var(--shell-radius);
+      border-radius: var(--ev-shell-radius, clamp(18px, 2.3vw, 26px));
       overflow: hidden;
-      background: #FFFFFF;
-      border: 1px solid rgba(17, 17, 16, 0.08);
-      box-shadow: 0 14px 40px rgba(17, 17, 16, 0.08);
-      padding: calc(var(--ev-header-h, 44px) + 6px - var(--ev-stack-outer, 0px)) 20px 20px 12px;
+      background: var(--ev-p-card, var(--surface-primary));
+      border: 1px solid var(--ev-p-line-soft, rgba(17, 17, 17, 0.06));
+      box-shadow: var(--ev-p-shadow, 0 8px 32px rgba(0, 0, 0, 0.08), 0 2px 8px rgba(0, 0, 0, 0.04));
+      padding: calc(var(--ev-header-h, 44px) + 6px - var(--ev-stack-outer, 0px)) 20px clamp(24px, 3.5vw, 40px) 12px;
       box-sizing: border-box;
     }
 
@@ -1317,7 +1317,7 @@
     }
 
     .how-item:hover .how-num {
-      color: rgba(240,122,26,0.45);
+      color: rgba(240,122,26,0.82);
       transform: translateX(2px);
     }
 
