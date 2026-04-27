@@ -177,14 +177,7 @@
       position: absolute;
       inset: 0;
       z-index: 0;
-      background: linear-gradient(
-        90deg,
-        rgba(255, 255, 255, 0.62) 0%,
-        rgba(255, 255, 255, 0.45) 28%,
-        rgba(255, 255, 255, 0.24) 48%,
-        rgba(255, 255, 255, 0.08) 66%,
-        rgba(255, 255, 255, 0) 82%
-      );
+      background: transparent;
       pointer-events: none;
     }
 
@@ -207,10 +200,11 @@
       padding: 3.5rem 3.25rem 4rem 3.75rem;
       position: relative;
       z-index: 2;
-      border-radius: 0;
-      background: transparent;
-      -webkit-backdrop-filter: none;
-      backdrop-filter: none;
+      border-radius: 20px;
+      background: rgba(255, 255, 255, 0.34);
+      -webkit-backdrop-filter: blur(8px);
+      backdrop-filter: blur(8px);
+      border: 1px solid rgba(255, 255, 255, 0.32);
     }
 
     .hero-eyebrow {
