@@ -1,9 +1,9 @@
-<!DOCTYPE html>
+п»ї<!DOCTYPE html>
 <html lang="uk">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Особистий кабінет - EVRYKA</title>
+  <title>РћСЃРѕР±РёСЃС‚РёР№ РєР°Р±С–РЅРµС‚ - EVRYKA</title>
   <link rel="icon" href="images/favicon.png" type="image/png">
   <link rel="apple-touch-icon" href="images/favicon.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -19,36 +19,36 @@
     <a href="index.html" class="logo header-logo">
       <img src="images/text_logo.png" alt="EVRYKA" class="header-logo-img">
     </a>
-    <button type="button" class="header-burger" id="navToggle" aria-label="Відкрити меню" aria-expanded="false" aria-controls="headerNavPanel">
+    <button type="button" class="header-burger" id="navToggle" aria-label="Р’С–РґРєСЂРёС‚Рё РјРµРЅСЋ" aria-expanded="false" aria-controls="headerNavPanel">
       <span class="header-burger__line"></span>
       <span class="header-burger__line"></span>
       <span class="header-burger__line"></span>
     </button>
-    <nav class="nav header-nav" id="headerNavPanel" aria-label="Головна навігація">
-      <a href="index.html">Головна</a>
-      <a href="catalog.html">Каталог</a>
-      <a href="about.html">Про нас</a>
-      <a href="order-3d-print.html">Замовити 3D друк</a>
+    <nav class="nav header-nav" id="headerNavPanel" aria-label="Р“РѕР»РѕРІРЅР° РЅР°РІС–РіР°С†С–СЏ">
+      <a href="index.html">Р“РѕР»РѕРІРЅР°</a>
+      <a href="catalog.html">РљР°С‚Р°Р»РѕРі</a>
+      <a href="about.html">РџСЂРѕ РЅР°СЃ</a>
+      <a href="order-3d-print.html">Р—Р°РјРѕРІРёС‚Рё 3D РґСЂСѓРє</a>
     </nav>
     <div class="header-utilities">
       <div class="search-box">
-        <input type="search" placeholder="Пошук" id="search" name="q" autocomplete="off">
+        <input type="search" placeholder="РџРѕС€СѓРє" id="search" name="q" autocomplete="off">
         <div id="searchResults" class="search-results"></div>
       </div>
       <div class="header-actions">
-        <button type="button" id="authBtn" class="auth-icon-btn" title="Профіль">
+        <button type="button" id="authBtn" class="auth-icon-btn" title="РџСЂРѕС„С–Р»СЊ">
           <svg id="authIcon" viewBox="0 0 24 24" aria-hidden="true">
             <path d="M12 12c2.8 0 5-2.2 5-5s-2.2-5-5-5-5 2.2-5 5 2.2 5 5 5Zm0 2c-4.4 0-8 2.7-8 6v2h16v-2c0-3.3-3.6-6-8-6Z"></path>
           </svg>
           <span id="authInitials" class="auth-initials"></span>
         </button>
-        <button type="button" id="favoritesBtn" class="auth-icon-btn" title="Обрані" onclick="toggleFavorites(true)">
+        <button type="button" id="favoritesBtn" class="auth-icon-btn" title="РћР±СЂР°РЅС–" onclick="toggleFavorites(true)">
           <svg class="heart-icon" viewBox="0 0 512 512" aria-hidden="true">
             <path d="M257 88L255 88C248.355 74.9828 235.475 63.8415 224 55.1304C173.114 16.5016 99.2988 19.267 51 61.2894C-1.26738 106.765 -12.8083 185.773 13.0116 248C25.4527 277.984 45.9981 303.467 67.9105 327C103.494 365.215 144.281 398.581 184 432.421C198.063 444.402 211.938 456.598 226 468.579C233.971 475.37 241.993 483.022 253 483.907C268.121 485.122 278.342 475.197 289 466C306.641 450.778 324.263 435.533 342 420.421C356.437 408.121 370.854 395.797 385 383.166C443.359 331.055 512 269.827 512 185C512 178.072 512.538 170.886 511.715 164C506.476 120.199 486.854 78.636 450 52.7207C401.715 18.7669 334.983 19.4645 288 55.1304C276.525 63.8415 263.645 74.9828 257 88z"></path>
           </svg>
         </button>
         <div class="cart" onclick="toggleCart(true)">
-          <img src="images/cart-icon.svg" class="cart-icon" alt="Кошик">
+          <img src="images/cart-icon.svg" class="cart-icon" alt="РљРѕС€РёРє">
           <span id="cartCount">0</span>
         </div>
       </div>
@@ -59,32 +59,32 @@
   <div id="cartOverlay" class="cart-overlay" onclick="toggleCart(false)"></div>
   <div id="cartSidebar" class="cart-sidebar">
     <div class="cart-head-float">
-      <h3 id="cartPanelTitle">Кошик</h3>
-      <button type="button" class="cart-head-float-close" onclick="toggleCart(false)" aria-label="Закрити кошик">?</button>
+      <h3 id="cartPanelTitle">РљРѕС€РёРє</h3>
+      <button type="button" class="cart-head-float-close" onclick="toggleCart(false)" aria-label="Р—Р°РєСЂРёС‚Рё РєРѕС€РёРє">?</button>
     </div>
     <div id="cartItems" class="cart-items"></div>
     <div class="cart-footer">
       <div class="cart-total">
-        <span>Разом</span>
+        <span>Р Р°Р·РѕРј</span>
         <div>
           <b id="cartTotal">0</b>
-          <span>грн</span>
+          <span>РіСЂРЅ</span>
         </div>
       </div>
-      <button class="checkout-btn" onclick="checkout()">Оформити</button>
-      <button class="clear-btn" onclick="clearCart()">Очистити кошик</button>
+      <button class="checkout-btn" onclick="checkout()">РћС„РѕСЂРјРёС‚Рё</button>
+      <button class="clear-btn" onclick="clearCart()">РћС‡РёСЃС‚РёС‚Рё РєРѕС€РёРє</button>
     </div>
   </div>
 
   <div id="favoritesOverlay" class="cart-overlay" onclick="toggleFavorites(false)"></div>
   <div id="favoritesSidebar" class="cart-sidebar">
     <div class="cart-head-float">
-      <h3>Обрані</h3>
-      <button type="button" class="cart-head-float-close" onclick="toggleFavorites(false)" aria-label="Закрити обрані">?</button>
+      <h3>РћР±СЂР°РЅС–</h3>
+      <button type="button" class="cart-head-float-close" onclick="toggleFavorites(false)" aria-label="Р—Р°РєСЂРёС‚Рё РѕР±СЂР°РЅС–">?</button>
     </div>
     <div id="favoritesItems" class="cart-items"></div>
     <div class="cart-footer">
-      <button class="clear-btn" onclick="clearFavorites()">Очистити обрані</button>
+      <button class="clear-btn" onclick="clearFavorites()">РћС‡РёСЃС‚РёС‚Рё РѕР±СЂР°РЅС–</button>
     </div>
   </div>
 
@@ -95,94 +95,94 @@
           <svg class="back-icon" viewBox="0 0 24 24" aria-hidden="true">
             <path d="M15 6l-6 6 6 6"></path>
           </svg>
-          Назад
+          РќР°Р·Р°Рґ
         </a>
         <div class="breadcrumbs">
-          <a href="index.html">Головна</a>
+          <a href="index.html">Р“РѕР»РѕРІРЅР°</a>
           <span>/</span>
-          <a href="index.html#catalog">Каталог</a>
+          <a href="index.html#catalog">РљР°С‚Р°Р»РѕРі</a>
           <span>/</span>
-          <span>Особистий кабінет</span>
+          <span>РћСЃРѕР±РёСЃС‚РёР№ РєР°Р±С–РЅРµС‚</span>
         </div>
       </div>
       <div class="cabinet-page-head">
-        <h1 class="cabinet-page-title">Особистий кабінет</h1>
-        <button type="button" class="back-btn cabinet-menu-open-btn neo-drawer-trigger" data-uflyout-trigger id="cabinetMenuOpenBtn" aria-label="Відкрити меню кабінету" onclick="document.body.classList.add('cabinet-menu-open');document.getElementById('cabinetMenuOverlay').hidden=false;">
-          Меню
+        <h1 class="cabinet-page-title">РћСЃРѕР±РёСЃС‚РёР№ РєР°Р±С–РЅРµС‚</h1>
+        <button type="button" class="back-btn cabinet-menu-open-btn neo-drawer-trigger" data-uflyout-trigger id="cabinetMenuOpenBtn" aria-label="Р’С–РґРєСЂРёС‚Рё РјРµРЅСЋ РєР°Р±С–РЅРµС‚Сѓ" onclick="document.body.classList.add('cabinet-menu-open');document.getElementById('cabinetMenuOverlay').hidden=false;">
+          РњРµРЅСЋ
         </button>
       </div>
       <div class="catalog-page-layout">
-        <aside class="catalog-filters cabinet-sidebar neo-drawer neo-drawer--cabinet" data-uflyout="panel" aria-label="Меню кабінету">
+        <aside class="catalog-filters cabinet-sidebar neo-drawer neo-drawer--cabinet" data-uflyout="panel" aria-label="РњРµРЅСЋ РєР°Р±С–РЅРµС‚Сѓ">
           <div class="neo-drawer__title-row">
-            <h2 class="catalog-filters-title neo-drawer__title">Меню</h2>
-            <button type="button" class="cabinet-menu-close neo-drawer__close" data-uflyout-close id="cabinetMenuCloseBtn" aria-label="Закрити меню кабінету" onclick="document.body.classList.remove('cabinet-menu-open');document.getElementById('cabinetMenuOverlay').hidden=true;">?</button>
+            <h2 class="catalog-filters-title neo-drawer__title">РњРµРЅСЋ</h2>
+            <button type="button" class="cabinet-menu-close neo-drawer__close" data-uflyout-close id="cabinetMenuCloseBtn" aria-label="Р—Р°РєСЂРёС‚Рё РјРµРЅСЋ РєР°Р±С–РЅРµС‚Сѓ" onclick="document.body.classList.remove('cabinet-menu-open');document.getElementById('cabinetMenuOverlay').hidden=true;">?</button>
           </div>
-          <button class="cabinet-nav-btn neo-drawer__item active" data-uflyout-item type="button" data-section="personal">Особисті дані</button>
-          <button class="cabinet-nav-btn neo-drawer__item" data-uflyout-item type="button" data-section="orders">Мої замовлення</button>
-          <button class="cabinet-nav-btn neo-drawer__item" data-uflyout-item type="button">Бонуси</button>
-          <button class="cabinet-nav-btn neo-drawer__item" data-uflyout-item type="button">Обрані</button>
-          <button id="logoutBtn" class="cabinet-nav-btn neo-drawer__item logout" data-uflyout-item type="button">Вийти</button>
+          <button class="cabinet-nav-btn neo-drawer__item active" data-uflyout-item type="button" data-section="personal">РћСЃРѕР±РёСЃС‚С– РґР°РЅС–</button>
+          <button class="cabinet-nav-btn neo-drawer__item" data-uflyout-item type="button" data-section="orders">РњРѕС— Р·Р°РјРѕРІР»РµРЅРЅСЏ</button>
+          <button class="cabinet-nav-btn neo-drawer__item" data-uflyout-item type="button">Р‘РѕРЅСѓСЃРё</button>
+          <button class="cabinet-nav-btn neo-drawer__item" data-uflyout-item type="button">РћР±СЂР°РЅС–</button>
+          <button id="logoutBtn" class="cabinet-nav-btn neo-drawer__item logout" data-uflyout-item type="button">Р’РёР№С‚Рё</button>
         </aside>
         <div class="catalog-main">
           <div class="catalog-products-inner">
     <section id="cabPersonalSection" class="products cabinet-card">
-      <h2>Мої дані</h2>
+      <h2>РњРѕС— РґР°РЅС–</h2>
       <form id="cabinetForm" class="cabinet-form">
-        <label>Ім'я<input id="cabName" type="text" required></label>
-        <label>Прізвище<input id="cabLastName" type="text" required></label>
-        <label>Телефон<input id="cabPhone" type="tel" required></label>
+        <label>Р†Рј'СЏ<input id="cabName" type="text" required></label>
+        <label>РџСЂС–Р·РІРёС‰Рµ<input id="cabLastName" type="text" required></label>
+        <label>РўРµР»РµС„РѕРЅ<input id="cabPhone" type="tel" required></label>
         <label>Email<input id="cabEmail" type="email" disabled></label>
-        <h3>Доставка</h3>
-        <label>Служба доставки
+        <h3>Р”РѕСЃС‚Р°РІРєР°</h3>
+        <label>РЎР»СѓР¶Р±Р° РґРѕСЃС‚Р°РІРєРё
           <div class="catalog-select-wrap">
             <button type="button" class="catalog-select-trigger" id="cabProviderTrigger" aria-expanded="false" aria-haspopup="listbox" aria-controls="cabProviderPanel">
-              <span class="catalog-select-value" id="cabProviderValue">Оберіть службу доставки</span>
+              <span class="catalog-select-value" id="cabProviderValue">РћР±РµСЂС–С‚СЊ СЃР»СѓР¶Р±Сѓ РґРѕСЃС‚Р°РІРєРё</span>
               <svg class="catalog-select-chevron" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9l6 6 6-6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg>
             </button>
             <ul id="cabProviderPanel" class="catalog-select-panel" role="listbox" hidden></ul>
             <select id="cabProvider" class="catalog-filter-select-native" tabindex="-1" aria-hidden="true">
-              <option value="">Оберіть службу доставки</option>
-              <option value="nova_poshta">Нова пошта</option>
-              <option value="ukr_poshta">Укрпошта</option>
+              <option value="">РћР±РµСЂС–С‚СЊ СЃР»СѓР¶Р±Сѓ РґРѕСЃС‚Р°РІРєРё</option>
+              <option value="nova_poshta">РќРѕРІР° РїРѕС€С‚Р°</option>
+              <option value="ukr_poshta">РЈРєСЂРїРѕС€С‚Р°</option>
             </select>
           </div>
         </label>
-        <label id="cabDeliveryTypeWrap">Тип доставки
+        <label id="cabDeliveryTypeWrap">РўРёРї РґРѕСЃС‚Р°РІРєРё
           <div class="catalog-select-wrap">
             <button type="button" class="catalog-select-trigger" id="cabDeliveryTypeTrigger" aria-expanded="false" aria-haspopup="listbox" aria-controls="cabDeliveryTypePanel">
-              <span class="catalog-select-value" id="cabDeliveryTypeValue">Відділення</span>
+              <span class="catalog-select-value" id="cabDeliveryTypeValue">Р’С–РґРґС–Р»РµРЅРЅСЏ</span>
               <svg class="catalog-select-chevron" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9l6 6 6-6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg>
             </button>
             <ul id="cabDeliveryTypePanel" class="catalog-select-panel" role="listbox" hidden></ul>
             <select id="cabDeliveryType" class="catalog-filter-select-native" tabindex="-1" aria-hidden="true">
-              <option value="warehouse">Відділення</option>
-              <option value="postomat">Поштомат</option>
-              <option value="address">Адресна доставка</option>
+              <option value="warehouse">Р’С–РґРґС–Р»РµРЅРЅСЏ</option>
+              <option value="postomat">РџРѕС€С‚РѕРјР°С‚</option>
+              <option value="address">РђРґСЂРµСЃРЅР° РґРѕСЃС‚Р°РІРєР°</option>
             </select>
           </div>
         </label>
-        <label id="cabCityWrap" class="city-autocomplete-wrap">Обрати місто
+        <label id="cabCityWrap" class="city-autocomplete-wrap">РћР±СЂР°С‚Рё РјС–СЃС‚Рѕ
           <input id="cabCity" type="text" autocomplete="off">
           <div id="cabCitySuggestions" class="city-suggestions" style="display:none;"></div>
         </label>
         <input id="cabCityRef" type="hidden">
 
-        <label id="cabBranchWrap" class="city-autocomplete-wrap">Обрати відділення
-          <input id="cabBranch" type="text" autocomplete="off" placeholder="Почніть вводити відділення...">
+        <label id="cabBranchWrap" class="city-autocomplete-wrap">РћР±СЂР°С‚Рё РІС–РґРґС–Р»РµРЅРЅСЏ
+          <input id="cabBranch" type="text" autocomplete="off" placeholder="РџРѕС‡РЅС–С‚СЊ РІРІРѕРґРёС‚Рё РІС–РґРґС–Р»РµРЅРЅСЏ...">
           <div id="cabBranchSuggestions" class="city-suggestions" style="display:none;"></div>
         </label>
         <input id="cabBranchRef" type="hidden">
 
-        <label id="cabAddressWrap" style="display:none;">Адреса<input id="cabAddress" type="text"></label>
+        <label id="cabAddressWrap" style="display:none;">РђРґСЂРµСЃР°<input id="cabAddress" type="text"></label>
         <p id="cabinetMessage" class="auth-message"></p>
         <div class="cabinet-actions-row">
-          <button class="checkout-btn" type="submit">Зберегти</button>
+          <button class="checkout-btn" type="submit">Р—Р±РµСЂРµРіС‚Рё</button>
         </div>
       </form>
     </section>
 
     <section id="cabOrdersSection" class="products cabinet-card" style="display:none;">
-      <h2>Мої замовлення</h2>
+      <h2>РњРѕС— Р·Р°РјРѕРІР»РµРЅРЅСЏ</h2>
       <div id="cabOrdersList" class="cab-orders-list"></div>
     </section>
           </div>
@@ -195,26 +195,26 @@
   <footer class="footer">
     <div class="footer-container">
       <div class="footer-col">
-        <h4>Меню</h4>
-        <a href="index.html">Головна</a>
-        <a href="catalog.html">Каталог</a>
-        <a href="about.html">Про нас</a>
-        <a href="order-3d-print.html">Замовити 3D друк</a>
+        <h4>РњРµРЅСЋ</h4>
+        <a href="index.html">Р“РѕР»РѕРІРЅР°</a>
+        <a href="catalog.html">РљР°С‚Р°Р»РѕРі</a>
+        <a href="about.html">РџСЂРѕ РЅР°СЃ</a>
+        <a href="order-3d-print.html">Р—Р°РјРѕРІРёС‚Рё 3D РґСЂСѓРє</a>
       </div>
       <div class="footer-col">
-        <h4>Особистий кабінет</h4>
-        <a href="#orders">Мої замовлення</a>
-        <a href="#personal">Особисті дані</a>
-        <a href="catalog.html#favorites">Обране</a>
+        <h4>РћСЃРѕР±РёСЃС‚РёР№ РєР°Р±С–РЅРµС‚</h4>
+        <a href="#orders">РњРѕС— Р·Р°РјРѕРІР»РµРЅРЅСЏ</a>
+        <a href="#personal">РћСЃРѕР±РёСЃС‚С– РґР°РЅС–</a>
+        <a href="catalog.html#favorites">РћР±СЂР°РЅРµ</a>
       </div>
       <div class="footer-col" id="contacts">
-        <h4>Контакти</h4>
+        <h4>РљРѕРЅС‚Р°РєС‚Рё</h4>
         <a href="tel:+380501662271" class="phone">+38 (050) 166 22 71</a>
         <a href="mailto:andrysejko22@gmail.com">andrysejko22@gmail.com</a>
-        <a href="about.html#about-v2-location">Локація й графік</a>
+        <a href="about.html#about-v2-location">Р›РѕРєР°С†С–СЏ Р№ РіСЂР°С„С–Рє</a>
       </div>
       <div class="footer-col">
-        <h4>Мессенджери</h4>
+        <h4>РњРµСЃСЃРµРЅРґР¶РµСЂРё</h4>
         <div class="socials socials--messengers">
           <a class="footer-messenger footer-messenger--telegram" href="https://t.me/+380501662271" target="_blank" rel="noopener noreferrer">
             <svg class="footer-messenger__icon" viewBox="0 0 24 24" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"><path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/></svg>
@@ -225,7 +225,7 @@
             <span>Viber</span>
           </a>
         </div>
-        <p class="pay-text">Оплата</p>
+        <p class="pay-text">РћРїР»Р°С‚Р°</p>
         <div class="payments">
           <span>VISA</span>
           <span>MasterCard</span>
@@ -233,13 +233,13 @@
       </div>
     </div>
     <div class="footer-bottom">
-      <p>© 2026 EVRYKA</p>
-      <span>Українська</span>
+      <p>В© 2026 EVRYKA</p>
+      <span>РЈРєСЂР°С—РЅСЃСЊРєР°</span>
     </div>
   </footer>
 
   <div id="chatWidgetRoot" class="chat-widget-root">
-    <button type="button" id="chatWidgetToggle" class="chat-widget-toggle" aria-expanded="false" aria-controls="chatWidgetPanel" title="Написати нам">
+    <button type="button" id="chatWidgetToggle" class="chat-widget-toggle" aria-expanded="false" aria-controls="chatWidgetPanel" title="РќР°РїРёСЃР°С‚Рё РЅР°Рј">
       <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true">
         <path fill="currentColor" d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm0 14H5.17L4 17.17V4h16v12z"></path>
       </svg>
@@ -247,15 +247,15 @@
     <div id="chatWidgetPanel" class="chat-widget-panel" role="dialog" aria-modal="true" aria-labelledby="chatWidgetTitle" aria-hidden="true">
       <div class="chat-widget-card">
       <div class="chat-widget-head-float">
-        <span id="chatWidgetTitle">Напишіть нам</span>
-        <button type="button" class="chat-widget-close" aria-label="Закрити чат">?</button>
+        <span id="chatWidgetTitle">РќР°РїРёС€С–С‚СЊ РЅР°Рј</span>
+        <button type="button" class="chat-widget-close" aria-label="Р—Р°РєСЂРёС‚Рё С‡Р°С‚">?</button>
       </div>
       <div class="chat-widget-sheet">
         <div id="chatWidgetMessages" class="chat-widget-messages" aria-live="polite"></div>
         <div class="chat-widget-compose-float">
           <div class="chat-widget-compose">
-            <input type="text" id="chatWidgetText" class="chat-widget-field" placeholder="Ваше запитання…" maxlength="2000" autocomplete="off">
-            <button type="button" id="chatWidgetSend" class="chat-widget-send">Надіслати</button>
+            <input type="text" id="chatWidgetText" class="chat-widget-field" placeholder="Р’Р°С€Рµ Р·Р°РїРёС‚Р°РЅРЅСЏ?" maxlength="2000" autocomplete="off">
+            <button type="button" id="chatWidgetSend" class="chat-widget-send">РќР°РґС–СЃР»Р°С‚Рё</button>
           </div>
           <p id="chatWidgetStatus" class="chat-widget-status" role="status"></p>
         </div>
@@ -270,6 +270,93 @@
   <script src="js/cabinet.js?v=20260420-5"></script>
   <script>
     (function () {
+      function recoverCabinetText() {
+        document.title = "????????? ??????? - EVRYKA";
+
+        const setText = (selector, text) => {
+          const el = document.querySelector(selector);
+          if (el) el.textContent = text;
+        };
+        const setAttr = (selector, attr, value) => {
+          const el = document.querySelector(selector);
+          if (el) el.setAttribute(attr, value);
+        };
+
+        setAttr("#navToggle", "aria-label", "???????? ????");
+        setAttr("#headerNavPanel", "aria-label", "??????? ?????????");
+        setText('#headerNavPanel a[href="index.html"]', "???????");
+        setText('#headerNavPanel a[href="catalog.html"]', "???????");
+        setText('#headerNavPanel a[href="about.html"]', "??? ???");
+        setText('#headerNavPanel a[href="order-3d-print.html"]', "???????? 3D ????");
+        setAttr("#search", "placeholder", "?????");
+        setAttr("#authBtn", "title", "???????");
+        setAttr("#favoritesBtn", "title", "??????");
+        setAttr(".cart .cart-icon", "alt", "?????");
+
+        setText(".product-nav .back-btn", "?????");
+        const breadcrumbLinks = document.querySelectorAll(".breadcrumbs a");
+        if (breadcrumbLinks[0]) breadcrumbLinks[0].textContent = "???????";
+        if (breadcrumbLinks[1]) breadcrumbLinks[1].textContent = "???????";
+        setText(".breadcrumbs span:last-child", "????????? ???????");
+
+        setText(".cabinet-page-title", "????????? ???????");
+        setText("#cabinetMenuOpenBtn", "????");
+        setAttr("#cabinetMenuOpenBtn", "aria-label", "???????? ???? ????????");
+        setAttr(".page-cabinet .cabinet-sidebar", "aria-label", "???? ????????");
+        setText(".page-cabinet .cabinet-sidebar .catalog-filters-title", "????");
+        setAttr("#cabinetMenuCloseBtn", "aria-label", "??????? ???? ????????");
+
+        const navBtns = document.querySelectorAll(".page-cabinet .cabinet-nav-btn");
+        const navTexts = ["???????? ????", "??? ??????????", "??????", "??????", "?????"];
+        navBtns.forEach((btn, i) => {
+          if (navTexts[i]) btn.textContent = navTexts[i];
+        });
+
+        setText("#cabPersonalSection h2", "??? ????");
+        const labels = document.querySelectorAll("#cabinetForm > label");
+        const labelTexts = [
+          "??'?", "????????", "???????", "Email",
+          "?????? ????????", "??? ????????", "?????? ?????", "?????? ??????????", "??????"
+        ];
+        labels.forEach((label, i) => {
+          if (labelTexts[i]) label.childNodes[0].textContent = labelTexts[i];
+        });
+        setText("#cabPersonalSection h3", "????????");
+        setText("#cabProviderValue", "??????? ?????? ????????");
+        setText("#cabDeliveryTypeValue", "??????????");
+        setAttr("#cabBranch", "placeholder", "??????? ??????? ??????????...");
+        setText("#cabinetForm .checkout-btn", "????????");
+        setText("#cabOrdersSection h2", "??? ??????????");
+
+        setText("#cartPanelTitle", "?????");
+        const closeBtns = document.querySelectorAll(".cart-head-float-close");
+        closeBtns.forEach((b) => (b.textContent = "Р§"));
+        setText(".cart-total > span", "?????");
+        const cartCurrency = document.querySelector(".cart-total div span");
+        if (cartCurrency) cartCurrency.textContent = "???";
+        setText("#cartSidebar .checkout-btn", "????????");
+        setText("#cartSidebar .clear-btn", "???????? ?????");
+        setText("#favoritesSidebar h3", "??????");
+        setText("#favoritesSidebar .clear-btn", "???????? ??????");
+
+        setAttr("#regName", "placeholder", "??'?");
+        setAttr("#regLastName", "placeholder", "????????");
+        setAttr("#regPhone", "placeholder", "???????");
+
+        setText("footer .footer-col:nth-child(1) h4", "????");
+        setText("footer .footer-col:nth-child(2) h4", "????????? ???????");
+        setText("footer .footer-col:nth-child(3) h4", "????????");
+        setText("footer .footer-col:nth-child(4) h4", "??????????");
+        setText("footer .pay-text", "??????");
+        setText("footer .footer-bottom span", "??????????");
+
+        setAttr("#chatWidgetToggle", "title", "???????? ???");
+        setText("#chatWidgetTitle", "???????? ???");
+        setAttr(".chat-widget-close", "aria-label", "??????? ???");
+        setAttr("#chatWidgetText", "placeholder", "???? ?????????...");
+        setText("#chatWidgetSend", "?????????");
+      }
+
       function setOpen(open) {
         const drawer = document.querySelector(".page-cabinet .catalog-filters.cabinet-sidebar");
         const overlay = document.getElementById("cabinetMenuOverlay");
@@ -289,6 +376,7 @@
       }
 
       function bind() {
+        recoverCabinetText();
         const openBtn = document.getElementById("cabinetMenuOpenBtn");
         const closeBtn = document.getElementById("cabinetMenuCloseBtn");
         const overlay = document.getElementById("cabinetMenuOverlay");
@@ -333,8 +421,11 @@
       }
     })();
   </script>
+  <script src="js/mojibake-fix.js?v=1"></script>
   <script src="js/cart.js?v=20260430"></script>
   <script src="js/chat-widget.js?v=20260409"></script>
 </body>
 </html>
+
+
 

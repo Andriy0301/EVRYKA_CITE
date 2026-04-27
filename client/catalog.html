@@ -1,9 +1,9 @@
-<!DOCTYPE html>
+п»ї<!DOCTYPE html>
 <html lang="uk">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Каталог - EVRYKA</title>
+  <title>РљР°С‚Р°Р»РѕРі - EVRYKA</title>
   <link rel="icon" href="images/favicon.png" type="image/png">
   <link rel="apple-touch-icon" href="images/favicon.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -20,36 +20,36 @@
     <a href="index.html" class="logo header-logo">
       <img src="images/text_logo.png" alt="EVRYKA" class="header-logo-img">
     </a>
-    <button type="button" class="header-burger" id="navToggle" aria-label="Відкрити меню" aria-expanded="false" aria-controls="headerNavPanel">
+    <button type="button" class="header-burger" id="navToggle" aria-label="Р’С–РґРєСЂРёС‚Рё РјРµРЅСЋ" aria-expanded="false" aria-controls="headerNavPanel">
       <span class="header-burger__line"></span>
       <span class="header-burger__line"></span>
       <span class="header-burger__line"></span>
     </button>
-    <nav class="nav header-nav" id="headerNavPanel" aria-label="Головна навігація">
-      <a href="index.html">Головна</a>
-      <a href="catalog.html" class="active">Каталог</a>
-      <a href="about.html">Про нас</a>
-      <a href="order-3d-print.html">Замовити 3D друк</a>
+    <nav class="nav header-nav" id="headerNavPanel" aria-label="Р“РѕР»РѕРІРЅР° РЅР°РІС–РіР°С†С–СЏ">
+      <a href="index.html">Р“РѕР»РѕРІРЅР°</a>
+      <a href="catalog.html" class="active">РљР°С‚Р°Р»РѕРі</a>
+      <a href="about.html">РџСЂРѕ РЅР°СЃ</a>
+      <a href="order-3d-print.html">Р—Р°РјРѕРІРёС‚Рё 3D РґСЂСѓРє</a>
     </nav>
     <div class="header-utilities">
       <div class="search-box">
-        <input type="search" placeholder="Пошук" id="search" name="q" autocomplete="off">
+        <input type="search" placeholder="РџРѕС€СѓРє" id="search" name="q" autocomplete="off">
         <div id="searchResults" class="search-results"></div>
       </div>
       <div class="header-actions">
-        <button type="button" id="authBtn" class="auth-icon-btn" title="Профіль">
+        <button type="button" id="authBtn" class="auth-icon-btn" title="РџСЂРѕС„С–Р»СЊ">
           <svg id="authIcon" viewBox="0 0 24 24" aria-hidden="true">
             <path d="M12 12c2.8 0 5-2.2 5-5s-2.2-5-5-5-5 2.2-5 5 2.2 5 5 5Zm0 2c-4.4 0-8 2.7-8 6v2h16v-2c0-3.3-3.6-6-8-6Z"></path>
           </svg>
           <span id="authInitials" class="auth-initials"></span>
         </button>
-        <button type="button" id="favoritesBtn" class="auth-icon-btn" title="Обрані" onclick="toggleFavorites(true)">
+        <button type="button" id="favoritesBtn" class="auth-icon-btn" title="РћР±СЂР°РЅС–" onclick="toggleFavorites(true)">
           <svg class="heart-icon" viewBox="0 0 512 512" aria-hidden="true">
             <path d="M257 88L255 88C248.355 74.9828 235.475 63.8415 224 55.1304C173.114 16.5016 99.2988 19.267 51 61.2894C-1.26738 106.765 -12.8083 185.773 13.0116 248C25.4527 277.984 45.9981 303.467 67.9105 327C103.494 365.215 144.281 398.581 184 432.421C198.063 444.402 211.938 456.598 226 468.579C233.971 475.37 241.993 483.022 253 483.907C268.121 485.122 278.342 475.197 289 466C306.641 450.778 324.263 435.533 342 420.421C356.437 408.121 370.854 395.797 385 383.166C443.359 331.055 512 269.827 512 185C512 178.072 512.538 170.886 511.715 164C506.476 120.199 486.854 78.636 450 52.7207C401.715 18.7669 334.983 19.4645 288 55.1304C276.525 63.8415 263.645 74.9828 257 88z"></path>
           </svg>
         </button>
         <div class="cart" onclick="toggleCart(true)">
-          <img src="images/cart-icon.svg" class="cart-icon" alt="Кошик">
+          <img src="images/cart-icon.svg" class="cart-icon" alt="РљРѕС€РёРє">
           <span id="cartCount">0</span>
         </div>
       </div>
@@ -60,76 +60,76 @@
 <div class="container">
   <div class="catalog-shell">
   <div class="product-nav catalog-page-nav">
-    <button type="button" class="back-btn" id="catalogBackBtn" aria-label="Назад">
+    <button type="button" class="back-btn" id="catalogBackBtn" aria-label="РќР°Р·Р°Рґ">
       <svg class="back-icon" viewBox="0 0 24 24" aria-hidden="true">
         <path d="M15 6l-6 6 6 6"></path>
       </svg>
-      Назад
+      РќР°Р·Р°Рґ
     </button>
     <div class="breadcrumbs">
-      <a href="index.html">Головна</a>
+      <a href="index.html">Р“РѕР»РѕРІРЅР°</a>
       <span>/</span>
-      <span>Каталог</span>
+      <span>РљР°С‚Р°Р»РѕРі</span>
     </div>
   </div>
 
   <div class="catalog-page-layout">
-    <aside class="catalog-filters neo-drawer neo-drawer--filters" data-uflyout="panel" aria-label="Фільтри каталогу">
+    <aside class="catalog-filters neo-drawer neo-drawer--filters" data-uflyout="panel" aria-label="Р¤С–Р»СЊС‚СЂРё РєР°С‚Р°Р»РѕРіСѓ">
       <div class="neo-drawer__title-row">
-        <h2 class="catalog-filters-title neo-drawer__title">Фільтри</h2>
-        <button type="button" class="catalog-filters-close neo-drawer__close" data-uflyout-close id="catalogFiltersCloseBtn" aria-label="Закрити фільтри" onclick="document.body.classList.remove('catalog-filters-open');document.getElementById('catalogFiltersOverlay').hidden=true;">?</button>
+        <h2 class="catalog-filters-title neo-drawer__title">Р¤С–Р»СЊС‚СЂРё</h2>
+        <button type="button" class="catalog-filters-close neo-drawer__close" data-uflyout-close id="catalogFiltersCloseBtn" aria-label="Р—Р°РєСЂРёС‚Рё С„С–Р»СЊС‚СЂРё" onclick="document.body.classList.remove('catalog-filters-open');document.getElementById('catalogFiltersOverlay').hidden=true;">?</button>
       </div>
 
       <div class="catalog-filter-block">
-        <span class="catalog-filter-label" id="catalogSortLabel">Сортування</span>
+        <span class="catalog-filter-label" id="catalogSortLabel">РЎРѕСЂС‚СѓРІР°РЅРЅСЏ</span>
         <div class="catalog-select-wrap">
           <button type="button" class="catalog-select-trigger" id="catalogSortTrigger" aria-expanded="false" aria-haspopup="listbox" aria-labelledby="catalogSortLabel catalogSortValue">
-            <span class="catalog-select-value" id="catalogSortValue">За замовчуванням</span>
+            <span class="catalog-select-value" id="catalogSortValue">Р—Р° Р·Р°РјРѕРІС‡СѓРІР°РЅРЅСЏРј</span>
             <svg class="catalog-select-chevron" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9l6 6 6-6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg>
           </button>
           <ul class="catalog-select-panel" role="listbox" hidden></ul>
           <select id="catalogSort" class="catalog-filter-select-native" tabindex="-1" aria-hidden="true">
-            <option value="default">За замовчуванням</option>
-            <option value="price_asc">Спочатку дешевші</option>
-            <option value="price_desc">Спочатку дорожчі</option>
-            <option value="popular">Популярніші</option>
+            <option value="default">Р—Р° Р·Р°РјРѕРІС‡СѓРІР°РЅРЅСЏРј</option>
+            <option value="price_asc">РЎРїРѕС‡Р°С‚РєСѓ РґРµС€РµРІС€С–</option>
+            <option value="price_desc">РЎРїРѕС‡Р°С‚РєСѓ РґРѕСЂРѕР¶С‡С–</option>
+            <option value="popular">РџРѕРїСѓР»СЏСЂРЅС–С€С–</option>
           </select>
         </div>
       </div>
 
       <div class="catalog-filter-block">
-        <span class="catalog-filter-label" id="catalogCategoryLabel">Категорія</span>
+        <span class="catalog-filter-label" id="catalogCategoryLabel">РљР°С‚РµРіРѕСЂС–СЏ</span>
         <div class="catalog-select-wrap">
           <button type="button" class="catalog-select-trigger" id="catalogCategoryTrigger" aria-expanded="false" aria-haspopup="listbox" aria-labelledby="catalogCategoryLabel catalogCategoryValue">
-            <span class="catalog-select-value" id="catalogCategoryValue">Усі категорії</span>
+            <span class="catalog-select-value" id="catalogCategoryValue">РЈСЃС– РєР°С‚РµРіРѕСЂС–С—</span>
             <svg class="catalog-select-chevron" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9l6 6 6-6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg>
           </button>
           <ul class="catalog-select-panel" role="listbox" hidden></ul>
           <select id="catalogFilterCategory" class="catalog-filter-select-native" tabindex="-1" aria-hidden="true">
-            <option value="all">Усі категорії</option>
+            <option value="all">РЈСЃС– РєР°С‚РµРіРѕСЂС–С—</option>
           </select>
         </div>
       </div>
 
       <div class="catalog-filter-block">
-        <span class="catalog-filter-label">Ціна, грн</span>
+        <span class="catalog-filter-label">Р¦С–РЅР°, РіСЂРЅ</span>
         <div class="catalog-price-row">
-          <input type="number" id="catalogPriceMin" class="catalog-filter-input" min="0" step="1" placeholder="Від">
-          <span class="catalog-price-dash">—</span>
-          <input type="number" id="catalogPriceMax" class="catalog-filter-input" min="0" step="1" placeholder="До">
+          <input type="number" id="catalogPriceMin" class="catalog-filter-input" min="0" step="1" placeholder="Р’С–Рґ">
+          <span class="catalog-price-dash">?</span>
+          <input type="number" id="catalogPriceMax" class="catalog-filter-input" min="0" step="1" placeholder="Р”Рѕ">
         </div>
       </div>
 
-      <button type="button" id="catalogResetFilters" class="catalog-reset-btn">Скинути фільтри</button>
+      <button type="button" id="catalogResetFilters" class="catalog-reset-btn">РЎРєРёРЅСѓС‚Рё С„С–Р»СЊС‚СЂРё</button>
     </aside>
 
     <div class="catalog-main">
       <div class="catalog-products-inner">
         <section class="products catalog-products-section">
           <div class="catalog-products-head">
-            <h2>Каталог товарів</h2>
-            <button type="button" class="back-btn catalog-filters-open-btn neo-drawer-trigger" data-uflyout-trigger id="catalogFiltersOpenBtn" aria-label="Відкрити фільтри" onclick="document.body.classList.add('catalog-filters-open');document.getElementById('catalogFiltersOverlay').hidden=false;">
-              Фільтр
+            <h2>РљР°С‚Р°Р»РѕРі С‚РѕРІР°СЂС–РІ</h2>
+            <button type="button" class="back-btn catalog-filters-open-btn neo-drawer-trigger" data-uflyout-trigger id="catalogFiltersOpenBtn" aria-label="Р’С–РґРєСЂРёС‚Рё С„С–Р»СЊС‚СЂРё" onclick="document.body.classList.add('catalog-filters-open');document.getElementById('catalogFiltersOverlay').hidden=false;">
+              Р¤С–Р»СЊС‚СЂ
             </button>
           </div>
           <div id="catalogPageGrid" class="catalog-products-grid"></div>
@@ -145,32 +145,32 @@
 
 <div id="cartSidebar" class="cart-sidebar">
   <div class="cart-head-float">
-    <h3 id="cartPanelTitle">Кошик</h3>
-    <button type="button" class="cart-head-float-close" onclick="toggleCart(false)" aria-label="Закрити кошик">?</button>
+    <h3 id="cartPanelTitle">РљРѕС€РёРє</h3>
+    <button type="button" class="cart-head-float-close" onclick="toggleCart(false)" aria-label="Р—Р°РєСЂРёС‚Рё РєРѕС€РёРє">?</button>
   </div>
   <div id="cartItems" class="cart-items"></div>
   <div class="cart-footer">
     <div class="cart-total">
-      <span>Разом</span>
+      <span>Р Р°Р·РѕРј</span>
       <div>
         <b id="cartTotal">0</b>
-        <span>грн</span>
+        <span>РіСЂРЅ</span>
       </div>
     </div>
-    <button class="checkout-btn" onclick="checkout()">Оформити</button>
-    <button class="clear-btn" onclick="clearCart()">Очистити кошик</button>
+    <button class="checkout-btn" onclick="checkout()">РћС„РѕСЂРјРёС‚Рё</button>
+    <button class="clear-btn" onclick="clearCart()">РћС‡РёСЃС‚РёС‚Рё РєРѕС€РёРє</button>
   </div>
 </div>
 
 <div id="favoritesOverlay" class="cart-overlay" onclick="toggleFavorites(false)"></div>
 <div id="favoritesSidebar" class="cart-sidebar">
   <div class="cart-head-float">
-    <h3>Обрані</h3>
-    <button type="button" class="cart-head-float-close" onclick="toggleFavorites(false)" aria-label="Закрити обрані">?</button>
+    <h3>РћР±СЂР°РЅС–</h3>
+    <button type="button" class="cart-head-float-close" onclick="toggleFavorites(false)" aria-label="Р—Р°РєСЂРёС‚Рё РѕР±СЂР°РЅС–">?</button>
   </div>
   <div id="favoritesItems" class="cart-items"></div>
   <div class="cart-footer">
-    <button class="clear-btn" onclick="clearFavorites()">Очистити обрані</button>
+    <button class="clear-btn" onclick="clearFavorites()">РћС‡РёСЃС‚РёС‚Рё РѕР±СЂР°РЅС–</button>
   </div>
 </div>
 
@@ -179,9 +179,9 @@
     <button id="closeAuthBtn" class="close-btn">?</button>
     <h3 id="authTitle" class="auth-title">Log In</h3>
     <form id="registerForm">
-      <input id="regName" class="auth-input auth-register-only" type="text" placeholder="Ім'я">
-      <input id="regLastName" class="auth-input auth-register-only" type="text" placeholder="Прізвище">
-      <input id="regPhone" class="auth-input auth-register-only" type="tel" placeholder="Телефон">
+      <input id="regName" class="auth-input auth-register-only" type="text" placeholder="Р†Рј'СЏ">
+      <input id="regLastName" class="auth-input auth-register-only" type="text" placeholder="РџСЂС–Р·РІРёС‰Рµ">
+      <input id="regPhone" class="auth-input auth-register-only" type="tel" placeholder="РўРµР»РµС„РѕРЅ">
       <input id="regEmail" class="auth-input" type="email" placeholder="Email Address*">
       <input id="authPassword" class="auth-input" type="password" placeholder="Password*">
       <input id="authPasswordConfirm" class="auth-input auth-register-only" type="password" placeholder="Repeat password*">
@@ -206,26 +206,26 @@
 <footer class="footer">
   <div class="footer-container">
     <div class="footer-col">
-      <h4>Меню</h4>
-      <a href="index.html">Головна</a>
-      <a href="catalog.html">Каталог</a>
-      <a href="about.html">Про нас</a>
-      <a href="order-3d-print.html">Замовити 3D друк</a>
+      <h4>РњРµРЅСЋ</h4>
+      <a href="index.html">Р“РѕР»РѕРІРЅР°</a>
+      <a href="catalog.html">РљР°С‚Р°Р»РѕРі</a>
+      <a href="about.html">РџСЂРѕ РЅР°СЃ</a>
+      <a href="order-3d-print.html">Р—Р°РјРѕРІРёС‚Рё 3D РґСЂСѓРє</a>
     </div>
     <div class="footer-col">
-      <h4>Особистий кабінет</h4>
-      <a href="cabinet.html#orders">Мої замовлення</a>
-      <a href="cabinet.html#personal">Особисті дані</a>
-      <a href="catalog.html#favorites">Обране</a>
+      <h4>РћСЃРѕР±РёСЃС‚РёР№ РєР°Р±С–РЅРµС‚</h4>
+      <a href="cabinet.html#orders">РњРѕС— Р·Р°РјРѕРІР»РµРЅРЅСЏ</a>
+      <a href="cabinet.html#personal">РћСЃРѕР±РёСЃС‚С– РґР°РЅС–</a>
+      <a href="catalog.html#favorites">РћР±СЂР°РЅРµ</a>
     </div>
     <div class="footer-col" id="contacts">
-      <h4>Контакти</h4>
+      <h4>РљРѕРЅС‚Р°РєС‚Рё</h4>
       <a href="tel:+380501662271" class="phone">+38 (050) 166 22 71</a>
       <a href="mailto:andrysejko22@gmail.com">andrysejko22@gmail.com</a>
-      <a href="about.html#about-v2-location">Локація й графік</a>
+      <a href="about.html#about-v2-location">Р›РѕРєР°С†С–СЏ Р№ РіСЂР°С„С–Рє</a>
     </div>
     <div class="footer-col">
-      <h4>Мессенджери</h4>
+      <h4>РњРµСЃСЃРµРЅРґР¶РµСЂРё</h4>
       <div class="socials socials--messengers">
         <a class="footer-messenger footer-messenger--telegram" href="https://t.me/+380501662271" target="_blank" rel="noopener noreferrer">
           <svg class="footer-messenger__icon" viewBox="0 0 24 24" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"><path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/></svg>
@@ -236,7 +236,7 @@
           <span>Viber</span>
         </a>
       </div>
-      <p class="pay-text">Оплата</p>
+      <p class="pay-text">РћРїР»Р°С‚Р°</p>
       <div class="payments">
         <span>VISA</span>
         <span>MasterCard</span>
@@ -244,13 +244,13 @@
     </div>
   </div>
   <div class="footer-bottom">
-    <p>© 2026 EVRYKA</p>
-    <span>Українська</span>
+    <p>В© 2026 EVRYKA</p>
+    <span>РЈРєСЂР°С—РЅСЃСЊРєР°</span>
   </div>
 </footer>
 
 <div id="chatWidgetRoot" class="chat-widget-root">
-  <button type="button" id="chatWidgetToggle" class="chat-widget-toggle" aria-expanded="false" aria-controls="chatWidgetPanel" title="Написати нам">
+  <button type="button" id="chatWidgetToggle" class="chat-widget-toggle" aria-expanded="false" aria-controls="chatWidgetPanel" title="РќР°РїРёСЃР°С‚Рё РЅР°Рј">
     <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true">
       <path fill="currentColor" d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm0 14H5.17L4 17.17V4h16v12z"></path>
     </svg>
@@ -258,15 +258,15 @@
   <div id="chatWidgetPanel" class="chat-widget-panel" role="dialog" aria-modal="true" aria-labelledby="chatWidgetTitle" aria-hidden="true">
     <div class="chat-widget-card">
     <div class="chat-widget-head-float">
-      <span id="chatWidgetTitle">Напишіть нам</span>
-      <button type="button" class="chat-widget-close" aria-label="Закрити чат">?</button>
+      <span id="chatWidgetTitle">РќР°РїРёС€С–С‚СЊ РЅР°Рј</span>
+      <button type="button" class="chat-widget-close" aria-label="Р—Р°РєСЂРёС‚Рё С‡Р°С‚">?</button>
     </div>
     <div class="chat-widget-sheet">
       <div id="chatWidgetMessages" class="chat-widget-messages" aria-live="polite"></div>
       <div class="chat-widget-compose-float">
         <div class="chat-widget-compose">
-          <input type="text" id="chatWidgetText" class="chat-widget-field" placeholder="Ваше запитання…" maxlength="2000" autocomplete="off">
-          <button type="button" id="chatWidgetSend" class="chat-widget-send">Надіслати</button>
+          <input type="text" id="chatWidgetText" class="chat-widget-field" placeholder="Р’Р°С€Рµ Р·Р°РїРёС‚Р°РЅРЅСЏ?" maxlength="2000" autocomplete="off">
+          <button type="button" id="chatWidgetSend" class="chat-widget-send">РќР°РґС–СЃР»Р°С‚Рё</button>
         </div>
         <p id="chatWidgetStatus" class="chat-widget-status" role="status"></p>
       </div>
@@ -278,11 +278,107 @@
 <script src="js/api.js?v=20260426"></script>
 <script src="js/cart.js?v=20260430"></script>
 <script src="js/header-nav.js?v=20260427-4"></script>
-<script src="js/app.js?v=20260427-5"></script>
+<script src="js/mojibake-fix.js?v=1"></script>
+  <script src="js/app.js?v=20260427-5"></script>
 <script src="js/custom-select.js?v=1"></script>
 <script src="js/catalog.js?v=20260420-5"></script>
 <script>
   (function () {
+    function recoverCatalogText() {
+      document.title = "??????? - EVRYKA";
+
+      const setText = (selector, text) => {
+        const el = document.querySelector(selector);
+        if (el) el.textContent = text;
+      };
+      const setAttr = (selector, attr, value) => {
+        const el = document.querySelector(selector);
+        if (el) el.setAttribute(attr, value);
+      };
+
+      setAttr("#navToggle", "aria-label", "???????? ????");
+      setAttr("#headerNavPanel", "aria-label", "??????? ?????????");
+      setText('#headerNavPanel a[href="index.html"]', "???????");
+      setText('#headerNavPanel a[href="catalog.html"]', "???????");
+      setText('#headerNavPanel a[href="about.html"]', "??? ???");
+      setText('#headerNavPanel a[href="order-3d-print.html"]', "???????? 3D ????");
+      setAttr("#search", "placeholder", "?????");
+      setAttr("#authBtn", "title", "???????");
+      setAttr("#favoritesBtn", "title", "??????");
+      setAttr(".cart .cart-icon", "alt", "?????");
+
+      setAttr("#catalogBackBtn", "aria-label", "?????");
+      setText("#catalogBackBtn", "?????");
+      setText(".breadcrumbs a", "???????");
+      setText(".breadcrumbs span:last-child", "???????");
+
+      setAttr(".page-catalog .catalog-filters", "aria-label", "??????? ????????");
+      setText(".catalog-filters-title", "???????");
+      setAttr("#catalogFiltersCloseBtn", "aria-label", "??????? ???????");
+      setText("#catalogSortLabel", "??????????");
+      setText("#catalogCategoryLabel", "?????????");
+      setText(".catalog-filter-block .catalog-filter-label:not([id])", "????, ???");
+      setAttr("#catalogPriceMin", "placeholder", "???");
+      setAttr("#catalogPriceMax", "placeholder", "??");
+      setText("#catalogResetFilters", "??????? ???????");
+
+      const sortSelect = document.getElementById("catalogSort");
+      if (sortSelect && sortSelect.options.length >= 4) {
+        sortSelect.options[0].text = "?? ?????????????";
+        sortSelect.options[1].text = "???????? ???????";
+        sortSelect.options[2].text = "???????? ???????";
+        sortSelect.options[3].text = "???????????";
+      }
+      const catSelect = document.getElementById("catalogFilterCategory");
+      if (catSelect && catSelect.options.length >= 1) {
+        catSelect.options[0].text = "??? ?????????";
+      }
+
+      setText("#catalogSortValue", "?? ?????????????");
+      setText("#catalogCategoryValue", "??? ?????????");
+      setText(".catalog-products-head h2", "??????? ???????");
+      setAttr("#catalogFiltersOpenBtn", "aria-label", "???????? ???????");
+      setText("#catalogFiltersOpenBtn", "??????");
+
+      setText("#cartPanelTitle", "?????");
+      setAttr(".cart-head-float-close", "aria-label", "??????? ?????");
+      const closeBtns = document.querySelectorAll(".cart-head-float-close");
+      closeBtns.forEach((b) => (b.textContent = "Р§"));
+      setText(".cart-total > span", "?????");
+      const cartCurrency = document.querySelector(".cart-total div span");
+      if (cartCurrency) cartCurrency.textContent = "???";
+      setText(".checkout-btn", "????????");
+      setText("#cartSidebar .clear-btn", "???????? ?????");
+      setText("#favoritesSidebar h3", "??????");
+      setAttr("#favoritesSidebar .cart-head-float-close", "aria-label", "??????? ??????");
+      setText("#favoritesSidebar .clear-btn", "???????? ??????");
+
+      setAttr("#regName", "placeholder", "??'?");
+      setAttr("#regLastName", "placeholder", "????????");
+      setAttr("#regPhone", "placeholder", "???????");
+
+      setText("footer .footer-col:nth-child(1) h4", "????");
+      setText("footer .footer-col:nth-child(2) h4", "????????? ???????");
+      setText("footer .footer-col:nth-child(3) h4", "????????");
+      setText("footer .footer-col:nth-child(4) h4", "??????????");
+      setText('footer .footer-col:nth-child(1) a[href="index.html"]', "???????");
+      setText('footer .footer-col:nth-child(1) a[href="catalog.html"]', "???????");
+      setText('footer .footer-col:nth-child(1) a[href="about.html"]', "??? ???");
+      setText('footer .footer-col:nth-child(1) a[href="order-3d-print.html"]', "???????? 3D ????");
+      setText('footer .footer-col:nth-child(2) a[href="cabinet.html#orders"]', "??? ??????????");
+      setText('footer .footer-col:nth-child(2) a[href="cabinet.html#personal"]', "???????? ????");
+      setText('footer .footer-col:nth-child(2) a[href="catalog.html#favorites"]', "??????");
+      setText('footer .footer-col:nth-child(3) a[href="about.html#about-v2-location"]', "??????? ? ??????");
+      setText("footer .pay-text", "??????");
+      setText("footer .footer-bottom span", "??????????");
+
+      setAttr("#chatWidgetToggle", "title", "???????? ???");
+      setText("#chatWidgetTitle", "?????? ???");
+      setAttr(".chat-widget-close", "aria-label", "??????? ???");
+      setAttr("#chatWidgetText", "placeholder", "???? ?????????...");
+      setText("#chatWidgetSend", "?????????");
+    }
+
     function setOpen(open) {
       const drawer = document.querySelector(".page-catalog .catalog-filters");
       const overlay = document.getElementById("catalogFiltersOverlay");
@@ -302,6 +398,7 @@
     }
 
     function bind() {
+      recoverCatalogText();
       const openBtn = document.getElementById("catalogFiltersOpenBtn");
       const closeBtn = document.getElementById("catalogFiltersCloseBtn");
       const overlay = document.getElementById("catalogFiltersOverlay");
@@ -350,4 +447,6 @@
 <script src="js/scroll-to-top.js?v=4"></script>
 </body>
 </html>
+
+
 

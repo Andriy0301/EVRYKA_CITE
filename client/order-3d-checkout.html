@@ -1,9 +1,9 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="uk">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Оформлення 3D-замовлення - EVRYKA</title>
+  <title>РћС„РѕСЂРјР»РµРЅРЅСЏ 3D-Р·Р°РјРѕРІР»РµРЅРЅСЏ - EVRYKA</title>
   <link rel="icon" href="images/favicon.png" type="image/png">
   <link rel="apple-touch-icon" href="images/favicon.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -17,29 +17,29 @@
 <header class="header header--in-shell header--home-detached">
   <div class="header-inner">
     <a href="index.html" class="logo header-logo"><img src="images/text_logo.png" alt="EVRYKA" class="header-logo-img"></a>
-    <button type="button" class="header-burger" id="navToggle" aria-label="Відкрити меню" aria-expanded="false" aria-controls="headerNavPanel">
+    <button type="button" class="header-burger" id="navToggle" aria-label="Р’С–РґРєСЂРёС‚Рё РјРµРЅСЋ" aria-expanded="false" aria-controls="headerNavPanel">
       <span class="header-burger__line"></span><span class="header-burger__line"></span><span class="header-burger__line"></span>
     </button>
-    <nav class="nav header-nav" id="headerNavPanel" aria-label="Головна навігація">
-      <a href="index.html">Головна</a>
-      <a href="catalog.html">Каталог</a>
-      <a href="about.html">Про нас</a>
-      <a href="order-3d-print.html" class="active">Замовити 3D друк</a>
+    <nav class="nav header-nav" id="headerNavPanel" aria-label="Р“РѕР»РѕРІРЅР° РЅР°РІС–РіР°С†С–СЏ">
+      <a href="index.html">Р“РѕР»РѕРІРЅР°</a>
+      <a href="catalog.html">РљР°С‚Р°Р»РѕРі</a>
+      <a href="about.html">РџСЂРѕ РЅР°СЃ</a>
+      <a href="order-3d-print.html" class="active">Р—Р°РјРѕРІРёС‚Рё 3D РґСЂСѓРє</a>
     </nav>
     <div class="header-utilities">
       <div class="search-box">
-        <input type="search" placeholder="Пошук" id="search" name="q" autocomplete="off">
+        <input type="search" placeholder="РџРѕС€СѓРє" id="search" name="q" autocomplete="off">
         <div id="searchResults" class="search-results"></div>
       </div>
       <div class="header-actions">
-        <button type="button" id="authBtn" class="auth-icon-btn" title="Профіль">
+        <button type="button" id="authBtn" class="auth-icon-btn" title="РџСЂРѕС„С–Р»СЊ">
           <svg id="authIcon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 12c2.8 0 5-2.2 5-5s-2.2-5-5-5-5 2.2-5 5 2.2 5 5 5Zm0 2c-4.4 0-8 2.7-8 6v2h16v-2c0-3.3-3.6-6-8-6Z"></path></svg>
           <span id="authInitials" class="auth-initials"></span>
         </button>
-        <button type="button" id="favoritesBtn" class="auth-icon-btn" title="Обрані" onclick="toggleFavorites(true)">
+        <button type="button" id="favoritesBtn" class="auth-icon-btn" title="РћР±СЂР°РЅС–" onclick="toggleFavorites(true)">
           <svg class="heart-icon" viewBox="0 0 512 512" aria-hidden="true"><path d="M257 88L255 88C248.355 74.9828 235.475 63.8415 224 55.1304C173.114 16.5016 99.2988 19.267 51 61.2894C-1.26738 106.765 -12.8083 185.773 13.0116 248C25.4527 277.984 45.9981 303.467 67.9105 327C103.494 365.215 144.281 398.581 184 432.421C198.063 444.402 211.938 456.598 226 468.579C233.971 475.37 241.993 483.022 253 483.907C268.121 485.122 278.342 475.197 289 466C306.641 450.778 324.263 435.533 342 420.421C356.437 408.121 370.854 395.797 385 383.166C443.359 331.055 512 269.827 512 185C512 178.072 512.538 170.886 511.715 164C506.476 120.199 486.854 78.636 450 52.7207C401.715 18.7669 334.983 19.4645 288 55.1304C276.525 63.8415 263.645 74.9828 257 88z"></path></svg>
         </button>
-        <div class="cart" onclick="toggleCart(true)"><img src="images/cart-icon.svg" class="cart-icon" alt="Кошик"><span id="cartCount">0</span></div>
+        <div class="cart" onclick="toggleCart(true)"><img src="images/cart-icon.svg" class="cart-icon" alt="РљРѕС€РёРє"><span id="cartCount">0</span></div>
       </div>
     </div>
   </div>
@@ -47,100 +47,100 @@
 
 <div id="cartOverlay" class="cart-overlay" onclick="toggleCart(false)"></div>
 <div id="cartSidebar" class="cart-sidebar">
-  <div class="cart-head-float"><h3 id="cartPanelTitle">Кошик</h3><button type="button" class="cart-head-float-close" onclick="toggleCart(false)" aria-label="Закрити кошик">×</button></div>
+  <div class="cart-head-float"><h3 id="cartPanelTitle">РљРѕС€РёРє</h3><button type="button" class="cart-head-float-close" onclick="toggleCart(false)" aria-label="Р—Р°РєСЂРёС‚Рё РєРѕС€РёРє">Г—</button></div>
   <div id="cartItems" class="cart-items"></div>
-  <div class="cart-footer"><div class="cart-total"><span>Разом</span><div><b id="cartTotal">0</b><span>грн</span></div></div><button class="checkout-btn" onclick="checkout()">Оформити</button><button class="clear-btn" onclick="clearCart()">Очистити кошик</button></div>
+  <div class="cart-footer"><div class="cart-total"><span>Р Р°Р·РѕРј</span><div><b id="cartTotal">0</b><span>РіСЂРЅ</span></div></div><button class="checkout-btn" onclick="checkout()">РћС„РѕСЂРјРёС‚Рё</button><button class="clear-btn" onclick="clearCart()">РћС‡РёСЃС‚РёС‚Рё РєРѕС€РёРє</button></div>
 </div>
 
 <div id="favoritesOverlay" class="cart-overlay" onclick="toggleFavorites(false)"></div>
 <div id="favoritesSidebar" class="cart-sidebar">
-  <div class="cart-head-float"><h3>Обрані</h3><button type="button" class="cart-head-float-close" onclick="toggleFavorites(false)" aria-label="Закрити обрані">×</button></div>
+  <div class="cart-head-float"><h3>РћР±СЂР°РЅС–</h3><button type="button" class="cart-head-float-close" onclick="toggleFavorites(false)" aria-label="Р—Р°РєСЂРёС‚Рё РѕР±СЂР°РЅС–">Г—</button></div>
   <div id="favoritesItems" class="cart-items"></div>
-  <div class="cart-footer"><button class="clear-btn" onclick="clearFavorites()">Очистити обрані</button></div>
+  <div class="cart-footer"><button class="clear-btn" onclick="clearFavorites()">РћС‡РёСЃС‚РёС‚Рё РѕР±СЂР°РЅС–</button></div>
 </div>
 
 <main class="container order-layout">
   <section class="products cabinet-card order-items-card">
-    <h2>Ваше 3D-замовлення</h2>
+    <h2>Р’Р°С€Рµ 3D-Р·Р°РјРѕРІР»РµРЅРЅСЏ</h2>
     <div id="orderItems"></div>
-    <div class="cart-total order-total-row"><span>Разом</span><div><b id="orderTotal">0</b><span>грн</span></div></div>
+    <div class="cart-total order-total-row"><span>Р Р°Р·РѕРј</span><div><b id="orderTotal">0</b><span>РіСЂРЅ</span></div></div>
   </section>
 
   <section class="products cabinet-card">
-    <h2>Дані для замовлення</h2>
+    <h2>Р”Р°РЅС– РґР»СЏ Р·Р°РјРѕРІР»РµРЅРЅСЏ</h2>
     <form id="orderForm" class="cabinet-form">
-      <label>Ім'я<input id="orderName" type="text" required></label>
-      <label>Прізвище<input id="orderLastName" type="text" required></label>
-      <label>Телефон<input id="orderPhone" type="tel" required></label>
+      <label>Р†Рј'СЏ<input id="orderName" type="text" required></label>
+      <label>РџСЂС–Р·РІРёС‰Рµ<input id="orderLastName" type="text" required></label>
+      <label>РўРµР»РµС„РѕРЅ<input id="orderPhone" type="tel" required></label>
       <label>Email<input id="orderEmail" type="email" required></label>
 
-      <h3>Доставка</h3>
-      <label>Спосіб оплати
+      <h3>Р”РѕСЃС‚Р°РІРєР°</h3>
+      <label>РЎРїРѕСЃС–Р± РѕРїР»Р°С‚Рё
         <div class="catalog-select-wrap">
-          <button type="button" class="catalog-select-trigger" id="orderPaymentMethodTrigger" aria-expanded="false" aria-haspopup="listbox" aria-controls="orderPaymentMethodPanel"><span class="catalog-select-value" id="orderPaymentMethodValue">Оплата при отриманні</span><svg class="catalog-select-chevron" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9l6 6 6-6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg></button>
+          <button type="button" class="catalog-select-trigger" id="orderPaymentMethodTrigger" aria-expanded="false" aria-haspopup="listbox" aria-controls="orderPaymentMethodPanel"><span class="catalog-select-value" id="orderPaymentMethodValue">РћРїР»Р°С‚Р° РїСЂРё РѕС‚СЂРёРјР°РЅРЅС–</span><svg class="catalog-select-chevron" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9l6 6 6-6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg></button>
           <ul id="orderPaymentMethodPanel" class="catalog-select-panel" role="listbox" hidden></ul>
-          <select id="orderPaymentMethod" class="catalog-filter-select-native" tabindex="-1" aria-hidden="true" required><option value="cod">Оплата при отриманні</option><option value="mono">Оплата Monobank</option></select>
+          <select id="orderPaymentMethod" class="catalog-filter-select-native" tabindex="-1" aria-hidden="true" required><option value="cod">РћРїР»Р°С‚Р° РїСЂРё РѕС‚СЂРёРјР°РЅРЅС–</option><option value="mono">РћРїР»Р°С‚Р° Monobank</option></select>
         </div>
       </label>
-      <label>Служба доставки
+      <label>РЎР»СѓР¶Р±Р° РґРѕСЃС‚Р°РІРєРё
         <div class="catalog-select-wrap">
-          <button type="button" class="catalog-select-trigger" id="orderProviderTrigger" aria-expanded="false" aria-haspopup="listbox" aria-controls="orderProviderPanel"><span class="catalog-select-value" id="orderProviderValue">Оберіть службу доставки</span><svg class="catalog-select-chevron" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9l6 6 6-6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg></button>
+          <button type="button" class="catalog-select-trigger" id="orderProviderTrigger" aria-expanded="false" aria-haspopup="listbox" aria-controls="orderProviderPanel"><span class="catalog-select-value" id="orderProviderValue">РћР±РµСЂС–С‚СЊ СЃР»СѓР¶Р±Сѓ РґРѕСЃС‚Р°РІРєРё</span><svg class="catalog-select-chevron" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9l6 6 6-6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg></button>
           <ul id="orderProviderPanel" class="catalog-select-panel" role="listbox" hidden></ul>
-          <select id="orderProvider" class="catalog-filter-select-native" tabindex="-1" aria-hidden="true" required><option value="">Оберіть службу доставки</option><option value="nova_poshta">Нова пошта</option><option value="ukr_poshta">Укрпошта</option></select>
+          <select id="orderProvider" class="catalog-filter-select-native" tabindex="-1" aria-hidden="true" required><option value="">РћР±РµСЂС–С‚СЊ СЃР»СѓР¶Р±Сѓ РґРѕСЃС‚Р°РІРєРё</option><option value="nova_poshta">РќРѕРІР° РїРѕС€С‚Р°</option><option value="ukr_poshta">РЈРєСЂРїРѕС€С‚Р°</option></select>
         </div>
       </label>
-      <label id="deliveryTypeWrap">Тип доставки
+      <label id="deliveryTypeWrap">РўРёРї РґРѕСЃС‚Р°РІРєРё
         <div class="catalog-select-wrap">
-          <button type="button" class="catalog-select-trigger" id="orderDeliveryTypeTrigger" aria-expanded="false" aria-haspopup="listbox" aria-controls="orderDeliveryTypePanel"><span class="catalog-select-value" id="orderDeliveryTypeValue">Відділення</span><svg class="catalog-select-chevron" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9l6 6 6-6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg></button>
+          <button type="button" class="catalog-select-trigger" id="orderDeliveryTypeTrigger" aria-expanded="false" aria-haspopup="listbox" aria-controls="orderDeliveryTypePanel"><span class="catalog-select-value" id="orderDeliveryTypeValue">Р’С–РґРґС–Р»РµРЅРЅСЏ</span><svg class="catalog-select-chevron" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9l6 6 6-6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg></button>
           <ul id="orderDeliveryTypePanel" class="catalog-select-panel" role="listbox" hidden></ul>
-          <select id="orderDeliveryType" class="catalog-filter-select-native" tabindex="-1" aria-hidden="true"><option value="warehouse">Відділення</option><option value="postomat">Поштомат</option><option value="address">Адресна доставка</option></select>
+          <select id="orderDeliveryType" class="catalog-filter-select-native" tabindex="-1" aria-hidden="true"><option value="warehouse">Р’С–РґРґС–Р»РµРЅРЅСЏ</option><option value="postomat">РџРѕС€С‚РѕРјР°С‚</option><option value="address">РђРґСЂРµСЃРЅР° РґРѕСЃС‚Р°РІРєР°</option></select>
         </div>
       </label>
-      <label id="cityWrap" class="city-autocomplete-wrap">Обрати місто<input id="orderCity" type="text" autocomplete="off"><div id="citySuggestions" class="city-suggestions" style="display:none;"></div></label>
+      <label id="cityWrap" class="city-autocomplete-wrap">РћР±СЂР°С‚Рё РјС–СЃС‚Рѕ<input id="orderCity" type="text" autocomplete="off"><div id="citySuggestions" class="city-suggestions" style="display:none;"></div></label>
       <input id="orderCityRef" type="hidden">
-      <label id="branchWrap" class="city-autocomplete-wrap">Обрати відділення<input id="orderBranch" type="text" autocomplete="off" placeholder="Почніть вводити відділення..."><div id="branchSuggestions" class="city-suggestions" style="display:none;"></div></label>
+      <label id="branchWrap" class="city-autocomplete-wrap">РћР±СЂР°С‚Рё РІС–РґРґС–Р»РµРЅРЅСЏ<input id="orderBranch" type="text" autocomplete="off" placeholder="РџРѕС‡РЅС–С‚СЊ РІРІРѕРґРёС‚Рё РІС–РґРґС–Р»РµРЅРЅСЏ..."><div id="branchSuggestions" class="city-suggestions" style="display:none;"></div></label>
       <input id="orderBranchRef" type="hidden">
-      <label id="addressWrap" style="display:none;">Адреса доставки<input id="orderAddress" type="text" placeholder="Вулиця, будинок, квартира"></label>
-      <label id="middleNameWrap" style="display:none;">По батькові<input id="orderMiddleName" type="text" placeholder="По батькові"></label>
+      <label id="addressWrap" style="display:none;">РђРґСЂРµСЃР° РґРѕСЃС‚Р°РІРєРё<input id="orderAddress" type="text" placeholder="Р’СѓР»РёС†СЏ, Р±СѓРґРёРЅРѕРє, РєРІР°СЂС‚РёСЂР°"></label>
+      <label id="middleNameWrap" style="display:none;">РџРѕ Р±Р°С‚СЊРєРѕРІС–<input id="orderMiddleName" type="text" placeholder="РџРѕ Р±Р°С‚СЊРєРѕРІС–"></label>
       <p id="orderMessage" class="auth-message"></p>
-      <div class="cabinet-actions-row"><button class="checkout-btn" type="submit">Підтвердити замовлення</button></div>
+      <div class="cabinet-actions-row"><button class="checkout-btn" type="submit">РџС–РґС‚РІРµСЂРґРёС‚Рё Р·Р°РјРѕРІР»РµРЅРЅСЏ</button></div>
     </form>
   </section>
 </main>
 
 <div id="orderSuccessModal" class="auth-modal" style="display:none;">
   <div class="auth-modal-content order-success-content">
-    <button class="close-btn order-success-close" type="button" onclick="closeOrderSuccessModal()">✖</button>
-    <div class="order-success-header"><span class="order-success-check" aria-hidden="true">✓</span><div class="order-success-title-wrap"><h3>Ваше замовлення успішно оформлене</h3><p class="order-success-subtitle">Дякуємо за покупку! Деталі замовлення нижче.</p></div></div>
+    <button class="close-btn order-success-close" type="button" onclick="closeOrderSuccessModal()">вњ–</button>
+    <div class="order-success-header"><span class="order-success-check" aria-hidden="true">вњ“</span><div class="order-success-title-wrap"><h3>Р’Р°С€Рµ Р·Р°РјРѕРІР»РµРЅРЅСЏ СѓСЃРїС–С€РЅРѕ РѕС„РѕСЂРјР»РµРЅРµ</h3><p class="order-success-subtitle">Р”СЏРєСѓС”РјРѕ Р·Р° РїРѕРєСѓРїРєСѓ! Р”РµС‚Р°Р»С– Р·Р°РјРѕРІР»РµРЅРЅСЏ РЅРёР¶С‡Рµ.</p></div></div>
     <p id="orderSuccessNumber" class="order-success-number"></p>
     <div id="orderSuccessDetails" class="order-success-details"></div>
-    <div class="cabinet-actions-row order-success-actions"><button type="button" class="checkout-btn" onclick="closeOrderSuccessModal()">Закрити</button></div>
+    <div class="cabinet-actions-row order-success-actions"><button type="button" class="checkout-btn" onclick="closeOrderSuccessModal()">Р—Р°РєСЂРёС‚Рё</button></div>
   </div>
 </div>
 
 <footer class="footer">
   <div class="footer-container">
     <div class="footer-col">
-      <h4>Меню</h4>
-      <a href="index.html">Головна</a>
-      <a href="catalog.html">Каталог</a>
-      <a href="about.html">Про нас</a>
-      <a href="order-3d-print.html">Замовити 3D друк</a>
+      <h4>РњРµРЅСЋ</h4>
+      <a href="index.html">Р“РѕР»РѕРІРЅР°</a>
+      <a href="catalog.html">РљР°С‚Р°Р»РѕРі</a>
+      <a href="about.html">РџСЂРѕ РЅР°СЃ</a>
+      <a href="order-3d-print.html">Р—Р°РјРѕРІРёС‚Рё 3D РґСЂСѓРє</a>
     </div>
     <div class="footer-col">
-      <h4>Особистий кабінет</h4>
-      <a href="cabinet.html#orders">Мої замовлення</a>
-      <a href="cabinet.html#personal">Особисті дані</a>
-      <a href="catalog.html#favorites">Обране</a>
+      <h4>РћСЃРѕР±РёСЃС‚РёР№ РєР°Р±С–РЅРµС‚</h4>
+      <a href="cabinet.html#orders">РњРѕС— Р·Р°РјРѕРІР»РµРЅРЅСЏ</a>
+      <a href="cabinet.html#personal">РћСЃРѕР±РёСЃС‚С– РґР°РЅС–</a>
+      <a href="catalog.html#favorites">РћР±СЂР°РЅРµ</a>
     </div>
     <div class="footer-col" id="contacts">
-      <h4>Контакти</h4>
+      <h4>РљРѕРЅС‚Р°РєС‚Рё</h4>
       <a href="tel:+380501662271" class="phone">+38 (050) 166 22 71</a>
       <a href="mailto:andrysejko22@gmail.com">andrysejko22@gmail.com</a>
-      <a href="about.html#about-v2-location">Локація й графік</a>
+      <a href="about.html#about-v2-location">Р›РѕРєР°С†С–СЏ Р№ РіСЂР°С„С–Рє</a>
     </div>
     <div class="footer-col">
-      <h4>Мессенджери</h4>
+      <h4>РњРµСЃСЃРµРЅРґР¶РµСЂРё</h4>
       <div class="socials socials--messengers">
         <a class="footer-messenger footer-messenger--telegram" href="https://t.me/+380501662271" target="_blank" rel="noopener noreferrer">
           <svg class="footer-messenger__icon" viewBox="0 0 24 24" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"><path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/></svg>
@@ -151,7 +151,7 @@
           <span>Viber</span>
         </a>
       </div>
-      <p class="pay-text">Оплата</p>
+      <p class="pay-text">РћРїР»Р°С‚Р°</p>
       <div class="payments">
         <span>VISA</span>
         <span>MasterCard</span>
@@ -159,21 +159,21 @@
     </div>
   </div>
   <div class="footer-bottom">
-    <p>© 2026 EVRYKA</p>
-    <span>Українська</span>
+    <p>В© 2026 EVRYKA</p>
+    <span>РЈРєСЂР°С—РЅСЃСЊРєР°</span>
   </div>
 </footer>
 
 <div id="chatWidgetRoot" class="chat-widget-root">
-  <button type="button" id="chatWidgetToggle" class="chat-widget-toggle" aria-expanded="false" aria-controls="chatWidgetPanel" title="Написати нам">
+  <button type="button" id="chatWidgetToggle" class="chat-widget-toggle" aria-expanded="false" aria-controls="chatWidgetPanel" title="РќР°РїРёСЃР°С‚Рё РЅР°Рј">
     <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path fill="currentColor" d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm0 14H5.17L4 17.17V4h16v12z"></path></svg>
   </button>
   <div id="chatWidgetPanel" class="chat-widget-panel" role="dialog" aria-modal="true" aria-labelledby="chatWidgetTitle" aria-hidden="true">
     <div class="chat-widget-card">
-      <div class="chat-widget-head-float"><span id="chatWidgetTitle">Напишіть нам</span><button type="button" class="chat-widget-close" aria-label="Закрити чат">×</button></div>
+      <div class="chat-widget-head-float"><span id="chatWidgetTitle">РќР°РїРёС€С–С‚СЊ РЅР°Рј</span><button type="button" class="chat-widget-close" aria-label="Р—Р°РєСЂРёС‚Рё С‡Р°С‚">Г—</button></div>
       <div class="chat-widget-sheet">
         <div id="chatWidgetMessages" class="chat-widget-messages" aria-live="polite"></div>
-        <div class="chat-widget-compose-float"><div class="chat-widget-compose"><input type="text" id="chatWidgetText" class="chat-widget-field" placeholder="Ваше запитання…" maxlength="2000" autocomplete="off"><button type="button" id="chatWidgetSend" class="chat-widget-send">Надіслати</button></div><p id="chatWidgetStatus" class="chat-widget-status" role="status"></p></div>
+        <div class="chat-widget-compose-float"><div class="chat-widget-compose"><input type="text" id="chatWidgetText" class="chat-widget-field" placeholder="Р’Р°С€Рµ Р·Р°РїРёС‚Р°РЅРЅСЏвЂ¦" maxlength="2000" autocomplete="off"><button type="button" id="chatWidgetSend" class="chat-widget-send">РќР°РґС–СЃР»Р°С‚Рё</button></div><p id="chatWidgetStatus" class="chat-widget-status" role="status"></p></div>
       </div>
     </div>
   </div>
@@ -184,8 +184,11 @@
 <script src="js/order-3d-checkout.js?v=2"></script>
 <script src="js/cart.js?v=20260430"></script>
 <script src="js/header-nav.js?v=20260427-4"></script>
-<script src="js/app.js?v=20260427-5"></script>
+<script src="js/mojibake-fix.js?v=1"></script>
+  <script src="js/app.js?v=20260427-5"></script>
 <script src="js/chat-widget.js?v=20260409"></script>
 </body>
 </html>
+
+
 

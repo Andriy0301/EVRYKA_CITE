@@ -23,12 +23,20 @@ app.use(express.static(path.join(__dirname, "../client")));
 
 // 🔥 РОУТИ (ВАЖЛИВО — з /api)
 const productsRoute = require("./routes/products");
+const promProductsRoute = require("./routes/promProducts");
 const usersRoute = require("./routes/users");
 const popularityRoute = require("./routes/popularity");
 const shippingRoute = require("./routes/shipping");
 const ordersRoute = require("./routes/orders");
 const inquiriesRoute = require("./routes/inquiries");
 const print3dRoute = require("./routes/print3d");
+
+// Prom.ua integration endpoints:
+// - GET /api/products
+// - GET /api/product-sales
+// - GET /api/products-with-sales
+// - GET /api/top-products
+app.use("/api", promProductsRoute);
 
 app.use("/api/products", productsRoute);
 app.use("/api/users", usersRoute);
