@@ -303,6 +303,7 @@
       display: flex;
       align-items: center;
       justify-content: center;
+      min-height: 420px;
     }
 
     #evrykaCanvas {
@@ -1482,7 +1483,7 @@
     /* ── RESPONSIVE ── */
     @media (max-width: 1024px) {
       .hero { grid-template-columns: 1fr; }
-      .hero-right { display: none; }
+      .hero-right { min-height: 360px; }
       .cat-grid { grid-template-columns: repeat(2, 1fr); }
       .products-grid { grid-template-columns: repeat(2, 1fr); }
       .how-grid { grid-template-columns: repeat(2, 1fr); }
