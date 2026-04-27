@@ -9,7 +9,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="css/style.css?v=20260427-2">
+  <link rel="stylesheet" href="css/style.css?v=20260427-4">
   <link rel="stylesheet" href="css/evryka-header-hero.css?v=20260420-21">
   <script src="https://accounts.google.com/gsi/client" async defer></script>
 </head>
@@ -74,10 +74,10 @@
   </div>
 
   <div class="catalog-page-layout">
-    <aside class="catalog-filters neo-drawer neo-drawer--filters" aria-label="Фільтри каталогу">
+    <aside class="catalog-filters neo-drawer neo-drawer--filters" data-uflyout="panel" aria-label="Фільтри каталогу">
       <div class="neo-drawer__title-row">
         <h2 class="catalog-filters-title neo-drawer__title">Фільтри</h2>
-        <button type="button" class="catalog-filters-close neo-drawer__close" id="catalogFiltersCloseBtn" aria-label="Закрити фільтри" onclick="document.body.classList.remove('catalog-filters-open');document.getElementById('catalogFiltersOverlay').hidden=true;">×</button>
+        <button type="button" class="catalog-filters-close neo-drawer__close" data-uflyout-close id="catalogFiltersCloseBtn" aria-label="Закрити фільтри" onclick="document.body.classList.remove('catalog-filters-open');document.getElementById('catalogFiltersOverlay').hidden=true;">×</button>
       </div>
 
       <div class="catalog-filter-block">
@@ -128,7 +128,7 @@
         <section class="products catalog-products-section">
           <div class="catalog-products-head">
             <h2>Каталог товарів</h2>
-            <button type="button" class="back-btn catalog-filters-open-btn neo-drawer-trigger" id="catalogFiltersOpenBtn" aria-label="Відкрити фільтри" onclick="document.body.classList.add('catalog-filters-open');document.getElementById('catalogFiltersOverlay').hidden=false;">
+            <button type="button" class="back-btn catalog-filters-open-btn neo-drawer-trigger" data-uflyout-trigger id="catalogFiltersOpenBtn" aria-label="Відкрити фільтри" onclick="document.body.classList.add('catalog-filters-open');document.getElementById('catalogFiltersOverlay').hidden=false;">
               Фільтр
             </button>
           </div>
@@ -137,7 +137,7 @@
       </div>
     </div>
   </div>
-  <div class="catalog-filters-overlay neo-drawer-overlay" id="catalogFiltersOverlay" hidden onclick="document.body.classList.remove('catalog-filters-open');this.hidden=true;"></div>
+  <div class="catalog-filters-overlay neo-drawer-overlay" data-uflyout-overlay id="catalogFiltersOverlay" hidden onclick="document.body.classList.remove('catalog-filters-open');this.hidden=true;"></div>
   </div>
 </div>
 
@@ -277,7 +277,7 @@
 
 <script src="js/api.js?v=20260426"></script>
 <script src="js/cart.js?v=20260430"></script>
-<script src="js/header-nav.js?v=20260420-32"></script>
+<script src="js/header-nav.js?v=20260427-4"></script>
 <script src="js/app.js?v=20260427-1"></script>
 <script src="js/custom-select.js?v=1"></script>
 <script src="js/catalog.js?v=20260420-5"></script>

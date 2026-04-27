@@ -9,7 +9,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="css/style.css?v=20260420-49">
+  <link rel="stylesheet" href="css/style.css?v=20260427-4">
   <link rel="stylesheet" href="css/evryka-header-hero.css?v=20260420-21">
   <script src="https://accounts.google.com/gsi/client" async defer></script>
 </head>
@@ -107,21 +107,21 @@
       </div>
       <div class="cabinet-page-head">
         <h1 class="cabinet-page-title">Особистий кабінет</h1>
-        <button type="button" class="back-btn cabinet-menu-open-btn neo-drawer-trigger" id="cabinetMenuOpenBtn" aria-label="Відкрити меню кабінету" onclick="document.body.classList.add('cabinet-menu-open');document.getElementById('cabinetMenuOverlay').hidden=false;">
+        <button type="button" class="back-btn cabinet-menu-open-btn neo-drawer-trigger" data-uflyout-trigger id="cabinetMenuOpenBtn" aria-label="Відкрити меню кабінету" onclick="document.body.classList.add('cabinet-menu-open');document.getElementById('cabinetMenuOverlay').hidden=false;">
           Меню
         </button>
       </div>
       <div class="catalog-page-layout">
-        <aside class="catalog-filters cabinet-sidebar neo-drawer neo-drawer--cabinet" aria-label="Меню кабінету">
+        <aside class="catalog-filters cabinet-sidebar neo-drawer neo-drawer--cabinet" data-uflyout="panel" aria-label="Меню кабінету">
           <div class="neo-drawer__title-row">
             <h2 class="catalog-filters-title neo-drawer__title">Меню</h2>
-            <button type="button" class="cabinet-menu-close neo-drawer__close" id="cabinetMenuCloseBtn" aria-label="Закрити меню кабінету" onclick="document.body.classList.remove('cabinet-menu-open');document.getElementById('cabinetMenuOverlay').hidden=true;">×</button>
+            <button type="button" class="cabinet-menu-close neo-drawer__close" data-uflyout-close id="cabinetMenuCloseBtn" aria-label="Закрити меню кабінету" onclick="document.body.classList.remove('cabinet-menu-open');document.getElementById('cabinetMenuOverlay').hidden=true;">×</button>
           </div>
-          <button class="cabinet-nav-btn neo-drawer__item active" type="button" data-section="personal">Особисті дані</button>
-          <button class="cabinet-nav-btn neo-drawer__item" type="button" data-section="orders">Мої замовлення</button>
-          <button class="cabinet-nav-btn neo-drawer__item" type="button">Бонуси</button>
-          <button class="cabinet-nav-btn neo-drawer__item" type="button">Обрані</button>
-          <button id="logoutBtn" class="cabinet-nav-btn neo-drawer__item logout" type="button">Вийти</button>
+          <button class="cabinet-nav-btn neo-drawer__item active" data-uflyout-item type="button" data-section="personal">Особисті дані</button>
+          <button class="cabinet-nav-btn neo-drawer__item" data-uflyout-item type="button" data-section="orders">Мої замовлення</button>
+          <button class="cabinet-nav-btn neo-drawer__item" data-uflyout-item type="button">Бонуси</button>
+          <button class="cabinet-nav-btn neo-drawer__item" data-uflyout-item type="button">Обрані</button>
+          <button id="logoutBtn" class="cabinet-nav-btn neo-drawer__item logout" data-uflyout-item type="button">Вийти</button>
         </aside>
         <div class="catalog-main">
           <div class="catalog-products-inner">
@@ -188,7 +188,7 @@
           </div>
         </div>
       </div>
-      <div class="cabinet-menu-overlay neo-drawer-overlay" id="cabinetMenuOverlay" hidden onclick="document.body.classList.remove('cabinet-menu-open');this.hidden=true;"></div>
+      <div class="cabinet-menu-overlay neo-drawer-overlay" data-uflyout-overlay id="cabinetMenuOverlay" hidden onclick="document.body.classList.remove('cabinet-menu-open');this.hidden=true;"></div>
     </div>
   </main>
 
@@ -264,7 +264,7 @@
     </div>
   </div>
 
-  <script src="js/header-nav.js?v=20260420-32"></script>
+  <script src="js/header-nav.js?v=20260427-4"></script>
   <script src="js/api.js?v=20260422"></script>
   <script src="js/custom-select.js?v=1"></script>
   <script src="js/cabinet.js?v=20260420-5"></script>

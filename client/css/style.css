@@ -1532,6 +1532,11 @@ body.cart-open .header .cart {
 
 .favorite-btn:hover .heart-icon path,
 .favorite-btn.active .heart-icon path,
+#favoritesBtn:hover .heart-icon path,
+.catalog-product-fav:hover .heart-icon path,
+.catalog-product-fav.active .heart-icon path,
+.product-fav:hover .heart-icon path,
+.product-fav.active .heart-icon path,
 #favoritesBtn:hover .heart-icon path {
   fill: var(--ev-heart);
 }
@@ -8575,6 +8580,30 @@ body.evryka-site.page-print3d {
   body.cabinet-menu-open .scroll-to-top-btn {
     opacity: 0 !important;
     pointer-events: none !important;
+  }
+}
+
+@media (max-width: 768px) {
+  [data-uflyout="panel"] {
+    z-index: 1251 !important;
+  }
+
+  [data-uflyout-item] + [data-uflyout-item] {
+    margin-top: 8px !important;
+  }
+
+  .page-catalog [data-uflyout="panel"] .catalog-filter-group + .catalog-filter-group {
+    margin-top: 10px !important;
+  }
+
+  body.catalog-filters-open .page-catalog [data-uflyout-trigger],
+  body.cabinet-menu-open .page-cabinet [data-uflyout-trigger] {
+    pointer-events: none !important;
+    filter: grayscale(1) saturate(0.15) !important;
+    background: #e8edf3 !important;
+    color: #8c95a3 !important;
+    border-color: #c7d1dd !important;
+    box-shadow: none !important;
   }
 }
 
