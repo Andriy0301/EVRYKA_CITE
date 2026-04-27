@@ -244,7 +244,7 @@
 
     .hero-title {
       font-family: var(--font-display);
-      font-size: clamp(24px, 2.9vw, 40px);
+      font-size: clamp(12px, 1.45vw, 20px);
       line-height: 0.9;
       letter-spacing: 0.01em;
       color: var(--black);
@@ -252,6 +252,13 @@
       text-shadow: none;
       overflow-wrap: normal;
       word-break: normal;
+    }
+
+    /* Force hero heading size (prevents external style overrides) */
+    .hero .hero-left .hero-title {
+      font-size: clamp(12px, 1.45vw, 20px) !important;
+      line-height: 0.9 !important;
+      letter-spacing: 0.01em !important;
     }
 
     .hero-title span { color: var(--orange); }
