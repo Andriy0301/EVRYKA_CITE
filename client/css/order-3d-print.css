@@ -561,6 +561,81 @@
   }
 }
 
+/* ---------- 3D print page extra hover animations ---------- */
+.page-print3d .print3d-dropzone,
+.page-print3d .print3d-result,
+.page-print3d .print3d-result-item,
+.page-print3d .print3d-request-form,
+.page-print3d .print3d-request-file,
+.page-print3d .print3d-checkout-card,
+.page-print3d .print3d-confirm-card,
+.page-print3d .print3d-color-controls,
+.page-print3d .print3d-color-chip,
+.page-print3d .print3d-request-file-btn,
+.page-print3d .print3d-request-form button[type="submit"] {
+  transition:
+    transform 0.25s cubic-bezier(0.22, 1, 0.36, 1),
+    box-shadow 0.25s ease,
+    border-color 0.2s ease,
+    background-color 0.2s ease,
+    filter 0.2s ease;
+}
+
+.page-print3d .print3d-dropzone:hover,
+.page-print3d .print3d-result:hover,
+.page-print3d .print3d-request-form:hover,
+.page-print3d .print3d-checkout-card:hover,
+.page-print3d .print3d-confirm-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 14px 30px rgba(15, 23, 42, 0.12);
+}
+
+.page-print3d .print3d-result-item:hover,
+.page-print3d .print3d-request-file:hover,
+.page-print3d .print3d-color-controls:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 20px rgba(15, 23, 42, 0.1);
+}
+
+.page-print3d .print3d-color-chip:hover {
+  transform: translateY(-2px) scale(1.06);
+}
+
+.page-print3d .print3d-request-file-btn:hover,
+.page-print3d .print3d-request-form button[type="submit"]:hover {
+  transform: translateY(-2px);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .page-print3d .print3d-dropzone,
+  .page-print3d .print3d-result,
+  .page-print3d .print3d-result-item,
+  .page-print3d .print3d-request-form,
+  .page-print3d .print3d-request-file,
+  .page-print3d .print3d-checkout-card,
+  .page-print3d .print3d-confirm-card,
+  .page-print3d .print3d-color-controls,
+  .page-print3d .print3d-color-chip,
+  .page-print3d .print3d-request-file-btn,
+  .page-print3d .print3d-request-form button[type="submit"] {
+    transition: none !important;
+  }
+
+  .page-print3d .print3d-dropzone:hover,
+  .page-print3d .print3d-result:hover,
+  .page-print3d .print3d-request-form:hover,
+  .page-print3d .print3d-checkout-card:hover,
+  .page-print3d .print3d-confirm-card:hover,
+  .page-print3d .print3d-result-item:hover,
+  .page-print3d .print3d-request-file:hover,
+  .page-print3d .print3d-color-controls:hover,
+  .page-print3d .print3d-color-chip:hover,
+  .page-print3d .print3d-request-file-btn:hover,
+  .page-print3d .print3d-request-form button[type="submit"]:hover {
+    transform: none !important;
+  }
+}
+
 /* Мульти-моделі */
 .page-print3d .print3d-models-grid {
   display: grid;

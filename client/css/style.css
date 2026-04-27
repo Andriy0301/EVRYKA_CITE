@@ -667,8 +667,6 @@ footer .footer-bottom {
 
 .footer-link,
 .section-link,
-.nav a,
-.header-nav a,
 .breadcrumbs a {
   position: relative;
   transition: color 0.2s ease;
@@ -676,8 +674,6 @@ footer .footer-bottom {
 
 .footer-link::after,
 .section-link::after,
-.nav a::after,
-.header-nav a::after,
 .breadcrumbs a::after {
   content: "";
   position: absolute;
@@ -693,8 +689,6 @@ footer .footer-bottom {
 
 .footer-link:hover::after,
 .section-link:hover::after,
-.nav a:hover::after,
-.header-nav a:hover::after,
 .breadcrumbs a:hover::after {
   animation: evUnderlineSlide 0.24s ease forwards;
 }

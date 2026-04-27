@@ -318,6 +318,74 @@
   color: #ffffff;
 }
 
+/* ---------- About page hover animations ---------- */
+.page-about .about-v2__intro,
+.page-about .about-v2__stat,
+.page-about .about-v2__card,
+.page-about .about-v2__contacts,
+.page-about .about-v2__contact-tile,
+.page-about .about-v2__h-icon,
+.page-about .about-v2__tag,
+.page-about .about-v2__hours {
+  transition:
+    transform 0.25s cubic-bezier(0.22, 1, 0.36, 1),
+    box-shadow 0.25s ease,
+    border-color 0.2s ease,
+    background-color 0.2s ease,
+    color 0.2s ease;
+}
+
+.page-about .about-v2__intro:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 14px 30px rgba(15, 23, 42, 0.1);
+}
+
+.page-about .about-v2__stat:hover,
+.page-about .about-v2__card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 14px 30px rgba(15, 23, 42, 0.1);
+}
+
+.page-about .about-v2__card:hover .about-v2__h-icon {
+  transform: translateY(-2px) scale(1.04);
+}
+
+.page-about .about-v2__tag:hover,
+.page-about .about-v2__hours:hover {
+  transform: translateY(-1px);
+}
+
+.page-about .about-v2__contact-tile:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 10px 22px rgba(15, 23, 42, 0.1);
+}
+
+.page-about .about-v2__contact-tile:hover .about-v2__messenger-icon {
+  transform: scale(1.08);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .page-about .about-v2__intro,
+  .page-about .about-v2__stat,
+  .page-about .about-v2__card,
+  .page-about .about-v2__contacts,
+  .page-about .about-v2__contact-tile,
+  .page-about .about-v2__h-icon,
+  .page-about .about-v2__tag,
+  .page-about .about-v2__hours {
+    transition: none !important;
+  }
+
+  .page-about .about-v2__intro:hover,
+  .page-about .about-v2__stat:hover,
+  .page-about .about-v2__card:hover,
+  .page-about .about-v2__contact-tile:hover,
+  .page-about .about-v2__card:hover .about-v2__h-icon,
+  .page-about .about-v2__contact-tile:hover .about-v2__messenger-icon {
+    transform: none !important;
+  }
+}
+
 .page-about .about-v2__contact-tile--viber {
   border-color: #ddd6fe;
   background: #f5f3ff;
