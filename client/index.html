@@ -168,7 +168,7 @@
       background-size: cover;
       background-position: center;
       background-repeat: no-repeat;
-      opacity: 0.48;
+      opacity: 1;
       pointer-events: none;
     }
 
@@ -177,8 +177,22 @@
       position: absolute;
       inset: 0;
       z-index: 0;
-      background: linear-gradient(180deg, rgba(255, 255, 255, 0.52) 0%, rgba(255, 255, 255, 0.58) 100%);
+      --hero-glow-x: 50%;
+      --hero-glow-y: 50%;
+      background:
+        radial-gradient(
+          220px circle at var(--hero-glow-x) var(--hero-glow-y),
+          rgba(255, 255, 255, 0.3) 0%,
+          rgba(255, 255, 255, 0.16) 28%,
+          rgba(255, 255, 255, 0) 64%
+        );
+      opacity: 0;
+      transition: opacity 0.18s ease;
       pointer-events: none;
+    }
+
+    .hero-shell.is-cursor-glow::after {
+      opacity: 1;
     }
 
     /* -- HERO -- */
@@ -2425,6 +2439,26 @@
       .catch(() => {
         // Keep static fallbacks if API is unavailable.
       });
+
+    const heroShell = document.querySelector(".hero-shell");
+    if (heroShell && window.matchMedia("(hover: hover) and (pointer: fine)").matches) {
+      const updateGlow = (event) => {
+        const rect = heroShell.getBoundingClientRect();
+        if (!rect.width || !rect.height) return;
+        const x = ((event.clientX - rect.left) / rect.width) * 100;
+        const y = ((event.clientY - rect.top) / rect.height) * 100;
+        heroShell.style.setProperty("--hero-glow-x", `${Math.max(0, Math.min(100, x)).toFixed(2)}%`);
+        heroShell.style.setProperty("--hero-glow-y", `${Math.max(0, Math.min(100, y)).toFixed(2)}%`);
+      };
+
+      heroShell.addEventListener("mouseenter", () => {
+        heroShell.classList.add("is-cursor-glow");
+      });
+      heroShell.addEventListener("mousemove", updateGlow);
+      heroShell.addEventListener("mouseleave", () => {
+        heroShell.classList.remove("is-cursor-glow");
+      });
+    }
   </script>
   <script src="js/api.js?v=20260426"></script>
   <script src="js/cart.js?v=20260430"></script>
