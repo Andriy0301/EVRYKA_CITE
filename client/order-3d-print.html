@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Р—Р°РјРѕРІРёС‚Рё 3D-РґСЂСѓРє - EVRYKA</title>
+  <title>Замовити 3D-друк - EVRYKA</title>
   <link rel="icon" href="images/favicon.png" type="image/png">
   <link rel="apple-touch-icon" href="images/favicon.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -21,36 +21,36 @@
     <a href="index.html" class="logo header-logo">
       <img src="images/text_logo.png" alt="EVRYKA" class="header-logo-img">
     </a>
-    <button type="button" class="header-burger" id="navToggle" aria-label="Р’С–РґРєСЂРёС‚Рё РјРµРЅСЋ" aria-expanded="false" aria-controls="headerNavPanel">
+    <button type="button" class="header-burger" id="navToggle" aria-label="Відкрити меню" aria-expanded="false" aria-controls="headerNavPanel">
       <span class="header-burger__line"></span>
       <span class="header-burger__line"></span>
       <span class="header-burger__line"></span>
     </button>
-    <nav class="nav header-nav" id="headerNavPanel" aria-label="Р“РѕР»РѕРІРЅР° РЅР°РІС–РіР°С†С–СЏ">
-      <a href="index.html">Р“РѕР»РѕРІРЅР°</a>
-      <a href="catalog.html">РљР°С‚Р°Р»РѕРі</a>
-      <a href="about.html">РџСЂРѕ РЅР°СЃ</a>
-      <a href="order-3d-print.html" class="active">Р—Р°РјРѕРІРёС‚Рё 3D РґСЂСѓРє</a>
+    <nav class="nav header-nav" id="headerNavPanel" aria-label="Головна навігація">
+      <a href="index.html">Головна</a>
+      <a href="catalog.html">Каталог</a>
+      <a href="about.html">Про нас</a>
+      <a href="order-3d-print.html" class="active">Замовити 3D друк</a>
     </nav>
     <div class="header-utilities">
       <div class="search-box">
-        <input type="search" placeholder="РџРѕС€СѓРє" id="search" name="q" autocomplete="off">
+        <input type="search" placeholder="Пошук" id="search" name="q" autocomplete="off">
         <div id="searchResults" class="search-results"></div>
       </div>
       <div class="header-actions">
-        <button type="button" id="authBtn" class="auth-icon-btn" title="РџСЂРѕС„С–Р»СЊ">
+        <button type="button" id="authBtn" class="auth-icon-btn" title="Профіль">
           <svg id="authIcon" viewBox="0 0 24 24" aria-hidden="true">
             <path d="M12 12c2.8 0 5-2.2 5-5s-2.2-5-5-5-5 2.2-5 5 2.2 5 5 5Zm0 2c-4.4 0-8 2.7-8 6v2h16v-2c0-3.3-3.6-6-8-6Z"></path>
           </svg>
           <span id="authInitials" class="auth-initials"></span>
         </button>
-        <button type="button" id="favoritesBtn" class="auth-icon-btn" title="РћР±СЂР°РЅС–" onclick="toggleFavorites(true)">
+        <button type="button" id="favoritesBtn" class="auth-icon-btn" title="Обрані" onclick="toggleFavorites(true)">
           <svg class="heart-icon" viewBox="0 0 512 512" aria-hidden="true">
             <path d="M257 88L255 88C248.355 74.9828 235.475 63.8415 224 55.1304C173.114 16.5016 99.2988 19.267 51 61.2894C-1.26738 106.765 -12.8083 185.773 13.0116 248C25.4527 277.984 45.9981 303.467 67.9105 327C103.494 365.215 144.281 398.581 184 432.421C198.063 444.402 211.938 456.598 226 468.579C233.971 475.37 241.993 483.022 253 483.907C268.121 485.122 278.342 475.197 289 466C306.641 450.778 324.263 435.533 342 420.421C356.437 408.121 370.854 395.797 385 383.166C443.359 331.055 512 269.827 512 185C512 178.072 512.538 170.886 511.715 164C506.476 120.199 486.854 78.636 450 52.7207C401.715 18.7669 334.983 19.4645 288 55.1304C276.525 63.8415 263.645 74.9828 257 88z"></path>
           </svg>
         </button>
         <div class="cart" onclick="toggleCart(true)">
-          <img src="images/cart-icon.svg" class="cart-icon" alt="РљРѕС€РёРє">
+          <img src="images/cart-icon.svg" class="cart-icon" alt="Кошик">
           <span id="cartCount">0</span>
         </div>
       </div>
@@ -65,35 +65,35 @@
         <svg class="back-icon" viewBox="0 0 24 24" aria-hidden="true">
           <path d="M15 6l-6 6 6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
         </svg>
-        РќР°Р·Р°Рґ
+        Назад
       </a>
       <div class="breadcrumbs">
-        <a href="index.html">Р“РѕР»РѕРІРЅР°</a>
+        <a href="index.html">Головна</a>
         <span>/</span>
-        <span>Р—Р°РјРѕРІРёС‚Рё 3D РґСЂСѓРє</span>
+        <span>Замовити 3D друк</span>
       </div>
     </div>
 
-    <h1 class="about-page-title">Р—Р°РјРѕРІРёС‚Рё 3D-РґСЂСѓРє</h1>
+    <h1 class="about-page-title">Замовити 3D-друк</h1>
 
     <div class="print3d-wrap">
       <div class="print3d-mode-tabs">
-        <button type="button" id="print3dTabModel" class="is-active">Р„ 3D РјРѕРґРµР»СЊ</button>
-        <button type="button" id="print3dTabRequest">РќРµРјР°С” РјРѕРґРµР»С–</button>
+        <button type="button" id="print3dTabModel" class="is-active">Є 3D модель</button>
+        <button type="button" id="print3dTabRequest">Немає моделі</button>
       </div>
 
       <div id="print3dPanelModel">
         <div class="print3d-upload-config">
           <div class="print3d-dropzone" id="print3dDrop" role="button" tabindex="0">
-            <p style="margin:0;font-weight:600;font-size:1.05rem;">РџРµСЂРµС‚СЏРіРЅС–С‚СЊ STL / OBJ / 3MF С„Р°Р№Р»Рё СЃСЋРґРё</p>
-            <p style="margin:8px 0 0;font-size:14px;color:var(--ev-muted,#6b7280);">Р°Р±Рѕ РЅР°С‚РёСЃРЅС–С‚СЊ, С‰РѕР± РѕР±СЂР°С‚Рё РєС–Р»СЊРєР° С„Р°Р№Р»С–РІ В· РґРѕ 50 РњР‘ РєРѕР¶РµРЅ</p>
-            <input type="file" id="print3dFile" multiple accept=".stl,.obj,.3mf,model/stl,model/obj" aria-label="Р¤Р°Р№Р»Рё 3D РјРѕРґРµР»РµР№">
+            <p style="margin:0;font-weight:600;font-size:1.05rem;">Перетягніть STL / OBJ / 3MF файли сюди</p>
+            <p style="margin:8px 0 0;font-size:14px;color:var(--ev-muted,#6b7280);">або натисніть, щоб обрати кілька файлів · до 50 МБ кожен</p>
+            <input type="file" id="print3dFile" multiple accept=".stl,.obj,.3mf,model/stl,model/obj" aria-label="Файли 3D моделей">
           </div>
           <div class="print3d-config-side">
             <div class="print3d-fields">
-              <label>РњР°С‚РµСЂС–Р°Р»
+              <label>Матеріал
                 <div class="catalog-select-wrap print3d-select-wrap">
-                  <button type="button" class="catalog-select-trigger print3d-select-trigger" id="print3dMaterialTrigger" aria-expanded="false" aria-haspopup="listbox" aria-label="РњР°С‚РµСЂС–Р°Р»">
+                  <button type="button" class="catalog-select-trigger print3d-select-trigger" id="print3dMaterialTrigger" aria-expanded="false" aria-haspopup="listbox" aria-label="Матеріал">
                     <span class="catalog-select-value" id="print3dMaterialValue">PLA</span>
                     <svg class="catalog-select-chevron" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9l6 6 6-6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg>
                   </button>
@@ -105,9 +105,9 @@
                   </select>
                 </div>
               </label>
-              <label>РњС–С†РЅС–СЃС‚СЊ (infill)
+              <label>Міцність (infill)
                 <div class="catalog-select-wrap print3d-select-wrap">
-                  <button type="button" class="catalog-select-trigger print3d-select-trigger" id="print3dStrengthTrigger" aria-expanded="false" aria-haspopup="listbox" aria-label="РњС–С†РЅС–СЃС‚СЊ">
+                  <button type="button" class="catalog-select-trigger print3d-select-trigger" id="print3dStrengthTrigger" aria-expanded="false" aria-haspopup="listbox" aria-label="Міцність">
                     <span class="catalog-select-value" id="print3dStrengthValue">Medium (25%)</span>
                     <svg class="catalog-select-chevron" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9l6 6 6-6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg>
                   </button>
@@ -121,9 +121,9 @@
                   </select>
                 </div>
               </label>
-              <label>РЇРєС–СЃС‚СЊ РґСЂСѓРєСѓ
+              <label>Якість друку
                 <div class="catalog-select-wrap print3d-select-wrap">
-                  <button type="button" class="catalog-select-trigger print3d-select-trigger" id="print3dQualityTrigger" aria-expanded="false" aria-haspopup="listbox" aria-label="РЇРєС–СЃС‚СЊ">
+                  <button type="button" class="catalog-select-trigger print3d-select-trigger" id="print3dQualityTrigger" aria-expanded="false" aria-haspopup="listbox" aria-label="Якість">
                     <span class="catalog-select-value" id="print3dQualityValue">Normal</span>
                     <svg class="catalog-select-chevron" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9l6 6 6-6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg>
                   </button>
@@ -137,58 +137,58 @@
               </label>
             </div>
             <div class="print3d-color-controls">
-              <span class="print3d-color-label">РљРѕР»С–СЂ Р·Р°РјРѕРІР»РµРЅРЅСЏ</span>
-              <div id="print3dOrderColorPalette" class="print3d-color-palette" aria-label="Р’РёР±С–СЂ РєРѕР»СЊРѕСЂСѓ Р·Р°РјРѕРІР»РµРЅРЅСЏ"></div>
+              <span class="print3d-color-label">Колір замовлення</span>
+              <div id="print3dOrderColorPalette" class="print3d-color-palette" aria-label="Вибір кольору замовлення"></div>
             </div>
           </div>
         </div>
         <div class="print3d-err" id="print3dErr" hidden></div>
-        <p class="print3d-note">Р”Р»СЏ РєРѕР¶РЅРѕС— РјРѕРґРµР»С– Р±СѓРґРµ РѕРєСЂРµРјРёР№ РїРµСЂРµРіР»СЏРґ С– СЂРѕР·СЂР°С…СѓРЅРѕРє. Р”Р»СЏ <strong>3MF</strong> РґРѕСЃС‚СѓРїРЅРёР№ Р°РІС‚Рѕ-СЂРѕР·СЂР°С…СѓРЅРѕРє, Р°Р»Рµ 3D-РїРµСЂРµРіР»СЏРґ Сѓ РІС–РєРЅС– РјРѕРґРµР»С– РјРѕР¶Рµ Р±СѓС‚Рё РѕР±РјРµР¶РµРЅРёР№.</p>
+        <p class="print3d-note">Для кожної моделі буде окремий перегляд і розрахунок. Для <strong>3MF</strong> доступний авто-розрахунок, але 3D-перегляд у вікні моделі може бути обмежений.</p>
 
         <div id="print3dModelsGrid" class="print3d-models-grid"></div>
 
         <div id="print3dTotalBox" class="print3d-total-box" hidden>
-          <h3 class="print3d-total-title">РџС–РґСЃСѓРјРѕРє РїРѕ РІСЃС–С… РјРѕРґРµР»СЏС…</h3>
+          <h3 class="print3d-total-title">Підсумок по всіх моделях</h3>
           <div id="print3dTotalRows" class="print3d-total-rows"></div>
           <div class="print3d-total-foot">
-            <strong>Р—Р°РіР°Р»СЊРЅР° СЃСѓРјР°:</strong>
-            <span id="print3dTotalPrice">0 РіСЂРЅ</span>
+            <strong>Загальна сума:</strong>
+            <span id="print3dTotalPrice">0 грн</span>
           </div>
-          <button type="button" class="print3d-btn-primary" id="print3dBtnOrder">Р—Р°РјРѕРІРёС‚Рё РІСЃС– РјРѕРґРµР»С–</button>
+          <button type="button" class="print3d-btn-primary" id="print3dBtnOrder">Замовити всі моделі</button>
         </div>
       </div>
 
       <div id="print3dPanelRequest" hidden>
         <div class="print3d-request-center">
           <form id="print3dRequestForm" class="print3d-request-form">
-            <h3 class="print3d-request-title">РќРµРјР°С” РіРѕС‚РѕРІРѕС— 3D-РјРѕРґРµР»С–?</h3>
-            <p class="print3d-request-subtitle">РћРїРёС€С–С‚СЊ Р·Р°РґР°С‡Сѓ, РїСЂРёРєСЂС–РїС–С‚СЊ РєСЂРµСЃР»РµРЅРЅСЏ Р°Р±Рѕ С„РѕС‚Рѕ вЂ” РјРё РґРѕРїРѕРјРѕР¶РµРјРѕ РїС–РґРіРѕС‚СѓРІР°С‚Рё РјРѕРґРµР»СЊ С– СЂРѕР·СЂР°С…СѓС”РјРѕ РІР°СЂС‚С–СЃС‚СЊ.</p>
+            <h3 class="print3d-request-title">Немає готової 3D-моделі?</h3>
+            <p class="print3d-request-subtitle">Опишіть задачу, прикріпіть креслення або фото — ми допоможемо підготувати модель і розрахуємо вартість.</p>
             <div class="print3d-request-grid">
-              <label>Р†РјвЂ™СЏ *
-                <input name="name" type="text" required autocomplete="name" placeholder="РћР»РµРєСЃР°РЅРґСЂ">
+              <label>Ім’я *
+                <input name="name" type="text" required autocomplete="name" placeholder="Олександр">
               </label>
-              <label>РўРµР»РµС„РѕРЅ *
-                <input name="phone" type="tel" required autocomplete="tel" placeholder="+380вЂ¦">
+              <label>Телефон *
+                <input name="phone" type="tel" required autocomplete="tel" placeholder="+380…">
               </label>
             </div>
             <label>Email *
               <input name="email" type="email" required autocomplete="email" placeholder="you@example.com">
             </label>
-            <label>РћРїРёСЃ *
-              <textarea name="description" required placeholder="РћРїРёС€С–С‚СЊ, С‰Рѕ РЅР°РґСЂСѓРєСѓРІР°С‚Рё, СЂРѕР·РјС–СЂРё, С‚РµСЂРјС–РЅРё..."></textarea>
+            <label>Опис *
+              <textarea name="description" required placeholder="Опишіть, що надрукувати, розміри, терміни..."></textarea>
             </label>
-            <label>РџРѕСЃРёР»Р°РЅРЅСЏ (РЅРµРѕР±РѕРІвЂ™СЏР·РєРѕРІРѕ)
-              <input name="link" type="url" placeholder="https://вЂ¦">
+            <label>Посилання (необов’язково)
+              <input name="link" type="url" placeholder="https://…">
             </label>
-            <label>Р¤Р°Р№Р» (РєСЂРµСЃР»РµРЅРЅСЏ / С„РѕС‚Рѕ)
+            <label>Файл (креслення / фото)
               <div class="print3d-request-file">
                 <input id="print3dRequestFile" name="attachment" type="file" accept="image/*,.pdf,.stl,.obj">
-                <button type="button" class="print3d-request-file-btn" id="print3dRequestFileBtn">Р’РёР±РµСЂС–С‚СЊ С„Р°Р№Р»</button>
-                <span id="print3dRequestFileName" class="print3d-request-file-name">Р¤Р°Р№Р» РЅРµ РІРёР±СЂР°РЅРѕ</span>
+                <button type="button" class="print3d-request-file-btn" id="print3dRequestFileBtn">Виберіть файл</button>
+                <span id="print3dRequestFileName" class="print3d-request-file-name">Файл не вибрано</span>
               </div>
             </label>
             <p id="print3dRequestStatus" class="print3d-request-status" hidden></p>
-            <button type="submit">РќР°РґС–СЃР»Р°С‚Рё Р·Р°РїРёС‚</button>
+            <button type="submit">Надіслати запит</button>
           </form>
         </div>
       </div>
@@ -200,32 +200,32 @@
 
 <div id="cartSidebar" class="cart-sidebar">
   <div class="cart-head-float">
-    <h3 id="cartPanelTitle">РљРѕС€РёРє</h3>
-    <button type="button" class="cart-head-float-close" onclick="toggleCart(false)" aria-label="Р—Р°РєСЂРёС‚Рё РєРѕС€РёРє">Г—</button>
+    <h3 id="cartPanelTitle">Кошик</h3>
+    <button type="button" class="cart-head-float-close" onclick="toggleCart(false)" aria-label="Закрити кошик">×</button>
   </div>
   <div id="cartItems" class="cart-items"></div>
   <div class="cart-footer">
     <div class="cart-total">
-      <span>Р Р°Р·РѕРј</span>
+      <span>Разом</span>
       <div>
         <b id="cartTotal">0</b>
-        <span>РіСЂРЅ</span>
+        <span>грн</span>
       </div>
     </div>
-    <button class="checkout-btn" onclick="checkout()">РћС„РѕСЂРјРёС‚Рё</button>
-    <button class="clear-btn" onclick="clearCart()">РћС‡РёСЃС‚РёС‚Рё РєРѕС€РёРє</button>
+    <button class="checkout-btn" onclick="checkout()">Оформити</button>
+    <button class="clear-btn" onclick="clearCart()">Очистити кошик</button>
   </div>
 </div>
 
 <div id="favoritesOverlay" class="cart-overlay" onclick="toggleFavorites(false)"></div>
 <div id="favoritesSidebar" class="cart-sidebar">
   <div class="cart-head-float">
-    <h3>РћР±СЂР°РЅС–</h3>
-    <button type="button" class="cart-head-float-close" onclick="toggleFavorites(false)" aria-label="Р—Р°РєСЂРёС‚Рё РѕР±СЂР°РЅС–">Г—</button>
+    <h3>Обрані</h3>
+    <button type="button" class="cart-head-float-close" onclick="toggleFavorites(false)" aria-label="Закрити обрані">×</button>
   </div>
   <div id="favoritesItems" class="cart-items"></div>
   <div class="cart-footer">
-    <button class="clear-btn" onclick="clearFavorites()">РћС‡РёСЃС‚РёС‚Рё РѕР±СЂР°РЅС–</button>
+    <button class="clear-btn" onclick="clearFavorites()">Очистити обрані</button>
   </div>
 </div>
 
@@ -234,9 +234,9 @@
     <button id="closeAuthBtn" class="close-btn">&#10006;</button>
     <h3 id="authTitle" class="auth-title">Log In</h3>
     <form id="registerForm">
-      <input id="regName" class="auth-input auth-register-only" type="text" placeholder="Р†Рј'СЏ">
-      <input id="regLastName" class="auth-input auth-register-only" type="text" placeholder="РџСЂС–Р·РІРёС‰Рµ">
-      <input id="regPhone" class="auth-input auth-register-only" type="tel" placeholder="РўРµР»РµС„РѕРЅ">
+      <input id="regName" class="auth-input auth-register-only" type="text" placeholder="Ім'я">
+      <input id="regLastName" class="auth-input auth-register-only" type="text" placeholder="Прізвище">
+      <input id="regPhone" class="auth-input auth-register-only" type="tel" placeholder="Телефон">
       <input id="regEmail" class="auth-input" type="email" placeholder="Email Address*">
       <input id="authPassword" class="auth-input" type="password" placeholder="Password*">
       <input id="authPasswordConfirm" class="auth-input auth-register-only" type="password" placeholder="Repeat password*">
@@ -261,26 +261,26 @@
 <footer class="footer">
   <div class="footer-container">
     <div class="footer-col">
-      <h4>РњРµРЅСЋ</h4>
-      <a href="index.html">Р“РѕР»РѕРІРЅР°</a>
-      <a href="catalog.html">РљР°С‚Р°Р»РѕРі</a>
-      <a href="about.html">РџСЂРѕ РЅР°СЃ</a>
-      <a href="order-3d-print.html">Р—Р°РјРѕРІРёС‚Рё 3D РґСЂСѓРє</a>
+      <h4>Меню</h4>
+      <a href="index.html">Головна</a>
+      <a href="catalog.html">Каталог</a>
+      <a href="about.html">Про нас</a>
+      <a href="order-3d-print.html">Замовити 3D друк</a>
     </div>
     <div class="footer-col">
-      <h4>РћСЃРѕР±РёСЃС‚РёР№ РєР°Р±С–РЅРµС‚</h4>
-      <a href="cabinet.html#orders">РњРѕС— Р·Р°РјРѕРІР»РµРЅРЅСЏ</a>
-      <a href="cabinet.html#personal">РћСЃРѕР±РёСЃС‚С– РґР°РЅС–</a>
-      <a href="catalog.html#favorites">РћР±СЂР°РЅРµ</a>
+      <h4>Особистий кабінет</h4>
+      <a href="cabinet.html#orders">Мої замовлення</a>
+      <a href="cabinet.html#personal">Особисті дані</a>
+      <a href="catalog.html#favorites">Обране</a>
     </div>
     <div class="footer-col" id="contacts">
-      <h4>РљРѕРЅС‚Р°РєС‚Рё</h4>
+      <h4>Контакти</h4>
       <a href="tel:+380501662271" class="phone">+38 (050) 166 22 71</a>
       <a href="mailto:andrysejko22@gmail.com">andrysejko22@gmail.com</a>
-      <a href="about.html#about-v2-location">Р›РѕРєР°С†С–СЏ Р№ РіСЂР°С„С–Рє</a>
+      <a href="about.html#about-v2-location">Локація й графік</a>
     </div>
     <div class="footer-col">
-      <h4>РњРµСЃСЃРµРЅРґР¶РµСЂРё</h4>
+      <h4>Мессенджери</h4>
       <div class="socials socials--messengers">
         <a class="footer-messenger footer-messenger--telegram" href="https://t.me/+380501662271" target="_blank" rel="noopener noreferrer">
           <svg class="footer-messenger__icon" viewBox="0 0 24 24" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"><path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/></svg>
@@ -291,7 +291,7 @@
           <span>Viber</span>
         </a>
       </div>
-      <p class="pay-text">РћРїР»Р°С‚Р°</p>
+      <p class="pay-text">Оплата</p>
       <div class="payments">
         <span>VISA</span>
         <span>MasterCard</span>
@@ -299,13 +299,13 @@
     </div>
   </div>
   <div class="footer-bottom">
-    <p>В© 2026 EVRYKA</p>
-    <span>РЈРєСЂР°С—РЅСЃСЊРєР°</span>
+    <p>© 2026 EVRYKA</p>
+    <span>Українська</span>
   </div>
 </footer>
 
 <div id="chatWidgetRoot" class="chat-widget-root">
-  <button type="button" id="chatWidgetToggle" class="chat-widget-toggle" aria-expanded="false" aria-controls="chatWidgetPanel" title="РќР°РїРёСЃР°С‚Рё РЅР°Рј">
+  <button type="button" id="chatWidgetToggle" class="chat-widget-toggle" aria-expanded="false" aria-controls="chatWidgetPanel" title="Написати нам">
     <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true">
       <path fill="currentColor" d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm0 14H5.17L4 17.17V4h16v12z"></path>
     </svg>
@@ -313,15 +313,15 @@
   <div id="chatWidgetPanel" class="chat-widget-panel" role="dialog" aria-modal="true" aria-labelledby="chatWidgetTitle" aria-hidden="true">
     <div class="chat-widget-card">
     <div class="chat-widget-head-float">
-      <span id="chatWidgetTitle">РќР°РїРёС€С–С‚СЊ РЅР°Рј</span>
-      <button type="button" class="chat-widget-close" aria-label="Р—Р°РєСЂРёС‚Рё С‡Р°С‚">Г—</button>
+      <span id="chatWidgetTitle">Напишіть нам</span>
+      <button type="button" class="chat-widget-close" aria-label="Закрити чат">×</button>
     </div>
     <div class="chat-widget-sheet">
       <div id="chatWidgetMessages" class="chat-widget-messages" aria-live="polite"></div>
       <div class="chat-widget-compose-float">
         <div class="chat-widget-compose">
-          <input type="text" id="chatWidgetText" class="chat-widget-field" placeholder="Р’Р°С€Рµ Р·Р°РїРёС‚Р°РЅРЅСЏвЂ¦" maxlength="2000" autocomplete="off">
-          <button type="button" id="chatWidgetSend" class="chat-widget-send">РќР°РґС–СЃР»Р°С‚Рё</button>
+          <input type="text" id="chatWidgetText" class="chat-widget-field" placeholder="Ваше запитання…" maxlength="2000" autocomplete="off">
+          <button type="button" id="chatWidgetSend" class="chat-widget-send">Надіслати</button>
         </div>
         <p id="chatWidgetStatus" class="chat-widget-status" role="status"></p>
       </div>
@@ -333,78 +333,78 @@
 <div id="print3dCheckoutModal" class="print3d-checkout-modal" hidden>
   <div class="print3d-confirm-backdrop" data-close-print3d-checkout></div>
   <div class="print3d-checkout-card" role="dialog" aria-modal="true" aria-labelledby="print3dCheckoutTitle">
-    <button type="button" class="print3d-confirm-close" data-close-print3d-checkout aria-label="Р—Р°РєСЂРёС‚Рё РѕС„РѕСЂРјР»РµРЅРЅСЏ">Г—</button>
-    <h3 id="print3dCheckoutTitle">РћС„РѕСЂРјР»РµРЅРЅСЏ 3D-Р·Р°РјРѕРІР»РµРЅРЅСЏ</h3>
+    <button type="button" class="print3d-confirm-close" data-close-print3d-checkout aria-label="Закрити оформлення">×</button>
+    <h3 id="print3dCheckoutTitle">Оформлення 3D-замовлення</h3>
     <p id="print3dCheckoutSummary" class="print3d-checkout-summary"></p>
 
     <div id="print3dCheckoutAuthPrompt" class="print3d-checkout-auth-prompt" hidden>
-      <p>Р©РѕР± С€РІРёРґС€Рµ РѕС„РѕСЂРјРёС‚Рё Р·Р°РјРѕРІР»РµРЅРЅСЏ, СѓРІС–Р№РґС–С‚СЊ Сѓ СЃРІС–Р№ Р°РєР°СѓРЅС‚.</p>
+      <p>Щоб швидше оформити замовлення, увійдіть у свій акаунт.</p>
       <div class="print3d-checkout-auth-actions">
-        <button type="button" class="print3d-btn-primary" id="print3dCheckoutLoginBtn">РЈРІС–Р№С‚Рё</button>
-        <button type="button" class="print3d-btn-primary print3d-btn-secondary" id="print3dCheckoutRegisterBtn">Р—Р°СЂРµС”СЃС‚СЂСѓРІР°С‚РёСЃСЊ</button>
-        <button type="button" class="print3d-btn-primary print3d-btn-ghost" id="print3dCheckoutGuestBtn">Р—Р°РјРѕРІРёС‚Рё Р±РµР· СЂРµС”СЃС‚СЂР°С†С–С—</button>
+        <button type="button" class="print3d-btn-primary" id="print3dCheckoutLoginBtn">Увійти</button>
+        <button type="button" class="print3d-btn-primary print3d-btn-secondary" id="print3dCheckoutRegisterBtn">Зареєструватись</button>
+        <button type="button" class="print3d-btn-primary print3d-btn-ghost" id="print3dCheckoutGuestBtn">Замовити без реєстрації</button>
       </div>
     </div>
 
     <form id="print3dCheckoutForm" class="print3d-checkout-form" hidden>
       <div class="print3d-checkout-grid">
-        <label>РџСЂС–Р·РІРёС‰Рµ *
+        <label>Прізвище *
           <input type="text" name="lastName" required>
         </label>
-        <label>Р†Рј'СЏ *
+        <label>Ім'я *
           <input type="text" name="name" required>
         </label>
-        <label>РўРµР»РµС„РѕРЅ *
+        <label>Телефон *
           <input type="tel" name="phone" required>
         </label>
         <label>Email *
           <input type="email" name="email" required>
         </label>
-        <label>РџРѕ Р±Р°С‚СЊРєРѕРІС–
+        <label>По батькові
           <input type="text" name="middleName">
         </label>
-        <label>РЎР»СѓР¶Р±Р° РґРѕСЃС‚Р°РІРєРё *
+        <label>Служба доставки *
           <select name="deliveryProvider" id="print3dCheckoutDeliveryProvider" required>
-            <option value="nova_poshta">РќРѕРІР° РїРѕС€С‚Р°</option>
-            <option value="ukrposhta">РЈРєСЂРїРѕС€С‚Р°</option>
-            <option value="courier">РљСѓСЂ'С”СЂ</option>
-            <option value="self_pickup">РЎР°РјРѕРІРёРІС–Р·</option>
+            <option value="nova_poshta">Нова пошта</option>
+            <option value="ukrposhta">Укрпошта</option>
+            <option value="courier">Кур'єр</option>
+            <option value="self_pickup">Самовивіз</option>
           </select>
         </label>
-        <label id="print3dCheckoutDeliveryTypeWrap">РўРёРї РґРѕСЃС‚Р°РІРєРё *
+        <label id="print3dCheckoutDeliveryTypeWrap">Тип доставки *
           <select name="deliveryType" id="print3dCheckoutDeliveryType" required>
-            <option value="warehouse">Р’С–РґРґС–Р»РµРЅРЅСЏ</option>
-            <option value="postomat">РџРѕС€С‚РѕРјР°С‚</option>
-            <option value="address">РђРґСЂРµСЃРЅР° РґРѕСЃС‚Р°РІРєР°</option>
+            <option value="warehouse">Відділення</option>
+            <option value="postomat">Поштомат</option>
+            <option value="address">Адресна доставка</option>
           </select>
         </label>
-        <label>РЎРїРѕСЃС–Р± РѕРїР»Р°С‚Рё *
+        <label>Спосіб оплати *
           <select name="paymentMethod" id="print3dCheckoutPaymentMethod" required>
-            <option value="cod">РџС–СЃР»СЏРїР»Р°С‚Р°</option>
-            <option value="card_online">РћРїР»Р°С‚Р° РєР°СЂС‚РєРѕСЋ РѕРЅР»Р°Р№РЅ</option>
-            <option value="bank_transfer">Р‘РµР·РіРѕС‚С–РІРєРѕРІРѕ</option>
+            <option value="cod">Післяплата</option>
+            <option value="card_online">Оплата карткою онлайн</option>
+            <option value="bank_transfer">Безготівково</option>
           </select>
         </label>
       </div>
-      <label>РњС–СЃС‚Рѕ *
+      <label>Місто *
         <div id="print3dCheckoutCityWrap" class="city-autocomplete-wrap print3d-checkout-suggest-wrap">
-          <input type="text" id="print3dCheckoutCity" name="city" required autocomplete="off" placeholder="РџРѕС‡РЅС–С‚СЊ РІРІРѕРґРёС‚Рё РјС–СЃС‚Рѕ...">
+          <input type="text" id="print3dCheckoutCity" name="city" required autocomplete="off" placeholder="Почніть вводити місто...">
           <div id="print3dCheckoutCitySuggestions" class="city-suggestions" style="display:none;"></div>
         </div>
       </label>
       <input type="hidden" name="cityRef" id="print3dCheckoutCityRef">
-      <label id="print3dCheckoutDeliveryPointWrap">Р’С–РґРґС–Р»РµРЅРЅСЏ / Р°РґСЂРµСЃР° *
+      <label id="print3dCheckoutDeliveryPointWrap">Відділення / адреса *
         <div id="print3dCheckoutBranchWrap" class="city-autocomplete-wrap print3d-checkout-suggest-wrap">
-          <input type="text" id="print3dCheckoutDeliveryPoint" name="deliveryPoint" required autocomplete="off" placeholder="РџРѕС‡РЅС–С‚СЊ РІРІРѕРґРёС‚Рё РІС–РґРґС–Р»РµРЅРЅСЏ...">
+          <input type="text" id="print3dCheckoutDeliveryPoint" name="deliveryPoint" required autocomplete="off" placeholder="Почніть вводити відділення...">
           <div id="print3dCheckoutBranchSuggestions" class="city-suggestions" style="display:none;"></div>
         </div>
       </label>
       <input type="hidden" name="branchRef" id="print3dCheckoutBranchRef">
-      <label>РљРѕРјРµРЅС‚Р°СЂ РґРѕ Р·Р°РјРѕРІР»РµРЅРЅСЏ
-        <textarea name="orderComment" rows="3" placeholder="Р”РѕРґР°С‚РєРѕРІС– РїРѕР±Р°Р¶Р°РЅРЅСЏ РґРѕ РґРѕСЃС‚Р°РІРєРё/Р·Р°РјРѕРІР»РµРЅРЅСЏ"></textarea>
+      <label>Коментар до замовлення
+        <textarea name="orderComment" rows="3" placeholder="Додаткові побажання до доставки/замовлення"></textarea>
       </label>
       <p id="print3dCheckoutStatus" class="print3d-checkout-status" hidden></p>
-      <button type="submit" class="print3d-btn-primary" id="print3dCheckoutSubmit">РџС–РґС‚РІРµСЂРґРёС‚Рё Р·Р°РјРѕРІР»РµРЅРЅСЏ</button>
+      <button type="submit" class="print3d-btn-primary" id="print3dCheckoutSubmit">Підтвердити замовлення</button>
     </form>
   </div>
 </div>
@@ -412,11 +412,11 @@
 <div id="print3dConfirmModal" class="print3d-confirm-modal" hidden>
   <div class="print3d-confirm-backdrop" data-close-print3d-modal></div>
   <div class="print3d-confirm-card" role="dialog" aria-modal="true" aria-labelledby="print3dConfirmTitle">
-    <button type="button" class="print3d-confirm-close" data-close-print3d-modal aria-label="Р—Р°РєСЂРёС‚Рё РїРѕРІС–РґРѕРјР»РµРЅРЅСЏ">Г—</button>
-    <h3 id="print3dConfirmTitle">Р—Р°РјРѕРІР»РµРЅРЅСЏ РїСЂРёР№РЅСЏС‚Рѕ</h3>
-    <p id="print3dConfirmText">Р’Р°С€Рµ Р·Р°РјРѕРІР»РµРЅРЅСЏ РїСЂРёР№РЅСЏС‚Рµ С‚Р° РїРѕС‡РёРЅР°С” РІРёРєРѕРЅСѓРІР°С‚РёСЃСЊ. РћСЂС–С”РЅС‚РѕРІРЅРёР№ С‚РµСЂРјС–РЅ РІРёРіРѕС‚РѕРІР»РµРЅРЅСЏ: 1вЂ“2 РґРЅС–.</p>
+    <button type="button" class="print3d-confirm-close" data-close-print3d-modal aria-label="Закрити повідомлення">×</button>
+    <h3 id="print3dConfirmTitle">Замовлення прийнято</h3>
+    <p id="print3dConfirmText">Ваше замовлення прийняте та починає виконуватись. Орієнтовний термін виготовлення: 1–2 дні.</p>
     <div id="print3dConfirmDetails" class="print3d-confirm-details"></div>
-    <button type="button" class="print3d-btn-primary" data-close-print3d-modal>Р”РѕР±СЂРµ</button>
+    <button type="button" class="print3d-btn-primary" data-close-print3d-modal>Добре</button>
   </div>
 </div>
 
@@ -430,5 +430,6 @@
 <script type="module" src="js/order-3d-print.js?v=17"></script>
 </body>
 </html>
+
 
 

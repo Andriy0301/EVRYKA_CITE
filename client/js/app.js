@@ -8,6 +8,7 @@ let allProducts = [];
 let currentFiltered = [];
 let currentCategory = "all";
 let currentSort = "default";
+let productsLoadFailures = 0;
 const PROFILE_STORAGE_KEY = "userProfile";
 const FAVORITES_STORAGE_KEY = "favorites";
 const GOOGLE_CLIENT_ID = "143348684381-0atu6nifdbl67m534grua54kvm18sb2d.apps.googleusercontent.com";
@@ -20,12 +21,25 @@ async function loadProducts() {
   try {
     const products = await getProducts(currentSort);
     allProducts = Array.isArray(products) ? products : [];
+    productsLoadFailures = 0;
     applyFilters();
   } catch (error) {
     console.error("Products load failed:", error);
     allProducts = [];
     applyFilters();
-    alert("Не вдалося завантажити товари. Онови сторінку через 2-3 секунди.");
+    productsLoadFailures += 1;
+
+    // Render cold starts can fail first request; retry quietly.
+    if (productsLoadFailures <= 3) {
+      const retryDelay = 1200 * productsLoadFailures;
+      window.setTimeout(() => {
+        loadProducts().catch(() => {});
+      }, retryDelay);
+      return;
+    }
+
+    // Keep UX non-blocking; avoid intrusive alert dialogs.
+    console.warn("Products are temporarily unavailable. Please retry shortly.");
   }
 }
 
