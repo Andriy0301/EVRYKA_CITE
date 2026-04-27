@@ -1722,25 +1722,6 @@ body.cart-open .header .cart {
   color: var(--ev-price);
 }
 
-.similar-review-btn {
-  margin-top: 10px;
-  width: 100%;
-  border: 1px solid rgba(var(--ev-rgb), 0.2);
-  border-radius: 10px;
-  background: var(--ev-surface);
-  color: var(--ev-ink);
-  font-size: 13px;
-  font-weight: 600;
-  padding: 8px 10px;
-  cursor: pointer;
-  transition: border-color 0.2s ease, transform 0.2s ease, background 0.2s ease;
-}
-
-.similar-review-btn:hover {
-  border-color: rgba(var(--ev-rgb), 0.38);
-  background: rgba(var(--ev-rgb), 0.05);
-  transform: translateY(-1px);
-}
 
 .price-row {
   display: flex;

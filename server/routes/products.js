@@ -6,6 +6,7 @@ const path = require("path");
 // правильні шляхи (важливо для Render)
 const productsPath = path.join(__dirname, "../data/products.json");
 const popularityPath = path.join(__dirname, "../data/popularity.json");
+const reviewsPath = path.join(__dirname, "../data/reviews.json");
 
 // читаємо товари
 function readProducts() {
@@ -34,6 +35,22 @@ function readPopularity() {
   }
 }
 
+// читаємо відгуки
+function readReviewsMap() {
+  try {
+    if (!fs.existsSync(reviewsPath)) {
+      fs.writeFileSync(reviewsPath, "{}");
+      return {};
+    }
+
+    const raw = fs.readFileSync(reviewsPath, "utf8");
+    return raw ? JSON.parse(raw) : {};
+  } catch (error) {
+    console.error("Error reading reviews:", error);
+    return {};
+  }
+}
+
 // 👉 ВСІ ТОВАРИ
 router.get("/", (req, res) => {
   try {
@@ -55,6 +72,19 @@ router.get("/", (req, res) => {
     res.json(list);
   } catch (error) {
     console.error("GET /products error:", error);
+    res.status(500).json({ error: "Server error" });
+  }
+});
+
+// 👉 ВІДГУКИ ТОВАРУ
+router.get("/:id/reviews", (req, res) => {
+  try {
+    const reviewsMap = readReviewsMap();
+    const productId = String(req.params.id);
+    const reviews = Array.isArray(reviewsMap[productId]) ? reviewsMap[productId] : [];
+    res.json(reviews);
+  } catch (error) {
+    console.error("GET /products/:id/reviews error:", error);
     res.status(500).json({ error: "Server error" });
   }
 });

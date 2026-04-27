@@ -509,6 +509,7 @@ function toggleFavorite(e, product, pulseHeader) {
 function toggleFavorites(open) {
   const sidebar = document.getElementById("favoritesSidebar");
   const overlay = document.getElementById("favoritesOverlay");
+  const chatRoot = document.getElementById("chatWidgetRoot");
   const navPanel = document.getElementById("headerNavPanel");
   const navToggle = document.getElementById("navToggle");
   if (!sidebar || !overlay) return;
@@ -522,10 +523,22 @@ function toggleFavorites(open) {
     document.body.classList.remove("header-nav-open");
     sidebar.classList.add("active");
     overlay.classList.add("active");
+    if (chatRoot) {
+      chatRoot.style.visibility = "hidden";
+      chatRoot.style.pointerEvents = "none";
+      chatRoot.style.opacity = "0";
+      chatRoot.style.zIndex = "997";
+    }
     renderFavoritesList();
   } else {
     sidebar.classList.remove("active");
     overlay.classList.remove("active");
+    if (chatRoot && !document.body.classList.contains("cart-open")) {
+      chatRoot.style.visibility = "";
+      chatRoot.style.pointerEvents = "";
+      chatRoot.style.opacity = "";
+      chatRoot.style.zIndex = "";
+    }
   }
 }
 

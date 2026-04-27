@@ -25,7 +25,8 @@ async function loadProduct() {
     }
 
     renderGallery(product);
-    renderReviews(product);
+    const apiReviews = await getProductReviews(product.id);
+    renderReviews(product, apiReviews);
     renderSimilarProducts(product, products);
     renderDiscoverProducts(product, products);
     setupProductFavorite(product);
@@ -48,6 +49,19 @@ document.getElementById("quickCheckoutBtn").onclick = () => {
   } catch (err) {
     console.error(err);
     document.body.innerHTML = "<h2>Помилка завантаження</h2>";
+  }
+}
+
+async function getProductReviews(productId) {
+  try {
+    const res = await fetch(`/api/products/${encodeURIComponent(String(productId))}/reviews`, {
+      cache: "no-store"
+    });
+    if (!res.ok) return [];
+    const data = await res.json();
+    return Array.isArray(data) ? data : [];
+  } catch {
+    return [];
   }
 }
 
@@ -203,18 +217,10 @@ function renderSimilarProductCards(container, items) {
       <img src="${API_URL}${p.images?.[0] || ""}" alt="${p.name}">
       <h4>${p.name}</h4>
       <p>${p.price} грн</p>
-      <button type="button" class="similar-review-btn">Відгуки</button>
     `;
     card.addEventListener("click", () => {
       window.location.href = `product.html?id=${p.id}`;
     });
-    const reviewBtn = card.querySelector(".similar-review-btn");
-    if (reviewBtn) {
-      reviewBtn.addEventListener("click", (event) => {
-        event.stopPropagation();
-        window.location.href = `product.html?id=${p.id}#reviews`;
-      });
-    }
     container.appendChild(card);
   });
 }
@@ -262,11 +268,13 @@ function renderStars(rating) {
   return "★".repeat(safeRating) + "☆".repeat(5 - safeRating);
 }
 
-function renderReviews(product) {
+function renderReviews(product, apiReviews = []) {
   const list = document.getElementById("reviewsList");
   if (!list) return;
 
-  const reviews = Array.isArray(product?.reviews) ? product.reviews : [];
+  const reviews = Array.isArray(apiReviews) && apiReviews.length
+    ? apiReviews
+    : (Array.isArray(product?.reviews) ? product.reviews : []);
   if (!reviews.length) {
     list.innerHTML = `
       <article class="review-card review-card--empty">
