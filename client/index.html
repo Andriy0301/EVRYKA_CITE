@@ -305,6 +305,15 @@
       justify-content: center;
     }
 
+    #evrykaCanvas {
+      display: block;
+      width: 100%;
+      height: 100%;
+      position: absolute;
+      inset: 0;
+      cursor: none;
+    }
+
     .hero-right::before {
       content: '';
       position: absolute;
@@ -1588,68 +1597,13 @@
     </div>
 
     <div class="hero-right">
-      <div class="hero-grid-pattern"></div>
-      <div class="hero-floating-badge badge-1">
-        <div class="badge-dot"></div>
+      <canvas id="evrykaCanvas"></canvas>
+      <div style="position:absolute;top:18%;right:8%;background:white;border-radius:12px;padding:10px 14px;display:flex;align-items:center;gap:8px;font-size:12px;font-weight:600;color:#111;box-shadow:0 8px 30px rgba(0,0,0,0.3);z-index:5;animation:float 3s ease-in-out infinite 0.5s">
+        <div style="width:8px;height:8px;border-radius:50%;background:#22C55E;box-shadow:0 0 6px #22C55E"></div>
         Виробляємо у Львові
       </div>
-      <div class="hero-floating-badge badge-2">
+      <div style="position:absolute;bottom:18%;left:6%;background:white;border-radius:12px;padding:10px 14px;display:flex;align-items:center;gap:8px;font-size:12px;font-weight:600;color:#111;box-shadow:0 8px 30px rgba(0,0,0,0.3);z-index:5;animation:float 3.5s ease-in-out infinite 1s">
         ⚡ Замовлення від 1 дня
-      </div>
-      <div class="printer-wrap">
-        <div class="printer-box">
-          <div class="p-rail-top"></div>
-          <div class="p-pole p-pole-left"></div>
-          <div class="p-pole p-pole-right"></div>
-          <div class="p-head-rod">
-            <div class="p-head" id="pHead">
-              <div class="p-head-body">
-                <div class="p-fan"></div>
-                <div class="p-light"></div>
-              </div>
-              <div class="p-extruder">
-                <div class="p-hotend"></div>
-                <div class="p-nozzle"></div>
-                <div class="p-glow" id="pGlow"></div>
-              </div>
-              <div class="p-drip" id="pDrip"></div>
-            </div>
-          </div>
-          <div class="p-bed">
-            <div class="p-bed-lines">
-              <span></span>
-              <span></span>
-              <span></span>
-              <span></span>
-              <span></span>
-            </div>
-          </div>
-          <div class="p-layers" id="pLayers"></div>
-          <div class="p-spool">
-            <div class="p-spool-inner">
-              <div class="p-spool-core"></div>
-              <div class="p-spool-label">PLA</div>
-            </div>
-          </div>
-          <div class="p-screen" id="pScreen">
-            <div class="p-screen-title" id="pScreenTitle">ДРУК</div>
-            <div class="p-screen-bar">
-              <div class="p-screen-fill" id="pScreenFill"></div>
-            </div>
-            <div class="p-screen-pct" id="pScreenPct">0%</div>
-          </div>
-          <div class="p-particles" id="pParticles"></div>
-        </div>
-        <div class="printer-status-card">
-          <div class="psc-dot" id="pscDot"></div>
-          <div class="psc-text">
-            <div class="psc-label">Статус</div>
-            <div class="psc-val" id="printerStatus">Підготовка до друку...</div>
-          </div>
-          <div class="psc-progress-wrap">
-            <div class="psc-progress-bar" id="printerBar"></div>
-          </div>
-        </div>
       </div>
     </div>
   </section>
@@ -2261,134 +2215,165 @@
   <script src="js/chat-widget.js?v=20260409"></script>
   <script>
     (function() {
-      const LAYERS = 7;
-      const CYCLE = 7000;
-      const LAYER_COLORS = ['#F07A1A', '#E8701A', '#D86010', '#C85000', '#B84800', '#A84000', '#983800'];
-      const STATUSES = [
-        { txt: 'Підготовка до друку...', pct: 0 },
-        { txt: 'Друкую шар 1/7...', pct: 14 },
-        { txt: 'Друкую шар 2/7...', pct: 28 },
-        { txt: 'Друкую шар 3/7...', pct: 42 },
-        { txt: 'Друкую шар 4/7...', pct: 57 },
-        { txt: 'Друкую шар 5/7...', pct: 71 },
-        { txt: 'Друкую шар 6/7...', pct: 85 },
-        { txt: 'Друкую шар 7/7...', pct: 100 },
-        { txt: '✓ Готово! EVRYKA', pct: 100 }
-      ];
+      const canvas = document.getElementById('evrykaCanvas');
+      if (!canvas) return;
+      const ctx = canvas.getContext('2d');
 
-      const layersEl = document.getElementById('pLayers');
-      const headEl = document.getElementById('pHead');
-      const glowEl = document.getElementById('pGlow');
-      const dripEl = document.getElementById('pDrip');
-      const screenFill = document.getElementById('pScreenFill');
-      const screenPct = document.getElementById('pScreenPct');
-      const screenTitle = document.getElementById('pScreenTitle');
-      const statusEl = document.getElementById('printerStatus');
-      const barEl = document.getElementById('printerBar');
-      const pscDot = document.getElementById('pscDot');
-      const particles = document.getElementById('pParticles');
-
-      if (!layersEl || !headEl) return;
-
-      const layerEls = [];
-      for (let i = 0; i < LAYERS; i++) {
-        const el = document.createElement('div');
-        el.className = 'p-layer';
-        const w = 120 - i * 10;
-        el.style.cssText = `width:${w}px; background:${LAYER_COLORS[i]};`;
-        layersEl.appendChild(el);
-        layerEls.push(el);
+      function resize() {
+        canvas.width = canvas.offsetWidth * (window.devicePixelRatio || 1);
+        canvas.height = canvas.offsetHeight * (window.devicePixelRatio || 1);
+        ctx.scale(window.devicePixelRatio || 1, window.devicePixelRatio || 1);
       }
+      resize();
+      window.addEventListener('resize', () => { resize(); init(); });
 
-      const ROD_TOP_IN_BOX = 30;
-      const HEAD_START = -8;
-      const BED_FROM_TOP = 250;
-      const LAYER_H = 6;
+      const W = () => canvas.offsetWidth;
+      const H = () => canvas.offsetHeight;
+      const mouse = { x: -9999, y: -9999 };
 
-      function getHeadTopForLayer(i) {
-        const nozzleOffset = 48;
-        const layerTop = BED_FROM_TOP - (i + 1) * LAYER_H;
-        return (layerTop - nozzleOffset) - ROD_TOP_IN_BOX;
-      }
+      canvas.addEventListener('mousemove', (e) => {
+        const r = canvas.getBoundingClientRect();
+        mouse.x = e.clientX - r.left;
+        mouse.y = e.clientY - r.top;
+      });
+      canvas.addEventListener('mouseleave', () => { mouse.x = -9999; mouse.y = -9999; });
 
-      let particleInterval = null;
+      function getLogoPoints(cx, cy, scale) {
+        const pts = [];
+        const s = scale;
+        const R1 = 120 * s;
+        const R2 = 100 * s;
+        const R3 = 90 * s;
 
-      function spawnParticle() {
-        if (!particles) return;
-        const p = document.createElement('div');
-        p.className = 'p-particle';
-        const size = Math.random() * 4 + 2;
-        const angle = Math.random() * 360;
-        const dist = Math.random() * 30 + 10;
-        const tx = Math.cos(angle * Math.PI / 180) * dist;
-        const ty = Math.sin(angle * Math.PI / 180) * dist - 20;
-        const headTop = parseInt(headEl.style.top) || 0;
-        const nozzleY = ROD_TOP_IN_BOX + headTop + 48;
-        p.style.cssText = `width:${size}px;height:${size}px;left:128px;top:${nozzleY}px;--tx:translate(${tx}px,${ty}px);animation-duration:${Math.random() * 0.5 + 0.6}s;`;
-        particles.appendChild(p);
-        setTimeout(() => p.remove(), 1100);
-      }
-
-      function updateStatus(idx) {
-        const s = STATUSES[Math.min(idx, STATUSES.length - 1)];
-        if (statusEl) statusEl.textContent = s.txt;
-        if (barEl) barEl.style.width = s.pct + '%';
-        if (screenFill) screenFill.style.width = s.pct + '%';
-        if (screenPct) screenPct.textContent = s.pct + '%';
-        const done = s.pct === 100;
-        if (pscDot) {
-          pscDot.style.background = done ? '#F07A1A' : '#22C55E';
-          pscDot.style.boxShadow = done ? '0 0 8px #F07A1A' : '0 0 8px #22C55E';
-        }
-        if (screenTitle) screenTitle.textContent = done ? 'ГОТОВО' : 'ДРУК';
-      }
-
-      function resetPrinter() {
-        layerEls.forEach((el) => el.classList.remove('show'));
-        headEl.style.top = HEAD_START + 'px';
-        if (glowEl) glowEl.classList.remove('active');
-        if (dripEl) dripEl.style.height = '0px';
-        if (particleInterval) {
-          clearInterval(particleInterval);
-          particleInterval = null;
-        }
-        updateStatus(0);
-      }
-
-      function printLayer(i) {
-        const targetTop = getHeadTopForLayer(i);
-        headEl.style.top = Math.max(HEAD_START, targetTop) + 'px';
-        if (glowEl) glowEl.classList.add('active');
-        const nozzleY = ROD_TOP_IN_BOX + Math.max(HEAD_START, targetTop) + 48;
-        const bedTop = BED_FROM_TOP - i * LAYER_H;
-        if (dripEl) dripEl.style.height = Math.min(Math.max(0, bedTop - nozzleY), 80) + 'px';
-        if (particleInterval) clearInterval(particleInterval);
-        particleInterval = setInterval(spawnParticle, 120);
-        setTimeout(() => {
-          if (layerEls[i]) layerEls[i].classList.add('show');
-          clearInterval(particleInterval);
-          particleInterval = null;
-        }, 400);
-        updateStatus(i + 1);
-      }
-
-      function runCycle() {
-        resetPrinter();
-        const step = CYCLE / (LAYERS + 3);
-        setTimeout(() => {
-          for (let i = 0; i < LAYERS; i++) {
-            setTimeout(() => printLayer(i), i * step);
+        for (let i = 0; i < 8; i++) {
+          const a = (i / 8) * Math.PI * 2 - Math.PI / 8;
+          for (let t = 0; t <= 1; t += 0.025) {
+            const ang = a + t * (Math.PI * 2 / 8);
+            pts.push([cx + Math.cos(ang) * R1, cy + Math.sin(ang) * R1]);
+            pts.push([cx + Math.cos(ang) * R2, cy + Math.sin(ang) * R2]);
           }
-          setTimeout(() => {
-            if (glowEl) glowEl.classList.remove('active');
-            if (dripEl) dripEl.style.height = '0px';
-            updateStatus(LAYERS + 1);
-          }, LAYERS * step + 300);
-        }, 500);
+          for (let t = 0; t <= 1; t += 0.12) {
+            pts.push([cx + Math.cos(a) * (R3 + t * (R1 - R3)), cy + Math.sin(a) * (R3 + t * (R1 - R3))]);
+          }
+        }
+
+        const letters = [
+          { x: -72, pts: [[0, 0], [0, -12], [0, -24], [0, -36], [12, -36], [8, -18], [12, 0]] },
+          { x: -50, pts: [[0, -36], [6, -24], [12, -12], [18, -36], [9, -36]] },
+          { x: -28, pts: [[0, 0], [0, -36], [8, -36], [12, -30], [8, -18], [0, -18], [8, -8]] },
+          { x: -6, pts: [[6, 0], [6, -16], [0, -36], [12, -36], [6, -16]] },
+          { x: 12, pts: [[0, 0], [0, -36], [12, -36], [0, -18], [12, 0]] },
+          { x: 32, pts: [[0, 0], [6, -36], [12, 0], [3, -18], [9, -18]] }
+        ];
+
+        const ts = s * 0.85;
+        letters.forEach((l) => {
+          l.pts.forEach(([px, py]) => {
+            for (let i = 0; i < 4; i++) {
+              pts.push([
+                cx + (l.x + px) * ts + (Math.random() - 0.5) * 3,
+                cy + 14 * ts + py * ts + (Math.random() - 0.5) * 3
+              ]);
+            }
+          });
+        });
+
+        return pts;
       }
 
-      runCycle();
-      setInterval(runCycle, CYCLE + 1000);
+      class Particle {
+        constructor(tx, ty) {
+          this.tx = tx;
+          this.ty = ty;
+          this.x = W() * 0.5 + (Math.random() - 0.5) * W();
+          this.y = H() * 0.5 + (Math.random() - 0.5) * H();
+          this.vx = 0;
+          this.vy = 0;
+          this.size = Math.random() * 1.8 + 0.6;
+          this.alpha = 0;
+          this.delay = Math.random() * 60;
+          const r = Math.random();
+          this.color = r < 0.6 ? '#F07A1A' : r < 0.8 ? '#FF9840' : '#ffffff';
+        }
+
+        update(frame) {
+          if (frame < this.delay) return;
+          const dx = this.tx - this.x;
+          const dy = this.ty - this.y;
+          const mdx = this.x - mouse.x;
+          const mdy = this.y - mouse.y;
+          const mdist = Math.sqrt(mdx * mdx + mdy * mdy);
+          const repelR = 90;
+          if (mdist < repelR && mdist > 0) {
+            const force = (repelR - mdist) / repelR;
+            this.vx += (mdx / mdist) * force * 7;
+            this.vy += (mdy / mdist) * force * 7;
+          }
+          this.vx += dx * 0.06;
+          this.vy += dy * 0.06;
+          this.vx *= 0.82;
+          this.vy *= 0.82;
+          this.x += this.vx;
+          this.y += this.vy;
+          if (this.alpha < 1) this.alpha = Math.min(1, this.alpha + 0.035);
+        }
+
+        draw() {
+          ctx.globalAlpha = this.alpha;
+          ctx.fillStyle = this.color;
+          ctx.beginPath();
+          ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+          ctx.fill();
+        }
+      }
+
+      let particles = [];
+      function init() {
+        const cx = W() / 2;
+        const cy = H() / 2;
+        const scale = Math.min(W(), H()) / 320;
+        const pts = getLogoPoints(cx, cy, scale);
+        particles = pts.map(([tx, ty]) => new Particle(tx, ty));
+      }
+
+      let frame = 0;
+      function loop() {
+        ctx.clearRect(0, 0, W(), H());
+
+        const cx = W() / 2;
+        const cy = H() / 2;
+        const grd = ctx.createRadialGradient(cx, cy, 10, cx, cy, 160);
+        grd.addColorStop(0, 'rgba(240,122,26,0.07)');
+        grd.addColorStop(1, 'rgba(0,0,0,0)');
+        ctx.fillStyle = grd;
+        ctx.globalAlpha = 1;
+        ctx.fillRect(0, 0, W(), H());
+
+        if (mouse.x > 0 && mouse.x < W()) {
+          ctx.globalAlpha = 1;
+          ctx.strokeStyle = 'rgba(240,122,26,0.55)';
+          ctx.lineWidth = 1;
+          ctx.beginPath();
+          ctx.arc(mouse.x, mouse.y, 22, 0, Math.PI * 2);
+          ctx.stroke();
+          ctx.strokeStyle = 'rgba(240,122,26,0.18)';
+          ctx.beginPath();
+          ctx.arc(mouse.x, mouse.y, 38, 0, Math.PI * 2);
+          ctx.stroke();
+          ctx.fillStyle = '#F07A1A';
+          ctx.beginPath();
+          ctx.arc(mouse.x, mouse.y, 2.5, 0, Math.PI * 2);
+          ctx.fill();
+        }
+
+        particles.forEach((p) => { p.update(frame); p.draw(); });
+        ctx.globalAlpha = 1;
+        frame++;
+        requestAnimationFrame(loop);
+      }
+
+      init();
+      loop();
     })();
   </script>
 </body>
