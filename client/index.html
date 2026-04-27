@@ -200,11 +200,24 @@
       padding: 3.5rem 3.25rem 4rem 3.75rem;
       position: relative;
       z-index: 2;
+      border-radius: 0;
+      background: transparent;
+      -webkit-backdrop-filter: none;
+      backdrop-filter: none;
+      border: none;
+    }
+
+    .hero-copy {
+      display: inline-block;
+      width: fit-content;
+      max-width: min(560px, 100%);
+      padding: 1.1rem 1.25rem 1.2rem;
       border-radius: 20px;
       background: rgba(255, 255, 255, 0.34);
       -webkit-backdrop-filter: blur(8px);
       backdrop-filter: blur(8px);
       border: 1px solid rgba(255, 255, 255, 0.32);
+      margin-bottom: 1.2rem;
     }
 
     .hero-eyebrow {
@@ -233,7 +246,7 @@
       letter-spacing: 0.02em;
       color: var(--black);
       margin-bottom: 1.5rem;
-      text-shadow: 0 1px 8px rgba(255, 255, 255, 0.32);
+      text-shadow: none;
     }
 
     .hero-title span { color: var(--orange); }
@@ -245,7 +258,7 @@
       color: #1f2937;
       max-width: 420px;
       margin-bottom: 2.5rem;
-      text-shadow: 0 1px 6px rgba(255, 255, 255, 0.34);
+      text-shadow: none;
     }
 
     .hero-actions { display: flex; align-items: center; gap: 16px; flex-wrap: wrap; }
@@ -1644,16 +1657,18 @@
   <div class="hero-shell">
   <section class="hero">
     <div class="hero-left">
-      <div class="hero-eyebrow">3D-друк у Львові</div>
-      <h1 class="hero-title">
-        ДЕТАЛІ<br>
-        ЯКІ<br>
-        <span>ВИРІШУЮТЬ</span>
-      </h1>
-      <p class="hero-sub">
-        3D-друковані вироби для ремонту, творчості та прототипів.
-        Готові рішення — або під ваше замовлення.
-      </p>
+      <div class="hero-copy">
+        <div class="hero-eyebrow">3D-друк у Львові</div>
+        <h1 class="hero-title">
+          ДЕТАЛІ<br>
+          ЯКІ<br>
+          <span>ВИРІШУЮТЬ</span>
+        </h1>
+        <p class="hero-sub">
+          3D-друковані вироби для ремонту, творчості та прототипів.
+          Готові рішення — або під ваше замовлення.
+        </p>
+      </div>
       <div class="hero-actions">
         <a href="catalog.html" class="btn-primary">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
