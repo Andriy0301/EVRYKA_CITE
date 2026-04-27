@@ -25,6 +25,7 @@ async function loadProduct() {
     }
 
     renderGallery(product);
+    renderReviews(product);
     renderSimilarProducts(product, products);
     renderDiscoverProducts(product, products);
     setupProductFavorite(product);
@@ -202,10 +203,18 @@ function renderSimilarProductCards(container, items) {
       <img src="${API_URL}${p.images?.[0] || ""}" alt="${p.name}">
       <h4>${p.name}</h4>
       <p>${p.price} грн</p>
+      <button type="button" class="similar-review-btn">Відгуки</button>
     `;
     card.addEventListener("click", () => {
       window.location.href = `product.html?id=${p.id}`;
     });
+    const reviewBtn = card.querySelector(".similar-review-btn");
+    if (reviewBtn) {
+      reviewBtn.addEventListener("click", (event) => {
+        event.stopPropagation();
+        window.location.href = `product.html?id=${p.id}#reviews`;
+      });
+    }
     container.appendChild(card);
   });
 }
@@ -237,6 +246,55 @@ function bindSimilarRailScroll(container, prevBtn, nextBtn) {
   container.addEventListener("scroll", updateArrowState, { passive: true });
   window.addEventListener("resize", updateArrowState);
   setTimeout(updateArrowState, 0);
+}
+
+function escapeHtml(value) {
+  return String(value ?? "")
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;")
+    .replaceAll('"', "&quot;")
+    .replaceAll("'", "&#39;");
+}
+
+function renderStars(rating) {
+  const safeRating = Math.max(1, Math.min(5, Number(rating) || 5));
+  return "★".repeat(safeRating) + "☆".repeat(5 - safeRating);
+}
+
+function renderReviews(product) {
+  const list = document.getElementById("reviewsList");
+  if (!list) return;
+
+  const reviews = Array.isArray(product?.reviews) ? product.reviews : [];
+  if (!reviews.length) {
+    list.innerHTML = `
+      <article class="review-card review-card--empty">
+        <p class="review-empty-title">Поки що немає відгуків</p>
+        <p class="review-empty-text">Станьте першим, хто поділиться враженнями про цей товар.</p>
+      </article>
+    `;
+    return;
+  }
+
+  list.innerHTML = reviews
+    .map((review) => {
+      const author = escapeHtml(review?.author || "Покупець");
+      const text = escapeHtml(review?.text || "");
+      const date = escapeHtml(review?.date || "");
+      const stars = renderStars(review?.rating);
+      return `
+        <article class="review-card">
+          <div class="review-head">
+            <strong class="review-author">${author}</strong>
+            <span class="review-rating" aria-label="Оцінка ${stars}">${stars}</span>
+          </div>
+          ${date ? `<div class="review-date">${date}</div>` : ""}
+          <p class="review-text">${text}</p>
+        </article>
+      `;
+    })
+    .join("");
 }
 
 function renderSimilarProducts(currentProduct, allProducts) {

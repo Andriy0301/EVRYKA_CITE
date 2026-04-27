@@ -1722,6 +1722,26 @@ body.cart-open .header .cart {
   color: var(--ev-price);
 }
 
+.similar-review-btn {
+  margin-top: 10px;
+  width: 100%;
+  border: 1px solid rgba(var(--ev-rgb), 0.2);
+  border-radius: 10px;
+  background: var(--ev-surface);
+  color: var(--ev-ink);
+  font-size: 13px;
+  font-weight: 600;
+  padding: 8px 10px;
+  cursor: pointer;
+  transition: border-color 0.2s ease, transform 0.2s ease, background 0.2s ease;
+}
+
+.similar-review-btn:hover {
+  border-color: rgba(var(--ev-rgb), 0.38);
+  background: rgba(var(--ev-rgb), 0.05);
+  transform: translateY(-1px);
+}
+
 .price-row {
   display: flex;
   justify-content: space-between;
@@ -6495,6 +6515,86 @@ body.evryka-site.page-print3d {
   border: 1px solid var(--ev-p-line-soft);
   box-shadow: var(--ev-p-shadow-sm);
   overflow: visible;
+}
+
+.page-product .reviews-section {
+  margin-top: var(--ev-stack-outer, clamp(0px, 0.65vw, 10px));
+  padding: clamp(22px, 3vw, 32px) clamp(16px, 2.4vw, 28px) calc(var(--product-rhythm) + 10px);
+  background: var(--ev-p-card);
+  border-radius: clamp(18px, 2.3vw, 26px);
+  border: 1px solid var(--ev-p-line-soft);
+  box-shadow: var(--ev-p-shadow-sm);
+}
+
+.page-product .reviews-section h3 {
+  font-family: var(--ev-font, "Inter", system-ui, sans-serif);
+  font-size: clamp(22px, 2.8vw, 30px);
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  line-height: 1.2;
+  color: var(--ev-p-ink);
+  margin: 0 0 clamp(14px, 2vw, 20px);
+}
+
+.reviews-list {
+  display: grid;
+  gap: 12px;
+}
+
+.review-card {
+  border: 1px solid var(--ev-p-line-soft);
+  border-radius: 12px;
+  padding: 12px 14px;
+  background: var(--ev-surface);
+}
+
+.review-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.review-author {
+  font-size: 14px;
+  color: var(--ev-p-ink);
+}
+
+.review-rating {
+  color: #f5a524;
+  font-size: 14px;
+  letter-spacing: 0.04em;
+}
+
+.review-date {
+  margin-top: 4px;
+  font-size: 12px;
+  color: var(--ev-sub);
+}
+
+.review-text {
+  margin: 8px 0 0;
+  font-size: 14px;
+  line-height: 1.5;
+  color: var(--ev-ink);
+}
+
+.review-card--empty {
+  text-align: center;
+  padding: 18px 14px;
+}
+
+.review-empty-title {
+  margin: 0;
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--ev-p-ink);
+}
+
+.review-empty-text {
+  margin: 6px 0 0;
+  font-size: 14px;
+  color: var(--ev-sub);
 }
 
 /* Другий блок ряду — додатковий зазор між картками (перебиває margin-top вище) */
