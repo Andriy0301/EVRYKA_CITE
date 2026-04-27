@@ -1,9 +1,9 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="uk">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Адмін - Замовлення</title>
+  <title>????? - ??????????</title>
   <link rel="icon" href="images/favicon.png" type="image/png">
   <link rel="apple-touch-icon" href="images/favicon.png">
   <link rel="stylesheet" href="css/style.css">
@@ -11,45 +11,45 @@
 <body>
   <main class="admin-orders-wrap">
     <section class="products cabinet-card">
-      <h2>Усі замовлення</h2>
-      <label>Адмін-ключ
-        <input id="adminKeyInput" type="password" placeholder="Введіть ключ доступу">
+      <h2>??? ??????????</h2>
+      <label>?????-????
+        <input id="adminKeyInput" type="password" placeholder="??????? ???? ???????">
       </label>
-      <label>Фільтр замовлень
+      <label>?????? ?????????
         <select id="adminOrderFilter">
-          <option value="all">Усі</option>
-          <option value="awaiting_long">Довго очікують на видачу</option>
-          <option value="picked_up">Отримані клієнтом</option>
-          <option value="without_ttn">Без ТТН</option>
+          <option value="all">???</option>
+          <option value="awaiting_long">????? ???????? ?? ??????</option>
+          <option value="picked_up">???????? ????????</option>
+          <option value="without_ttn">??? ???</option>
         </select>
       </label>
       <div class="cabinet-actions-row">
-        <button id="loadOrdersBtn" type="button" class="checkout-btn">Завантажити замовлення</button>
-        <button id="syncStatusesBtn" type="button" class="checkout-btn">Синхронізувати статуси</button>
+        <button id="loadOrdersBtn" type="button" class="checkout-btn">??????????? ??????????</button>
+        <button id="syncStatusesBtn" type="button" class="checkout-btn">?????????????? ???????</button>
       </div>
       <p id="adminOrdersMessage" class="auth-message"></p>
     </section>
 
     <section class="products cabinet-card">
-      <h3>Перевірка ТТН</h3>
-      <label>Введіть ТТН
-        <input id="adminTtnInput" type="text" placeholder="Наприклад: 20450300662920">
+      <h3>????????? ???</h3>
+      <label>??????? ???
+        <input id="adminTtnInput" type="text" placeholder="?????????: 20450300662920">
       </label>
       <div class="cabinet-actions-row">
-        <button id="checkTtnBtn" type="button" class="checkout-btn">Перевірити статус ТТН</button>
+        <button id="checkTtnBtn" type="button" class="checkout-btn">?????????? ?????? ???</button>
       </div>
       <p id="adminTtnStatusResult" class="auth-message"></p>
     </section>
 
     <section id="adminOrdersList"></section>
     <section class="products cabinet-card">
-      <h3>CRM-події</h3>
-      <label>Фільтр CRM-подій
+      <h3>CRM-?????</h3>
+      <label>?????? CRM-?????
         <select id="adminCrmFilter">
-          <option value="all">Усі</option>
-          <option value="in_progress">В роботі</option>
-          <option value="reminded">Нагадано</option>
-          <option value="closed">Закрито</option>
+          <option value="all">???</option>
+          <option value="in_progress">? ??????</option>
+          <option value="reminded">????????</option>
+          <option value="closed">???????</option>
         </select>
       </label>
       <div id="adminCrmEvents"></div>
