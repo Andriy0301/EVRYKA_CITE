@@ -416,6 +416,322 @@ a:hover {
   }
 }
 
+/* Shared homepage footer layout for all pages */
+footer > .footer-grid {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr 1fr;
+  gap: 3rem;
+  padding-bottom: 3rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  margin-bottom: 2rem;
+}
+
+.footer-logo {
+  font-family: var(--font-display);
+  font-size: 32px;
+  letter-spacing: 0.12em;
+  color: #fff;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 1rem;
+}
+
+.footer-brand-img {
+  width: 150px;
+  height: auto;
+  display: block;
+  background: #fff;
+  border-radius: 10px;
+  padding: 8px 10px;
+}
+
+.footer-desc {
+  font-size: 13px;
+  line-height: 1.7;
+  color: rgba(255, 255, 255, 0.4);
+  margin-bottom: 1.5rem;
+}
+
+.footer-contacts {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.footer-contact {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  color: rgba(255, 255, 255, 0.5);
+  text-decoration: none;
+  transition: color 0.2s;
+}
+
+.footer-contact:hover {
+  color: var(--orange);
+}
+
+.footer-col-title {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.3);
+  margin-bottom: 1rem;
+}
+
+.footer-links {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.footer-link {
+  font-size: 13px;
+  color: rgba(255, 255, 255, 0.5);
+  text-decoration: none;
+  transition: color 0.2s;
+}
+
+.footer-link:hover {
+  color: #fff;
+}
+
+footer .footer-bottom {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.footer-copy {
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.25);
+}
+
+.footer-payments {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.payment-badge {
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 6px;
+  padding: 4px 10px;
+  font-size: 11px;
+  font-weight: 700;
+  color: rgba(255, 255, 255, 0.4);
+  letter-spacing: 0.04em;
+}
+
+@media (max-width: 1024px) {
+  footer > .footer-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+@media (max-width: 768px) {
+  footer > .footer-grid {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+}
+
+/* =========================================================
+   Global micro-interactions (all pages)
+   ========================================================= */
+@keyframes evSoftFloat {
+  0% { transform: translateY(0); }
+  100% { transform: translateY(-2px); }
+}
+
+@keyframes evIconPulse {
+  0% { transform: scale(1); }
+  55% { transform: scale(1.08); }
+  100% { transform: scale(1); }
+}
+
+@keyframes evUnderlineSlide {
+  0% { transform: scaleX(0); opacity: 0.45; }
+  100% { transform: scaleX(1); opacity: 1; }
+}
+
+.btn-primary,
+.btn-ghost,
+.checkout-btn,
+.clear-btn,
+.add-btn,
+.catalog-add-btn,
+.back-btn,
+.cabinet-nav-btn,
+.auth-submit-btn,
+.auth-link-btn,
+.chat-widget-send,
+.print3d-btn-primary {
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.24s ease,
+    filter 0.2s ease,
+    background-color 0.2s ease,
+    border-color 0.2s ease,
+    color 0.2s ease;
+}
+
+.btn-primary:hover,
+.btn-ghost:hover,
+.checkout-btn:hover,
+.clear-btn:hover,
+.add-btn:hover,
+.catalog-add-btn:hover,
+.back-btn:hover,
+.cabinet-nav-btn:hover,
+.auth-submit-btn:hover,
+.auth-link-btn:hover,
+.chat-widget-send:hover,
+.print3d-btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 24px rgba(17, 17, 16, 0.14);
+}
+
+.product-card,
+.catalog-product-card,
+.cat-card,
+.testimonial-card,
+.how-item,
+.print-step,
+.cabinet-card {
+  transition:
+    transform 0.26s cubic-bezier(0.22, 1, 0.36, 1),
+    box-shadow 0.26s ease,
+    border-color 0.22s ease;
+}
+
+.product-card:hover,
+.catalog-product-card:hover,
+.cat-card:hover,
+.testimonial-card:hover,
+.how-item:hover,
+.print-step:hover,
+.cabinet-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 14px 30px rgba(17, 17, 16, 0.12);
+}
+
+.product-img-wrap img,
+.catalog-product-img-wrap img,
+.hero-product-img img,
+.footer-brand-img {
+  transition: transform 0.35s ease, filter 0.3s ease;
+}
+
+.product-card:hover .product-img-wrap img,
+.catalog-product-card:hover .catalog-product-img-wrap img,
+.hero-product-img:hover img {
+  transform: scale(1.03);
+  filter: saturate(1.06);
+}
+
+.auth-icon-btn,
+.product-fav,
+.catalog-product-fav,
+.chat-widget-toggle,
+.scroll-to-top-btn {
+  transition: transform 0.2s ease, filter 0.2s ease, box-shadow 0.2s ease;
+}
+
+.auth-icon-btn:hover,
+.product-fav:hover,
+.catalog-product-fav:hover,
+.chat-widget-toggle:hover,
+.scroll-to-top-btn:hover {
+  animation: evIconPulse 0.28s ease;
+  filter: brightness(1.05);
+}
+
+.footer-link,
+.section-link,
+.nav a,
+.header-nav a,
+.breadcrumbs a {
+  position: relative;
+  transition: color 0.2s ease;
+}
+
+.footer-link::after,
+.section-link::after,
+.nav a::after,
+.header-nav a::after,
+.breadcrumbs a::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -2px;
+  width: 100%;
+  height: 2px;
+  background: currentColor;
+  transform: scaleX(0);
+  transform-origin: left;
+  opacity: 0;
+}
+
+.footer-link:hover::after,
+.section-link:hover::after,
+.nav a:hover::after,
+.header-nav a:hover::after,
+.breadcrumbs a:hover::after {
+  animation: evUnderlineSlide 0.24s ease forwards;
+}
+
+input,
+textarea,
+select,
+.catalog-select-trigger {
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease,
+    background-color 0.2s ease,
+    transform 0.18s ease;
+}
+
+input:hover,
+textarea:hover,
+select:hover,
+.catalog-select-trigger:hover {
+  transform: translateY(-1px);
+}
+
+input:focus,
+textarea:focus,
+select:focus,
+.catalog-select-trigger:focus,
+.catalog-select-trigger:focus-visible {
+  box-shadow: 0 0 0 3px rgba(240, 122, 26, 0.18);
+}
+
+@media (hover: hover) {
+  .trust-item:hover,
+  .payment-badge:hover,
+  .footer-contact:hover {
+    animation: evSoftFloat 0.2s ease forwards;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation: none !important;
+    transition: none !important;
+    scroll-behavior: auto !important;
+  }
+}
+
 /* 🔥 items — скрол у межах панелі кошика / обраних */
 #cartItems,
 #favoritesItems {
