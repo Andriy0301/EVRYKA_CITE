@@ -147,7 +147,7 @@
         var(--ev-stack-outer, clamp(0px, 0.65vw, 10px)) + env(safe-area-inset-right, 0px)
       );
       margin-top: var(--ev-stack-outer, clamp(0px, 0.65vw, 10px));
-      margin-bottom: 0;
+      margin-bottom: 12px;
       border-radius: var(--shell-radius);
       overflow: hidden;
       background: #FFFFFF;
@@ -300,6 +300,9 @@
       position: relative;
       overflow: hidden;
       background: var(--dark);
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
 
     .hero-right::before {
@@ -446,6 +449,400 @@
       animation: float 3.5s ease-in-out infinite 1s;
     }
 
+    .printer-wrap {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 20px;
+      padding: 20px;
+      z-index: 2;
+      position: relative;
+    }
+
+    .printer-box {
+      position: relative;
+      width: 280px;
+      height: 300px;
+    }
+
+    .p-pole {
+      position: absolute;
+      width: 8px;
+      top: 20px;
+      bottom: 44px;
+      background: #2A2926;
+      border-radius: 4px;
+    }
+
+    .p-pole-left { left: 20px; }
+    .p-pole-right { right: 20px; }
+
+    .p-rail-top {
+      position: absolute;
+      top: 18px;
+      left: 16px;
+      right: 16px;
+      height: 12px;
+      background: linear-gradient(to bottom, #3A3835, #232220);
+      border-radius: 4px;
+    }
+
+    .p-head-rod {
+      position: absolute;
+      top: 30px;
+      left: 24px;
+      right: 24px;
+      height: 6px;
+      background: #333;
+      border-radius: 3px;
+    }
+
+    .p-head {
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+      transition: top 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+      top: -8px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .p-head-body {
+      background: #3A3835;
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 6px;
+      width: 60px;
+      height: 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 8px;
+    }
+
+    .p-fan {
+      width: 14px;
+      height: 14px;
+      border: 2px solid rgba(255,255,255,0.12);
+      border-radius: 50%;
+      position: relative;
+    }
+
+    .p-fan::after {
+      content: '';
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      width: 2px;
+      height: 8px;
+      background: rgba(255,255,255,0.15);
+      transform: translate(-50%, -50%);
+      transform-origin: center;
+      animation: fanSpin 0.4s linear infinite;
+    }
+
+    @keyframes fanSpin {
+      to { transform: translate(-50%, -50%) rotate(360deg); }
+    }
+
+    .p-light {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: #F07A1A;
+      box-shadow: 0 0 6px #F07A1A;
+      animation: blink 1.2s ease-in-out infinite;
+    }
+
+    @keyframes blink {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.2; }
+    }
+
+    .p-extruder {
+      width: 14px;
+      background: #2C2B28;
+      border-radius: 0 0 2px 2px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .p-hotend {
+      width: 14px;
+      height: 16px;
+      background: #3A3835;
+      border-radius: 2px;
+    }
+
+    .p-nozzle {
+      width: 0;
+      height: 0;
+      border-left: 5px solid transparent;
+      border-right: 5px solid transparent;
+      border-top: 8px solid #555;
+    }
+
+    .p-glow {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: #F07A1A;
+      box-shadow: 0 0 12px 4px rgba(240,122,26,0.6);
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+
+    .p-glow.active { opacity: 1; }
+
+    .p-drip {
+      width: 2px;
+      background: linear-gradient(to bottom, #F07A1A, transparent);
+      height: 0;
+      transition: height 0.5s ease;
+      margin-top: 2px;
+    }
+
+    .p-bed {
+      position: absolute;
+      bottom: 40px;
+      left: 28px;
+      right: 28px;
+      height: 10px;
+      background: linear-gradient(to bottom, #2A2926, #1E1D1B);
+      border-radius: 3px;
+    }
+
+    .p-bed::before,
+    .p-bed::after {
+      content: '';
+      position: absolute;
+      width: 6px;
+      height: 10px;
+      background: #1A1917;
+      bottom: -10px;
+    }
+
+    .p-bed::before { left: 12px; }
+    .p-bed::after { right: 12px; }
+
+    .p-bed-lines {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      height: 100%;
+      padding: 0 6px;
+    }
+
+    .p-bed-lines span {
+      width: 1px;
+      height: 6px;
+      background: rgba(255,255,255,0.15);
+    }
+
+    .p-layers {
+      position: absolute;
+      bottom: 50px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      flex-direction: column-reverse;
+      align-items: center;
+      gap: 1px;
+      width: 120px;
+    }
+
+    .p-layer {
+      height: 5px;
+      border-radius: 2px;
+      opacity: 0;
+      transform: scaleX(0);
+      transition: opacity 0.4s, transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    .p-layer.show {
+      opacity: 1;
+      transform: scaleX(1);
+    }
+
+    .p-spool {
+      position: absolute;
+      top: 50px;
+      right: -14px;
+      width: 52px;
+      height: 52px;
+      border-radius: 50%;
+      background: #232220;
+      border: 2px solid rgba(255,255,255,0.06);
+      animation: spoolSpin 4s linear infinite;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .p-spool::before {
+      content: '';
+      position: absolute;
+      inset: 5px;
+      border-radius: 50%;
+      border: 2px solid transparent;
+      border-top-color: #F07A1A;
+      border-right-color: #F07A1A;
+      opacity: 0.7;
+    }
+
+    .p-spool-inner {
+      width: 34px;
+      height: 34px;
+      border-radius: 50%;
+      background: #1A1917;
+      animation: spoolSpin 4s linear infinite reverse;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+    }
+
+    .p-spool-core {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background: #2A2926;
+    }
+
+    .p-spool-label {
+      font-size: 6px;
+      color: rgba(255,255,255,0.3);
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      letter-spacing: 0.1em;
+    }
+
+    @keyframes spoolSpin {
+      to { transform: rotate(360deg); }
+    }
+
+    .p-screen {
+      position: absolute;
+      top: 60px;
+      left: -14px;
+      width: 46px;
+      background: #091220;
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 5px;
+      padding: 6px 5px;
+      font-family: monospace;
+    }
+
+    .p-screen-title {
+      font-size: 7px;
+      color: #22C55E;
+      font-weight: 700;
+      text-align: center;
+      letter-spacing: 1px;
+    }
+
+    .p-screen-bar {
+      height: 3px;
+      background: #0F2040;
+      border-radius: 2px;
+      overflow: hidden;
+      margin-top: 3px;
+    }
+
+    .p-screen-fill {
+      height: 100%;
+      background: #22C55E;
+      transition: width 0.5s;
+      width: 0;
+    }
+
+    .p-screen-pct {
+      font-size: 6px;
+      color: rgba(34,197,94,0.6);
+      text-align: center;
+      margin-top: 3px;
+    }
+
+    .p-particle {
+      position: absolute;
+      border-radius: 50%;
+      background: #F07A1A;
+      animation: particleFly 1s ease-out forwards;
+    }
+
+    @keyframes particleFly {
+      0% { opacity: 1; transform: translate(0, 0) scale(1); }
+      100% { opacity: 0; transform: var(--tx) scale(0); }
+    }
+
+    .printer-status-card {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 14px;
+      padding: 12px 18px;
+      width: 280px;
+      backdrop-filter: blur(8px);
+    }
+
+    .psc-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: #22C55E;
+      box-shadow: 0 0 8px #22C55E;
+      animation: pulseDot 1.2s ease-in-out infinite;
+      flex-shrink: 0;
+    }
+
+    @keyframes pulseDot {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.4; transform: scale(0.75); }
+    }
+
+    .psc-text {
+      min-width: 0;
+      flex: 1;
+    }
+
+    .psc-label {
+      font-size: 10px;
+      color: rgba(255,255,255,0.3);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+
+    .psc-val {
+      font-size: 13px;
+      color: rgba(255,255,255,0.85);
+      font-weight: 600;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .psc-progress-wrap {
+      width: 44px;
+      height: 4px;
+      background: rgba(255,255,255,0.08);
+      border-radius: 2px;
+      overflow: hidden;
+      flex-shrink: 0;
+    }
+
+    .psc-progress-bar {
+      height: 100%;
+      background: #F07A1A;
+      border-radius: 2px;
+      width: 0%;
+      transition: width 0.5s;
+    }
+
     .badge-dot {
       width: 8px; height: 8px;
       border-radius: 50%;
@@ -455,6 +852,7 @@
     /* ── TRUST BAR ── */
     .trust-bar {
       background: var(--dark);
+      margin: 0 5rem;
       padding: 1.25rem 5rem;
       display: flex;
       align-items: center;
@@ -1092,7 +1490,7 @@
       }
       .section, .section-sm { padding: 4rem 1.5rem; }
       .hero-left { padding: 3rem 1.5rem; }
-      .trust-bar { padding: 1.25rem 1.5rem; gap: 1.5rem; }
+      .trust-bar { margin: 0 1.5rem; padding: 1.25rem 1.5rem; gap: 1.5rem; }
       .trust-divider { display: none; }
       header:not(.header) nav { display: none; }
       header:not(.header) .burger { display: flex; }
@@ -1191,35 +1589,65 @@
 
     <div class="hero-right">
       <div class="hero-grid-pattern"></div>
-      <div class="hero-img-container">
-        <!-- Floating badges -->
-        <div class="hero-floating-badge badge-1">
-          <div class="badge-dot"></div>
-          Виробляємо у Львові
-        </div>
-        <div class="hero-floating-badge badge-2">
-          ⚡ Замовлення від 1 дня
-        </div>
-
-        <!-- Product card -->
-        <div class="hero-product-card">
-          <div class="hero-product-img">
-            <img
-              id="homeHeroImage"
-              src="images/text_logo.png"
-              alt="Продукт"
-              onerror="this.src='images/text_logo.png'"
-            />
-          </div>
-          <div class="hero-product-info">
-            <div class="hero-product-tag">Популярне</div>
-            <div class="hero-product-name" id="homeHeroName">Шаблон кондуктор для отворів під інсталяцію</div>
-            <div class="hero-product-bottom">
-              <div class="hero-product-price" id="homeHeroPrice">325 <span>грн</span></div>
-              <button class="hero-add-btn" id="homeHeroAddBtn" onclick='addToCart({id: 1, name: "Шаблон кондуктор для отворів під інсталяцію", price: 325, images: ["images/text_logo.png"]})'>
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>
-              </button>
+      <div class="hero-floating-badge badge-1">
+        <div class="badge-dot"></div>
+        Виробляємо у Львові
+      </div>
+      <div class="hero-floating-badge badge-2">
+        ⚡ Замовлення від 1 дня
+      </div>
+      <div class="printer-wrap">
+        <div class="printer-box">
+          <div class="p-rail-top"></div>
+          <div class="p-pole p-pole-left"></div>
+          <div class="p-pole p-pole-right"></div>
+          <div class="p-head-rod">
+            <div class="p-head" id="pHead">
+              <div class="p-head-body">
+                <div class="p-fan"></div>
+                <div class="p-light"></div>
+              </div>
+              <div class="p-extruder">
+                <div class="p-hotend"></div>
+                <div class="p-nozzle"></div>
+                <div class="p-glow" id="pGlow"></div>
+              </div>
+              <div class="p-drip" id="pDrip"></div>
             </div>
+          </div>
+          <div class="p-bed">
+            <div class="p-bed-lines">
+              <span></span>
+              <span></span>
+              <span></span>
+              <span></span>
+              <span></span>
+            </div>
+          </div>
+          <div class="p-layers" id="pLayers"></div>
+          <div class="p-spool">
+            <div class="p-spool-inner">
+              <div class="p-spool-core"></div>
+              <div class="p-spool-label">PLA</div>
+            </div>
+          </div>
+          <div class="p-screen" id="pScreen">
+            <div class="p-screen-title" id="pScreenTitle">ДРУК</div>
+            <div class="p-screen-bar">
+              <div class="p-screen-fill" id="pScreenFill"></div>
+            </div>
+            <div class="p-screen-pct" id="pScreenPct">0%</div>
+          </div>
+          <div class="p-particles" id="pParticles"></div>
+        </div>
+        <div class="printer-status-card">
+          <div class="psc-dot" id="pscDot"></div>
+          <div class="psc-text">
+            <div class="psc-label">Статус</div>
+            <div class="psc-val" id="printerStatus">Підготовка до друку...</div>
+          </div>
+          <div class="psc-progress-wrap">
+            <div class="psc-progress-bar" id="printerBar"></div>
           </div>
         </div>
       </div>
@@ -1831,5 +2259,137 @@
   <script src="js/header-nav.js?v=20260420-32"></script>
   <script src="js/app.js?v=20260420-4"></script>
   <script src="js/chat-widget.js?v=20260409"></script>
+  <script>
+    (function() {
+      const LAYERS = 7;
+      const CYCLE = 7000;
+      const LAYER_COLORS = ['#F07A1A', '#E8701A', '#D86010', '#C85000', '#B84800', '#A84000', '#983800'];
+      const STATUSES = [
+        { txt: 'Підготовка до друку...', pct: 0 },
+        { txt: 'Друкую шар 1/7...', pct: 14 },
+        { txt: 'Друкую шар 2/7...', pct: 28 },
+        { txt: 'Друкую шар 3/7...', pct: 42 },
+        { txt: 'Друкую шар 4/7...', pct: 57 },
+        { txt: 'Друкую шар 5/7...', pct: 71 },
+        { txt: 'Друкую шар 6/7...', pct: 85 },
+        { txt: 'Друкую шар 7/7...', pct: 100 },
+        { txt: '✓ Готово! EVRYKA', pct: 100 }
+      ];
+
+      const layersEl = document.getElementById('pLayers');
+      const headEl = document.getElementById('pHead');
+      const glowEl = document.getElementById('pGlow');
+      const dripEl = document.getElementById('pDrip');
+      const screenFill = document.getElementById('pScreenFill');
+      const screenPct = document.getElementById('pScreenPct');
+      const screenTitle = document.getElementById('pScreenTitle');
+      const statusEl = document.getElementById('printerStatus');
+      const barEl = document.getElementById('printerBar');
+      const pscDot = document.getElementById('pscDot');
+      const particles = document.getElementById('pParticles');
+
+      if (!layersEl || !headEl) return;
+
+      const layerEls = [];
+      for (let i = 0; i < LAYERS; i++) {
+        const el = document.createElement('div');
+        el.className = 'p-layer';
+        const w = 120 - i * 10;
+        el.style.cssText = `width:${w}px; background:${LAYER_COLORS[i]};`;
+        layersEl.appendChild(el);
+        layerEls.push(el);
+      }
+
+      const ROD_TOP_IN_BOX = 30;
+      const HEAD_START = -8;
+      const BED_FROM_TOP = 250;
+      const LAYER_H = 6;
+
+      function getHeadTopForLayer(i) {
+        const nozzleOffset = 48;
+        const layerTop = BED_FROM_TOP - (i + 1) * LAYER_H;
+        return (layerTop - nozzleOffset) - ROD_TOP_IN_BOX;
+      }
+
+      let particleInterval = null;
+
+      function spawnParticle() {
+        if (!particles) return;
+        const p = document.createElement('div');
+        p.className = 'p-particle';
+        const size = Math.random() * 4 + 2;
+        const angle = Math.random() * 360;
+        const dist = Math.random() * 30 + 10;
+        const tx = Math.cos(angle * Math.PI / 180) * dist;
+        const ty = Math.sin(angle * Math.PI / 180) * dist - 20;
+        const headTop = parseInt(headEl.style.top) || 0;
+        const nozzleY = ROD_TOP_IN_BOX + headTop + 48;
+        p.style.cssText = `width:${size}px;height:${size}px;left:128px;top:${nozzleY}px;--tx:translate(${tx}px,${ty}px);animation-duration:${Math.random() * 0.5 + 0.6}s;`;
+        particles.appendChild(p);
+        setTimeout(() => p.remove(), 1100);
+      }
+
+      function updateStatus(idx) {
+        const s = STATUSES[Math.min(idx, STATUSES.length - 1)];
+        if (statusEl) statusEl.textContent = s.txt;
+        if (barEl) barEl.style.width = s.pct + '%';
+        if (screenFill) screenFill.style.width = s.pct + '%';
+        if (screenPct) screenPct.textContent = s.pct + '%';
+        const done = s.pct === 100;
+        if (pscDot) {
+          pscDot.style.background = done ? '#F07A1A' : '#22C55E';
+          pscDot.style.boxShadow = done ? '0 0 8px #F07A1A' : '0 0 8px #22C55E';
+        }
+        if (screenTitle) screenTitle.textContent = done ? 'ГОТОВО' : 'ДРУК';
+      }
+
+      function resetPrinter() {
+        layerEls.forEach((el) => el.classList.remove('show'));
+        headEl.style.top = HEAD_START + 'px';
+        if (glowEl) glowEl.classList.remove('active');
+        if (dripEl) dripEl.style.height = '0px';
+        if (particleInterval) {
+          clearInterval(particleInterval);
+          particleInterval = null;
+        }
+        updateStatus(0);
+      }
+
+      function printLayer(i) {
+        const targetTop = getHeadTopForLayer(i);
+        headEl.style.top = Math.max(HEAD_START, targetTop) + 'px';
+        if (glowEl) glowEl.classList.add('active');
+        const nozzleY = ROD_TOP_IN_BOX + Math.max(HEAD_START, targetTop) + 48;
+        const bedTop = BED_FROM_TOP - i * LAYER_H;
+        if (dripEl) dripEl.style.height = Math.min(Math.max(0, bedTop - nozzleY), 80) + 'px';
+        if (particleInterval) clearInterval(particleInterval);
+        particleInterval = setInterval(spawnParticle, 120);
+        setTimeout(() => {
+          if (layerEls[i]) layerEls[i].classList.add('show');
+          clearInterval(particleInterval);
+          particleInterval = null;
+        }, 400);
+        updateStatus(i + 1);
+      }
+
+      function runCycle() {
+        resetPrinter();
+        const step = CYCLE / (LAYERS + 3);
+        setTimeout(() => {
+          for (let i = 0; i < LAYERS; i++) {
+            setTimeout(() => printLayer(i), i * step);
+          }
+          setTimeout(() => {
+            if (glowEl) glowEl.classList.remove('active');
+            if (dripEl) dripEl.style.height = '0px';
+            updateStatus(LAYERS + 1);
+          }, LAYERS * step + 300);
+        }, 500);
+      }
+
+      runCycle();
+      setInterval(runCycle, CYCLE + 1000);
+    })();
+  </script>
 </body>
 </html>
