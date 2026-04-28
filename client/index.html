@@ -1710,8 +1710,9 @@
 
     @media (max-width: 480px) {
       .section:first-of-type {
-        padding-left: 10px;
-        padding-right: 10px;
+        --cats-gap: 10px;
+        padding-left: var(--cats-gap);
+        padding-right: var(--cats-gap);
       }
 
       .hero-shell {
@@ -1752,6 +1753,33 @@
         gap: 5px;
       }
 
+      /* Absolute mobile override for hero buttons */
+      .hero .hero-left .hero-actions .btn-primary,
+      .hero .hero-left .hero-actions .btn-ghost {
+        width: 100% !important;
+        max-width: 100% !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        box-sizing: border-box !important;
+        font-size: 10px !important;
+        line-height: 1.2 !important;
+        letter-spacing: 0 !important;
+        padding: 7px 4px !important;
+        min-height: 34px !important;
+        white-space: normal !important;
+        overflow-wrap: anywhere !important;
+        word-break: break-word !important;
+        text-align: center !important;
+        gap: 4px !important;
+      }
+
+      .hero .hero-left .hero-actions .btn-primary svg {
+        width: 14px !important;
+        height: 14px !important;
+        flex-shrink: 0;
+      }
+
       .stat-num {
         font-size: clamp(20px, 6.8vw, 28px);
       }
@@ -1762,7 +1790,8 @@
 
       .cat-grid {
         grid-template-columns: repeat(2, minmax(0, 1fr));
-        gap: 10px;
+        column-gap: var(--cats-gap);
+        row-gap: var(--cats-gap);
         margin: 0;
         width: 100%;
       }
@@ -1771,7 +1800,7 @@
         min-height: 180px;
       }
       .section:first-of-type .section-header {
-        margin-bottom: 10px;
+        margin-bottom: var(--cats-gap);
       }
       .section, .section-sm { padding: 2.8rem 1rem; }
       .print-cta {

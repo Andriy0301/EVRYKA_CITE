@@ -77,6 +77,32 @@
   }
 }
 
+/* Absolute last spacing lock for mobile catalog cards */
+@media (max-width: 640px) {
+  .page-catalog {
+    --catalog-card-gap: 10px;
+  }
+
+  .page-catalog .catalog-shell {
+    padding-left: var(--catalog-card-gap) !important;
+    padding-right: var(--catalog-card-gap) !important;
+  }
+
+  .page-catalog .catalog-products-head {
+    padding: 0 !important;
+    margin: 0 0 var(--catalog-card-gap) 0 !important;
+  }
+
+  .page-catalog .catalog-products-grid {
+    padding: 0 !important;
+    gap: var(--catalog-card-gap) !important;
+  }
+
+  .page-catalog .catalog-products-grid .product {
+    margin: 0 !important;
+  }
+}
+
 body {
   font-family: var(--ev-font);
   color: var(--ev-ink);

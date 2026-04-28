@@ -27,8 +27,18 @@
 
     if (open) {
       document.body.classList.add(bodyClass);
-      if (overlay) overlay.hidden = false;
+      if (overlay) {
+        overlay.hidden = false;
+        overlay.style.setProperty("display", "block", "important");
+        overlay.style.setProperty("opacity", "1", "important");
+        overlay.style.setProperty("pointer-events", "auto", "important");
+      }
       if (drawer) {
+        drawer.style.setProperty("position", "fixed", "important");
+        drawer.style.setProperty("left", "10px", "important");
+        drawer.style.setProperty("right", "10px", "important");
+        drawer.style.setProperty("bottom", "78px", "important");
+        drawer.style.setProperty("z-index", "1302", "important");
         drawer.style.setProperty("display", displayMode, "important");
         drawer.style.setProperty("opacity", "1", "important");
         drawer.style.setProperty("pointer-events", "auto", "important");
@@ -38,8 +48,18 @@
       return;
     }
     document.body.classList.remove(bodyClass);
-    if (overlay) overlay.hidden = true;
+    if (overlay) {
+      overlay.hidden = true;
+      overlay.style.removeProperty("display");
+      overlay.style.removeProperty("opacity");
+      overlay.style.removeProperty("pointer-events");
+    }
     if (drawer) {
+      drawer.style.removeProperty("position");
+      drawer.style.removeProperty("left");
+      drawer.style.removeProperty("right");
+      drawer.style.removeProperty("bottom");
+      drawer.style.removeProperty("z-index");
       drawer.style.removeProperty("display");
       drawer.style.removeProperty("opacity");
       drawer.style.removeProperty("pointer-events");
