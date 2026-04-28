@@ -107,7 +107,7 @@
       </div>
       <div class="cabinet-page-head">
         <h1 class="cabinet-page-title">��������� ������</h1>
-        <button type="button" class="back-btn cabinet-menu-open-btn neo-drawer-trigger" data-uflyout-trigger id="cabinetMenuOpenBtn" aria-label="³������ ���� �������" onclick="document.body.classList.add('cabinet-menu-open');document.getElementById('cabinetMenuOverlay').hidden=false;">
+        <button type="button" class="back-btn cabinet-menu-open-btn neo-drawer-trigger" data-uflyout-trigger id="cabinetMenuOpenBtn" aria-label="³������ ���� �������" onclick="document.body.classList.add('cabinet-menu-open');document.getElementById('cabinetMenuOverlay').hidden=false;(function(){var d=document.querySelector('.page-cabinet .catalog-filters.cabinet-sidebar[data-uflyout=&quot;panel&quot;]');if(!d)return;d.style.setProperty('display','flex','important');d.style.setProperty('flex-direction','column','important');d.style.setProperty('opacity','1','important');d.style.setProperty('pointer-events','auto','important');d.style.setProperty('transform','translateY(0) scale(1)','important');})();">
           ����
         </button>
       </div>
@@ -115,7 +115,7 @@
         <aside class="catalog-filters cabinet-sidebar neo-drawer neo-drawer--cabinet" data-uflyout="panel" aria-label="���� �������">
           <div class="neo-drawer__title-row">
             <h2 class="catalog-filters-title neo-drawer__title">����</h2>
-            <button type="button" class="cabinet-menu-close neo-drawer__close" data-uflyout-close id="cabinetMenuCloseBtn" aria-label="������� ���� �������" onclick="document.body.classList.remove('cabinet-menu-open');document.getElementById('cabinetMenuOverlay').hidden=true;">?</button>
+            <button type="button" class="cabinet-menu-close neo-drawer__close" data-uflyout-close id="cabinetMenuCloseBtn" aria-label="������� ���� �������" onclick="document.body.classList.remove('cabinet-menu-open');document.getElementById('cabinetMenuOverlay').hidden=true;(function(){var d=document.querySelector('.page-cabinet .catalog-filters.cabinet-sidebar[data-uflyout=&quot;panel&quot;]');if(!d)return;d.style.removeProperty('display');d.style.removeProperty('flex-direction');d.style.removeProperty('opacity');d.style.removeProperty('pointer-events');d.style.removeProperty('transform');})();">?</button>
           </div>
           <button class="cabinet-nav-btn neo-drawer__item active" data-uflyout-item type="button" data-section="personal">������� ���</button>
           <button class="cabinet-nav-btn neo-drawer__item" data-uflyout-item type="button" data-section="orders">�� ����������</button>
@@ -188,7 +188,7 @@
           </div>
         </div>
       </div>
-      <div class="cabinet-menu-overlay neo-drawer-overlay" data-uflyout-overlay id="cabinetMenuOverlay" hidden onclick="document.body.classList.remove('cabinet-menu-open');this.hidden=true;"></div>
+      <div class="cabinet-menu-overlay neo-drawer-overlay" data-uflyout-overlay id="cabinetMenuOverlay" hidden onclick="document.body.classList.remove('cabinet-menu-open');this.hidden=true;(function(){var d=document.querySelector('.page-cabinet .catalog-filters.cabinet-sidebar[data-uflyout=&quot;panel&quot;]');if(!d)return;d.style.removeProperty('display');d.style.removeProperty('flex-direction');d.style.removeProperty('opacity');d.style.removeProperty('pointer-events');d.style.removeProperty('transform');})();"></div>
     </div>
   </main>
 

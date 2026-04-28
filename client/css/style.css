@@ -56,6 +56,27 @@
   --ev-font: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, "PT Sans Caption", sans-serif;
 }
 
+/* ABSOLUTE LAST: catalog grid spacing parity on mobile */
+@media (max-width: 640px) {
+  .page-catalog {
+    --catalog-gap-final: 12px;
+  }
+
+  .page-catalog .catalog-products-head {
+    padding-left: var(--catalog-gap-final) !important;
+    padding-right: var(--catalog-gap-final) !important;
+    margin-bottom: var(--catalog-gap-final) !important;
+  }
+
+  .page-catalog .catalog-products-grid {
+    padding-left: var(--catalog-gap-final) !important;
+    padding-right: var(--catalog-gap-final) !important;
+    padding-top: var(--catalog-gap-final) !important;
+    padding-bottom: var(--catalog-gap-final) !important;
+    gap: var(--catalog-gap-final) !important;
+  }
+}
+
 body {
   font-family: var(--ev-font);
   color: var(--ev-ink);
