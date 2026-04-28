@@ -114,7 +114,7 @@ body {
 
 a {
   color: var(--ev-accent);
-  margin-left: 15px;
+  margin-left: 0;
   text-decoration: none;
 }
 
