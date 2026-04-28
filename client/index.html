@@ -1549,7 +1549,7 @@
     }
 
     @media (max-width: 768px) {
-      .hero-shell::before { opacity: 0.48; }
+      .hero-shell::before { opacity: 1; }
 
       .hero-shell {
         margin-left: calc(var(--ev-stack-outer, 0px) + env(safe-area-inset-left, 0px));
@@ -1570,10 +1570,10 @@
         padding: 0.78rem 0.72rem 0.86rem;
         border-radius: 12px;
         overflow: hidden;
-        background: rgba(255, 255, 255, 0.08);
+        background: transparent;
         -webkit-backdrop-filter: none;
         backdrop-filter: none;
-        border: 1px solid rgba(255, 255, 255, 0.18);
+        border: none;
       }
 
       .hero-eyebrow {
@@ -1601,11 +1601,14 @@
         grid-template-columns: 1fr;
         gap: 9px;
         width: 100%;
+        max-width: 100%;
       }
 
       .hero-actions .btn-primary,
       .hero-actions .btn-ghost {
         width: 100%;
+        max-width: 100%;
+        box-sizing: border-box;
         justify-content: center;
         text-align: center;
         padding: 11px 10px;
@@ -1679,6 +1682,10 @@
       }
 
       .cat-grid { grid-template-columns: 1fr 1fr; gap: 10px; }
+      .cat-card {
+        padding: 1.35rem 1rem;
+        min-height: 186px;
+      }
       .products-grid { grid-template-columns: 1fr; gap: 12px; }
       .how-grid { grid-template-columns: 1fr; }
       .testimonials-grid { grid-template-columns: 1fr; }
@@ -1713,9 +1720,14 @@
 
       .hero-actions .btn-primary,
       .hero-actions .btn-ghost {
-        font-size: 13px;
-        padding: 10px 9px;
-        min-height: 40px;
+        font-size: 12px;
+        padding: 9px 8px;
+        min-height: 38px;
+        width: 100%;
+        max-width: 100%;
+        box-sizing: border-box;
+        letter-spacing: 0.01em;
+        line-height: 1.15;
       }
 
       .stat-num {
@@ -1728,11 +1740,15 @@
 
       .cat-grid {
         grid-template-columns: repeat(2, minmax(0, 1fr));
-        gap: 10px;
+        gap: 12px;
         margin: 0;
       }
+      .cat-card {
+        padding: 1.2rem 0.9rem;
+        min-height: 176px;
+      }
       .section:first-of-type .section-header {
-        margin-bottom: 10px;
+        margin-bottom: 12px;
       }
       .section, .section-sm { padding: 2.8rem 1rem; }
       .print-cta {

@@ -260,12 +260,22 @@ function initCatalogMobileFilterDrawer() {
   const closeDrawer = () => {
     document.body.classList.remove("catalog-filters-open");
     overlay.hidden = true;
+    if (drawer) {
+      drawer.style.display = "";
+      drawer.style.opacity = "";
+      drawer.style.pointerEvents = "";
+      drawer.style.transform = "";
+    }
   };
 
   const openDrawer = () => {
     if (!drawer) return;
     overlay.hidden = false;
     document.body.classList.add("catalog-filters-open");
+    drawer.style.display = "grid";
+    drawer.style.opacity = "1";
+    drawer.style.pointerEvents = "auto";
+    drawer.style.transform = "translateY(0) scale(1)";
   };
 
   openBtn.addEventListener("click", openDrawer);
@@ -295,6 +305,10 @@ function bindCatalogFilterFallback() {
     if (openBtn) {
       overlay.hidden = false;
       document.body.classList.add("catalog-filters-open");
+      drawer.style.display = "grid";
+      drawer.style.opacity = "1";
+      drawer.style.pointerEvents = "auto";
+      drawer.style.transform = "translateY(0) scale(1)";
       return;
     }
     if (closeBtn || overlayHit) {
