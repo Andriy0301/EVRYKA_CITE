@@ -707,11 +707,21 @@ function initCabinetMenuDrawer() {
   const closeDrawer = () => {
     document.body.classList.remove("cabinet-menu-open");
     overlay.hidden = true;
+    sidebar.style.removeProperty("display");
+    sidebar.style.removeProperty("opacity");
+    sidebar.style.removeProperty("pointer-events");
+    sidebar.style.removeProperty("transform");
+    sidebar.style.removeProperty("flex-direction");
   };
 
   const openDrawer = () => {
     overlay.hidden = false;
     document.body.classList.add("cabinet-menu-open");
+    sidebar.style.setProperty("display", "flex", "important");
+    sidebar.style.setProperty("flex-direction", "column", "important");
+    sidebar.style.setProperty("opacity", "1", "important");
+    sidebar.style.setProperty("pointer-events", "auto", "important");
+    sidebar.style.setProperty("transform", "translateY(0) scale(1)", "important");
   };
 
   openBtn.addEventListener("click", openDrawer);
@@ -747,12 +757,22 @@ function bindCabinetMenuFallback() {
     if (openBtn) {
       overlay.hidden = false;
       document.body.classList.add("cabinet-menu-open");
+      sidebar.style.setProperty("display", "flex", "important");
+      sidebar.style.setProperty("flex-direction", "column", "important");
+      sidebar.style.setProperty("opacity", "1", "important");
+      sidebar.style.setProperty("pointer-events", "auto", "important");
+      sidebar.style.setProperty("transform", "translateY(0) scale(1)", "important");
       return;
     }
 
     if (closeBtn || overlayHit || navBtn) {
       document.body.classList.remove("cabinet-menu-open");
       overlay.hidden = true;
+      sidebar.style.removeProperty("display");
+      sidebar.style.removeProperty("opacity");
+      sidebar.style.removeProperty("pointer-events");
+      sidebar.style.removeProperty("transform");
+      sidebar.style.removeProperty("flex-direction");
     }
   });
 }

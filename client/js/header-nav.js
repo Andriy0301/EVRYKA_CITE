@@ -29,22 +29,22 @@
       document.body.classList.add(bodyClass);
       if (overlay) overlay.hidden = false;
       if (drawer) {
-        drawer.style.display = displayMode;
-        drawer.style.opacity = "1";
-        drawer.style.pointerEvents = "auto";
-        drawer.style.transform = "translateY(0) scale(1)";
-        if (displayMode === "flex") drawer.style.flexDirection = "column";
+        drawer.style.setProperty("display", displayMode, "important");
+        drawer.style.setProperty("opacity", "1", "important");
+        drawer.style.setProperty("pointer-events", "auto", "important");
+        drawer.style.setProperty("transform", "translateY(0) scale(1)", "important");
+        if (displayMode === "flex") drawer.style.setProperty("flex-direction", "column", "important");
       }
       return;
     }
     document.body.classList.remove(bodyClass);
     if (overlay) overlay.hidden = true;
     if (drawer) {
-      drawer.style.display = "";
-      drawer.style.opacity = "";
-      drawer.style.pointerEvents = "";
-      drawer.style.transform = "";
-      drawer.style.flexDirection = "";
+      drawer.style.removeProperty("display");
+      drawer.style.removeProperty("opacity");
+      drawer.style.removeProperty("pointer-events");
+      drawer.style.removeProperty("transform");
+      drawer.style.removeProperty("flex-direction");
     }
   }
 

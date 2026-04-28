@@ -1570,20 +1570,20 @@
         padding: 0.78rem 0.72rem 0.86rem;
         border-radius: 12px;
         overflow: hidden;
-        background: transparent;
-        -webkit-backdrop-filter: none;
-        backdrop-filter: none;
-        border: none;
-      }
-
-      /* Soft blur background only behind text block */
-      .hero-copy {
-        padding: 0.56rem 0.56rem 0.6rem;
-        border-radius: 10px;
         background: rgba(255, 255, 255, 0.28);
         -webkit-backdrop-filter: blur(6px);
         backdrop-filter: blur(6px);
         border: 1px solid rgba(255, 255, 255, 0.34);
+      }
+
+      /* Keep inner wrapper transparent; blur lives on whole hero-left block */
+      .hero-copy {
+        padding: 0.56rem 0.56rem 0.6rem;
+        border-radius: 10px;
+        background: transparent;
+        -webkit-backdrop-filter: none;
+        backdrop-filter: none;
+        border: none;
       }
 
       .hero-eyebrow {

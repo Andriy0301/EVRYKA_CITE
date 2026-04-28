@@ -261,10 +261,10 @@ function initCatalogMobileFilterDrawer() {
     document.body.classList.remove("catalog-filters-open");
     overlay.hidden = true;
     if (drawer) {
-      drawer.style.display = "";
-      drawer.style.opacity = "";
-      drawer.style.pointerEvents = "";
-      drawer.style.transform = "";
+      drawer.style.removeProperty("display");
+      drawer.style.removeProperty("opacity");
+      drawer.style.removeProperty("pointer-events");
+      drawer.style.removeProperty("transform");
     }
   };
 
@@ -272,10 +272,10 @@ function initCatalogMobileFilterDrawer() {
     if (!drawer) return;
     overlay.hidden = false;
     document.body.classList.add("catalog-filters-open");
-    drawer.style.display = "grid";
-    drawer.style.opacity = "1";
-    drawer.style.pointerEvents = "auto";
-    drawer.style.transform = "translateY(0) scale(1)";
+    drawer.style.setProperty("display", "grid", "important");
+    drawer.style.setProperty("opacity", "1", "important");
+    drawer.style.setProperty("pointer-events", "auto", "important");
+    drawer.style.setProperty("transform", "translateY(0) scale(1)", "important");
   };
 
   openBtn.addEventListener("click", openDrawer);
@@ -305,10 +305,10 @@ function bindCatalogFilterFallback() {
     if (openBtn) {
       overlay.hidden = false;
       document.body.classList.add("catalog-filters-open");
-      drawer.style.display = "grid";
-      drawer.style.opacity = "1";
-      drawer.style.pointerEvents = "auto";
-      drawer.style.transform = "translateY(0) scale(1)";
+      drawer.style.setProperty("display", "grid", "important");
+      drawer.style.setProperty("opacity", "1", "important");
+      drawer.style.setProperty("pointer-events", "auto", "important");
+      drawer.style.setProperty("transform", "translateY(0) scale(1)", "important");
       return;
     }
     if (closeBtn || overlayHit) {

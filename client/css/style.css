@@ -416,6 +416,24 @@ a:hover {
   }
 }
 
+/* Final lock: catalog mobile spacing equals header side inset */
+@media (max-width: 640px) {
+  .page-catalog {
+    --catalog-mobile-gutter: 12px;
+  }
+
+  .page-catalog .catalog-products-head {
+    padding-left: var(--catalog-mobile-gutter) !important;
+    padding-right: var(--catalog-mobile-gutter) !important;
+    margin-bottom: var(--catalog-mobile-gutter) !important;
+  }
+
+  .page-catalog .catalog-products-grid {
+    padding: var(--catalog-mobile-gutter) !important;
+    gap: var(--catalog-mobile-gutter) !important;
+  }
+}
+
 /* Final mobile catalog grid spacing (edges equal to inner gap) */
 @media (max-width: 640px) {
   .page-catalog .catalog-products-head,
