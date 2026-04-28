@@ -1563,17 +1563,17 @@
       }
 
       .hero-left {
-        width: min(90%, 380px);
-        max-width: 380px;
+        width: min(94%, 390px);
+        max-width: 390px;
         margin-left: auto;
         margin-right: auto;
-        padding: 0.78rem 0.72rem 0.9rem;
+        padding: 0.78rem 0.72rem 0.86rem;
         border-radius: 12px;
         overflow: hidden;
-        background: rgba(255, 255, 255, 0.26);
-        -webkit-backdrop-filter: blur(6px);
-        backdrop-filter: blur(6px);
-        border: 1px solid rgba(255, 255, 255, 0.36);
+        background: rgba(255, 255, 255, 0.08);
+        -webkit-backdrop-filter: none;
+        backdrop-filter: none;
+        border: 1px solid rgba(255, 255, 255, 0.18);
       }
 
       .hero-eyebrow {
@@ -1608,8 +1608,10 @@
         width: 100%;
         justify-content: center;
         text-align: center;
-        padding: 12px 14px;
-        font-size: 15px;
+        padding: 11px 10px;
+        min-height: 42px;
+        font-size: 14px;
+        line-height: 1.2;
         white-space: normal;
       }
 
@@ -1671,6 +1673,11 @@
       .section-header { gap: 10px; align-items: flex-start; }
       .section-link { font-size: 12px; }
 
+      /* Categories block: equal spacing between heading and cards */
+      .section:first-of-type .section-header {
+        margin-bottom: 10px;
+      }
+
       .cat-grid { grid-template-columns: 1fr 1fr; gap: 10px; }
       .products-grid { grid-template-columns: 1fr; gap: 12px; }
       .how-grid { grid-template-columns: 1fr; }
@@ -1688,8 +1695,8 @@
       }
 
       .hero-left {
-        width: min(88%, 330px);
-        max-width: 330px;
+        width: min(94%, 350px);
+        max-width: 350px;
         padding: 0.72rem 0.62rem 0.8rem;
         border-radius: 10px;
       }
@@ -1706,8 +1713,9 @@
 
       .hero-actions .btn-primary,
       .hero-actions .btn-ghost {
-        font-size: 14px;
-        padding: 11px 12px;
+        font-size: 13px;
+        padding: 10px 9px;
+        min-height: 40px;
       }
 
       .stat-num {
@@ -1722,6 +1730,9 @@
         grid-template-columns: repeat(2, minmax(0, 1fr));
         gap: 10px;
         margin: 0;
+      }
+      .section:first-of-type .section-header {
+        margin-bottom: 10px;
       }
       .section, .section-sm { padding: 2.8rem 1rem; }
       .print-cta {

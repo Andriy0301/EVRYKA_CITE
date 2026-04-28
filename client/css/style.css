@@ -416,6 +416,57 @@ a:hover {
   }
 }
 
+/* Final guard: mobile filters/menu visibility and open state */
+@media (max-width: 768px) {
+  .page-catalog #catalogFiltersOpenBtn,
+  .page-cabinet #cabinetMenuOpenBtn,
+  .page-catalog .catalog-filters-open-btn,
+  .page-cabinet .cabinet-menu-open-btn,
+  .page-catalog [data-uflyout-trigger],
+  .page-cabinet [data-uflyout-trigger] {
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    pointer-events: auto !important;
+  }
+
+  .page-catalog .catalog-filters[data-uflyout="panel"],
+  .page-cabinet .catalog-filters.cabinet-sidebar[data-uflyout="panel"] {
+    display: none !important;
+    opacity: 0 !important;
+    pointer-events: none !important;
+  }
+
+  body.catalog-filters-open .page-catalog .catalog-filters[data-uflyout="panel"] {
+    display: grid !important;
+    opacity: 1 !important;
+    pointer-events: auto !important;
+    transform: translateY(0) scale(1) !important;
+  }
+
+  body.cabinet-menu-open .page-cabinet .catalog-filters.cabinet-sidebar[data-uflyout="panel"] {
+    display: flex !important;
+    flex-direction: column !important;
+    opacity: 1 !important;
+    pointer-events: auto !important;
+    transform: translateY(0) scale(1) !important;
+  }
+
+  .page-catalog .catalog-filters-overlay[data-uflyout-overlay],
+  .page-cabinet .cabinet-menu-overlay[data-uflyout-overlay] {
+    opacity: 0 !important;
+    pointer-events: none !important;
+  }
+
+  body.catalog-filters-open .page-catalog .catalog-filters-overlay[data-uflyout-overlay],
+  body.cabinet-menu-open .page-cabinet .cabinet-menu-overlay[data-uflyout-overlay] {
+    opacity: 1 !important;
+    pointer-events: auto !important;
+  }
+}
+
 /* Final mobile catalog filters tuning */
 @media (max-width: 768px) {
   .page-catalog .catalog-products-head {
@@ -441,8 +492,7 @@ a:hover {
     white-space: nowrap !important;
   }
 
-  .page-catalog .catalog-filters,
-  .page-catalog [data-uflyout="panel"] {
+  .page-catalog .catalog-filters[data-uflyout="panel"] {
     left: calc(10px + env(safe-area-inset-left, 0px)) !important;
     right: calc(10px + env(safe-area-inset-right, 0px)) !important;
     bottom: calc(78px + env(safe-area-inset-bottom, 0px)) !important;
@@ -501,8 +551,7 @@ a:hover {
     display: none !important;
   }
 
-  .page-catalog .catalog-filters-overlay,
-  .page-catalog [data-uflyout-overlay] {
+  .page-catalog .catalog-filters-overlay[data-uflyout-overlay] {
     background: rgba(15, 23, 42, 0.5) !important;
     backdrop-filter: blur(2px);
     -webkit-backdrop-filter: blur(2px);
@@ -510,8 +559,7 @@ a:hover {
 }
 
 @media (max-width: 420px) {
-  .page-catalog .catalog-filters,
-  .page-catalog [data-uflyout="panel"] {
+  .page-catalog .catalog-filters[data-uflyout="panel"] {
     left: calc(8px + env(safe-area-inset-left, 0px)) !important;
     right: calc(8px + env(safe-area-inset-right, 0px)) !important;
     bottom: calc(76px + env(safe-area-inset-bottom, 0px)) !important;
@@ -554,8 +602,7 @@ a:hover {
     margin-left: auto !important;
   }
 
-  .page-cabinet .catalog-filters.cabinet-sidebar,
-  .page-cabinet [data-uflyout="panel"] {
+  .page-cabinet .catalog-filters.cabinet-sidebar[data-uflyout="panel"] {
     left: calc(10px + env(safe-area-inset-left, 0px)) !important;
     right: calc(10px + env(safe-area-inset-right, 0px)) !important;
     bottom: calc(78px + env(safe-area-inset-bottom, 0px)) !important;
@@ -596,8 +643,7 @@ a:hover {
     margin-top: 8px !important;
   }
 
-  .page-cabinet .cabinet-menu-overlay,
-  .page-cabinet [data-uflyout-overlay] {
+  .page-cabinet .cabinet-menu-overlay[data-uflyout-overlay] {
     background: rgba(15, 23, 42, 0.5) !important;
     backdrop-filter: blur(2px);
     -webkit-backdrop-filter: blur(2px);
@@ -605,8 +651,7 @@ a:hover {
 }
 
 @media (max-width: 420px) {
-  .page-cabinet .catalog-filters.cabinet-sidebar,
-  .page-cabinet [data-uflyout="panel"] {
+  .page-cabinet .catalog-filters.cabinet-sidebar[data-uflyout="panel"] {
     left: calc(8px + env(safe-area-inset-left, 0px)) !important;
     right: calc(8px + env(safe-area-inset-right, 0px)) !important;
     bottom: calc(76px + env(safe-area-inset-bottom, 0px)) !important;
@@ -9199,7 +9244,7 @@ body.evryka-site.page-print3d {
     margin-top: 8px !important;
   }
 
-  .page-catalog [data-uflyout="panel"] .catalog-filter-group + .catalog-filter-group {
+  .page-catalog .catalog-filters[data-uflyout="panel"] .catalog-filter-group + .catalog-filter-group {
     margin-top: 10px !important;
   }
 
@@ -9218,26 +9263,26 @@ body.evryka-site.page-print3d {
     pointer-events: auto !important;
   }
 
-  .page-catalog [data-uflyout="panel"] {
+  .page-catalog .catalog-filters[data-uflyout="panel"] {
     display: none !important;
     opacity: 0 !important;
     pointer-events: none !important;
   }
 
-  .page-cabinet [data-uflyout="panel"] {
+  .page-cabinet .catalog-filters.cabinet-sidebar[data-uflyout="panel"] {
     display: none !important;
     opacity: 0 !important;
     pointer-events: none !important;
   }
 
-  body.catalog-filters-open .page-catalog [data-uflyout="panel"] {
+  body.catalog-filters-open .page-catalog .catalog-filters[data-uflyout="panel"] {
     display: grid !important;
     opacity: 1 !important;
     pointer-events: auto !important;
     transform: translateY(0) scale(1) !important;
   }
 
-  body.cabinet-menu-open .page-cabinet [data-uflyout="panel"] {
+  body.cabinet-menu-open .page-cabinet .catalog-filters.cabinet-sidebar[data-uflyout="panel"] {
     display: flex !important;
     flex-direction: column !important;
     opacity: 1 !important;
@@ -9245,14 +9290,14 @@ body.evryka-site.page-print3d {
     transform: translateY(0) scale(1) !important;
   }
 
-  .page-catalog [data-uflyout-overlay],
-  .page-cabinet [data-uflyout-overlay] {
+  .page-catalog .catalog-filters-overlay[data-uflyout-overlay],
+  .page-cabinet .cabinet-menu-overlay[data-uflyout-overlay] {
     opacity: 0 !important;
     pointer-events: none !important;
   }
 
-  body.catalog-filters-open .page-catalog [data-uflyout-overlay],
-  body.cabinet-menu-open .page-cabinet [data-uflyout-overlay] {
+  body.catalog-filters-open .page-catalog .catalog-filters-overlay[data-uflyout-overlay],
+  body.cabinet-menu-open .page-cabinet .cabinet-menu-overlay[data-uflyout-overlay] {
     opacity: 1 !important;
     pointer-events: auto !important;
   }
