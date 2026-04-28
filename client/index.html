@@ -1567,6 +1567,7 @@
         max-width: 100%;
         padding: 1rem 0.95rem 1.1rem;
         border-radius: 12px;
+        overflow: hidden;
       }
 
       .hero-eyebrow {
@@ -1586,6 +1587,7 @@
         font-size: 15px;
         line-height: 1.45;
         margin-bottom: 0.85rem;
+        overflow-wrap: anywhere;
       }
 
       .hero-actions {
@@ -1602,17 +1604,22 @@
         text-align: center;
         padding: 12px 14px;
         font-size: 15px;
+        white-space: normal;
       }
 
       .hero-stats {
-        gap: 0.85rem;
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 0.5rem;
         margin-top: 0.85rem;
         padding-top: 0.7rem;
-        justify-content: space-between;
         width: 100%;
       }
 
-      .stat-item { flex: 1 1 0; min-width: 0; }
+      .stat-item {
+        min-width: 0;
+        align-items: flex-start;
+      }
 
       .stat-num {
         font-size: clamp(28px, 7.2vw, 34px);
@@ -1622,6 +1629,7 @@
         font-size: 10px;
         letter-spacing: 0.04em;
         color: #4b5563;
+        white-space: nowrap;
       }
 
       .trust-bar {
@@ -1684,6 +1692,7 @@
 
       .hero-sub {
         font-size: 13px;
+        line-height: 1.4;
       }
 
       .hero-actions .btn-primary,
@@ -1693,14 +1702,14 @@
       }
 
       .stat-num {
-        font-size: clamp(24px, 7vw, 30px);
+        font-size: clamp(20px, 6.8vw, 28px);
       }
 
       .stat-label {
         font-size: 9px;
       }
 
-      .cat-grid { grid-template-columns: 1fr; }
+      .cat-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
       .section, .section-sm { padding: 2.8rem 0.8rem; }
     }
   </style>
