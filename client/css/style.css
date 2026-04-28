@@ -416,6 +416,29 @@ a:hover {
   }
 }
 
+/* Final mobile catalog grid spacing (edges equal to inner gap) */
+@media (max-width: 640px) {
+  .page-catalog .catalog-products-head,
+  .page-catalog .catalog-products-grid {
+    padding-left: 10px !important;
+    padding-right: 10px !important;
+  }
+
+  .page-catalog .catalog-products-head {
+    margin-bottom: 10px !important;
+  }
+
+  .page-catalog .catalog-products-grid {
+    gap: 10px !important;
+    padding-top: 10px !important;
+    padding-bottom: 10px !important;
+  }
+
+  .page-catalog .catalog-products-grid .product {
+    margin: 0 !important;
+  }
+}
+
 /* Final guard: mobile filters/menu visibility and open state */
 @media (max-width: 768px) {
   .page-catalog #catalogFiltersOpenBtn,
@@ -8511,7 +8534,7 @@ body.evryka-site.page-print3d {
 
   body.evryka-site.page-catalog {
     --ev-shell-margin: 8px;
-    --mobile-card-gap: 6px;
+    --mobile-card-gap: 4px;
   }
 
   .container {
@@ -8603,6 +8626,7 @@ body.evryka-site.page-print3d {
     width: 100%;
     min-width: 0;
     max-width: 100%;
+    margin: 0;
   }
 
   .page-home #products .product,

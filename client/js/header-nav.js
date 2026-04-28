@@ -16,13 +16,36 @@
 
   function setDrawerState(bodyClass, overlayId, open) {
     const overlay = document.getElementById(overlayId);
+    const drawerSelector =
+      overlayId === "catalogFiltersOverlay"
+        ? ".page-catalog .catalog-filters[data-uflyout='panel']"
+        : overlayId === "cabinetMenuOverlay"
+          ? ".page-cabinet .catalog-filters.cabinet-sidebar[data-uflyout='panel']"
+          : "";
+    const drawer = drawerSelector ? document.querySelector(drawerSelector) : null;
+    const displayMode = overlayId === "catalogFiltersOverlay" ? "grid" : "flex";
+
     if (open) {
       document.body.classList.add(bodyClass);
       if (overlay) overlay.hidden = false;
+      if (drawer) {
+        drawer.style.display = displayMode;
+        drawer.style.opacity = "1";
+        drawer.style.pointerEvents = "auto";
+        drawer.style.transform = "translateY(0) scale(1)";
+        if (displayMode === "flex") drawer.style.flexDirection = "column";
+      }
       return;
     }
     document.body.classList.remove(bodyClass);
     if (overlay) overlay.hidden = true;
+    if (drawer) {
+      drawer.style.display = "";
+      drawer.style.opacity = "";
+      drawer.style.pointerEvents = "";
+      drawer.style.transform = "";
+      drawer.style.flexDirection = "";
+    }
   }
 
   function buildMobileBottomNav(toggle, panel, closeNavRef, openNavRef) {
