@@ -103,6 +103,33 @@
   }
 }
 
+/* Absolute last: remove outer catalog grid padding (green area) */
+@media (max-width: 640px) {
+  .page-catalog .catalog-shell,
+  .page-catalog .catalog-main,
+  .page-catalog .catalog-products-inner,
+  .page-catalog .catalog-products-section {
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+  }
+
+  .page-catalog .catalog-products-grid {
+    padding: 0 !important;
+    margin: 0 !important;
+  }
+
+  .page-catalog .catalog-products-head {
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+  }
+
+  .page-catalog .catalog-filters[data-uflyout="panel"] {
+    left: 0 !important;
+    right: 0 !important;
+    border-radius: 0 !important;
+  }
+}
+
 body {
   font-family: var(--ev-font);
   color: var(--ev-ink);
@@ -9120,7 +9147,7 @@ body.evryka-site.page-print3d {
 
   .chat-widget-root {
     right: calc(8px + env(safe-area-inset-right, 0px));
-    bottom: calc(96px + env(safe-area-inset-bottom, 0px));
+    bottom: calc(80px + env(safe-area-inset-bottom, 0px));
   }
 
   body.page-catalog .scroll-to-top-btn,
