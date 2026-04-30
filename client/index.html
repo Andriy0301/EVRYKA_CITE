@@ -8,7 +8,7 @@
   <link rel="apple-touch-icon" href="images/text_logo.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Manrope:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="css/style.css?v=20260427-6">
+  <link rel="stylesheet" href="css/style.css?v=20260430-1">
   <link rel="stylesheet" href="css/evryka-header-hero.css?v=20260420-21">
   <script src="https://accounts.google.com/gsi/client" async defer></script>
   <style>
@@ -266,6 +266,12 @@
     }
 
     .hero-actions { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+
+    .hero-actions .btn-primary,
+    .hero-actions .btn-ghost {
+      margin-left: 0 !important;
+      margin-right: 0 !important;
+    }
 
     .btn-primary {
       display: inline-flex;
@@ -1011,6 +1017,7 @@
       padding: 2rem 1.5rem;
       text-decoration: none;
       color: var(--black);
+      margin: 0 !important;
       border: 1px solid rgba(17,17,16,0.06);
       transition: border-color 0.2s, transform 0.2s, box-shadow 0.2s;
       display: flex;
