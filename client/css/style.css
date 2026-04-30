@@ -6728,6 +6728,36 @@ body.evryka-site.page-print3d {
   stroke: var(--ev-p-ink);
 }
 
+/* Catalog back button must match product page exactly */
+.page-catalog #catalogBackBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--ev-surface);
+  color: var(--ev-p-ink);
+  border: 1px solid var(--ev-p-line);
+  box-shadow: var(--ev-p-shadow-sm);
+  border-radius: var(--ev-header-bar-radius, clamp(12px, 1.4vw, 18px));
+  min-height: 44px;
+  padding: 10px 18px;
+  font-size: 14px;
+  line-height: 1.2;
+  box-sizing: border-box;
+}
+
+.page-catalog #catalogBackBtn:hover {
+  background: var(--ev-p-tier2);
+  color: var(--ev-p-ink);
+}
+
+.page-catalog #catalogBackBtn .back-icon {
+  width: 18px;
+  height: 18px;
+  stroke: var(--ev-p-ink);
+  stroke-width: 4;
+  fill: none;
+}
+
 .page-product .breadcrumbs {
   color: var(--ev-p-muted);
   font-weight: 500;
@@ -9161,7 +9191,7 @@ body.evryka-site.page-print3d {
     transform: translateY(10px);
   }
 
-  .chat-widget-root {
+  body.evryka-site.has-mobile-bottom-nav .chat-widget-root {
     right: calc(8px + env(safe-area-inset-right, 0px)) !important;
     bottom: calc(80px + env(safe-area-inset-bottom, 0px)) !important;
   }
