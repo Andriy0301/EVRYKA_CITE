@@ -130,6 +130,21 @@
   }
 }
 
+/* Absolute last: no side offsets for catalog products container */
+@media (max-width: 640px) {
+  .page-catalog .container,
+  .page-catalog .catalog-shell,
+  .page-catalog .catalog-main,
+  .page-catalog .catalog-products-inner,
+  .page-catalog .catalog-products-section,
+  .page-catalog .catalog-products-grid {
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+  }
+}
+
 body {
   font-family: var(--ev-font);
   color: var(--ev-ink);
@@ -8970,17 +8985,16 @@ body.evryka-site.page-print3d {
     min-width: 16px;
     height: 16px;
     border-radius: 999px;
-    padding: 0 3px;
+    padding: 0;
     background: var(--ev-accent);
     color: var(--text-primary);
     font-size: 10px;
     font-weight: 700;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    display: grid;
+    place-items: center;
     box-sizing: border-box;
     border: 1px solid rgba(255, 255, 255, 0.92);
-    line-height: 1;
+    line-height: 16px;
     text-align: center;
     font-variant-numeric: tabular-nums;
     transform: none;

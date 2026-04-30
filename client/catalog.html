@@ -60,12 +60,12 @@
 <div class="container">
   <div class="catalog-shell">
   <div class="product-nav catalog-page-nav">
-    <button type="button" class="back-btn" id="catalogBackBtn" aria-label="Назад">
+    <a href="index.html" class="back-btn" id="catalogBackBtn" aria-label="Назад">
       <svg class="back-icon" viewBox="0 0 24 24" aria-hidden="true">
         <path d="M15 6l-6 6 6 6"></path>
       </svg>
       Назад
-    </button>
+    </a>
     <div class="breadcrumbs">
       <a href="index.html">�?оловна</a>
       <span>/</span>
@@ -77,7 +77,7 @@
     <aside class="catalog-filters neo-drawer neo-drawer--filters" data-uflyout="panel" aria-label="Ф�?л�?�?�?и ка�?алог�?">
       <div class="neo-drawer__title-row">
         <h2 class="catalog-filters-title neo-drawer__title">Ф�?л�?�?�?и</h2>
-        <button type="button" class="catalog-filters-close neo-drawer__close" data-uflyout-close id="catalogFiltersCloseBtn" aria-label="�?ак�?и�?и �?�?л�?�?�?и" onclick="document.body.classList.remove('catalog-filters-open');document.getElementById('catalogFiltersOverlay').hidden=true;(function(){var d=document.querySelector('.page-catalog .catalog-filters[data-uflyout=&quot;panel&quot;]');if(!d)return;d.style.removeProperty('display');d.style.removeProperty('opacity');d.style.removeProperty('pointer-events');d.style.removeProperty('transform');})();">?</button>
+        <button type="button" class="catalog-filters-close neo-drawer__close" data-uflyout-close id="catalogFiltersCloseBtn" aria-label="�?ак�?и�?и �?�?л�?�?�?и" onclick="window.closeCatalogFiltersDrawer && window.closeCatalogFiltersDrawer()">?</button>
       </div>
 
       <div class="catalog-filter-block">
@@ -128,7 +128,7 @@
         <section class="products catalog-products-section">
           <div class="catalog-products-head">
             <h2>�?а�?алог �?ова�?�?в</h2>
-            <button type="button" class="back-btn catalog-filters-open-btn neo-drawer-trigger" data-uflyout-trigger id="catalogFiltersOpenBtn" aria-label="�?�?дк�?и�?и �?�?л�?�?�?и" onclick="document.body.classList.add('catalog-filters-open');document.getElementById('catalogFiltersOverlay').hidden=false;(function(){var d=document.querySelector('.page-catalog .catalog-filters[data-uflyout=&quot;panel&quot;]');if(!d)return;d.style.setProperty('display','grid','important');d.style.setProperty('opacity','1','important');d.style.setProperty('pointer-events','auto','important');d.style.setProperty('transform','translateY(0) scale(1)','important');})();">
+            <button type="button" class="back-btn catalog-filters-open-btn neo-drawer-trigger" data-uflyout-trigger id="catalogFiltersOpenBtn" aria-label="�?�?дк�?и�?и �?�?л�?�?�?и" onclick="if(window.openCatalogFiltersDrawer){window.openCatalogFiltersDrawer();}else{document.body.classList.add('catalog-filters-open');var o=document.getElementById('catalogFiltersOverlay');if(o)o.hidden=false;var d=document.querySelector('.page-catalog .catalog-filters[data-uflyout=&quot;panel&quot;]');if(d){d.style.setProperty('position','fixed','important');d.style.setProperty('left','0','important');d.style.setProperty('right','0','important');d.style.setProperty('bottom','78px','important');d.style.setProperty('z-index','1302','important');d.style.setProperty('display','grid','important');d.style.setProperty('opacity','1','important');d.style.setProperty('pointer-events','auto','important');d.style.setProperty('transform','translateY(0) scale(1)','important');}}">
               Ф�?л�?�?�?
             </button>
           </div>
@@ -137,7 +137,7 @@
       </div>
     </div>
   </div>
-  <div class="catalog-filters-overlay neo-drawer-overlay" data-uflyout-overlay id="catalogFiltersOverlay" hidden onclick="document.body.classList.remove('catalog-filters-open');this.hidden=true;(function(){var d=document.querySelector('.page-catalog .catalog-filters[data-uflyout=&quot;panel&quot;]');if(!d)return;d.style.removeProperty('display');d.style.removeProperty('opacity');d.style.removeProperty('pointer-events');d.style.removeProperty('transform');})();"></div>
+  <div class="catalog-filters-overlay neo-drawer-overlay" data-uflyout-overlay id="catalogFiltersOverlay" hidden onclick="if(window.closeCatalogFiltersDrawer){window.closeCatalogFiltersDrawer();}else{document.body.classList.remove('catalog-filters-open');this.hidden=true;var d=document.querySelector('.page-catalog .catalog-filters[data-uflyout=&quot;panel&quot;]');if(d){d.style.removeProperty('position');d.style.removeProperty('left');d.style.removeProperty('right');d.style.removeProperty('bottom');d.style.removeProperty('z-index');d.style.removeProperty('display');d.style.removeProperty('opacity');d.style.removeProperty('pointer-events');d.style.removeProperty('transform');}}"></div>
   </div>
 </div>
 
@@ -297,7 +297,7 @@
 <script src="js/mojibake-fix.js?v=1"></script>
   <script src="js/app.js?v=20260427-5"></script>
 <script src="js/custom-select.js?v=1"></script>
-<script src="js/catalog.js?v=20260428-1"></script>
+<script src="js/catalog.js?v=20260430-2"></script>
 <script>
   (function () {
     function recoverCatalogText() {

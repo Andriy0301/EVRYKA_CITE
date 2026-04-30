@@ -261,6 +261,11 @@ function initCatalogMobileFilterDrawer() {
     document.body.classList.remove("catalog-filters-open");
     overlay.hidden = true;
     if (drawer) {
+      drawer.style.removeProperty("position");
+      drawer.style.removeProperty("left");
+      drawer.style.removeProperty("right");
+      drawer.style.removeProperty("bottom");
+      drawer.style.removeProperty("z-index");
       drawer.style.removeProperty("display");
       drawer.style.removeProperty("opacity");
       drawer.style.removeProperty("pointer-events");
@@ -272,6 +277,11 @@ function initCatalogMobileFilterDrawer() {
     if (!drawer) return;
     overlay.hidden = false;
     document.body.classList.add("catalog-filters-open");
+    drawer.style.setProperty("position", "fixed", "important");
+    drawer.style.setProperty("left", "0", "important");
+    drawer.style.setProperty("right", "0", "important");
+    drawer.style.setProperty("bottom", "78px", "important");
+    drawer.style.setProperty("z-index", "1302", "important");
     drawer.style.setProperty("display", "grid", "important");
     drawer.style.setProperty("opacity", "1", "important");
     drawer.style.setProperty("pointer-events", "auto", "important");
@@ -281,6 +291,8 @@ function initCatalogMobileFilterDrawer() {
   openBtn.addEventListener("click", openDrawer);
   closeBtn.addEventListener("click", closeDrawer);
   overlay.addEventListener("click", closeDrawer);
+  window.openCatalogFiltersDrawer = openDrawer;
+  window.closeCatalogFiltersDrawer = closeDrawer;
 
   document.addEventListener("keydown", (event) => {
     if (event.key === "Escape") closeDrawer();
@@ -409,8 +421,11 @@ function initCatalogPage() {
 
   const backBtn = document.getElementById("catalogBackBtn");
   if (backBtn) {
-    backBtn.addEventListener("click", () => {
-      window.history.back();
+    backBtn.addEventListener("click", (event) => {
+      if (window.history.length > 1) {
+        event.preventDefault();
+        window.history.back();
+      }
     });
   }
 }
