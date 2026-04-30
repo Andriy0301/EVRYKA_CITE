@@ -297,7 +297,7 @@
 <script src="js/mojibake-fix.js?v=1"></script>
   <script src="js/app.js?v=20260427-5"></script>
 <script src="js/custom-select.js?v=1"></script>
-<script src="js/catalog.js?v=20260430-4"></script>
+<script src="js/catalog.js?v=20260430-8"></script>
 <script>
   (function () {
     function recoverCatalogText() {
@@ -324,7 +324,12 @@
       setAttr(".cart .cart-icon", "alt", "Кошик");
 
       setAttr("#catalogBackBtn", "aria-label", "Назад");
-      setText("#catalogBackBtn", "Назад");
+      const backBtn = document.getElementById("catalogBackBtn");
+      if (backBtn) {
+        const icon = backBtn.querySelector(".back-icon");
+        backBtn.textContent = "Назад";
+        if (icon) backBtn.prepend(icon);
+      }
       setText(".breadcrumbs a", "Головна");
       setText(".breadcrumbs span:last-child", "Каталог");
 
@@ -395,67 +400,10 @@
       setText("#chatWidgetSend", "Надіслати");
     }
 
-    function setOpen(open) {
-      const drawer = document.querySelector(".page-catalog .catalog-filters");
-      const overlay = document.getElementById("catalogFiltersOverlay");
-      document.body.classList.toggle("catalog-filters-open", Boolean(open));
-      if (overlay) {
-        overlay.hidden = !open;
-        overlay.style.display = open ? "block" : "";
-        overlay.style.opacity = open ? "1" : "";
-        overlay.style.pointerEvents = open ? "auto" : "";
-      }
-      if (drawer) {
-        drawer.style.display = open ? "grid" : "";
-        drawer.style.opacity = open ? "1" : "";
-        drawer.style.pointerEvents = open ? "auto" : "";
-        drawer.style.transform = open ? "translateY(0)" : "";
-      }
-    }
-
-    function bind() {
-      recoverCatalogText();
-      const openBtn = document.getElementById("catalogFiltersOpenBtn");
-      const closeBtn = document.getElementById("catalogFiltersCloseBtn");
-      const overlay = document.getElementById("catalogFiltersOverlay");
-      if (!openBtn || !closeBtn || !overlay) return;
-
-      const onOpen = function (e) {
-        e.preventDefault();
-        e.stopPropagation();
-        setOpen(true);
-      };
-      const onClose = function (e) {
-        e.preventDefault();
-        e.stopPropagation();
-        setOpen(false);
-      };
-
-      openBtn.addEventListener("click", onOpen);
-      openBtn.addEventListener("touchend", onOpen, { passive: false });
-      closeBtn.addEventListener("click", onClose);
-      closeBtn.addEventListener("touchend", onClose, { passive: false });
-      overlay.addEventListener("click", function (e) {
-        e.preventDefault();
-        setOpen(false);
-      });
-      overlay.addEventListener(
-        "touchend",
-        function (e) {
-          e.preventDefault();
-          setOpen(false);
-        },
-        { passive: false }
-      );
-      document.addEventListener("keydown", function (e) {
-        if (e.key === "Escape") setOpen(false);
-      });
-    }
-
     if (document.readyState === "loading") {
-      document.addEventListener("DOMContentLoaded", bind);
+      document.addEventListener("DOMContentLoaded", recoverCatalogText);
     } else {
-      bind();
+      recoverCatalogText();
     }
   })();
 </script>
