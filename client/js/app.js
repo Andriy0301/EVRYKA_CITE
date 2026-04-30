@@ -867,6 +867,36 @@ function initHeroCarousel() {
   goTo(idx);
 }
 
+function initMobileInViewHover() {
+  const supportsObserver = typeof window !== "undefined" && "IntersectionObserver" in window;
+  if (!supportsObserver) return;
+  if (!window.matchMedia("(max-width: 768px)").matches) return;
+
+  const items = Array.from(document.querySelectorAll(".how-item, .print-step"));
+  if (!items.length) return;
+
+  const setActive = (activeEl) => {
+    items.forEach((item) => item.classList.toggle("is-in-view", item === activeEl));
+  };
+
+  const observer = new IntersectionObserver(
+    (entries) => {
+      const visible = entries
+        .filter((entry) => entry.isIntersecting)
+        .sort((a, b) => b.intersectionRatio - a.intersectionRatio);
+      if (!visible.length) return;
+      setActive(visible[0].target);
+    },
+    {
+      root: null,
+      threshold: [0.35, 0.55, 0.75],
+      rootMargin: "-14% 0px -26% 0px"
+    }
+  );
+
+  items.forEach((item) => observer.observe(item));
+}
+
 // =========================
 // 🔹 СТАРТ
 // =========================
@@ -904,6 +934,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   openFavoritesFromHash();
   syncHomeFavoritesButtons();
   initHeroCarousel();
+  initMobileInViewHover();
 });
 
 // =========================

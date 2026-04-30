@@ -1008,7 +1008,9 @@ footer .footer-bottom {
 .cat-card:hover,
 .testimonial-card:hover,
 .how-item:hover,
+.how-item.is-in-view,
 .print-step:hover,
+.print-step.is-in-view,
 .cabinet-card:hover {
   transform: translateY(-4px);
   box-shadow: 0 14px 30px rgba(17, 17, 16, 0.12);
@@ -9160,8 +9162,8 @@ body.evryka-site.page-print3d {
   }
 
   .chat-widget-root {
-    right: calc(8px + env(safe-area-inset-right, 0px));
-    bottom: calc(80px + env(safe-area-inset-bottom, 0px));
+    right: calc(8px + env(safe-area-inset-right, 0px)) !important;
+    bottom: calc(80px + env(safe-area-inset-bottom, 0px)) !important;
   }
 
   body.page-catalog .scroll-to-top-btn,

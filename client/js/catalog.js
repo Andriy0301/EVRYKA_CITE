@@ -288,6 +288,10 @@ function initCatalogMobileFilterDrawer() {
     drawer.style.setProperty("transform", "translateY(0) scale(1)", "important");
   };
 
+  // Hard reset on init: prevents stale "open" state
+  // from disabling the trigger button after reload/navigation.
+  closeDrawer();
+
   openBtn.addEventListener("click", openDrawer);
   closeBtn.addEventListener("click", closeDrawer);
   overlay.addEventListener("click", closeDrawer);
@@ -421,10 +425,11 @@ function initCatalogPage() {
 
   const backBtn = document.getElementById("catalogBackBtn");
   if (backBtn) {
-    backBtn.addEventListener("click", (event) => {
+    backBtn.addEventListener("click", () => {
       if (window.history.length > 1) {
-        event.preventDefault();
         window.history.back();
+      } else {
+        window.location.href = "index.html";
       }
     });
   }
