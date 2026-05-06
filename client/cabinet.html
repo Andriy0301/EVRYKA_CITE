@@ -107,7 +107,7 @@
       </div>
       <div class="cabinet-page-head">
         <h1 class="cabinet-page-title">��������� ������</h1>
-        <button type="button" class="back-btn cabinet-menu-open-btn neo-drawer-trigger" data-uflyout-trigger id="cabinetMenuOpenBtn" aria-label="³������ ���� �������" onclick="document.body.classList.add('cabinet-menu-open');document.getElementById('cabinetMenuOverlay').hidden=false;(function(){var d=document.querySelector('.page-cabinet .catalog-filters.cabinet-sidebar[data-uflyout=&quot;panel&quot;]');if(!d)return;d.style.setProperty('display','flex','important');d.style.setProperty('flex-direction','column','important');d.style.setProperty('opacity','1','important');d.style.setProperty('pointer-events','auto','important');d.style.setProperty('transform','translateY(0) scale(1)','important');})();">
+        <button type="button" class="back-btn cabinet-menu-open-btn neo-drawer-trigger" data-uflyout-trigger id="cabinetMenuOpenBtn" aria-label="³������ ���� �������" onclick="window.openCabinetMenuDrawer && window.openCabinetMenuDrawer()">
           ����
         </button>
       </div>
@@ -115,7 +115,7 @@
         <aside class="catalog-filters cabinet-sidebar neo-drawer neo-drawer--cabinet" data-uflyout="panel" aria-label="���� �������">
           <div class="neo-drawer__title-row">
             <h2 class="catalog-filters-title neo-drawer__title">����</h2>
-            <button type="button" class="cabinet-menu-close neo-drawer__close" data-uflyout-close id="cabinetMenuCloseBtn" aria-label="������� ���� �������" onclick="document.body.classList.remove('cabinet-menu-open');document.getElementById('cabinetMenuOverlay').hidden=true;(function(){var d=document.querySelector('.page-cabinet .catalog-filters.cabinet-sidebar[data-uflyout=&quot;panel&quot;]');if(!d)return;d.style.removeProperty('display');d.style.removeProperty('flex-direction');d.style.removeProperty('opacity');d.style.removeProperty('pointer-events');d.style.removeProperty('transform');})();">?</button>
+            <button type="button" class="cabinet-menu-close neo-drawer__close" data-uflyout-close id="cabinetMenuCloseBtn" aria-label="������� ���� �������" onclick="window.closeCabinetMenuDrawer && window.closeCabinetMenuDrawer()">✕</button>
           </div>
           <button class="cabinet-nav-btn neo-drawer__item active" data-uflyout-item type="button" data-section="personal">������� ���</button>
           <button class="cabinet-nav-btn neo-drawer__item" data-uflyout-item type="button" data-section="orders">�� ����������</button>
@@ -188,7 +188,7 @@
           </div>
         </div>
       </div>
-      <div class="cabinet-menu-overlay neo-drawer-overlay" data-uflyout-overlay id="cabinetMenuOverlay" hidden onclick="document.body.classList.remove('cabinet-menu-open');this.hidden=true;(function(){var d=document.querySelector('.page-cabinet .catalog-filters.cabinet-sidebar[data-uflyout=&quot;panel&quot;]');if(!d)return;d.style.removeProperty('display');d.style.removeProperty('flex-direction');d.style.removeProperty('opacity');d.style.removeProperty('pointer-events');d.style.removeProperty('transform');})();"></div>
+      <div class="cabinet-menu-overlay neo-drawer-overlay" data-uflyout-overlay id="cabinetMenuOverlay" hidden onclick="window.closeCabinetMenuDrawer && window.closeCabinetMenuDrawer()"></div>
     </div>
   </main>
 
@@ -280,10 +280,10 @@
     </div>
   </div>
 
-  <script src="js/header-nav.js?v=20260428-2"></script>
+  <script src="js/header-nav.js?v=20260506-13"></script>
   <script src="js/api.js?v=20260422"></script>
   <script src="js/custom-select.js?v=1"></script>
-  <script src="js/cabinet.js?v=20260428-1"></script>
+  <script src="js/cabinet.js?v=20260506-13"></script>
   <script>
     (function () {
       function recoverCabinetText() {
@@ -321,6 +321,7 @@
         setAttr(".page-cabinet .cabinet-sidebar", "aria-label", "Меню кабінету");
         setText(".page-cabinet .cabinet-sidebar .catalog-filters-title", "Меню");
         setAttr("#cabinetMenuCloseBtn", "aria-label", "Закрити меню кабінету");
+        setText("#cabinetMenuCloseBtn", "✕");
 
         const navBtns = document.querySelectorAll(".page-cabinet .cabinet-nav-btn");
         const navTexts = ["Особисті дані", "Мої замовлення", "Бонуси", "Обрані", "Вийти"];
@@ -363,67 +364,10 @@
         setText("#chatWidgetSend", "Надіслати");
       }
 
-      function setOpen(open) {
-        const drawer = document.querySelector(".page-cabinet .catalog-filters.cabinet-sidebar");
-        const overlay = document.getElementById("cabinetMenuOverlay");
-        document.body.classList.toggle("cabinet-menu-open", Boolean(open));
-        if (overlay) {
-          overlay.hidden = !open;
-          overlay.style.display = open ? "block" : "";
-          overlay.style.opacity = open ? "1" : "";
-          overlay.style.pointerEvents = open ? "auto" : "";
-        }
-        if (drawer) {
-          drawer.style.display = open ? "block" : "";
-          drawer.style.opacity = open ? "1" : "";
-          drawer.style.pointerEvents = open ? "auto" : "";
-          drawer.style.transform = open ? "translateY(0)" : "";
-        }
-      }
-
-      function bind() {
-        recoverCabinetText();
-        const openBtn = document.getElementById("cabinetMenuOpenBtn");
-        const closeBtn = document.getElementById("cabinetMenuCloseBtn");
-        const overlay = document.getElementById("cabinetMenuOverlay");
-        if (!openBtn || !closeBtn || !overlay) return;
-
-        const onOpen = function (e) {
-          e.preventDefault();
-          e.stopPropagation();
-          setOpen(true);
-        };
-        const onClose = function (e) {
-          e.preventDefault();
-          e.stopPropagation();
-          setOpen(false);
-        };
-
-        openBtn.addEventListener("click", onOpen);
-        openBtn.addEventListener("touchend", onOpen, { passive: false });
-        closeBtn.addEventListener("click", onClose);
-        closeBtn.addEventListener("touchend", onClose, { passive: false });
-        overlay.addEventListener("click", function (e) {
-          e.preventDefault();
-          setOpen(false);
-        });
-        overlay.addEventListener(
-          "touchend",
-          function (e) {
-            e.preventDefault();
-            setOpen(false);
-          },
-          { passive: false }
-        );
-        document.addEventListener("keydown", function (e) {
-          if (e.key === "Escape") setOpen(false);
-        });
-      }
-
       if (document.readyState === "loading") {
-        document.addEventListener("DOMContentLoaded", bind);
+        document.addEventListener("DOMContentLoaded", recoverCabinetText);
       } else {
-        bind();
+        recoverCabinetText();
       }
     })();
   </script>

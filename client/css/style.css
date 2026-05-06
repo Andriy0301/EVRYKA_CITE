@@ -9563,3 +9563,52 @@ body.evryka-site.page-print3d {
   }
 }
 
+/* Absolute last: catalog filters use bottom-nav palette */
+@media (max-width: 768px) {
+  .page-catalog .catalog-filters[data-uflyout="panel"] {
+    border: 1px solid rgba(17, 17, 17, 0.1) !important;
+    background: rgba(255, 255, 255, 0.93) !important;
+    backdrop-filter: blur(14px) !important;
+    -webkit-backdrop-filter: blur(14px) !important;
+    box-shadow:
+      0 1px 0 rgba(17, 17, 17, 0.04),
+      0 14px 34px rgba(0, 0, 0, 0.14),
+      0 5px 14px rgba(0, 0, 0, 0.08) !important;
+  }
+
+  .page-catalog .catalog-filters-title,
+  .page-catalog .catalog-filter-label {
+    color: var(--text-primary) !important;
+  }
+
+  .page-catalog .catalog-filter-input,
+  .page-catalog .catalog-select-trigger,
+  .page-catalog .catalog-reset-btn,
+  .page-catalog .catalog-filters-close {
+    border: 1px solid rgba(17, 17, 17, 0.1) !important;
+    background: rgba(255, 255, 255, 0.92) !important;
+    color: var(--text-primary) !important;
+  }
+}
+
+/* Absolute last: cabinet head menu button at row end */
+@media (max-width: 768px) {
+  .page-cabinet .cabinet-page-head {
+    display: grid !important;
+    grid-template-columns: minmax(0, 1fr) auto !important;
+    align-items: center !important;
+    column-gap: 10px !important;
+  }
+
+  .page-cabinet .cabinet-page-head .cabinet-page-title {
+    min-width: 0 !important;
+  }
+
+  .page-cabinet .cabinet-page-head #cabinetMenuOpenBtn,
+  .page-cabinet .cabinet-page-head .cabinet-menu-open-btn {
+    justify-self: end !important;
+    margin-left: 0 !important;
+    flex-shrink: 0 !important;
+  }
+}
+

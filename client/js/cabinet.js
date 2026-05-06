@@ -707,6 +707,11 @@ function initCabinetMenuDrawer() {
   const closeDrawer = () => {
     document.body.classList.remove("cabinet-menu-open");
     overlay.hidden = true;
+    sidebar.style.removeProperty("position");
+    sidebar.style.removeProperty("left");
+    sidebar.style.removeProperty("right");
+    sidebar.style.removeProperty("bottom");
+    sidebar.style.removeProperty("z-index");
     sidebar.style.removeProperty("display");
     sidebar.style.removeProperty("opacity");
     sidebar.style.removeProperty("pointer-events");
@@ -717,6 +722,11 @@ function initCabinetMenuDrawer() {
   const openDrawer = () => {
     overlay.hidden = false;
     document.body.classList.add("cabinet-menu-open");
+    sidebar.style.setProperty("position", "fixed", "important");
+    sidebar.style.setProperty("left", "12px", "important");
+    sidebar.style.setProperty("right", "12px", "important");
+    sidebar.style.setProperty("bottom", "92px", "important");
+    sidebar.style.setProperty("z-index", "1302", "important");
     sidebar.style.setProperty("display", "flex", "important");
     sidebar.style.setProperty("flex-direction", "column", "important");
     sidebar.style.setProperty("opacity", "1", "important");
@@ -724,9 +734,13 @@ function initCabinetMenuDrawer() {
     sidebar.style.setProperty("transform", "translateY(0) scale(1)", "important");
   };
 
+  closeDrawer();
+
   openBtn.addEventListener("click", openDrawer);
   closeBtn.addEventListener("click", closeDrawer);
   overlay.addEventListener("click", closeDrawer);
+  window.openCabinetMenuDrawer = openDrawer;
+  window.closeCabinetMenuDrawer = closeDrawer;
 
   sidebar.querySelectorAll(".cabinet-nav-btn").forEach((btn) => {
     btn.addEventListener("click", closeDrawer);
