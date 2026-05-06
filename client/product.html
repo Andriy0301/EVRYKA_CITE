@@ -1,15 +1,15 @@
-п»ї<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="uk">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>РўРѕРІР°СЂ - EVRYKA</title>
+  <title>Товар - EVRYKA</title>
   <link rel="icon" href="images/favicon.png" type="image/png">
   <link rel="apple-touch-icon" href="images/favicon.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="css/style.css?v=20260506-16">
+  <link rel="stylesheet" href="css/style.css?v=20260506-17">
   <link rel="stylesheet" href="css/evryka-header-hero.css?v=20260420-21">
   <script src="https://accounts.google.com/gsi/client" async defer></script>
 </head>
@@ -20,36 +20,36 @@
     <a href="index.html" class="logo header-logo">
       <img src="images/text_logo.png" alt="EVRYKA" class="header-logo-img">
     </a>
-    <button type="button" class="header-burger" id="navToggle" aria-label="Р’С–РґРєСЂРёС‚Рё РјРµРЅСЋ" aria-expanded="false" aria-controls="headerNavPanel">
+    <button type="button" class="header-burger" id="navToggle" aria-label="Відкрити меню" aria-expanded="false" aria-controls="headerNavPanel">
       <span class="header-burger__line"></span>
       <span class="header-burger__line"></span>
       <span class="header-burger__line"></span>
     </button>
-    <nav class="nav header-nav" id="headerNavPanel" aria-label="Р“РѕР»РѕРІРЅР° РЅР°РІС–РіР°С†С–СЏ">
-      <a href="index.html">Р“РѕР»РѕРІРЅР°</a>
-      <a href="catalog.html" class="active">РљР°С‚Р°Р»РѕРі</a>
-      <a href="about.html">РџСЂРѕ РЅР°СЃ</a>
-      <a href="order-3d-print.html">Р—Р°РјРѕРІРёС‚Рё 3D РґСЂСѓРє</a>
+    <nav class="nav header-nav" id="headerNavPanel" aria-label="Головна навігація">
+      <a href="index.html">Головна</a>
+      <a href="catalog.html" class="active">Каталог</a>
+      <a href="about.html">Про нас</a>
+      <a href="order-3d-print.html">Замовити 3D друк</a>
     </nav>
     <div class="header-utilities">
       <div class="search-box">
-        <input type="search" placeholder="РџРѕС€СѓРє" id="search" name="q" autocomplete="off">
+        <input type="search" placeholder="Пошук" id="search" name="q" autocomplete="off">
         <div id="searchResults" class="search-results"></div>
       </div>
       <div class="header-actions">
-        <button type="button" id="authBtn" class="auth-icon-btn" title="РџСЂРѕС„С–Р»СЊ">
+        <button type="button" id="authBtn" class="auth-icon-btn" title="Профіль">
           <svg id="authIcon" viewBox="0 0 24 24" aria-hidden="true">
             <path d="M12 12c2.8 0 5-2.2 5-5s-2.2-5-5-5-5 2.2-5 5 2.2 5 5 5Zm0 2c-4.4 0-8 2.7-8 6v2h16v-2c0-3.3-3.6-6-8-6Z"></path>
           </svg>
           <span id="authInitials" class="auth-initials"></span>
         </button>
-        <button type="button" id="favoritesBtn" class="auth-icon-btn" title="РћР±СЂР°РЅС–" onclick="toggleFavorites(true)">
+        <button type="button" id="favoritesBtn" class="auth-icon-btn" title="Обрані" onclick="toggleFavorites(true)">
           <svg class="heart-icon" viewBox="0 0 512 512" aria-hidden="true">
             <path d="M257 88L255 88C248.355 74.9828 235.475 63.8415 224 55.1304C173.114 16.5016 99.2988 19.267 51 61.2894C-1.26738 106.765 -12.8083 185.773 13.0116 248C25.4527 277.984 45.9981 303.467 67.9105 327C103.494 365.215 144.281 398.581 184 432.421C198.063 444.402 211.938 456.598 226 468.579C233.971 475.37 241.993 483.022 253 483.907C268.121 485.122 278.342 475.197 289 466C306.641 450.778 324.263 435.533 342 420.421C356.437 408.121 370.854 395.797 385 383.166C443.359 331.055 512 269.827 512 185C512 178.072 512.538 170.886 511.715 164C506.476 120.199 486.854 78.636 450 52.7207C401.715 18.7669 334.983 19.4645 288 55.1304C276.525 63.8415 263.645 74.9828 257 88z"></path>
           </svg>
         </button>
         <div class="cart" onclick="toggleCart(true)">
-          <img src="images/cart-icon.svg" class="cart-icon" alt="РљРѕС€РёРє">
+          <img src="images/cart-icon.svg" class="cart-icon" alt="Кошик">
           <span id="cartCount">0</span>
         </div>
       </div>
@@ -61,8 +61,8 @@
 <div id="cartSidebar" class="cart-sidebar">
 
   <div class="cart-head-float">
-    <h3 id="cartPanelTitle">РљРѕС€РёРє</h3>
-    <button type="button" class="cart-head-float-close" onclick="toggleCart(false)" aria-label="Р—Р°РєСЂРёС‚Рё РєРѕС€РёРє">?</button>
+    <h3 id="cartPanelTitle">Кошик</h3>
+    <button type="button" class="cart-head-float-close" onclick="toggleCart(false)" aria-label="Закрити кошик">?</button>
   </div>
 
   <!-- ITEMS -->
@@ -72,19 +72,19 @@
   <div class="cart-footer">
 
     <div class="cart-total">
-      <span>Р Р°Р·РѕРј</span>
+      <span>Разом</span>
       <div>
         <b id="cartTotal">0</b>
-        <span>РіСЂРЅ</span>
+        <span>грн</span>
       </div>
     </div>
 
     <button class="checkout-btn" onclick="checkout()">
-      РћС„РѕСЂРјРёС‚Рё
+      Оформити
     </button>
 
     <button class="clear-btn" onclick="clearCart()">
-      РћС‡РёСЃС‚РёС‚Рё РєРѕС€РёРє
+      Очистити кошик
     </button>
 
   </div>
@@ -94,13 +94,13 @@
 <div id="favoritesOverlay" class="cart-overlay" onclick="toggleFavorites(false)"></div>
 <div id="favoritesSidebar" class="cart-sidebar">
   <div class="cart-head-float">
-    <h3>РћР±СЂР°РЅС–</h3>
-    <button type="button" class="cart-head-float-close" onclick="toggleFavorites(false)" aria-label="Р—Р°РєСЂРёС‚Рё РѕР±СЂР°РЅС–">?</button>
+    <h3>Обрані</h3>
+    <button type="button" class="cart-head-float-close" onclick="toggleFavorites(false)" aria-label="Закрити обрані">?</button>
   </div>
   <div id="favoritesItems" class="cart-items"></div>
   <div class="cart-footer">
     <button class="clear-btn" onclick="clearFavorites()">
-      РћС‡РёСЃС‚РёС‚Рё РѕР±СЂР°РЅС–
+      Очистити обрані
     </button>
   </div>
 </div>
@@ -110,9 +110,9 @@
     <button id="closeAuthBtn" class="close-btn">?</button>
     <h3 id="authTitle" class="auth-title">Log In</h3>
     <form id="registerForm">
-      <input id="regName" class="auth-input auth-register-only" type="text" placeholder="Р†Рј'СЏ">
-      <input id="regLastName" class="auth-input auth-register-only" type="text" placeholder="РџСЂС–Р·РІРёС‰Рµ">
-      <input id="regPhone" class="auth-input auth-register-only" type="tel" placeholder="РўРµР»РµС„РѕРЅ">
+      <input id="regName" class="auth-input auth-register-only" type="text" placeholder="Ім'я">
+      <input id="regLastName" class="auth-input auth-register-only" type="text" placeholder="Прізвище">
+      <input id="regPhone" class="auth-input auth-register-only" type="tel" placeholder="Телефон">
       <input id="regEmail" class="auth-input" type="email" placeholder="Email Address*">
       <input id="authPassword" class="auth-input" type="password" placeholder="Password*">
       <input id="authPasswordConfirm" class="auth-input auth-register-only" type="password" placeholder="Repeat password*">
@@ -140,32 +140,32 @@
 
     <div class="product-nav">
 
-  <!-- ?? РєРЅРѕРїРєР°: history.back() Сѓ product.js -->
-  <button type="button" class="back-btn" id="productBackBtn" aria-label="РќР°Р·Р°Рґ">
+  <!-- ?? кнопка: history.back() у product.js -->
+  <button type="button" class="back-btn" id="productBackBtn" aria-label="Назад">
   <svg class="back-icon" viewBox="0 0 24 24" aria-hidden="true">
     <path d="M15 6l-6 6 6 6" />
   </svg>
-  РќР°Р·Р°Рґ
+  Назад
 </button>
 
   <!-- ?? breadcrumb -->
   <div class="breadcrumbs">
-    <a href="index.html">Р“РѕР»РѕРІРЅР°</a>
+    <a href="index.html">Головна</a>
     <span>/</span>
 
-    <a href="catalog.html">РљР°С‚Р°Р»РѕРі</a>
+    <a href="catalog.html">Каталог</a>
     <span>/</span>
 
-    <span id="productCategory">РљР°С‚РµРіРѕСЂС–СЏ</span>
+    <span id="productCategory">Категорія</span>
     <span>/</span>
 
-    <span id="breadcrumbTitle">РўРѕРІР°СЂ</span>
+    <span id="breadcrumbTitle">Товар</span>
   </div>
 
     </div>
 
 
-    <!-- ?? РіР°Р»РµСЂРµСЏ -->
+    <!-- ?? галерея -->
     <div class="product-main-columns">
 
     <div class="product-gallery">
@@ -176,7 +176,7 @@
       </div>
     </div>
 
-    <!-- ?? С–РЅС„РѕСЂРјР°С†С–СЏ -->
+    <!-- ?? інформація -->
     <div class="product-info">
       <h2 id="title"></h2>
 
@@ -185,28 +185,28 @@
       </div>
 
       <div class="product-qty">
-        <label for="qty" id="product-qty-label" class="product-qty-label">РљС–Р»СЊРєС–СЃС‚СЊ</label>
+        <label for="qty" id="product-qty-label" class="product-qty-label">Кількість</label>
         <div class="product-qty-controls-row">
         <div class="qty-wrapper cart-qty-wrapper" role="group" aria-labelledby="product-qty-label">
-          <button type="button" onclick="changeProductQty(-1)" class="qty-btn" aria-label="Р—РјРµРЅС€РёС‚Рё РєС–Р»СЊРєС–СЃС‚СЊ">
+          <button type="button" onclick="changeProductQty(-1)" class="qty-btn" aria-label="Зменшити кількість">
             <svg viewBox="0 0 24 24" aria-hidden="true">
               <path d="M5 12h14"/>
             </svg>
           </button>
-          <input type="number" id="qty" value="1" min="1" class="qty-input" inputmode="numeric" aria-label="РљС–Р»СЊРєС–СЃС‚СЊ С‚РѕРІР°СЂСѓ">
-          <button type="button" onclick="changeProductQty(1)" class="qty-btn" aria-label="Р—Р±С–Р»СЊС€РёС‚Рё РєС–Р»СЊРєС–СЃС‚СЊ">
+          <input type="number" id="qty" value="1" min="1" class="qty-input" inputmode="numeric" aria-label="Кількість товару">
+          <button type="button" onclick="changeProductQty(1)" class="qty-btn" aria-label="Збільшити кількість">
             <svg viewBox="0 0 24 24" aria-hidden="true">
               <path d="M12 5v14M5 12h14"/>
             </svg>
           </button>
         </div>
         <div class="product-price-actions">
-          <button id="productFavoriteBtn" class="favorite-btn" type="button" aria-label="Р”РѕРґР°С‚Рё РІ РѕР±СЂР°РЅРµ">
+          <button id="productFavoriteBtn" class="favorite-btn" type="button" aria-label="Додати в обране">
             <svg class="heart-icon" viewBox="0 0 512 512" aria-hidden="true">
               <path d="M257 88L255 88C248.355 74.9828 235.475 63.8415 224 55.1304C173.114 16.5016 99.2988 19.267 51 61.2894C-1.26738 106.765 -12.8083 185.773 13.0116 248C25.4527 277.984 45.9981 303.467 67.9105 327C103.494 365.215 144.281 398.581 184 432.421C198.063 444.402 211.938 456.598 226 468.579C233.971 475.37 241.993 483.022 253 483.907C268.121 485.122 278.342 475.197 289 466C306.641 450.778 324.263 435.533 342 420.421C356.437 408.121 370.854 395.797 385 383.166C443.359 331.055 512 269.827 512 185C512 178.072 512.538 170.886 511.715 164C506.476 120.199 486.854 78.636 450 52.7207C401.715 18.7669 334.983 19.4645 288 55.1304C276.525 63.8415 263.645 74.9828 257 88z"></path>
             </svg>
           </button>
-          <button id="productAddToCartBtn" class="product-cart-btn" type="button" aria-label="Р”РѕРґР°С‚Рё РІ РєРѕС€РёРє">
+          <button id="productAddToCartBtn" class="product-cart-btn" type="button" aria-label="Додати в кошик">
             <svg class="cart-add-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true">
               <path d="M9 22a1 1 0 100-2 1 1 0 000 2zm10 0a1 1 0 100-2 1 1 0 000 2zM1 1h4l2.68 13.39a2 2 0 002 1.61h9.72a2 2 0 002-1.61L23 6H6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
             </svg>
@@ -215,11 +215,11 @@
         </div>
       </div>
 
-      <button class="quick-checkout-btn" id="quickCheckoutBtn">РћР¤РћР РњРРўР</button>
+      <button class="quick-checkout-btn" id="quickCheckoutBtn">ОФОРМИТИ</button>
 
       <div class="product-desc-accordion" id="productDescAccordion">
         <button type="button" class="product-desc-toggle" id="productDescToggle" aria-expanded="false" aria-controls="productDescPanel">
-          <span>РћРїРёСЃ</span>
+          <span>Опис</span>
           <svg class="product-desc-chevron" viewBox="0 0 24 24" width="20" height="20" aria-hidden="true">
             <path fill="currentColor" d="M7 10l5 5 5-5H7z"></path>
           </svg>
@@ -233,15 +233,15 @@
 
   </div>
 
-  <section id="reviews" class="reviews-section" aria-label="Р’С–РґРіСѓРєРё РїСЂРѕ С‚РѕРІР°СЂ">
-    <h3>Р’С–РґРіСѓРєРё</h3>
+  <section id="reviews" class="reviews-section" aria-label="Відгуки про товар">
+    <h3>Відгуки</h3>
     <div id="reviewsList" class="reviews-list"></div>
   </section>
 
   <section class="similar-section">
-    <h3>РЎС…РѕР¶С– С‚РѕРІР°СЂРё</h3>
+    <h3>Схожі товари</h3>
     <div class="similar-wrap">
-      <button id="similarPrev" class="similar-arrow similar-arrow--prev" type="button" aria-label="РџРѕРїРµСЂРµРґРЅС– С‚РѕРІР°СЂРё">
+      <button id="similarPrev" class="similar-arrow similar-arrow--prev" type="button" aria-label="Попередні товари">
         <svg class="similar-arrow__icon" viewBox="0 0 24 24" width="22" height="22" aria-hidden="true">
           <path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M15 6l-6 6 6 6"></path>
         </svg>
@@ -249,7 +249,7 @@
       <div class="similar-rail">
         <div id="similarProducts" class="similar-list"></div>
       </div>
-      <button id="similarNext" class="similar-arrow similar-arrow--next" type="button" aria-label="РќР°СЃС‚СѓРїРЅС– С‚РѕРІР°СЂРё">
+      <button id="similarNext" class="similar-arrow similar-arrow--next" type="button" aria-label="Наступні товари">
         <svg class="similar-arrow__icon" viewBox="0 0 24 24" width="22" height="22" aria-hidden="true">
           <path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M9 6l6 6-6 6"></path>
         </svg>
@@ -257,10 +257,10 @@
     </div>
   </section>
 
-  <section id="discoverSection" class="similar-section similar-section--discover" aria-label="РўРѕРІР°СЂРё Р· С–РЅС€РѕС— РєР°С‚РµРіРѕСЂС–С—" hidden>
-    <h3>РўР°РєРѕР¶ РјРѕР¶СѓС‚СЊ Р·Р°С†С–РєР°РІРёС‚Рё</h3>
+  <section id="discoverSection" class="similar-section similar-section--discover" aria-label="Товари з іншої категорії" hidden>
+    <h3>Також можуть зацікавити</h3>
     <div class="similar-wrap">
-      <button id="discoverPrev" class="similar-arrow similar-arrow--prev" type="button" aria-label="РџРѕРїРµСЂРµРґРЅС– С‚РѕРІР°СЂРё">
+      <button id="discoverPrev" class="similar-arrow similar-arrow--prev" type="button" aria-label="Попередні товари">
         <svg class="similar-arrow__icon" viewBox="0 0 24 24" width="22" height="22" aria-hidden="true">
           <path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M15 6l-6 6 6 6"></path>
         </svg>
@@ -268,7 +268,7 @@
       <div class="similar-rail">
         <div id="discoverProducts" class="similar-list"></div>
       </div>
-      <button id="discoverNext" class="similar-arrow similar-arrow--next" type="button" aria-label="РќР°СЃС‚СѓРїРЅС– С‚РѕРІР°СЂРё">
+      <button id="discoverNext" class="similar-arrow similar-arrow--next" type="button" aria-label="Наступні товари">
         <svg class="similar-arrow__icon" viewBox="0 0 24 24" width="22" height="22" aria-hidden="true">
           <path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M9 6l6 6-6 6"></path>
         </svg>
@@ -284,8 +284,8 @@
           <img src="images/text_logo.png" alt="EVRYKA" class="footer-brand-img">
         </a>
         <p class="footer-desc">
-          3D-РґСЂСѓРєРѕРІР°РЅС– РІРёСЂРѕР±Рё РїС–Рґ РІР°С€С– РїРѕС‚СЂРµР±Рё, СЃС‚РІРѕСЂРµРЅС– Р· СѓРІР°РіРѕСЋ РґРѕ РєРѕР¶РЅРѕС— РґРµС‚Р°Р»С–.
-          РЁРІРёРґРєРѕ. РЇРєС–СЃРЅРѕ. Р— С‚СѓСЂР±РѕС‚РѕСЋ РїСЂРѕ СЂРµР·СѓР»СЊС‚Р°С‚.
+          3D-друковані вироби під ваші потреби, створені з увагою до кожної деталі.
+          Швидко. Якісно. З турботою про результат.
         </p>
         <div class="footer-contacts">
           <a href="tel:+380501662271" class="footer-contact">
@@ -300,38 +300,38 @@
       </div>
 
       <div>
-        <div class="footer-col-title">РќР°РІС–РіР°С†С–СЏ</div>
+        <div class="footer-col-title">Навігація</div>
         <div class="footer-links">
-          <a href="index.html" class="footer-link">Р“РѕР»РѕРІРЅР°</a>
-          <a href="catalog.html" class="footer-link">РљР°С‚Р°Р»РѕРі</a>
-          <a href="about.html" class="footer-link">РџСЂРѕ РЅР°СЃ</a>
-          <a href="order-3d-print.html" class="footer-link">Р—Р°РјРѕРІР»РµРЅРЅСЏ 3D РґСЂСѓРєСѓ</a>
+          <a href="index.html" class="footer-link">Головна</a>
+          <a href="catalog.html" class="footer-link">Каталог</a>
+          <a href="about.html" class="footer-link">Про нас</a>
+          <a href="order-3d-print.html" class="footer-link">Замовлення 3D друку</a>
         </div>
       </div>
 
       <div>
-        <div class="footer-col-title">РљР°С‚РµРіРѕСЂС–С—</div>
+        <div class="footer-col-title">Категорії</div>
         <div class="footer-links">
-          <a href="catalog.html" class="footer-link">РџРµСЂСЃРѕРЅР°Р¶С– С‚Р° С„С–РіСѓСЂРєРё</a>
-          <a href="catalog.html" class="footer-link">РџР°Р·Р»Рё</a>
-          <a href="catalog.html" class="footer-link">Р‘СЂРµР»РѕРєРё</a>
-          <a href="catalog.html" class="footer-link">РЎСѓРІРµРЅС–СЂРё</a>
+          <a href="catalog.html" class="footer-link">Персонажі та фігурки</a>
+          <a href="catalog.html" class="footer-link">Пазли</a>
+          <a href="catalog.html" class="footer-link">Брелоки</a>
+          <a href="catalog.html" class="footer-link">Сувеніри</a>
         </div>
       </div>
 
       <div>
-        <div class="footer-col-title">РџС–РґС‚СЂРёРјРєР°</div>
+        <div class="footer-col-title">Підтримка</div>
         <div class="footer-links">
           <a href="https://t.me/+380501662271" class="footer-link" target="_blank">Telegram</a>
           <a href="viber://chat?number=%2B380501662271" class="footer-link">Viber</a>
-          <a href="about.html#about-v2-location" class="footer-link">Р”Рµ РЅР°СЃ Р·РЅР°Р№С‚Рё</a>
-          <a href="cabinet.html#orders" class="footer-link">РњРѕС— Р·Р°РјРѕРІР»РµРЅРЅСЏ</a>
+          <a href="about.html#about-v2-location" class="footer-link">Де нас знайти</a>
+          <a href="cabinet.html#orders" class="footer-link">Мої замовлення</a>
         </div>
       </div>
     </div>
 
     <div class="footer-bottom">
-      <div class="footer-copy">В© 2026 EVRYKA вЂў Р’СЃС– РїСЂР°РІР° Р·Р°С…РёС‰РµРЅС–</div>
+      <div class="footer-copy">© 2026 EVRYKA • Всі права захищені</div>
       <div class="footer-payments">
         <span class="payment-badge">VISA</span>
         <span class="payment-badge">MASTERCARD</span>
@@ -340,7 +340,7 @@
   </footer>
 
 <div id="chatWidgetRoot" class="chat-widget-root">
-  <button type="button" id="chatWidgetToggle" class="chat-widget-toggle" aria-expanded="false" aria-controls="chatWidgetPanel" title="РќР°РїРёСЃР°С‚Рё РЅР°Рј">
+  <button type="button" id="chatWidgetToggle" class="chat-widget-toggle" aria-expanded="false" aria-controls="chatWidgetPanel" title="Написати нам">
     <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true">
       <path fill="currentColor" d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm0 14H5.17L4 17.17V4h16v12z"></path>
     </svg>
@@ -348,15 +348,15 @@
   <div id="chatWidgetPanel" class="chat-widget-panel" role="dialog" aria-modal="true" aria-labelledby="chatWidgetTitle" aria-hidden="true">
     <div class="chat-widget-card">
     <div class="chat-widget-head-float">
-      <span id="chatWidgetTitle">РќР°РїРёС€С–С‚СЊ РЅР°Рј</span>
-      <button type="button" class="chat-widget-close" aria-label="Р—Р°РєСЂРёС‚Рё С‡Р°С‚">?</button>
+      <span id="chatWidgetTitle">Напишіть нам</span>
+      <button type="button" class="chat-widget-close" aria-label="Закрити чат">?</button>
     </div>
     <div class="chat-widget-sheet">
       <div id="chatWidgetMessages" class="chat-widget-messages" aria-live="polite"></div>
       <div class="chat-widget-compose-float">
         <div class="chat-widget-compose">
-          <input type="text" id="chatWidgetText" class="chat-widget-field" placeholder="Р’Р°С€Рµ Р·Р°РїРёС‚Р°РЅРЅСЏвЂ¦" maxlength="2000" autocomplete="off">
-          <button type="button" id="chatWidgetSend" class="chat-widget-send">РќР°РґС–СЃР»Р°С‚Рё</button>
+          <input type="text" id="chatWidgetText" class="chat-widget-field" placeholder="Ваше запитання…" maxlength="2000" autocomplete="off">
+          <button type="button" id="chatWidgetSend" class="chat-widget-send">Надіслати</button>
         </div>
         <p id="chatWidgetStatus" class="chat-widget-status" role="status"></p>
       </div>
