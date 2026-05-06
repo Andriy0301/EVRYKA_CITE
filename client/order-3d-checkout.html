@@ -201,6 +201,85 @@
 <script src="js/cart.js?v=20260430"></script>
 <script src="js/header-nav.js?v=20260427-4"></script>
 <script src="js/mojibake-fix.js?v=2"></script>
+<script>
+  (function recover3DCheckoutText() {
+    const setText = (selector, text) => {
+      const el = document.querySelector(selector);
+      if (el) el.textContent = text;
+    };
+    const setAttr = (selector, attr, value) => {
+      const el = document.querySelector(selector);
+      if (el) el.setAttribute(attr, value);
+    };
+    const setLabelText = (inputId, text) => {
+      const input = document.getElementById(inputId);
+      const label = input ? input.closest("label") : null;
+      if (!label) return;
+      const textNode = Array.from(label.childNodes).find((n) => n.nodeType === Node.TEXT_NODE);
+      if (textNode) textNode.nodeValue = text;
+    };
+
+    document.title = "Оформлення 3D-замовлення - EVRYKA";
+    setAttr("#navToggle", "aria-label", "Відкрити меню");
+    setAttr("#headerNavPanel", "aria-label", "Головна навігація");
+    setText('#headerNavPanel a[href="index.html"]', "Головна");
+    setText('#headerNavPanel a[href="catalog.html"]', "Каталог");
+    setText('#headerNavPanel a[href="about.html"]', "Про нас");
+    setText('#headerNavPanel a[href="order-3d-print.html"]', "Замовити 3D друк");
+    setAttr("#search", "placeholder", "Пошук");
+    setAttr("#authBtn", "title", "Кабінет");
+    setAttr("#favoritesBtn", "title", "Обране");
+    setAttr(".cart .cart-icon", "alt", "Кошик");
+
+    setText("#cartPanelTitle", "Кошик");
+    document.querySelectorAll(".cart-head-float-close").forEach((b) => (b.textContent = "✕"));
+    setText(".cart-total > span", "Разом");
+    const cartCurrency = document.querySelector(".cart-total div span");
+    if (cartCurrency) cartCurrency.textContent = "грн";
+    setText("#cartSidebar .checkout-btn", "Оформити");
+    setText("#cartSidebar .clear-btn", "Очистити кошик");
+    setText("#favoritesSidebar h3", "Обране");
+    setText("#favoritesSidebar .clear-btn", "Очистити обране");
+
+    setText(".order-items-card h2", "Ваше 3D-замовлення");
+    setText(".order-total-row span", "Разом");
+    const orderCurrency = document.querySelector("#orderTotal + span");
+    if (orderCurrency) orderCurrency.textContent = "грн";
+    setText(".products.cabinet-card h2", "Ваші дані для доставки");
+    setText("#orderForm h3", "Оплата");
+
+    setLabelText("orderName", "Ім'я");
+    setLabelText("orderLastName", "Прізвище");
+    setLabelText("orderPhone", "Телефон");
+    setLabelText("orderPaymentMethod", "Спосіб оплати");
+    setLabelText("orderProvider", "Служба доставки");
+    setLabelText("orderDeliveryType", "Тип доставки");
+    setLabelText("orderCity", "Ваше місто");
+    setLabelText("orderBranch", "Номер відділення");
+    setLabelText("orderAddress", "Адреса доставки");
+    setLabelText("orderMiddleName", "По батькові");
+    setAttr("#orderBranch", "placeholder", "Почніть вводити відділення...");
+    setAttr("#orderAddress", "placeholder", "Вулиця, будинок, квартира");
+    setAttr("#orderMiddleName", "placeholder", "По батькові");
+    setText("#orderPaymentMethodValue", "Оплата при отриманні");
+    setText("#orderProviderValue", "Оберіть службу доставки");
+    setText("#orderDeliveryTypeValue", "Відділення");
+    setText(".cabinet-actions-row .checkout-btn", "Підтвердити замовлення");
+
+    setText(".order-success-title-wrap h3", "Ваше замовлення успішно оформлено");
+    setText(".order-success-subtitle", "Дякуємо за покупку! Менеджер зв'яжеться з вами.");
+    setText(".order-success-actions .checkout-btn", "Закрити");
+    setText(".order-success-check", "✓");
+    setText(".order-success-close", "✕");
+
+    setText(".footer-copy", "© 2026 EVRYKA - всі права захищені");
+    setText("#chatWidgetTitle", "Онлайн чат");
+    setText(".chat-widget-close", "✕");
+    setAttr("#chatWidgetToggle", "title", "Онлайн чат");
+    setAttr("#chatWidgetText", "placeholder", "Ваше запитання...");
+    setText("#chatWidgetSend", "Надіслати");
+  })();
+</script>
   <script src="js/app.js?v=20260427-5"></script>
 <script src="js/chat-widget.js?v=20260409"></script>
 </body>
