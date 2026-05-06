@@ -9,7 +9,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="css/style.css?v=20260506-17">
+  <link rel="stylesheet" href="css/style.css?v=20260506-18">
   <link rel="stylesheet" href="css/evryka-header-hero.css">
   <script src="https://accounts.google.com/gsi/client" async defer></script>
 </head>
@@ -61,49 +61,49 @@
 
 <main class="container order-layout">
   <section class="products cabinet-card order-items-card">
-    <h2>���� 3D-����������</h2>
+    <h2>Ваше 3D-замовлення</h2>
     <div id="orderItems"></div>
-    <div class="cart-total order-total-row"><span>�����</span><div><b id="orderTotal">0</b><span>���</span></div></div>
+    <div class="cart-total order-total-row"><span>Разом</span><div><b id="orderTotal">0</b><span>грн</span></div></div>
   </section>
 
   <section class="products cabinet-card">
-    <h2>��� ��� ����������</h2>
+    <h2>Ваші дані для доставки</h2>
     <form id="orderForm" class="cabinet-form">
-      <label>��'�<input id="orderName" type="text" required></label>
-      <label>�������<input id="orderLastName" type="text" required></label>
-      <label>�������<input id="orderPhone" type="tel" required></label>
+      <label>Ім'я<input id="orderName" type="text" required></label>
+      <label>Прізвище<input id="orderLastName" type="text" required></label>
+      <label>Телефон<input id="orderPhone" type="tel" required></label>
       <label>Email<input id="orderEmail" type="email" required></label>
 
-      <h3>��������</h3>
-      <label>����� ������
+      <h3>Оплата</h3>
+      <label>Спосіб оплати
         <div class="catalog-select-wrap">
-          <button type="button" class="catalog-select-trigger" id="orderPaymentMethodTrigger" aria-expanded="false" aria-haspopup="listbox" aria-controls="orderPaymentMethodPanel"><span class="catalog-select-value" id="orderPaymentMethodValue">������ ��� ��������</span><svg class="catalog-select-chevron" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9l6 6 6-6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg></button>
+          <button type="button" class="catalog-select-trigger" id="orderPaymentMethodTrigger" aria-expanded="false" aria-haspopup="listbox" aria-controls="orderPaymentMethodPanel"><span class="catalog-select-value" id="orderPaymentMethodValue">Оплата при отриманні</span><svg class="catalog-select-chevron" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9l6 6 6-6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg></button>
           <ul id="orderPaymentMethodPanel" class="catalog-select-panel" role="listbox" hidden></ul>
-          <select id="orderPaymentMethod" class="catalog-filter-select-native" tabindex="-1" aria-hidden="true" required><option value="cod">������ ��� ��������</option><option value="mono">������ Monobank</option></select>
+          <select id="orderPaymentMethod" class="catalog-filter-select-native" tabindex="-1" aria-hidden="true" required><option value="cod">Оплата при отриманні</option><option value="mono">Оплата Monobank</option></select>
         </div>
       </label>
-      <label>������ ��������
+      <label>Служба доставки
         <div class="catalog-select-wrap">
-          <button type="button" class="catalog-select-trigger" id="orderProviderTrigger" aria-expanded="false" aria-haspopup="listbox" aria-controls="orderProviderPanel"><span class="catalog-select-value" id="orderProviderValue">������ ������ ��������</span><svg class="catalog-select-chevron" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9l6 6 6-6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg></button>
+          <button type="button" class="catalog-select-trigger" id="orderProviderTrigger" aria-expanded="false" aria-haspopup="listbox" aria-controls="orderProviderPanel"><span class="catalog-select-value" id="orderProviderValue">Оберіть службу доставки</span><svg class="catalog-select-chevron" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9l6 6 6-6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg></button>
           <ul id="orderProviderPanel" class="catalog-select-panel" role="listbox" hidden></ul>
-          <select id="orderProvider" class="catalog-filter-select-native" tabindex="-1" aria-hidden="true" required><option value="">������ ������ ��������</option><option value="nova_poshta">���� �����</option><option value="ukr_poshta">��������</option></select>
+          <select id="orderProvider" class="catalog-filter-select-native" tabindex="-1" aria-hidden="true" required><option value="">Оберіть службу доставки</option><option value="nova_poshta">Нова пошта</option><option value="ukr_poshta">Укрпошта</option></select>
         </div>
       </label>
-      <label id="deliveryTypeWrap">��� ��������
+      <label id="deliveryTypeWrap">Тип доставки
         <div class="catalog-select-wrap">
-          <button type="button" class="catalog-select-trigger" id="orderDeliveryTypeTrigger" aria-expanded="false" aria-haspopup="listbox" aria-controls="orderDeliveryTypePanel"><span class="catalog-select-value" id="orderDeliveryTypeValue">³�������</span><svg class="catalog-select-chevron" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9l6 6 6-6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg></button>
+          <button type="button" class="catalog-select-trigger" id="orderDeliveryTypeTrigger" aria-expanded="false" aria-haspopup="listbox" aria-controls="orderDeliveryTypePanel"><span class="catalog-select-value" id="orderDeliveryTypeValue">Відділення</span><svg class="catalog-select-chevron" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9l6 6 6-6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg></button>
           <ul id="orderDeliveryTypePanel" class="catalog-select-panel" role="listbox" hidden></ul>
-          <select id="orderDeliveryType" class="catalog-filter-select-native" tabindex="-1" aria-hidden="true"><option value="warehouse">³�������</option><option value="postomat">��������</option><option value="address">������� ��������</option></select>
+          <select id="orderDeliveryType" class="catalog-filter-select-native" tabindex="-1" aria-hidden="true"><option value="warehouse">Відділення</option><option value="postomat">Поштомат</option><option value="address">Курʼєрська доставка</option></select>
         </div>
       </label>
-      <label id="cityWrap" class="city-autocomplete-wrap">������ ����<input id="orderCity" type="text" autocomplete="off"><div id="citySuggestions" class="city-suggestions" style="display:none;"></div></label>
+      <label id="cityWrap" class="city-autocomplete-wrap">Ваше місто<input id="orderCity" type="text" autocomplete="off"><div id="citySuggestions" class="city-suggestions" style="display:none;"></div></label>
       <input id="orderCityRef" type="hidden">
-      <label id="branchWrap" class="city-autocomplete-wrap">������ ��������<input id="orderBranch" type="text" autocomplete="off" placeholder="������ ������� ��������..."><div id="branchSuggestions" class="city-suggestions" style="display:none;"></div></label>
+      <label id="branchWrap" class="city-autocomplete-wrap">Номер відділення<input id="orderBranch" type="text" autocomplete="off" placeholder="Почніть вводити відділення..."><div id="branchSuggestions" class="city-suggestions" style="display:none;"></div></label>
       <input id="orderBranchRef" type="hidden">
-      <label id="addressWrap" style="display:none;">������ ��������<input id="orderAddress" type="text" placeholder="������, �������, ��������"></label>
-      <label id="middleNameWrap" style="display:none;">�� �������<input id="orderMiddleName" type="text" placeholder="�� �������"></label>
+      <label id="addressWrap" style="display:none;">Адреса доставки<input id="orderAddress" type="text" placeholder="Вулиця, будинок, квартира"></label>
+      <label id="middleNameWrap" style="display:none;">По батькові<input id="orderMiddleName" type="text" placeholder="По батькові"></label>
       <p id="orderMessage" class="auth-message"></p>
-      <div class="cabinet-actions-row"><button class="checkout-btn" type="submit">ϳ��������� ����������</button></div>
+      <div class="cabinet-actions-row"><button class="checkout-btn" type="submit">Підтвердити замовлення</button></div>
     </form>
   </section>
 </main>
