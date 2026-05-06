@@ -9,7 +9,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="css/style.css?v=20260430-6">
+  <link rel="stylesheet" href="css/style.css?v=20260506-11">
   <link rel="stylesheet" href="css/evryka-header-hero.css?v=20260420-21">
   <script src="https://accounts.google.com/gsi/client" async defer></script>
 </head>
@@ -77,7 +77,7 @@
     <aside class="catalog-filters neo-drawer neo-drawer--filters" data-uflyout="panel" aria-label="Ф�?л�?�?�?и ка�?алог�?">
       <div class="neo-drawer__title-row">
         <h2 class="catalog-filters-title neo-drawer__title">Ф�?л�?�?�?и</h2>
-        <button type="button" class="catalog-filters-close neo-drawer__close" data-uflyout-close id="catalogFiltersCloseBtn" aria-label="�?ак�?и�?и �?�?л�?�?�?и" onclick="window.closeCatalogFiltersDrawer && window.closeCatalogFiltersDrawer()">?</button>
+        <button type="button" class="catalog-filters-close neo-drawer__close" data-uflyout-close id="catalogFiltersCloseBtn" aria-label="�?ак�?и�?и �?�?л�?�?�?и" onclick="window.closeCatalogFiltersDrawer && window.closeCatalogFiltersDrawer()">✕</button>
       </div>
 
       <div class="catalog-filter-block">
@@ -128,7 +128,7 @@
         <section class="products catalog-products-section">
           <div class="catalog-products-head">
             <h2>�?а�?алог �?ова�?�?в</h2>
-            <button type="button" class="back-btn catalog-filters-open-btn neo-drawer-trigger" data-uflyout-trigger id="catalogFiltersOpenBtn" aria-label="�?�?дк�?и�?и �?�?л�?�?�?и" onclick="if(window.openCatalogFiltersDrawer){window.openCatalogFiltersDrawer();}else{document.body.classList.add('catalog-filters-open');var o=document.getElementById('catalogFiltersOverlay');if(o)o.hidden=false;var d=document.querySelector('.page-catalog .catalog-filters[data-uflyout=&quot;panel&quot;]');if(d){d.style.setProperty('position','fixed','important');d.style.setProperty('left','0','important');d.style.setProperty('right','0','important');d.style.setProperty('bottom','78px','important');d.style.setProperty('z-index','1302','important');d.style.setProperty('display','grid','important');d.style.setProperty('opacity','1','important');d.style.setProperty('pointer-events','auto','important');d.style.setProperty('transform','translateY(0) scale(1)','important');}}">
+            <button type="button" class="back-btn catalog-filters-open-btn neo-drawer-trigger" data-uflyout-trigger id="catalogFiltersOpenBtn" aria-label="�?�?дк�?и�?и �?�?л�?�?�?и" onclick="if(window.openCatalogFiltersDrawer){window.openCatalogFiltersDrawer();}else{document.body.classList.add('catalog-filters-open');var o=document.getElementById('catalogFiltersOverlay');if(o)o.hidden=false;var d=document.querySelector('.page-catalog .catalog-filters[data-uflyout=&quot;panel&quot;]');if(d){d.style.setProperty('position','fixed','important');d.style.setProperty('left','0','important');d.style.setProperty('right','0','important');d.style.setProperty('bottom','92px','important');d.style.setProperty('z-index','1302','important');d.style.setProperty('display','grid','important');d.style.setProperty('opacity','1','important');d.style.setProperty('pointer-events','auto','important');d.style.setProperty('transform','translateY(0) scale(1)','important');}}">
               Ф�?л�?�?�?
             </button>
           </div>
@@ -293,11 +293,11 @@
 
 <script src="js/api.js?v=20260426"></script>
 <script src="js/cart.js?v=20260430"></script>
-<script src="js/header-nav.js?v=20260428-2"></script>
+<script src="js/header-nav.js?v=20260430-9"></script>
 <script src="js/mojibake-fix.js?v=1"></script>
   <script src="js/app.js?v=20260427-5"></script>
 <script src="js/custom-select.js?v=1"></script>
-<script src="js/catalog.js?v=20260430-8"></script>
+<script src="js/catalog.js?v=20260430-9"></script>
 <script>
   (function () {
     function recoverCatalogText() {
@@ -336,6 +336,7 @@
       setAttr(".page-catalog .catalog-filters", "aria-label", "Фільтри каталогу");
       setText(".catalog-filters-title", "Фільтри");
       setAttr("#catalogFiltersCloseBtn", "aria-label", "Закрити фільтри");
+      setText("#catalogFiltersCloseBtn", "✕");
       setText("#catalogSortLabel", "Сортування");
       setText("#catalogCategoryLabel", "Категорія");
       setText(".catalog-filter-block .catalog-filter-label:not([id])", "Ціна, грн");

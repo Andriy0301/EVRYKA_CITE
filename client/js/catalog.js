@@ -280,7 +280,7 @@ function initCatalogMobileFilterDrawer() {
     drawer.style.setProperty("position", "fixed", "important");
     drawer.style.setProperty("left", "0", "important");
     drawer.style.setProperty("right", "0", "important");
-    drawer.style.setProperty("bottom", "78px", "important");
+    drawer.style.setProperty("bottom", "92px", "important");
     drawer.style.setProperty("z-index", "1302", "important");
     drawer.style.setProperty("display", "grid", "important");
     drawer.style.setProperty("opacity", "1", "important");
