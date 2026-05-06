@@ -9591,6 +9591,46 @@ body.evryka-site.page-print3d {
   }
 }
 
+/* Absolute last: non-home bottom nav must match home */
+@media (max-width: 768px) {
+  body.evryka-site.has-mobile-bottom-nav:not(.page-home) .mobile-bottom-nav {
+    left: calc(8px + env(safe-area-inset-left, 0px)) !important;
+    right: calc(8px + env(safe-area-inset-right, 0px)) !important;
+    bottom: calc(8px + env(safe-area-inset-bottom, 0px)) !important;
+    z-index: 1200 !important;
+    display: grid !important;
+    grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
+    gap: 4px !important;
+    background: rgba(255, 255, 255, 0.93) !important;
+    border: 1px solid rgba(17, 17, 17, 0.1) !important;
+    border-bottom-color: rgba(17, 17, 17, 0.08) !important;
+    border-radius: 18px !important;
+    backdrop-filter: blur(14px) !important;
+    -webkit-backdrop-filter: blur(14px) !important;
+    padding: 6px 8px !important;
+    box-shadow:
+      0 1px 0 rgba(17, 17, 17, 0.04),
+      0 14px 34px rgba(0, 0, 0, 0.14),
+      0 5px 14px rgba(0, 0, 0, 0.08) !important;
+  }
+
+  body.evryka-site.has-mobile-bottom-nav:not(.page-home) .mobile-bottom-nav__item {
+    min-height: 52px !important;
+    border-radius: 12px !important;
+    color: var(--text-secondary) !important;
+    background: transparent !important;
+    font-size: 12px !important;
+    font-weight: 600 !important;
+    gap: 3px !important;
+    padding: 4px 3px !important;
+  }
+
+  body.evryka-site.has-mobile-bottom-nav:not(.page-home) .mobile-bottom-nav__item.is-active {
+    color: var(--ev-accent) !important;
+    background: rgba(251, 146, 60, 0.14) !important;
+  }
+}
+
 /* Absolute last: cabinet head menu button at row end */
 @media (max-width: 768px) {
   .page-cabinet .cabinet-page-head {
