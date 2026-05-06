@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>??а??алог - EVRYKA</title>
+  <title>??пїЅ??пїЅпїЅпїЅпїЅ - EVRYKA</title>
   <link rel="icon" href="images/favicon.png" type="image/png">
   <link rel="apple-touch-icon" href="images/favicon.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -20,36 +20,36 @@
     <a href="index.html" class="logo header-logo">
       <img src="images/text_logo.png" alt="EVRYKA" class="header-logo-img">
     </a>
-    <button type="button" class="header-burger" id="navToggle" aria-label="????дк??и??и мен??" aria-expanded="false" aria-controls="headerNavPanel">
+    <button type="button" class="header-burger" id="navToggle" aria-label="????пїЅпїЅ??пїЅ??пїЅ пїЅпїЅпїЅ??" aria-expanded="false" aria-controls="headerNavPanel">
       <span class="header-burger__line"></span>
       <span class="header-burger__line"></span>
       <span class="header-burger__line"></span>
     </button>
-    <nav class="nav header-nav" id="headerNavPanel" aria-label="??оловна нав??га????я">
-      <a href="index.html">??оловна</a>
-      <a href="catalog.html" class="active">??а??алог</a>
-      <a href="about.html">????о нас</a>
-      <a href="order-3d-print.html">??амови??и 3D д????к</a>
+    <nav class="nav header-nav" id="headerNavPanel" aria-label="??пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ??пїЅпїЅ????пїЅ">
+      <a href="index.html">??пїЅпїЅпїЅпїЅпїЅпїЅ</a>
+      <a href="catalog.html" class="active">??пїЅ??пїЅпїЅпїЅпїЅ</a>
+      <a href="about.html">????пїЅ пїЅпїЅпїЅ</a>
+      <a href="order-3d-print.html">??пїЅпїЅпїЅпїЅпїЅ??пїЅ 3D пїЅ????пїЅ</a>
     </nav>
     <div class="header-utilities">
       <div class="search-box">
-        <input type="search" placeholder="??о????к" id="search" name="q" autocomplete="off">
+        <input type="search" placeholder="??пїЅ????пїЅ" id="search" name="q" autocomplete="off">
         <div id="searchResults" class="search-results"></div>
       </div>
       <div class="header-actions">
-        <button type="button" id="authBtn" class="auth-icon-btn" title="????о????л??">
+        <button type="button" id="authBtn" class="auth-icon-btn" title="????пїЅ????пїЅ??">
           <svg id="authIcon" viewBox="0 0 24 24" aria-hidden="true">
             <path d="M12 12c2.8 0 5-2.2 5-5s-2.2-5-5-5-5 2.2-5 5 2.2 5 5 5Zm0 2c-4.4 0-8 2.7-8 6v2h16v-2c0-3.3-3.6-6-8-6Z"></path>
           </svg>
           <span id="authInitials" class="auth-initials"></span>
         </button>
-        <button type="button" id="favoritesBtn" class="auth-icon-btn" title="??б??ан??" onclick="toggleFavorites(true)">
+        <button type="button" id="favoritesBtn" class="auth-icon-btn" title="??пїЅ??пїЅпїЅ??" onclick="toggleFavorites(true)">
           <svg class="heart-icon" viewBox="0 0 512 512" aria-hidden="true">
             <path d="M257 88L255 88C248.355 74.9828 235.475 63.8415 224 55.1304C173.114 16.5016 99.2988 19.267 51 61.2894C-1.26738 106.765 -12.8083 185.773 13.0116 248C25.4527 277.984 45.9981 303.467 67.9105 327C103.494 365.215 144.281 398.581 184 432.421C198.063 444.402 211.938 456.598 226 468.579C233.971 475.37 241.993 483.022 253 483.907C268.121 485.122 278.342 475.197 289 466C306.641 450.778 324.263 435.533 342 420.421C356.437 408.121 370.854 395.797 385 383.166C443.359 331.055 512 269.827 512 185C512 178.072 512.538 170.886 511.715 164C506.476 120.199 486.854 78.636 450 52.7207C401.715 18.7669 334.983 19.4645 288 55.1304C276.525 63.8415 263.645 74.9828 257 88z"></path>
           </svg>
         </button>
         <div class="cart" onclick="toggleCart(true)">
-          <img src="images/cart-icon.svg" class="cart-icon" alt="??о??ик">
+          <img src="images/cart-icon.svg" class="cart-icon" alt="??пїЅ??пїЅпїЅ">
           <span id="cartCount">0</span>
         </div>
       </div>
@@ -60,76 +60,76 @@
 <div class="container">
   <div class="catalog-shell">
   <div class="product-nav catalog-page-nav">
-    <button type="button" class="back-btn" id="catalogBackBtn" aria-label="Назад">
+    <button type="button" class="back-btn" id="catalogBackBtn" aria-label="пїЅпїЅпїЅпїЅпїЅ">
       <svg class="back-icon" viewBox="0 0 24 24" aria-hidden="true">
         <path d="M15 6l-6 6 6 6"></path>
       </svg>
-      Назад
+      пїЅпїЅпїЅпїЅпїЅ
     </button>
     <div class="breadcrumbs">
-      <a href="index.html">??оловна</a>
+      <a href="index.html">??пїЅпїЅпїЅпїЅпїЅпїЅ</a>
       <span>/</span>
-      <span>??а??алог</span>
+      <span>??пїЅ??пїЅпїЅпїЅпїЅ</span>
     </div>
   </div>
 
   <div class="catalog-page-layout">
-    <aside class="catalog-filters neo-drawer neo-drawer--filters" data-uflyout="panel" aria-label="Ф??л??????и ка??алог??">
+    <aside class="catalog-filters neo-drawer neo-drawer--filters" data-uflyout="panel" aria-label="пїЅ??пїЅ??????пїЅ пїЅпїЅ??пїЅпїЅпїЅпїЅ??">
       <div class="neo-drawer__title-row">
-        <h2 class="catalog-filters-title neo-drawer__title">Ф??л??????и</h2>
-        <button type="button" class="catalog-filters-close neo-drawer__close" data-uflyout-close id="catalogFiltersCloseBtn" aria-label="??ак??и??и ????л??????и" onclick="window.closeCatalogFiltersDrawer && window.closeCatalogFiltersDrawer()">?</button>
+        <h2 class="catalog-filters-title neo-drawer__title">пїЅ??пїЅ??????пїЅ</h2>
+        <button type="button" class="catalog-filters-close neo-drawer__close" data-uflyout-close id="catalogFiltersCloseBtn" aria-label="??пїЅпїЅ??пїЅ??пїЅ ????пїЅ??????пїЅ" onclick="window.closeCatalogFiltersDrawer && window.closeCatalogFiltersDrawer()">?</button>
       </div>
 
       <div class="catalog-filter-block">
-        <span class="catalog-filter-label" id="catalogSortLabel">Со??????вання</span>
+        <span class="catalog-filter-label" id="catalogSortLabel">пїЅпїЅ??????пїЅпїЅпїЅпїЅпїЅ</span>
         <div class="catalog-select-wrap">
           <button type="button" class="catalog-select-trigger" id="catalogSortTrigger" aria-expanded="false" aria-haspopup="listbox" aria-labelledby="catalogSortLabel catalogSortValue">
-            <span class="catalog-select-value" id="catalogSortValue">??а замов????ванням</span>
+            <span class="catalog-select-value" id="catalogSortValue">??пїЅ пїЅпїЅпїЅпїЅпїЅ????пїЅпїЅпїЅпїЅпїЅпїЅ</span>
             <svg class="catalog-select-chevron" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9l6 6 6-6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg>
           </button>
           <ul class="catalog-select-panel" role="listbox" hidden></ul>
           <select id="catalogSort" class="catalog-filter-select-native" tabindex="-1" aria-hidden="true">
-            <option value="default">??а замов????ванням</option>
-            <option value="price_asc">Спо??а??к?? де??ев????</option>
-            <option value="price_desc">Спо??а??к?? до??ож????</option>
-            <option value="popular">??оп??ля??н??????</option>
+            <option value="default">??пїЅ пїЅпїЅпїЅпїЅпїЅ????пїЅпїЅпїЅпїЅпїЅпїЅ</option>
+            <option value="price_asc">пїЅпїЅпїЅ??пїЅ??пїЅ?? пїЅпїЅ??пїЅпїЅ????</option>
+            <option value="price_desc">пїЅпїЅпїЅ??пїЅ??пїЅ?? пїЅпїЅ??пїЅпїЅ????</option>
+            <option value="popular">??пїЅпїЅ??пїЅпїЅ??пїЅ??????</option>
           </select>
         </div>
       </div>
 
       <div class="catalog-filter-block">
-        <span class="catalog-filter-label" id="catalogCategoryLabel">??а??его????я</span>
+        <span class="catalog-filter-label" id="catalogCategoryLabel">??пїЅ??пїЅпїЅпїЅ????пїЅ</span>
         <div class="catalog-select-wrap">
           <button type="button" class="catalog-select-trigger" id="catalogCategoryTrigger" aria-expanded="false" aria-haspopup="listbox" aria-labelledby="catalogCategoryLabel catalogCategoryValue">
-            <span class="catalog-select-value" id="catalogCategoryValue">Ус?? ка??его??????</span>
+            <span class="catalog-select-value" id="catalogCategoryValue">пїЅпїЅ?? пїЅпїЅ??пїЅпїЅпїЅ??????</span>
             <svg class="catalog-select-chevron" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9l6 6 6-6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg>
           </button>
           <ul class="catalog-select-panel" role="listbox" hidden></ul>
           <select id="catalogFilterCategory" class="catalog-filter-select-native" tabindex="-1" aria-hidden="true">
-            <option value="all">Ус?? ка??его??????</option>
+            <option value="all">пїЅпїЅ?? пїЅпїЅ??пїЅпїЅпїЅ??????</option>
           </select>
         </div>
       </div>
 
       <div class="catalog-filter-block">
-        <span class="catalog-filter-label">Ц??на, г??н</span>
+        <span class="catalog-filter-label">пїЅ??пїЅпїЅ, пїЅ??пїЅ</span>
         <div class="catalog-price-row">
-          <input type="number" id="catalogPriceMin" class="catalog-filter-input" min="0" step="1" placeholder="????д">
-          <span class="catalog-price-dash">—</span>
-          <input type="number" id="catalogPriceMax" class="catalog-filter-input" min="0" step="1" placeholder="??о">
+          <input type="number" id="catalogPriceMin" class="catalog-filter-input" min="0" step="1" placeholder="????пїЅ">
+          <span class="catalog-price-dash">пїЅ</span>
+          <input type="number" id="catalogPriceMax" class="catalog-filter-input" min="0" step="1" placeholder="??пїЅ">
         </div>
       </div>
 
-      <button type="button" id="catalogResetFilters" class="catalog-reset-btn">Скин????и ????л??????и</button>
+      <button type="button" id="catalogResetFilters" class="catalog-reset-btn">пїЅпїЅпїЅпїЅ????пїЅ ????пїЅ??????пїЅ</button>
     </aside>
 
     <div class="catalog-main">
       <div class="catalog-products-inner">
         <section class="products catalog-products-section">
           <div class="catalog-products-head">
-            <h2>??а??алог ??ова????в</h2>
-            <button type="button" class="back-btn catalog-filters-open-btn neo-drawer-trigger" data-uflyout-trigger id="catalogFiltersOpenBtn" aria-label="????дк??и??и ????л??????и" onclick="if(window.openCatalogFiltersDrawer){window.openCatalogFiltersDrawer();}else{document.body.classList.add('catalog-filters-open');var o=document.getElementById('catalogFiltersOverlay');if(o)o.hidden=false;var d=document.querySelector('.page-catalog .catalog-filters[data-uflyout=&quot;panel&quot;]');if(d){d.style.setProperty('position','fixed','important');d.style.setProperty('left','0','important');d.style.setProperty('right','0','important');d.style.setProperty('bottom','92px','important');d.style.setProperty('z-index','1302','important');d.style.setProperty('display','grid','important');d.style.setProperty('opacity','1','important');d.style.setProperty('pointer-events','auto','important');d.style.setProperty('transform','translateY(0) scale(1)','important');}}">
-              Ф??л??????
+            <h2>??пїЅ??пїЅпїЅпїЅпїЅ ??пїЅпїЅпїЅ????пїЅ</h2>
+            <button type="button" class="back-btn catalog-filters-open-btn neo-drawer-trigger" data-uflyout-trigger id="catalogFiltersOpenBtn" aria-label="????пїЅпїЅ??пїЅ??пїЅ ????пїЅ??????пїЅ" onclick="if(window.openCatalogFiltersDrawer){window.openCatalogFiltersDrawer();}else{document.body.classList.add('catalog-filters-open');var o=document.getElementById('catalogFiltersOverlay');if(o)o.hidden=false;var d=document.querySelector('.page-catalog .catalog-filters[data-uflyout=&quot;panel&quot;]');if(d){d.style.setProperty('position','fixed','important');d.style.setProperty('left','0','important');d.style.setProperty('right','0','important');d.style.setProperty('bottom','92px','important');d.style.setProperty('z-index','1302','important');d.style.setProperty('display','grid','important');d.style.setProperty('opacity','1','important');d.style.setProperty('pointer-events','auto','important');d.style.setProperty('transform','translateY(0) scale(1)','important');}}">
+              пїЅ??пїЅ??????
             </button>
           </div>
           <div id="catalogPageGrid" class="catalog-products-grid"></div>
@@ -145,32 +145,32 @@
 
 <div id="cartSidebar" class="cart-sidebar">
   <div class="cart-head-float">
-    <h3 id="cartPanelTitle">??о??ик</h3>
-    <button type="button" class="cart-head-float-close" onclick="toggleCart(false)" aria-label="??ак??и??и ко??ик">?</button>
+    <h3 id="cartPanelTitle">??пїЅ??пїЅпїЅ</h3>
+    <button type="button" class="cart-head-float-close" onclick="toggleCart(false)" aria-label="??пїЅпїЅ??пїЅ??пїЅ пїЅпїЅ??пїЅпїЅ">?</button>
   </div>
   <div id="cartItems" class="cart-items"></div>
   <div class="cart-footer">
     <div class="cart-total">
-      <span>Разом</span>
+      <span>пїЅпїЅпїЅпїЅпїЅ</span>
       <div>
         <b id="cartTotal">0</b>
-        <span>г??н</span>
+        <span>пїЅ??пїЅ</span>
       </div>
     </div>
-    <button class="checkout-btn" onclick="checkout()">????о??ми??и</button>
-    <button class="clear-btn" onclick="clearCart()">????ис??и??и ко??ик</button>
+    <button class="checkout-btn" onclick="checkout()">????пїЅ??пїЅпїЅ??пїЅ</button>
+    <button class="clear-btn" onclick="clearCart()">????пїЅпїЅ??пїЅ??пїЅ пїЅпїЅ??пїЅпїЅ</button>
   </div>
 </div>
 
 <div id="favoritesOverlay" class="cart-overlay" onclick="toggleFavorites(false)"></div>
 <div id="favoritesSidebar" class="cart-sidebar">
   <div class="cart-head-float">
-    <h3>??б??ан??</h3>
-    <button type="button" class="cart-head-float-close" onclick="toggleFavorites(false)" aria-label="??ак??и??и об??ан??">?</button>
+    <h3>??пїЅ??пїЅпїЅ??</h3>
+    <button type="button" class="cart-head-float-close" onclick="toggleFavorites(false)" aria-label="??пїЅпїЅ??пїЅ??пїЅ пїЅпїЅ??пїЅпїЅ??">?</button>
   </div>
   <div id="favoritesItems" class="cart-items"></div>
   <div class="cart-footer">
-    <button class="clear-btn" onclick="clearFavorites()">????ис??и??и об??ан??</button>
+    <button class="clear-btn" onclick="clearFavorites()">????пїЅпїЅ??пїЅ??пїЅ пїЅпїЅ??пїЅпїЅ??</button>
   </div>
 </div>
 
@@ -179,9 +179,9 @@
     <button id="closeAuthBtn" class="close-btn">?</button>
     <h3 id="authTitle" class="auth-title">Log In</h3>
     <form id="registerForm">
-      <input id="regName" class="auth-input auth-register-only" type="text" placeholder="??м'я">
-      <input id="regLastName" class="auth-input auth-register-only" type="text" placeholder="??????зви??е">
-      <input id="regPhone" class="auth-input auth-register-only" type="tel" placeholder="Теле??он">
+      <input id="regName" class="auth-input auth-register-only" type="text" placeholder="??пїЅ'пїЅ">
+      <input id="regLastName" class="auth-input auth-register-only" type="text" placeholder="??????пїЅпїЅпїЅ??пїЅ">
+      <input id="regPhone" class="auth-input auth-register-only" type="tel" placeholder="пїЅпїЅпїЅпїЅ??пїЅпїЅ">
       <input id="regEmail" class="auth-input" type="email" placeholder="Email Address*">
       <input id="authPassword" class="auth-input" type="password" placeholder="Password*">
       <input id="authPasswordConfirm" class="auth-input auth-register-only" type="password" placeholder="Repeat password*">
@@ -210,8 +210,8 @@
           <img src="images/text_logo.png" alt="EVRYKA" class="footer-brand-img">
         </a>
         <p class="footer-desc">
-          3D-друковані вироби під ваші потреби, створені з увагою до кожної деталі.
-          Швидко. Якісно. З турботою про результат.
+          3D-пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ, пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ.
+          пїЅпїЅпїЅпїЅпїЅпїЅ. пїЅпїЅпїЅпїЅпїЅ. пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ.
         </p>
         <div class="footer-contacts">
           <a href="tel:+380501662271" class="footer-contact">
@@ -226,38 +226,38 @@
       </div>
 
       <div>
-        <div class="footer-col-title">Навігація</div>
+        <div class="footer-col-title">пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ</div>
         <div class="footer-links">
-          <a href="index.html" class="footer-link">Головна</a>
-          <a href="catalog.html" class="footer-link">Каталог</a>
-          <a href="about.html" class="footer-link">Про нас</a>
-          <a href="order-3d-print.html" class="footer-link">Замовлення 3D друку</a>
+          <a href="index.html" class="footer-link">пїЅпїЅпїЅпїЅпїЅпїЅпїЅ</a>
+          <a href="catalog.html" class="footer-link">пїЅпїЅпїЅпїЅпїЅпїЅпїЅ</a>
+          <a href="about.html" class="footer-link">пїЅпїЅпїЅ пїЅпїЅпїЅ</a>
+          <a href="order-3d-print.html" class="footer-link">пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ 3D пїЅпїЅпїЅпїЅпїЅ</a>
         </div>
       </div>
 
       <div>
-        <div class="footer-col-title">Категорії</div>
+        <div class="footer-col-title">пїЅпїЅпїЅпїЅпїЅпїЅпїЅ</div>
         <div class="footer-links">
-          <a href="catalog.html" class="footer-link">Персонажі та фігурки</a>
-          <a href="catalog.html" class="footer-link">Пазли</a>
-          <a href="catalog.html" class="footer-link">Брелоки</a>
-          <a href="catalog.html" class="footer-link">Сувеніри</a>
+          <a href="catalog.html" class="footer-link">пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ</a>
+          <a href="catalog.html" class="footer-link">пїЅпїЅпїЅпїЅпїЅ</a>
+          <a href="catalog.html" class="footer-link">пїЅпїЅпїЅпїЅпїЅпїЅпїЅ</a>
+          <a href="catalog.html" class="footer-link">пїЅпїЅпїЅпїЅпїЅпїЅпїЅ</a>
         </div>
       </div>
 
       <div>
-        <div class="footer-col-title">Підтримка</div>
+        <div class="footer-col-title">ПіпїЅпїЅпїЅпїЅпїЅпїЅпїЅ</div>
         <div class="footer-links">
           <a href="https://t.me/+380501662271" class="footer-link" target="_blank">Telegram</a>
           <a href="viber://chat?number=%2B380501662271" class="footer-link">Viber</a>
-          <a href="about.html#about-v2-location" class="footer-link">Де нас знайти</a>
-          <a href="cabinet.html#orders" class="footer-link">Мої замовлення</a>
+          <a href="about.html#about-v2-location" class="footer-link">пїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ</a>
+          <a href="cabinet.html#orders" class="footer-link">пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ</a>
         </div>
       </div>
     </div>
 
     <div class="footer-bottom">
-      <div class="footer-copy">© 2026 EVRYKA • Всі права захищені</div>
+      <div class="footer-copy">пїЅ 2026 EVRYKA пїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ</div>
       <div class="footer-payments">
         <span class="payment-badge">VISA</span>
         <span class="payment-badge">MASTERCARD</span>
@@ -266,7 +266,7 @@
   </footer>
 
 <div id="chatWidgetRoot" class="chat-widget-root">
-  <button type="button" id="chatWidgetToggle" class="chat-widget-toggle" aria-expanded="false" aria-controls="chatWidgetPanel" title="Написа??и нам">
+  <button type="button" id="chatWidgetToggle" class="chat-widget-toggle" aria-expanded="false" aria-controls="chatWidgetPanel" title="пїЅпїЅпїЅпїЅпїЅпїЅ??пїЅ пїЅпїЅпїЅ">
     <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true">
       <path fill="currentColor" d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm0 14H5.17L4 17.17V4h16v12z"></path>
     </svg>
@@ -274,15 +274,15 @@
   <div id="chatWidgetPanel" class="chat-widget-panel" role="dialog" aria-modal="true" aria-labelledby="chatWidgetTitle" aria-hidden="true">
     <div class="chat-widget-card">
     <div class="chat-widget-head-float">
-      <span id="chatWidgetTitle">Напи???????? нам</span>
-      <button type="button" class="chat-widget-close" aria-label="??ак??и??и ??а??">?</button>
+      <span id="chatWidgetTitle">пїЅпїЅпїЅпїЅ???????? пїЅпїЅпїЅ</span>
+      <button type="button" class="chat-widget-close" aria-label="??пїЅпїЅ??пїЅ??пїЅ ??пїЅ??">?</button>
     </div>
     <div class="chat-widget-sheet">
       <div id="chatWidgetMessages" class="chat-widget-messages" aria-live="polite"></div>
       <div class="chat-widget-compose-float">
         <div class="chat-widget-compose">
-          <input type="text" id="chatWidgetText" class="chat-widget-field" placeholder="??а??е запи??ання?" maxlength="2000" autocomplete="off">
-          <button type="button" id="chatWidgetSend" class="chat-widget-send">Над??сла??и</button>
+          <input type="text" id="chatWidgetText" class="chat-widget-field" placeholder="??пїЅ??пїЅ пїЅпїЅпїЅпїЅ??пїЅпїЅпїЅпїЅ?" maxlength="2000" autocomplete="off">
+          <button type="button" id="chatWidgetSend" class="chat-widget-send">пїЅпїЅпїЅ??пїЅпїЅпїЅ??пїЅ</button>
         </div>
         <p id="chatWidgetStatus" class="chat-widget-status" role="status"></p>
       </div>
@@ -301,7 +301,7 @@
 <script>
   (function () {
     function recoverCatalogText() {
-      document.title = "Каталог - EVRYKA";
+      document.title = "пїЅпїЅпїЅпїЅпїЅпїЅпїЅ - EVRYKA";
 
       const setText = (selector, text) => {
         const el = document.querySelector(selector);
@@ -312,93 +312,93 @@
         if (el) el.setAttribute(attr, value);
       };
 
-      setAttr("#navToggle", "aria-label", "Відкрити меню");
-      setAttr("#headerNavPanel", "aria-label", "Головна навігація");
-      setText('#headerNavPanel a[href="index.html"]', "Головна");
-      setText('#headerNavPanel a[href="catalog.html"]', "Каталог");
-      setText('#headerNavPanel a[href="about.html"]', "Про нас");
-      setText('#headerNavPanel a[href="order-3d-print.html"]', "Замовити 3D друк");
-      setAttr("#search", "placeholder", "Пошук");
-      setAttr("#authBtn", "title", "Профіль");
-      setAttr("#favoritesBtn", "title", "Обрані");
-      setAttr(".cart .cart-icon", "alt", "Кошик");
+      setAttr("#navToggle", "aria-label", "ВіпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ");
+      setAttr("#headerNavPanel", "aria-label", "пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ");
+      setText('#headerNavPanel a[href="index.html"]', "пїЅпїЅпїЅпїЅпїЅпїЅпїЅ");
+      setText('#headerNavPanel a[href="catalog.html"]', "пїЅпїЅпїЅпїЅпїЅпїЅпїЅ");
+      setText('#headerNavPanel a[href="about.html"]', "пїЅпїЅпїЅ пїЅпїЅпїЅ");
+      setText('#headerNavPanel a[href="order-3d-print.html"]', "пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ 3D пїЅпїЅпїЅпїЅ");
+      setAttr("#search", "placeholder", "пїЅпїЅпїЅпїЅпїЅ");
+      setAttr("#authBtn", "title", "пїЅпїЅпїЅпїЅпїЅпїЅ");
+      setAttr("#favoritesBtn", "title", "пїЅпїЅпїЅпїЅпїЅ");
+      setAttr(".cart .cart-icon", "alt", "пїЅпїЅпїЅпїЅпїЅ");
 
-      setAttr("#catalogBackBtn", "aria-label", "Назад");
+      setAttr("#catalogBackBtn", "aria-label", "пїЅпїЅпїЅпїЅпїЅ");
       const backBtn = document.getElementById("catalogBackBtn");
       if (backBtn) {
         const icon = backBtn.querySelector(".back-icon");
-        backBtn.textContent = "Назад";
+        backBtn.textContent = "пїЅпїЅпїЅпїЅпїЅ";
         if (icon) backBtn.prepend(icon);
       }
-      setText(".breadcrumbs a", "Головна");
-      setText(".breadcrumbs span:last-child", "Каталог");
+      setText(".breadcrumbs a", "пїЅпїЅпїЅпїЅпїЅпїЅпїЅ");
+      setText(".breadcrumbs span:last-child", "пїЅпїЅпїЅпїЅпїЅпїЅпїЅ");
 
-      setAttr(".page-catalog .catalog-filters", "aria-label", "Фільтри каталогу");
-      setText(".catalog-filters-title", "Фільтри");
-      setAttr("#catalogFiltersCloseBtn", "aria-label", "Закрити фільтри");
+      setAttr(".page-catalog .catalog-filters", "aria-label", "ФіпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ");
+      setText(".catalog-filters-title", "ФіпїЅпїЅпїЅпїЅпїЅ");
+      setAttr("#catalogFiltersCloseBtn", "aria-label", "пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ");
       setText("#catalogFiltersCloseBtn", "?");
-      setText("#catalogSortLabel", "Сортування");
-      setText("#catalogCategoryLabel", "Категорія");
-      setText(".catalog-filter-block .catalog-filter-label:not([id])", "Ціна, грн");
-      setAttr("#catalogPriceMin", "placeholder", "Від");
-      setAttr("#catalogPriceMax", "placeholder", "До");
-      setText("#catalogResetFilters", "Скинути фільтри");
+      setText("#catalogSortLabel", "пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ");
+      setText("#catalogCategoryLabel", "пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ");
+      setText(".catalog-filter-block .catalog-filter-label:not([id])", "ЦіпїЅпїЅ, пїЅпїЅпїЅ");
+      setAttr("#catalogPriceMin", "placeholder", "ВіпїЅ");
+      setAttr("#catalogPriceMax", "placeholder", "пїЅпїЅ");
+      setText("#catalogResetFilters", "пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ");
 
       const sortSelect = document.getElementById("catalogSort");
       if (sortSelect && sortSelect.options.length >= 4) {
-        sortSelect.options[0].text = "За замовчуванням";
-        sortSelect.options[1].text = "Спочатку дешевші";
-        sortSelect.options[2].text = "Спочатку дорожчі";
-        sortSelect.options[3].text = "Популярніші";
+        sortSelect.options[0].text = "пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ";
+        sortSelect.options[1].text = "пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ";
+        sortSelect.options[2].text = "пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ";
+        sortSelect.options[3].text = "пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ";
       }
       const catSelect = document.getElementById("catalogFilterCategory");
       if (catSelect && catSelect.options.length >= 1) {
-        catSelect.options[0].text = "Усі категорії";
+        catSelect.options[0].text = "пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ";
       }
 
-      setText("#catalogSortValue", "За замовчуванням");
-      setText("#catalogCategoryValue", "Усі категорії");
-      setText(".catalog-products-head h2", "Каталог товарів");
-      setAttr("#catalogFiltersOpenBtn", "aria-label", "Відкрити фільтри");
-      setText("#catalogFiltersOpenBtn", "Фільтр");
+      setText("#catalogSortValue", "пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ");
+      setText("#catalogCategoryValue", "пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ");
+      setText(".catalog-products-head h2", "пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ");
+      setAttr("#catalogFiltersOpenBtn", "aria-label", "ВіпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ");
+      setText("#catalogFiltersOpenBtn", "ФіпїЅпїЅпїЅпїЅ");
 
-      setText("#cartPanelTitle", "Кошик");
-      setAttr(".cart-head-float-close", "aria-label", "Закрити панель");
+      setText("#cartPanelTitle", "пїЅпїЅпїЅпїЅпїЅ");
+      setAttr(".cart-head-float-close", "aria-label", "пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ");
       const closeBtns = document.querySelectorAll(".cart-head-float-close");
       closeBtns.forEach((b) => (b.textContent = "?"));
-      setText(".cart-total > span", "Разом");
+      setText(".cart-total > span", "пїЅпїЅпїЅпїЅпїЅ");
       const cartCurrency = document.querySelector(".cart-total div span");
-      if (cartCurrency) cartCurrency.textContent = "грн";
-      setText(".checkout-btn", "Оформити");
-      setText("#cartSidebar .clear-btn", "Очистити кошик");
-      setText("#favoritesSidebar h3", "Обрані");
-      setAttr("#favoritesSidebar .cart-head-float-close", "aria-label", "Закрити обрані");
-      setText("#favoritesSidebar .clear-btn", "Очистити обране");
+      if (cartCurrency) cartCurrency.textContent = "пїЅпїЅпїЅ";
+      setText(".checkout-btn", "пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ");
+      setText("#cartSidebar .clear-btn", "пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ");
+      setText("#favoritesSidebar h3", "пїЅпїЅпїЅпїЅпїЅ");
+      setAttr("#favoritesSidebar .cart-head-float-close", "aria-label", "пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ");
+      setText("#favoritesSidebar .clear-btn", "пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ");
 
-      setAttr("#regName", "placeholder", "Ім'я");
-      setAttr("#regLastName", "placeholder", "Прізвище");
-      setAttr("#regPhone", "placeholder", "Телефон");
+      setAttr("#regName", "placeholder", "пїЅпїЅ'пїЅ");
+      setAttr("#regLastName", "placeholder", "пїЅпїЅпїЅпїЅпїЅпїЅпїЅ");
+      setAttr("#regPhone", "placeholder", "пїЅпїЅпїЅпїЅпїЅпїЅпїЅ");
 
-      setText("footer .footer-col:nth-child(1) h4", "Меню");
-      setText("footer .footer-col:nth-child(2) h4", "Особистий кабінет");
-      setText("footer .footer-col:nth-child(3) h4", "Контакти");
-      setText("footer .footer-col:nth-child(4) h4", "Месенджери");
-      setText('footer .footer-col:nth-child(1) a[href="index.html"]', "Головна");
-      setText('footer .footer-col:nth-child(1) a[href="catalog.html"]', "Каталог");
-      setText('footer .footer-col:nth-child(1) a[href="about.html"]', "Про нас");
-      setText('footer .footer-col:nth-child(1) a[href="order-3d-print.html"]', "Замовити 3D друк");
-      setText('footer .footer-col:nth-child(2) a[href="cabinet.html#orders"]', "Мої замовлення");
-      setText('footer .footer-col:nth-child(2) a[href="cabinet.html#personal"]', "Особисті дані");
-      setText('footer .footer-col:nth-child(2) a[href="catalog.html#favorites"]', "Обране");
-      setText('footer .footer-col:nth-child(3) a[href="about.html#about-v2-location"]', "Локація й графік");
-      setText("footer .pay-text", "Оплата");
-      setText("footer .footer-bottom span", "Українська");
+      setText("footer .footer-col:nth-child(1) h4", "пїЅпїЅпїЅпїЅ");
+      setText("footer .footer-col:nth-child(2) h4", "пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ");
+      setText("footer .footer-col:nth-child(3) h4", "пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ");
+      setText("footer .footer-col:nth-child(4) h4", "пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ");
+      setText('footer .footer-col:nth-child(1) a[href="index.html"]', "пїЅпїЅпїЅпїЅпїЅпїЅпїЅ");
+      setText('footer .footer-col:nth-child(1) a[href="catalog.html"]', "пїЅпїЅпїЅпїЅпїЅпїЅпїЅ");
+      setText('footer .footer-col:nth-child(1) a[href="about.html"]', "пїЅпїЅпїЅ пїЅпїЅпїЅ");
+      setText('footer .footer-col:nth-child(1) a[href="order-3d-print.html"]', "пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ 3D пїЅпїЅпїЅпїЅ");
+      setText('footer .footer-col:nth-child(2) a[href="cabinet.html#orders"]', "пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ");
+      setText('footer .footer-col:nth-child(2) a[href="cabinet.html#personal"]', "пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ");
+      setText('footer .footer-col:nth-child(2) a[href="catalog.html#favorites"]', "пїЅпїЅпїЅпїЅпїЅпїЅ");
+      setText('footer .footer-col:nth-child(3) a[href="about.html#about-v2-location"]', "пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅ");
+      setText("footer .pay-text", "пїЅпїЅпїЅпїЅпїЅпїЅ");
+      setText("footer .footer-bottom span", "пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ");
 
-      setAttr("#chatWidgetToggle", "title", "Написати нам");
-      setText("#chatWidgetTitle", "Онлайн чат");
-      setAttr(".chat-widget-close", "aria-label", "Закрити чат");
-      setAttr("#chatWidgetText", "placeholder", "Ваше запитання...");
-      setText("#chatWidgetSend", "Надіслати");
+      setAttr("#chatWidgetToggle", "title", "пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ");
+      setText("#chatWidgetTitle", "пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ");
+      setAttr(".chat-widget-close", "aria-label", "пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ");
+      setAttr("#chatWidgetText", "placeholder", "пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ...");
+      setText("#chatWidgetSend", "пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ");
     }
 
     if (document.readyState === "loading") {
