@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="uk">
 <head>
   <meta charset="UTF-8" />
@@ -2423,7 +2423,7 @@
   <script>
     // Text recovery for corrupted characters on homepage
     (function recoverHomeText() {
-      document.title = "EVRYKA - 3D-�������� ������ �� ����������";
+      document.title = "EVRYKA - 3D-друковані вироби під замовлення";
 
       const setText = (selector, text) => {
         const el = document.querySelector(selector);
@@ -2438,15 +2438,15 @@
         if (el) el.innerHTML = html;
       };
 
-      setText(".section:nth-of-type(1) .section-label", "�� ����������");
-      setText(".section:nth-of-type(1) .section-title", "������в�");
-      setText(".section:nth-of-type(1) .section-link", "�� �������");
+      setText(".section:nth-of-type(1) .section-label", "По категоріях");
+      setText(".section:nth-of-type(1) .section-title", "НАПРЯМКИ");
+      setText(".section:nth-of-type(1) .section-link", "До каталогу");
 
       const cats = [
-        { href: "catalog.html?cats=�����������", name: "�����������", count: "�������, ����������" },
-        { href: "catalog.html?cats=�������", name: "�������", count: "����������, ������" },
-        { href: "catalog.html?cats=�������", name: "�������", count: "Գ�����, ���������" },
-        { href: "catalog.html?cats=�������", name: "�������", count: "�������, ���������" }
+        { href: "catalog.html?cats=Інструменти", name: "Інструменти", count: "Шаблони, кондуктори" },
+        { href: "catalog.html?cats=Корпуси", name: "Корпуси", count: "Електроніка, монтаж" },
+        { href: "catalog.html?cats=Циклони", name: "Циклони", count: "Фільтри, майстерня" },
+        { href: "catalog.html?cats=Брелоки", name: "Брелоки", count: "Сувеніри, подарунки" }
       ];
       document.querySelectorAll(".cat-grid .cat-card").forEach((card, i) => {
         const data = cats[i];
@@ -2458,39 +2458,39 @@
         if (count) count.textContent = data.count;
       });
 
-      setText("#catalog .section-label", "� ��������");
-      setText("#catalog .section-title", "�������Ͳ ������");
+      setText("#catalog .section-label", "У продажі");
+      setText("#catalog .section-title", "ДЕТАЛІ ЯКІ ВИРІШУЮТЬ");
       const productsHeaderLink = document.querySelector("#catalog .section-link");
-      if (productsHeaderLink) productsHeaderLink.childNodes[0].textContent = "�� ������ ";
+      if (productsHeaderLink) productsHeaderLink.childNodes[0].textContent = "Всі товари ";
 
-      setAttr("#homeCardImage1", "alt", "������ ���������");
-      setAttr("#homeCardImage2", "alt", "������ ����������");
-      setAttr("#homeCardImage3", "alt", "����� ������");
-      setText("#homeCardName1", "������ ��������� ��� ������ �� ����������");
-      setText("#homeCardName2", "������ ����������� ������� ��� ���������� �� ���������� 125 ��");
-      setText("#homeCardName3", "����� ������ (Labubu) � ������� ���������� �������");
+      setAttr("#homeCardImage1", "alt", "Шаблон кондуктор");
+      setAttr("#homeCardImage2", "alt", "Корпус вентиляція");
+      setAttr("#homeCardImage3", "alt", "Брілок Лабубу");
+      setText("#homeCardName1", "Шаблон кондуктор для отворів під інсталяцію");
+      setText("#homeCardName2", "Корпус прихованого монтажу для вентиляції під вентилятор 125 мм");
+      setText("#homeCardName3", "Брілок Лабубу (Labubu) — стильна колекційна іграшка");
       const p1 = document.getElementById("homeCardPrice1");
       const p2 = document.getElementById("homeCardPrice2");
       const p3 = document.getElementById("homeCardPrice3");
-      if (p1) p1.innerHTML = '325 <small>���</small>';
-      if (p2) p2.innerHTML = '799 <small>���</small>';
-      if (p3) p3.innerHTML = '350 <small>���</small>';
+      if (p1) p1.innerHTML = '325 <small>грн</small>';
+      if (p2) p2.innerHTML = '799 <small>грн</small>';
+      if (p3) p3.innerHTML = '350 <small>грн</small>';
 
-      setText(".print-cta-eyebrow", "������� 3D-�����");
-      setHtml(".print-cta-title", '���в���<br>�²�<br><span style="color:var(--orange)">������?</span>');
-      setText(".print-cta-desc", "���������� 3D-���� ����-��� ���������. �������, ����������, ���������, ������� � ��������� �� ������ ����������� ��� ���������� � �������.");
+      setText(".print-cta-eyebrow", "Послуга 3D-друку");
+      setHtml(".print-cta-title", 'ПОТРІБЕН<br>СВІЙ<br><span style="color:var(--orange)">ПРОЕКТ?</span>');
+      setText(".print-cta-desc", "Замовляйте 3D-друк будь-якої складності. Корпуси, запчастини, прототипи, сувеніри — надрукуємо за вашими кресленнями або допоможемо з моделлю.");
       const printBtn = document.querySelector(".print-cta .btn-primary");
-      if (printBtn) printBtn.childNodes[2].textContent = " �������� ������";
+      if (printBtn) printBtn.childNodes[2].textContent = " Залишити заявку";
 
-      setText(".section:nth-of-type(2) .section-label", "�� �� ������");
-      setHtml(".section:nth-of-type(2) .section-title", "²� ��ů<br>�� ������");
+      setText(".section:nth-of-type(2) .section-label", "Як це працює");
+      setHtml(".section:nth-of-type(2) .section-title", "ВІД ІДЕЇ<br>ДО ВИРОБУ");
 
-      const howTitles = ["������ �����", "�������", "������������", "��������"];
+      const howTitles = ["Оберіть товар", "Оплатіть", "Виготовлення", "Доставка"];
       const howDescs = [
-        "����������� ������� � ������� ������� ��� ������������� 3D-���� �� ���� �������.",
-        "Visa, MasterCard ��� ������ ��� �������� ��� ���� ��������.",
-        "������� � ������ ��������. ����������� ����� ������������ - 1-3 ��.",
-        "����������� �� ����� ��� �������� � ����� �� ����������� �����������."
+        "Перегляньте каталог і замовте готовий або індивідуальний 3D-виріб під ваші потреби.",
+        "Visa, MasterCard або оплата при отриманні для вашої зручності.",
+        "Друкуємо з якісних матеріалів. Стандартний термін виготовлення - 1-3 дні.",
+        "Доставляємо по Україні або самовивіз у Львові за попередньою домовленістю."
       ];
       document.querySelectorAll(".how-grid .how-item").forEach((item, i) => {
         const t = item.querySelector(".how-title");
@@ -2503,18 +2503,18 @@
       if (testimonialsSection) {
         const label = testimonialsSection.querySelector(".section-label");
         const title = testimonialsSection.querySelector(".section-title");
-        if (label) label.textContent = "³�����";
-        if (title) title.innerHTML = "��<br>������ �˲����";
+        if (label) label.textContent = "Відгуки";
+        if (title) title.innerHTML = "ЩО<br>КАЖУТЬ КЛІЄНТИ";
       }
-      document.querySelectorAll(".testimonial-card .stars").forEach((s) => (s.textContent = "?????"));
+      document.querySelectorAll(".testimonial-card .stars").forEach((s) => (s.textContent = "★★★★★"));
 
-      const names = ["����� �.", "����� �.", "������ �."];
-      const roles = ["�������-���������", "��������� �볺��", "��������� ��������"];
-      const avatars = ["��", "��", "��"];
+      const names = ["Андрій Р.", "Ірина К.", "Олексій С."];
+      const roles = ["майстер-ремонтник", "приватний клієнт", "приватний замовник"];
+      const avatars = ["АР", "ІК", "ОС"];
       const reviews = [
-        "�������� ������ ����������� ������� - ��� ���������� ���� ��������, ������� ������. ����� �������� ������, �������� ������. ����������!",
-        "����� Labubu ������ ���� ����� � ������, ������� �������, ������ ����. ������ � ������. ����� �� ������ � ����� ������������!",
-        "�������� ������ ��� ����������� ������� �� ������. ϳ����� ��������, ���� ���������, ��� ���. ���� ���������� ��."
+        "Замовляв корпус прихованого монтажу - все виготовили дуже акуратно, підігнали розміри. Якість матеріалу відмінна, доставка швидка. Рекомендую!",
+        "Брілок Labubu вийшов дуже милий і якісний, хороший пластик, гарний колір. Дитина в захваті. Дякую за швидке і якісне виготовлення!",
+        "Замовляв шаблон для прихованого монтажу під плитку. Підійшов ідеально, друк акуратний, краї рівні. Буду звертатися ще."
       ];
       document.querySelectorAll(".testimonial-card").forEach((card, i) => {
         const n = card.querySelector(".author-name");
@@ -2527,40 +2527,40 @@
         if (t && reviews[i]) t.textContent = `"${reviews[i]}"`;
       });
 
-      setText(".footer-desc", "3D-�������� ������ ��� �������, �������� �� ���������. ����� ������ ��� �� ������������ ����������.");
-      setText(".footer-copy", "� 2026 EVRYKA - �� ����� �������");
-      const footerTitles = ["��������", "�������", "��������"];
+      setText(".footer-desc", "3D-друковані вироби для ремонту, творчості та прототипів. Готові рішення або під індивідуальне замовлення.");
+      setText(".footer-copy", "© 2026 EVRYKA - всі права захищені");
+      const footerTitles = ["Навігація", "Категорії", "Контакти"];
       document.querySelectorAll(".footer-grid .footer-col-title").forEach((el, i) => {
         if (footerTitles[i]) el.textContent = footerTitles[i];
       });
       const footerLinks = document.querySelectorAll(".footer-grid .footer-link");
       const footerLinkTexts = [
-        "�������", "�������", "��� ���", "�������� 3D ����",
-        "�����������", "�������", "�������", "�������",
-        "Telegram", "Viber", "������� � �����", "�� ����������"
+        "Головна", "Каталог", "Про нас", "Замовити 3D друк",
+        "Інструменти", "Корпуси", "Циклони", "Брелоки",
+        "Telegram", "Viber", "Локація й графік", "Мої замовлення"
       ];
       footerLinks.forEach((el, i) => {
         if (footerLinkTexts[i]) el.textContent = footerLinkTexts[i];
       });
 
-      setText("#cartPanelTitle", "�����");
-      setText(".cart-total > span", "�����");
+      setText("#cartPanelTitle", "Кошик");
+      setText(".cart-total > span", "Разом");
       const cartCurrency = document.querySelector(".cart-total div span");
-      if (cartCurrency) cartCurrency.textContent = "���";
-      setText(".checkout-btn", "��������");
-      setText(".clear-btn", "�������� �����");
-      setText("#favoritesSidebar h3", "�����");
-      setText("#favoritesSidebar .clear-btn", "�������� ������");
-      setAttr("#regName", "placeholder", "��'�");
-      setAttr("#regLastName", "placeholder", "�������");
-      setAttr("#regPhone", "placeholder", "�������");
-      setText("#switchRegisterBtn", "�������� ������");
-      setText("#switchLoginBtn", "����������� �� �����");
+      if (cartCurrency) cartCurrency.textContent = "грн";
+      setText(".checkout-btn", "Оформити");
+      setText(".clear-btn", "Очистити кошик");
+      setText("#favoritesSidebar h3", "Обрані");
+      setText("#favoritesSidebar .clear-btn", "Очистити обране");
+      setAttr("#regName", "placeholder", "Ім'я");
+      setAttr("#regLastName", "placeholder", "Прізвище");
+      setAttr("#regPhone", "placeholder", "Телефон");
+      setText("#switchRegisterBtn", "Створити акаунт");
+      setText("#switchLoginBtn", "Повернутись до входу");
       const termsText = document.querySelector(".auth-terms span");
-      if (termsText) termsText.textContent = "���������� � ������� ������������ �� �������� ��������������";
-      setText("#chatWidgetTitle", "������ ���");
-      setText("#chatWidgetSend", "��������");
-      setAttr("#chatWidgetText", "placeholder", "���� ���������...");
+      if (termsText) termsText.textContent = "Я погоджуюсь з умовами використання та політикою конфіденційності";
+      setText("#chatWidgetTitle", "Онлайн чат");
+      setText("#chatWidgetSend", "Надіслати");
+      setAttr("#chatWidgetText", "placeholder", "Ваше запитання...");
 
       // Final guard: products section heading must stay products
       const productsSection = document.getElementById("catalog");
@@ -2568,9 +2568,9 @@
         const pLabel = productsSection.querySelector(".section-label");
         const pTitle = productsSection.querySelector(".section-title");
         const pLink = productsSection.querySelector(".section-link");
-        if (pLabel) pLabel.textContent = "� ��������";
-        if (pTitle) pTitle.innerHTML = "�������Ͳ<br>������";
-        if (pLink && pLink.childNodes[0]) pLink.childNodes[0].textContent = "�� ������ ";
+        if (pLabel) pLabel.textContent = "У продажі";
+        if (pTitle) pTitle.innerHTML = "ДЕТАЛІ ЯКІ<br>ВИРІШУЮТЬ";
+        if (pLink && pLink.childNodes[0]) pLink.childNodes[0].textContent = "Всі товари ";
       }
     })();
 
@@ -2677,7 +2677,7 @@
   <script src="js/api.js?v=20260426"></script>
   <script src="js/cart.js?v=20260430"></script>
   <script src="js/header-nav.js?v=20260427-4"></script>
-  <script src="js/mojibake-fix.js?v=1"></script>
+  <script src="js/mojibake-fix.js?v=2"></script>
   <script src="js/app.js?v=20260430-6"></script>
   <script src="js/chat-widget.js?v=20260409"></script>
 </body>

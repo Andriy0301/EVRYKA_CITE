@@ -1,5 +1,5 @@
 (function () {
-  const suspiciousPattern = /[ÃÂÊÐÑÒÓÎÏÇËÌÍÐÏÑÒÓÔÕÖ×ØÙÚÛÜÝÞßàáâãäåæçèéêëìíîïðñòóôõö÷øùúûüýþÿ]|пїЅ/;
+  const suspiciousPattern = /[ÃÂÊÐÑÒÓÎÏÇËÌÍÐÏÑÒÓÔÕÖ×ØÙÚÛÜÝÞßàáâãäåæçèéêëìíîïðñòóôõö÷øùúûüýþÿ]|пїЅ|�/;
   const cyrillicPattern = /[А-Яа-яІіЇїЄєҐґ]/g;
   const latinPattern = /[A-Za-z]/g;
   const decoder = typeof TextDecoder !== "undefined" ? new TextDecoder("windows-1251") : null;
@@ -23,18 +23,21 @@
 
   function fixText(value) {
     if (!value || typeof value !== "string") return value;
-    if (!suspiciousPattern.test(value)) return value;
-    if (value.includes("пїЅ")) {
-      // Replacement-character mojibake requires explicit per-page text fixes.
-      return value;
+    let nextValue = value;
+    if (nextValue.includes("�")) {
+      // Hard requirement: never show replacement symbol on UI.
+      nextValue = nextValue.replace(/�+/g, "");
+      nextValue = nextValue.replace(/\s{2,}/g, " ").trim();
     }
-    const decoded = decodeLatin1To1251(value);
-    if (!decoded || decoded === value) return value;
-    if (decoded.includes("\uFFFD")) return value;
+    if (!suspiciousPattern.test(nextValue)) return nextValue;
+    if (nextValue.includes("пїЅ")) return nextValue;
+    const decoded = decodeLatin1To1251(nextValue);
+    if (!decoded || decoded === nextValue) return nextValue;
+    if (decoded.includes("\uFFFD")) return nextValue;
 
-    const beforeScore = scoreText(value);
+    const beforeScore = scoreText(nextValue);
     const afterScore = scoreText(decoded);
-    return afterScore > beforeScore + 1 ? decoded : value;
+    return afterScore > beforeScore + 1 ? decoded : nextValue;
   }
 
   function fixElementText(node) {
