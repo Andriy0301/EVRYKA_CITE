@@ -10035,3 +10035,43 @@ body.evryka-site.page-print3d {
   }
 }
 
+/* Absolute final: force same "More" menu style on home */
+@media (max-width: 768px) {
+  body.evryka-site.page-home .mobile-more-sheet__panel {
+    left: calc(var(--neo-final-side) + env(safe-area-inset-left, 0px)) !important;
+    right: calc(var(--neo-final-side) + env(safe-area-inset-right, 0px)) !important;
+    bottom: calc(80px + var(--neo-final-side) + env(safe-area-inset-bottom, 0px)) !important;
+    border-radius: 18px !important;
+    border: 1px solid rgba(17, 17, 17, 0.1) !important;
+    background: rgba(255, 255, 255, 0.93) !important;
+    backdrop-filter: blur(14px) !important;
+    -webkit-backdrop-filter: blur(14px) !important;
+    box-shadow:
+      0 1px 0 rgba(17, 17, 17, 0.04),
+      0 14px 34px rgba(0, 0, 0, 0.14),
+      0 5px 14px rgba(0, 0, 0, 0.08) !important;
+    padding: 14px !important;
+    gap: 10px !important;
+  }
+
+  body.evryka-site.page-home .mobile-more-sheet__link {
+    min-height: 44px !important;
+    border-radius: 12px !important;
+    border: 1px solid rgba(17, 17, 17, 0.1) !important;
+    background: rgba(255, 255, 255, 0.92) !important;
+    color: var(--text-primary) !important;
+    font-size: 15px !important;
+    font-weight: 650 !important;
+    padding: 10px 12px !important;
+  }
+
+  body.evryka-site.page-home .mobile-more-sheet__close {
+    width: 32px !important;
+    height: 32px !important;
+    border-radius: 12px !important;
+    border: 1px solid rgba(17, 17, 17, 0.1) !important;
+    background: rgba(255, 255, 255, 0.92) !important;
+    color: var(--text-primary) !important;
+  }
+}
+
