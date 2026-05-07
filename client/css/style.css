@@ -9918,7 +9918,7 @@ body.evryka-site.page-print3d {
   }
 
   .page-print3d .catalog-shell > .product-nav.catalog-page-nav {
-    padding-top: 0 !important;
+    padding-top: var(--product-nav-y) !important;
     gap: 8px !important;
   }
 
@@ -10008,6 +10008,30 @@ body.evryka-site.page-print3d {
     stroke: var(--ev-p-ink, var(--ev-ink)) !important;
     stroke-width: 3 !important;
     fill: none !important;
+  }
+}
+
+/* Absolute final: keep bottom nav above "More" blur */
+@media (max-width: 768px) {
+  body.mobile-more-open .mobile-more-sheet {
+    z-index: 1300 !important;
+  }
+
+  body.mobile-more-open .mobile-more-sheet__backdrop {
+    z-index: 0 !important;
+  }
+
+  body.mobile-more-open .mobile-more-sheet__panel {
+    z-index: 1 !important;
+  }
+
+  body.mobile-more-open .mobile-bottom-nav {
+    position: fixed !important;
+    z-index: 1600 !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+    transform: translateY(0) !important;
+    pointer-events: auto !important;
   }
 }
 
