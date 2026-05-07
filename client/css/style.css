@@ -10035,9 +10035,9 @@ body.evryka-site.page-print3d {
   }
 }
 
-/* Absolute final: force same "More" menu style on home */
+/* Absolute final: force same "More" menu style on all pages */
 @media (max-width: 768px) {
-  body.evryka-site.page-home .mobile-more-sheet__panel {
+  body.evryka-site.has-mobile-bottom-nav .mobile-more-sheet__panel {
     left: calc(var(--neo-final-side) + env(safe-area-inset-left, 0px)) !important;
     right: calc(var(--neo-final-side) + env(safe-area-inset-right, 0px)) !important;
     bottom: calc(80px + var(--neo-final-side) + env(safe-area-inset-bottom, 0px)) !important;
@@ -10054,7 +10054,7 @@ body.evryka-site.page-print3d {
     gap: 10px !important;
   }
 
-  body.evryka-site.page-home .mobile-more-sheet__link {
+  body.evryka-site.has-mobile-bottom-nav .mobile-more-sheet__link {
     min-height: 44px !important;
     border-radius: 12px !important;
     border: 1px solid rgba(17, 17, 17, 0.1) !important;
@@ -10065,13 +10065,48 @@ body.evryka-site.page-print3d {
     padding: 10px 12px !important;
   }
 
-  body.evryka-site.page-home .mobile-more-sheet__close {
+  body.evryka-site.has-mobile-bottom-nav .mobile-more-sheet__close {
     width: 32px !important;
     height: 32px !important;
     border-radius: 12px !important;
     border: 1px solid rgba(17, 17, 17, 0.1) !important;
     background: rgba(255, 255, 255, 0.92) !important;
     color: var(--text-primary) !important;
+  }
+}
+
+/* Absolute final: bottom nav must always stay visible and on top */
+@media (max-width: 768px) {
+  body.evryka-site.has-mobile-bottom-nav .mobile-bottom-nav {
+    position: fixed !important;
+    z-index: 5000 !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+    display: grid !important;
+    transform: translateY(0) !important;
+    pointer-events: auto !important;
+  }
+
+  body.evryka-site.has-mobile-bottom-nav.cart-open .mobile-bottom-nav,
+  body.evryka-site.has-mobile-bottom-nav.header-nav-open .mobile-bottom-nav,
+  body.evryka-site.has-mobile-bottom-nav.mobile-more-open .mobile-bottom-nav,
+  body.evryka-site.has-mobile-bottom-nav.catalog-filters-open .mobile-bottom-nav,
+  body.evryka-site.has-mobile-bottom-nav.cabinet-menu-open .mobile-bottom-nav {
+    opacity: 1 !important;
+    visibility: visible !important;
+    display: grid !important;
+    transform: translateY(0) !important;
+    pointer-events: auto !important;
+    z-index: 5000 !important;
+  }
+
+  body.evryka-site.has-mobile-bottom-nav .chat-widget-root,
+  body.evryka-site.has-mobile-bottom-nav .scroll-to-top-btn,
+  body.evryka-site.has-mobile-bottom-nav .mobile-more-sheet,
+  body.evryka-site.has-mobile-bottom-nav .catalog-filters-overlay,
+  body.evryka-site.has-mobile-bottom-nav .cabinet-menu-overlay,
+  body.evryka-site.has-mobile-bottom-nav .cart-overlay {
+    z-index: 3000 !important;
   }
 }
 
