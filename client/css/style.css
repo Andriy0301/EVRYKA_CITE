@@ -6093,7 +6093,7 @@ body.page-catalog .scroll-to-top-btn,
 body.page-print3d .scroll-to-top-btn {
   position: fixed;
   right: calc(18px + env(safe-area-inset-right, 0px));
-  bottom: calc(18px + 52px + 12px + env(safe-area-inset-bottom, 0px));
+  bottom: calc(18px + 52px + 18px + env(safe-area-inset-bottom, 0px));
   z-index: 10049;
   width: 52px;
   height: 52px;
@@ -9219,7 +9219,7 @@ body.evryka-site.page-print3d {
   body.page-catalog .scroll-to-top-btn,
   body.page-print3d .scroll-to-top-btn {
     right: calc(8px + env(safe-area-inset-right, 0px));
-    bottom: calc(96px + 52px + 14px + env(safe-area-inset-bottom, 0px));
+    bottom: calc(88px + 52px + 8px + env(safe-area-inset-bottom, 0px));
   }
 }
 
@@ -9938,6 +9938,15 @@ body.evryka-site.page-print3d {
     transform: translateY(0) !important;
     pointer-events: auto !important;
     z-index: 1251 !important;
+  }
+}
+
+/* Absolute last: no blurred backdrop when "More" is open */
+@media (max-width: 768px) {
+  .mobile-more-sheet__backdrop {
+    background: transparent !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
   }
 }
 

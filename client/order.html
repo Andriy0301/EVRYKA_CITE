@@ -9,7 +9,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="css/style.css?v=20260506-19">
+  <link rel="stylesheet" href="css/style.css?v=20260507-8">
   <link rel="stylesheet" href="css/evryka-header-hero.css">
   <script src="https://accounts.google.com/gsi/client" async defer></script>
 </head>
@@ -347,6 +347,7 @@
       setLabelText("orderMiddleName", "По батькові");
 
       setText("#orderForm h3", "Оплата");
+      setLabelText("orderPaymentMethod", "Спосіб оплати");
       setText("#orderPaymentMethodValue", "Оплата при отриманні");
       setText("#orderProviderValue", "Оберіть службу доставки");
       setText("#orderDeliveryTypeValue", "Відділення");
@@ -354,6 +355,34 @@
       setAttr("#orderAddress", "placeholder", "Вулиця, будинок, квартира");
       setAttr("#orderMiddleName", "placeholder", "По батькові");
       setText(".cabinet-actions-row .checkout-btn", "Підтвердити замовлення");
+
+      const paymentSelect = document.getElementById("orderPaymentMethod");
+      if (paymentSelect && paymentSelect.options.length >= 2) {
+        paymentSelect.options[0].text = "Оплата при отриманні";
+        paymentSelect.options[1].text = "Оплата Monobank";
+      }
+      const providerSelect = document.getElementById("orderProvider");
+      if (providerSelect && providerSelect.options.length >= 3) {
+        providerSelect.options[0].text = "Оберіть службу доставки";
+        providerSelect.options[1].text = "Нова пошта";
+        providerSelect.options[2].text = "Укрпошта";
+      }
+      const typeSelect = document.getElementById("orderDeliveryType");
+      if (typeSelect && typeSelect.options.length >= 3) {
+        typeSelect.options[0].text = "Відділення";
+        typeSelect.options[1].text = "Поштомат";
+        typeSelect.options[2].text = "Кур'єрська доставка";
+      }
+      const syncSelectText = (selectId, valueId) => {
+        const select = document.getElementById(selectId);
+        const valueEl = document.getElementById(valueId);
+        if (!select || !valueEl) return;
+        const option = select.options[select.selectedIndex];
+        if (option?.textContent) valueEl.textContent = option.textContent;
+      };
+      syncSelectText("orderPaymentMethod", "orderPaymentMethodValue");
+      syncSelectText("orderProvider", "orderProviderValue");
+      syncSelectText("orderDeliveryType", "orderDeliveryTypeValue");
 
       setText(".order-success-title-wrap h3", "Ваше замовлення успішно оформлено");
       setText(".order-success-subtitle", "Дякуємо за покупку! Менеджер зв'яжеться з вами.");
