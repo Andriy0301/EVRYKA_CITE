@@ -9943,12 +9943,14 @@ body.evryka-site.page-print3d {
   }
 }
 
-/* Absolute last: keep no-blur backdrop on non-catalog pages */
+/* Absolute last: blurred backdrop for "More" on all pages */
 @media (max-width: 768px) {
-  body:not(.page-catalog) .mobile-more-sheet__backdrop {
-    background: transparent !important;
-    backdrop-filter: none !important;
-    -webkit-backdrop-filter: none !important;
+  body.mobile-more-open .mobile-more-sheet__backdrop {
+    background: rgba(7, 12, 20, 0.48) !important;
+    backdrop-filter: blur(6px) !important;
+    -webkit-backdrop-filter: blur(6px) !important;
+    opacity: 1 !important;
+    pointer-events: auto !important;
   }
 }
 
@@ -9967,6 +9969,10 @@ body.evryka-site.page-print3d {
 /* Absolute last: cart badge number must be black */
 @media (max-width: 768px) {
   body.evryka-site.has-mobile-bottom-nav .mobile-bottom-nav__item--cart .mobile-bottom-nav__badge {
+    font-family: var(--ev-font, "Inter", system-ui, sans-serif) !important;
+    font-size: 10px !important;
+    font-weight: 600 !important;
+    line-height: 16px !important;
     color: #111111 !important;
   }
 }

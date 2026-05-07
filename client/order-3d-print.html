@@ -473,10 +473,9 @@
     setAttr("#favoritesBtn", "title", "Обране");
     setAttr(".cart .cart-icon", "alt", "Кошик");
 
-    setText(".product-nav .back-btn", "Назад");
     const backBtn = document.querySelector(".product-nav .back-btn");
     if (backBtn) {
-      const icon = backBtn.querySelector(".back-icon");
+      const icon = backBtn.querySelector(".back-icon")?.cloneNode(true);
       backBtn.textContent = "Назад";
       if (icon) backBtn.prepend(icon);
     }
