@@ -9937,7 +9937,9 @@ body.evryka-site.page-print3d {
     opacity: 1 !important;
     transform: translateY(0) !important;
     pointer-events: auto !important;
-    z-index: 1251 !important;
+    visibility: visible !important;
+    display: grid !important;
+    z-index: 1400 !important;
   }
 }
 
@@ -9947,6 +9949,25 @@ body.evryka-site.page-print3d {
     background: transparent !important;
     backdrop-filter: none !important;
     -webkit-backdrop-filter: none !important;
+  }
+}
+
+/* Absolute last: profile menu overlay must be blurred */
+@media (max-width: 768px) {
+  body.cabinet-menu-open .page-cabinet .cabinet-menu-overlay[data-uflyout-overlay],
+  body.cabinet-menu-open .page-cabinet .cabinet-menu-overlay {
+    background: rgba(7, 12, 20, 0.48) !important;
+    backdrop-filter: blur(6px) !important;
+    -webkit-backdrop-filter: blur(6px) !important;
+    opacity: 1 !important;
+    pointer-events: auto !important;
+  }
+}
+
+/* Absolute last: cart badge number must be black */
+@media (max-width: 768px) {
+  body.evryka-site.has-mobile-bottom-nav .mobile-bottom-nav__item--cart .mobile-bottom-nav__badge {
+    color: #111111 !important;
   }
 }
 

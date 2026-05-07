@@ -61,12 +61,12 @@
 <div class="container">
   <div class="catalog-shell">
     <div class="product-nav catalog-page-nav">
-      <a href="index.html" class="back-btn" id="print3dBackBtn" aria-label="Назад">
+      <button type="button" class="back-btn" id="print3dBackBtn" aria-label="Назад" onclick="if (window.history.length > 1) { window.history.back(); } else { window.location.href='index.html'; }">
         <svg class="back-icon" viewBox="0 0 24 24" aria-hidden="true">
           <path d="M15 6l-6 6 6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
         </svg>
         Назад
-      </a>
+      </button>
       <div class="breadcrumbs">
         <a href="index.html">�������</a>
         <span>/</span>
