@@ -9941,9 +9941,9 @@ body.evryka-site.page-print3d {
   }
 }
 
-/* Absolute last: no blurred backdrop when "More" is open */
+/* Absolute last: keep no-blur backdrop on non-catalog pages */
 @media (max-width: 768px) {
-  .mobile-more-sheet__backdrop {
+  body:not(.page-catalog) .mobile-more-sheet__backdrop {
     background: transparent !important;
     backdrop-filter: none !important;
     -webkit-backdrop-filter: none !important;
