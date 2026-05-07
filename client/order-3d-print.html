@@ -9,7 +9,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="css/style.css?v=20260506-18">
+  <link rel="stylesheet" href="css/style.css?v=20260506-19">
   <link rel="stylesheet" href="css/evryka-header-hero.css">
   <link rel="stylesheet" href="css/order-3d-print.css">
   <script src="https://accounts.google.com/gsi/client" async defer></script>
@@ -435,6 +435,128 @@
     <button type="button" class="print3d-btn-primary" data-close-print3d-modal>�����</button>
   </div>
 </div>
+
+<script>
+  (function recoverOrder3DPrintText() {
+    const setText = (selector, text) => {
+      const el = document.querySelector(selector);
+      if (el) el.textContent = text;
+    };
+    const setAttr = (selector, attr, value) => {
+      const el = document.querySelector(selector);
+      if (el) el.setAttribute(attr, value);
+    };
+    const setLabelTextByInputId = (inputId, text) => {
+      const input = document.getElementById(inputId);
+      const label = input ? input.closest("label") : null;
+      if (!label) return;
+      const textNode = Array.from(label.childNodes).find((n) => n.nodeType === Node.TEXT_NODE);
+      if (textNode) textNode.nodeValue = text;
+    };
+    const setLabelTextBySelector = (selector, text) => {
+      const input = document.querySelector(selector);
+      const label = input ? input.closest("label") : null;
+      if (!label) return;
+      const textNode = Array.from(label.childNodes).find((n) => n.nodeType === Node.TEXT_NODE);
+      if (textNode) textNode.nodeValue = text;
+    };
+
+    document.title = "Замовити 3D-друк - EVRYKA";
+    setAttr("#navToggle", "aria-label", "Відкрити меню");
+    setAttr("#headerNavPanel", "aria-label", "Головна навігація");
+    setText('#headerNavPanel a[href="index.html"]', "Головна");
+    setText('#headerNavPanel a[href="catalog.html"]', "Каталог");
+    setText('#headerNavPanel a[href="about.html"]', "Про нас");
+    setText('#headerNavPanel a[href="order-3d-print.html"]', "Замовити 3D друк");
+    setAttr("#search", "placeholder", "Пошук");
+    setAttr("#authBtn", "title", "Кабінет");
+    setAttr("#favoritesBtn", "title", "Обране");
+    setAttr(".cart .cart-icon", "alt", "Кошик");
+
+    setText(".product-nav .back-btn", "Назад");
+    const backBtn = document.querySelector(".product-nav .back-btn");
+    if (backBtn) {
+      const icon = backBtn.querySelector(".back-icon");
+      backBtn.textContent = "Назад";
+      if (icon) backBtn.prepend(icon);
+    }
+    setText(".breadcrumbs a", "Головна");
+    setText(".breadcrumbs span:last-child", "Замовити 3D друк");
+    setText(".about-page-title", "Замовити 3D-друк");
+
+    setText("#print3dTabModel", "З 3D моделлю");
+    setText("#print3dTabRequest", "Ваш запит");
+    setText("#print3dDrop p:first-child", "Завантажте STL / OBJ / 3MF файли моделі");
+    setText("#print3dDrop p:nth-child(2)", "Можна декілька, розмір кожного файлу до 50 МБ");
+    setAttr("#print3dFile", "aria-label", "Файли 3D моделей");
+
+    setLabelTextByInputId("print3dMaterial", "Матеріал");
+    setLabelTextByInputId("print3dStrength", "Міцність (infill)");
+    setLabelTextByInputId("print3dQuality", "Якість друку");
+    setAttr("#print3dMaterialTrigger", "aria-label", "Матеріал");
+    setAttr("#print3dStrengthTrigger", "aria-label", "Міцність");
+    setAttr("#print3dQualityTrigger", "aria-label", "Якість");
+    setText(".print3d-color-label", "Колір пластику");
+    setAttr("#print3dOrderColorPalette", "aria-label", "Вибір кольору пластику");
+    setText(".print3d-note", "Для різних моделей ціна може відрізнятись залежно від складності. Для 3MF зберігається мультиколірність, для 3D-друку в один колір ви можете вибрати колір пластику.");
+    setText(".print3d-total-title", "Підсумок по всіх моделях");
+    setText(".print3d-total-foot strong", "Орієнтовна ціна:");
+    setText("#print3dBtnOrder", "Перейти до оформлення");
+
+    setText(".print3d-request-title", "Немає моделі 3D-друку?");
+    setText(".print3d-request-subtitle", "Опишіть задачу, додайте приклади або файл і ми підготуємо пропозицію з вартістю друку.");
+    setLabelTextBySelector("#print3dRequestForm input[name='name']", "Ім'я *");
+    setLabelTextBySelector("#print3dRequestForm input[name='phone']", "Телефон *");
+    setLabelTextBySelector("#print3dRequestForm textarea[name='description']", "Опис *");
+    setLabelTextBySelector("#print3dRequestForm input[name='link']", "Посилання (необов'язково)");
+    setLabelTextByInputId("print3dRequestFile", "Файл (референс / модель)");
+    setText("#print3dRequestFileBtn", "Обрати файл");
+    setText("#print3dRequestFileName", "Файл не обрано");
+    setText("#print3dRequestForm button[type='submit']", "Надіслати запит");
+
+    setText("#cartPanelTitle", "Кошик");
+    document.querySelectorAll(".cart-head-float-close").forEach((b) => (b.textContent = "✕"));
+    setText(".cart-total > span", "Разом");
+    const cartCurrency = document.querySelector(".cart-total div span");
+    if (cartCurrency) cartCurrency.textContent = "грн";
+    setText("#cartSidebar .checkout-btn", "Оформити");
+    setText("#cartSidebar .clear-btn", "Очистити кошик");
+    setText("#favoritesSidebar h3", "Обране");
+    setText("#favoritesSidebar .clear-btn", "Очистити обране");
+    setAttr("#regName", "placeholder", "Ім'я");
+    setAttr("#regLastName", "placeholder", "Прізвище");
+    setAttr("#regPhone", "placeholder", "Телефон");
+
+    setText("#chatWidgetTitle", "Онлайн чат");
+    setText(".chat-widget-close", "✕");
+    setAttr(".chat-widget-close", "aria-label", "Закрити чат");
+    setAttr("#chatWidgetToggle", "title", "Онлайн чат");
+    setAttr("#chatWidgetText", "placeholder", "Ваше запитання...");
+    setText("#chatWidgetSend", "Надіслати");
+
+    setAttr("[data-close-print3d-checkout]", "aria-label", "Закрити оформлення");
+    setText(".print3d-confirm-close[data-close-print3d-checkout]", "✕");
+    setText("#print3dCheckoutTitle", "Оформлення 3D-замовлення");
+    setText("#print3dCheckoutAuthPrompt p", "Щоб швидко оформити замовлення, увійдіть у свій кабінет.");
+    setText("#print3dCheckoutLoginBtn", "Увійти");
+    setText("#print3dCheckoutRegisterBtn", "Зареєструватися");
+    setText("#print3dCheckoutGuestBtn", "Оформити як гість");
+    setLabelTextByInputId("print3dCheckoutDeliveryProvider", "Служба доставки *");
+    setLabelTextByInputId("print3dCheckoutDeliveryType", "Тип доставки *");
+    setLabelTextByInputId("print3dCheckoutPaymentMethod", "Спосіб оплати *");
+    setLabelTextByInputId("print3dCheckoutCity", "Місто *");
+    setLabelTextByInputId("print3dCheckoutDeliveryPoint", "Відділення / поштомат *");
+    setAttr("#print3dCheckoutCity", "placeholder", "Почніть вводити назву міста...");
+    setAttr("#print3dCheckoutDeliveryPoint", "placeholder", "Почніть вводити відділення...");
+    setText("#print3dCheckoutSubmit", "Підтвердити замовлення");
+
+    setAttr("[data-close-print3d-modal]", "aria-label", "Закрити повідомлення");
+    setText(".print3d-confirm-close[data-close-print3d-modal]", "✕");
+    setText("#print3dConfirmTitle", "Замовлення прийнято");
+    setText("#print3dConfirmText", "Ваше замовлення передано на обробку менеджеру. Орієнтовний термін виготовлення: 1-2 дні.");
+    setText(".print3d-confirm-card .print3d-btn-primary[data-close-print3d-modal]", "Готово");
+  })();
+</script>
 
 <script src="js/api.js?v=20260426"></script>
 <script src="js/custom-select.js?v=1"></script>

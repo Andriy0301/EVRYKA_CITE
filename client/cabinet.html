@@ -9,7 +9,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="css/style.css?v=20260506-18">
+  <link rel="stylesheet" href="css/style.css?v=20260506-19">
   <link rel="stylesheet" href="css/evryka-header-hero.css?v=20260420-21">
   <script src="https://accounts.google.com/gsi/client" async defer></script>
 </head>
@@ -287,7 +287,7 @@
   <script>
     (function () {
       function recoverCabinetText() {
-        document.title = "��������� ������ - EVRYKA";
+        document.title = "Особистий кабінет - EVRYKA";
 
         const setText = (selector, text) => {
           const el = document.querySelector(selector);
@@ -297,76 +297,86 @@
           const el = document.querySelector(selector);
           if (el) el.setAttribute(attr, value);
         };
+        const setLabelByInput = (inputId, labelText) => {
+          const input = document.getElementById(inputId);
+          const label = input ? input.closest("label") : null;
+          if (!label) return;
+          const textNode = Array.from(label.childNodes).find((n) => n.nodeType === Node.TEXT_NODE);
+          if (textNode) textNode.nodeValue = labelText;
+        };
 
-        setAttr("#navToggle", "aria-label", "³������ ����");
-        setAttr("#headerNavPanel", "aria-label", "������� ��������");
-        setText('#headerNavPanel a[href="index.html"]', "�������");
-        setText('#headerNavPanel a[href="catalog.html"]', "�������");
-        setText('#headerNavPanel a[href="about.html"]', "��� ���");
-        setText('#headerNavPanel a[href="order-3d-print.html"]', "�������� 3D ����");
-        setAttr("#search", "placeholder", "�����");
-        setAttr("#authBtn", "title", "������");
-        setAttr("#favoritesBtn", "title", "�����");
-        setAttr(".cart .cart-icon", "alt", "�����");
+        setAttr("#navToggle", "aria-label", "Відкрити меню");
+        setAttr("#headerNavPanel", "aria-label", "Головна навігація");
+        setText('#headerNavPanel a[href="index.html"]', "Головна");
+        setText('#headerNavPanel a[href="catalog.html"]', "Каталог");
+        setText('#headerNavPanel a[href="about.html"]', "Про нас");
+        setText('#headerNavPanel a[href="order-3d-print.html"]', "Замовити 3D друк");
+        setAttr("#search", "placeholder", "Пошук");
+        setAttr("#authBtn", "title", "Кабінет");
+        setAttr("#favoritesBtn", "title", "Обране");
+        setAttr(".cart .cart-icon", "alt", "Кошик");
 
         const cabinetBackBtn = document.querySelector(".product-nav .back-btn");
         if (cabinetBackBtn) {
           const icon = cabinetBackBtn.querySelector(".back-icon");
-          cabinetBackBtn.textContent = "�����";
+          cabinetBackBtn.textContent = "Назад";
           if (icon) cabinetBackBtn.prepend(icon);
         }
         const breadcrumbLinks = document.querySelectorAll(".breadcrumbs a");
-        if (breadcrumbLinks[0]) breadcrumbLinks[0].textContent = "�������";
-        if (breadcrumbLinks[1]) breadcrumbLinks[1].textContent = "�������";
-        setText(".breadcrumbs span:last-child", "��������� ������");
+        if (breadcrumbLinks[0]) breadcrumbLinks[0].textContent = "Головна";
+        if (breadcrumbLinks[1]) breadcrumbLinks[1].textContent = "Каталог";
+        setText(".breadcrumbs span:last-child", "Особистий кабінет");
 
-        setText(".cabinet-page-title", "��������� ������");
-        setText("#cabinetMenuOpenBtn", "����");
-        setAttr("#cabinetMenuOpenBtn", "aria-label", "³������ ���� �������");
-        setAttr(".page-cabinet .cabinet-sidebar", "aria-label", "���� �������");
-        setText(".page-cabinet .cabinet-sidebar .catalog-filters-title", "����");
-        setAttr("#cabinetMenuCloseBtn", "aria-label", "������� ���� �������");
-        setText("#cabinetMenuCloseBtn", "?");
+        setText(".cabinet-page-title", "Особистий кабінет");
+        setText("#cabinetMenuOpenBtn", "Меню");
+        setAttr("#cabinetMenuOpenBtn", "aria-label", "Відкрити меню кабінету");
+        setAttr(".page-cabinet .cabinet-sidebar", "aria-label", "Меню кабінету");
+        setText(".page-cabinet .cabinet-sidebar .catalog-filters-title", "Меню");
+        setAttr("#cabinetMenuCloseBtn", "aria-label", "Закрити меню кабінету");
+        setText("#cabinetMenuCloseBtn", "✕");
 
         const navBtns = document.querySelectorAll(".page-cabinet .cabinet-nav-btn");
-        const navTexts = ["������� ���", "�� ����������", "������", "�����", "�����"];
+        const navTexts = ["Особисті дані", "Мої замовлення", "Обране", "Кошик", "Вийти"];
         navBtns.forEach((btn, i) => {
           if (navTexts[i]) btn.textContent = navTexts[i];
         });
 
-        setText("#cabPersonalSection h2", "�� ���");
-        setText("#cabPersonalSection h3", "��������");
-        setText("#cabOrdersSection h2", "�� ����������");
-        setText("#cabProviderValue", "������ ������ ��������");
-        setText("#cabDeliveryTypeValue", "³�������");
-        setAttr("#cabBranch", "placeholder", "������ ������� ��������...");
+        setText("#cabPersonalSection h2", "Мої дані");
+        setText("#cabPersonalSection h3", "Доставка");
+        setText("#cabOrdersSection h2", "Мої замовлення");
+        setText("#cabProviderValue", "Оберіть службу доставки");
+        setText("#cabDeliveryTypeValue", "Відділення");
+        setAttr("#cabBranch", "placeholder", "Почніть вводити відділення...");
+        setAttr("#cabCity", "placeholder", "Почніть вводити місто...");
 
-        const labels = document.querySelectorAll("#cabinetForm > label");
-        const labelTexts = [
-          "��'�", "�������", "�������", "Email",
-          "������ ��������", "��� ��������", "������ ����", "������ ��������", "������"
-        ];
-        labels.forEach((label, i) => {
-          if (labelTexts[i] && label.childNodes?.[0]) label.childNodes[0].textContent = labelTexts[i];
-        });
-        setText("#cabinetForm .checkout-btn", "��������");
+        setLabelByInput("cabName", "Ім'я");
+        setLabelByInput("cabLastName", "Прізвище");
+        setLabelByInput("cabPhone", "Телефон");
+        setLabelByInput("cabEmail", "Email");
+        setLabelByInput("cabProvider", "Служба доставки");
+        setLabelByInput("cabDeliveryType", "Тип доставки");
+        setLabelByInput("cabCity", "Ваше місто");
+        setLabelByInput("cabBranch", "Номер відділення");
+        setLabelByInput("cabAddress", "Адреса доставки");
+        setText("#cabinetForm .checkout-btn", "Зберегти");
 
-        setText("#cartPanelTitle", "�����");
+        setText("#cartPanelTitle", "Кошик");
         const closeBtns = document.querySelectorAll(".cart-head-float-close");
-        closeBtns.forEach((b) => (b.textContent = "?"));
-        setText(".cart-total > span", "�����");
+        closeBtns.forEach((b) => (b.textContent = "✕"));
+        setText(".cart-total > span", "Разом");
         const cartCurrency = document.querySelector(".cart-total div span");
-        if (cartCurrency) cartCurrency.textContent = "���";
-        setText("#cartSidebar .checkout-btn", "��������");
-        setText("#cartSidebar .clear-btn", "�������� �����");
-        setText("#favoritesSidebar h3", "�����");
-        setText("#favoritesSidebar .clear-btn", "�������� ������");
+        if (cartCurrency) cartCurrency.textContent = "грн";
+        setText("#cartSidebar .checkout-btn", "Оформити");
+        setText("#cartSidebar .clear-btn", "Очистити кошик");
+        setText("#favoritesSidebar h3", "Обране");
+        setText("#favoritesSidebar .clear-btn", "Очистити обране");
 
-        setText("#chatWidgetTitle", "������ ���");
-        setAttr("#chatWidgetToggle", "title", "�������� ���");
-        setAttr(".chat-widget-close", "aria-label", "������� ���");
-        setAttr("#chatWidgetText", "placeholder", "���� ���������?");
-        setText("#chatWidgetSend", "��������");
+        setText("#chatWidgetTitle", "Онлайн чат");
+        setAttr("#chatWidgetToggle", "title", "Онлайн чат");
+        setAttr(".chat-widget-close", "aria-label", "Закрити чат");
+        setText(".chat-widget-close", "✕");
+        setAttr("#chatWidgetText", "placeholder", "Ваше запитання...");
+        setText("#chatWidgetSend", "Надіслати");
       }
 
       if (document.readyState === "loading") {

@@ -9,7 +9,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="css/style.css?v=20260506-18">
+  <link rel="stylesheet" href="css/style.css?v=20260506-19">
   <link rel="stylesheet" href="css/about-page.css?v=3">
   <link rel="stylesheet" href="css/evryka-header-hero.css">
   <script src="https://accounts.google.com/gsi/client" async defer></script>
@@ -354,6 +354,118 @@
 <script src="js/cart.js?v=20260430"></script>
 <script src="js/header-nav.js?v=20260427-4"></script>
 <script src="js/mojibake-fix.js?v=2"></script>
+<script>
+  (function recoverAboutText() {
+    const setText = (selector, text) => {
+      const el = document.querySelector(selector);
+      if (el) el.textContent = text;
+    };
+    const setAttr = (selector, attr, value) => {
+      const el = document.querySelector(selector);
+      if (el) el.setAttribute(attr, value);
+    };
+
+    document.title = "Про нас - EVRYKA";
+    setAttr("#navToggle", "aria-label", "Відкрити меню");
+    setAttr("#headerNavPanel", "aria-label", "Головна навігація");
+    setText('#headerNavPanel a[href="index.html"]', "Головна");
+    setText('#headerNavPanel a[href="catalog.html"]', "Каталог");
+    setText('#headerNavPanel a[href="about.html"]', "Про нас");
+    setText('#headerNavPanel a[href="order-3d-print.html"]', "Замовити 3D друк");
+    setAttr("#search", "placeholder", "Пошук");
+    setAttr("#authBtn", "title", "Кабінет");
+    setAttr("#favoritesBtn", "title", "Обране");
+    setAttr(".cart .cart-icon", "alt", "Кошик");
+
+    const backBtn = document.querySelector(".product-nav .back-btn");
+    if (backBtn) {
+      const icon = backBtn.querySelector(".back-icon");
+      backBtn.textContent = "Назад";
+      if (icon) backBtn.prepend(icon);
+    }
+    setText(".breadcrumbs a", "Головна");
+    setText(".breadcrumbs span:last-child", "Про нас");
+
+    setText(".about-v2__tag", "EVRYKA - 3D друк у Львові");
+    setText("#about-v2-title", "Про нас");
+    setText(".about-v2__lead", "EVRYKA - команда професіоналів 3D-друку. Ми виготовляємо вироби для ремонту, творчості, бізнесу та індивідуальних задач, що поєднують якість, точність і сучасні технології.");
+
+    const stats = document.querySelectorAll(".about-v2__stat");
+    const statsData = [
+      ["5+ років", "Практичного досвіду в 3D-друці"],
+      ["Власний парк", "Сучасних FDM 3D-принтерів з різними зонами друку"],
+      ["м. Львів", "Працюємо по Україні"],
+      ["До ночі", "Оперативний зворотний зв'язок"]
+    ];
+    stats.forEach((card, i) => {
+      const h3 = card.querySelector("h3");
+      const p = card.querySelector("p");
+      if (h3 && statsData[i]) h3.textContent = statsData[i][0];
+      if (p && statsData[i]) p.textContent = statsData[i][1];
+    });
+
+    const heads = document.querySelectorAll(".about-v2__h-text");
+    const headTexts = ["Наша історія", "Що робимо", "Наші цінності", "Локація й графік"];
+    heads.forEach((el, i) => {
+      if (headTexts[i]) el.textContent = headTexts[i];
+    });
+
+    const story = document.querySelectorAll("#about-v2-story ~ p");
+    if (story[0]) story[0].textContent = "Починали з невеликих проєктів, але поступово стали командою, яка закриває повний цикл: від ідеї та підготовки моделі до якісного друку й післяпродажної підтримки.";
+    if (story[1]) story[1].textContent = "Сьогодні ми працюємо як з індивідуальними запитами, так і з серійними замовленнями для клієнтів, яким потрібна швидкість, стабільність та прогнозований результат.";
+
+    const services = document.querySelectorAll("#about-v2-services ~ .about-v2__list li");
+    const servicesTexts = [
+      "3D друк деталей, корпусів, макетів та функціональних елементів.",
+      "Підбір матеріалу під задачу та умови експлуатації.",
+      "Оптимізація моделей під якісний друк.",
+      "Допомога з розробкою й доопрацюванням моделі."
+    ];
+    services.forEach((el, i) => {
+      if (servicesTexts[i]) el.textContent = servicesTexts[i];
+    });
+
+    const values = document.querySelectorAll("#about-v2-values ~ .about-v2__list li");
+    const valuesTexts = [
+      "Стабільна якість кожного виробу і чітке дотримання термінів.",
+      "Прозора комунікація на кожному етапі замовлення.",
+      "Відповідальність за результат та довгострокову співпрацю.",
+      "Постійне вдосконалення процесів і технологій виробництва."
+    ];
+    values.forEach((el, i) => {
+      if (valuesTexts[i]) el.textContent = valuesTexts[i];
+    });
+
+    const locationPars = document.querySelectorAll("#about-v2-location ~ p");
+    if (locationPars[0]) locationPars[0].innerHTML = "Працюємо у <strong>Львові</strong>. Відправляємо замовлення по всій Україні поштовими службами.";
+    if (locationPars[1]) locationPars[1].textContent = "Графік: 9:00 - 20:00";
+
+    setText("#about-v2-contacts", "Контакти");
+    setText(".about-v2__contact-tile[href^='tel'] .about-v2__contact-label", "Телефон");
+    setText(".about-v2__contact-tile--telegram .about-v2__contact-value", "Написати в Telegram");
+    setText(".about-v2__contact-tile--viber .about-v2__contact-value", "Написати в Viber");
+
+    setText("#cartPanelTitle", "Кошик");
+    document.querySelectorAll(".cart-head-float-close").forEach((b) => (b.textContent = "✕"));
+    setText(".cart-total > span", "Разом");
+    const cartCurrency = document.querySelector(".cart-total div span");
+    if (cartCurrency) cartCurrency.textContent = "грн";
+    setText("#cartSidebar .checkout-btn", "Оформити");
+    setText("#cartSidebar .clear-btn", "Очистити кошик");
+    setText("#favoritesSidebar h3", "Обране");
+    setText("#favoritesSidebar .clear-btn", "Очистити обране");
+    setAttr("#regName", "placeholder", "Ім'я");
+    setAttr("#regLastName", "placeholder", "Прізвище");
+    setAttr("#regPhone", "placeholder", "Телефон");
+
+    setText("#chatWidgetTitle", "Онлайн чат");
+    setText(".chat-widget-close", "✕");
+    setAttr(".chat-widget-close", "aria-label", "Закрити чат");
+    setAttr("#chatWidgetToggle", "title", "Онлайн чат");
+    setAttr("#chatWidgetText", "placeholder", "Ваше запитання...");
+    setText("#chatWidgetSend", "Надіслати");
+  })();
+</script>
   <script src="js/app.js?v=20260427-5"></script>
 <script src="js/chat-widget.js?v=20260409"></script>
 <script src="js/scroll-to-top.js?v=4"></script>

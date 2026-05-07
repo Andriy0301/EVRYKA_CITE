@@ -248,11 +248,42 @@
     }
   }
 
+  function recoverFooterText() {
+    const footer = document.querySelector("footer");
+    if (!footer) return;
+
+    const footerDesc = footer.querySelector(".footer-desc");
+    if (footerDesc) {
+      footerDesc.textContent =
+        "3D-друковані вироби для ремонту, творчості та прототипів. Готові рішення або під індивідуальне замовлення.";
+    }
+
+    const titles = footer.querySelectorAll(".footer-col-title");
+    const titleTexts = ["Навігація", "Категорії", "Контакти"];
+    titles.forEach((el, i) => {
+      if (titleTexts[i]) el.textContent = titleTexts[i];
+    });
+
+    const links = footer.querySelectorAll(".footer-link");
+    const linkTexts = [
+      "Головна", "Каталог", "Про нас", "Замовити 3D друк",
+      "Інструменти", "Корпуси", "Циклони", "Брелоки",
+      "Telegram", "Viber", "Локація й графік", "Мої замовлення"
+    ];
+    links.forEach((el, i) => {
+      if (linkTexts[i]) el.textContent = linkTexts[i];
+    });
+
+    const copy = footer.querySelector(".footer-copy");
+    if (copy) copy.textContent = "© 2026 EVRYKA - всі права захищені";
+  }
+
   function init() {
     const toggle = document.getElementById("navToggle");
     const panel = document.getElementById("headerNavPanel");
     if (!toggle || !panel) return;
     buildMobileBottomNav(toggle, panel, closeNav, openNav);
+    recoverFooterText();
 
     toggle.addEventListener("click", function () {
       if (panel.classList.contains("is-open")) closeNav(toggle, panel);

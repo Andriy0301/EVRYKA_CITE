@@ -9654,7 +9654,7 @@ body.evryka-site.page-print3d {
   body.evryka-site.has-mobile-bottom-nav .mobile-bottom-nav__item {
     min-height: 52px !important;
     border-radius: 12px !important;
-    color: var(--text-secondary) !important;
+    color: #667085 !important;
     background: transparent !important;
     font-size: 12px !important;
     font-weight: 600 !important;
@@ -9722,22 +9722,26 @@ body.evryka-site.page-print3d {
     font-size: 12px !important;
     font-weight: 600 !important;
     line-height: 1.1 !important;
+    color: inherit !important;
   }
 
   body.evryka-site.has-mobile-bottom-nav .mobile-bottom-nav__item svg,
   body.evryka-site.has-mobile-bottom-nav .mobile-bottom-nav__cart-icon {
     width: 20px !important;
     height: 20px !important;
+    color: currentColor !important;
   }
 
   body.evryka-site.has-mobile-bottom-nav .mobile-bottom-nav__item.is-active {
-    color: var(--ev-accent) !important;
+    color: #fb923c !important;
     background: rgba(251, 146, 60, 0.14) !important;
   }
 
   body.evryka-site.has-mobile-bottom-nav .mobile-bottom-nav__badge {
     display: grid !important;
     place-items: center !important;
+    background: #fb923c !important;
+    color: #111111 !important;
     line-height: 16px !important;
   }
 }
@@ -9779,6 +9783,19 @@ body.evryka-site.page-print3d {
   stroke: var(--ev-p-ink, var(--ev-ink)) !important;
   stroke-width: 4 !important;
   fill: none !important;
+}
+
+/* Absolute last: home popular title must fit mobile */
+@media (max-width: 768px) {
+  .page-home #catalog .section-title {
+    font-size: clamp(26px, 8vw, 34px) !important;
+    line-height: 0.96 !important;
+    letter-spacing: 0.01em !important;
+    margin: 0 0 6px !important;
+    padding-right: 8px !important;
+    overflow-wrap: anywhere !important;
+    word-break: break-word !important;
+  }
 }
 
 /* Absolute last: cabinet head menu button at row end */
