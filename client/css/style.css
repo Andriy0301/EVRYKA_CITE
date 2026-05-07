@@ -9856,6 +9856,13 @@ body.evryka-site.page-print3d {
     background: #fb923c !important;
     color: #111111 !important;
   }
+
+  /* Keep identical measured bar height on all pages */
+  body.evryka-site.has-mobile-bottom-nav .mobile-bottom-nav {
+    min-height: 74px !important;
+    padding-top: 10px !important;
+    padding-bottom: 10px !important;
+  }
 }
 
 /* Absolute last: home popular title must fit mobile */
@@ -9894,6 +9901,11 @@ body.evryka-site.page-print3d {
 
 /* Absolute last: tighter mobile spacing on 3D print page */
 @media (max-width: 768px) {
+  body.evryka-site.page-print3d.page-catalog .catalog-shell {
+    padding-left: 14px !important;
+    padding-right: 14px !important;
+  }
+
   .page-print3d .catalog-shell {
     --product-rhythm: 14px !important;
     --product-nav-y: 10px !important;
