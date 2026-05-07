@@ -10110,3 +10110,85 @@ body.evryka-site.page-print3d {
   }
 }
 
+/* Absolute final: identical "More" sheet on every page */
+@media (max-width: 768px) {
+  body.evryka-site.has-mobile-bottom-nav .mobile-more-sheet__panel {
+    left: calc(12px + env(safe-area-inset-left, 0px)) !important;
+    right: calc(12px + env(safe-area-inset-right, 0px)) !important;
+    bottom: calc(92px + env(safe-area-inset-bottom, 0px)) !important;
+    border-radius: 18px !important;
+    border: 1px solid rgba(17, 17, 17, 0.1) !important;
+    background: rgba(255, 255, 255, 0.93) !important;
+    backdrop-filter: blur(14px) !important;
+    -webkit-backdrop-filter: blur(14px) !important;
+    box-shadow:
+      0 1px 0 rgba(17, 17, 17, 0.04),
+      0 14px 34px rgba(0, 0, 0, 0.14),
+      0 5px 14px rgba(0, 0, 0, 0.08) !important;
+    padding: 14px !important;
+    gap: 10px !important;
+    font-family: var(--ev-font, "Inter", system-ui, sans-serif) !important;
+  }
+
+  body.evryka-site.has-mobile-bottom-nav .mobile-more-sheet__head {
+    margin: 0 0 4px 0 !important;
+    font-size: 17px !important;
+    font-weight: 800 !important;
+    line-height: 1.2 !important;
+    letter-spacing: 0 !important;
+    color: #111111 !important;
+    font-family: var(--ev-font, "Inter", system-ui, sans-serif) !important;
+  }
+
+  body.evryka-site.has-mobile-bottom-nav .mobile-more-sheet__link {
+    min-height: 44px !important;
+    padding: 10px 12px !important;
+    border-radius: 12px !important;
+    border: 1px solid rgba(17, 17, 17, 0.1) !important;
+    background: rgba(255, 255, 255, 0.92) !important;
+    color: #111111 !important;
+    font-size: 15px !important;
+    font-weight: 650 !important;
+    line-height: 1.2 !important;
+    letter-spacing: 0 !important;
+    font-family: var(--ev-font, "Inter", system-ui, sans-serif) !important;
+  }
+
+  body.evryka-site.has-mobile-bottom-nav .mobile-more-sheet__close {
+    width: 32px !important;
+    height: 32px !important;
+    border-radius: 12px !important;
+    border: 1px solid rgba(17, 17, 17, 0.1) !important;
+    background: rgba(255, 255, 255, 0.92) !important;
+    color: #111111 !important;
+    font-family: var(--ev-font, "Inter", system-ui, sans-serif) !important;
+  }
+}
+
+/* Absolute final: cart count text in mobile badge is always black */
+@media (max-width: 768px) {
+  body.evryka-site.has-mobile-bottom-nav #mobileBottomCartCount.mobile-bottom-nav__badge,
+  body.evryka-site.page-home.has-mobile-bottom-nav #mobileBottomCartCount,
+  body.page-home #mobileBottomNav .mobile-bottom-nav__item--cart #mobileBottomCartCount {
+    color: #111111 !important;
+  }
+}
+
+/* Absolute final: identical bottom-nav typography on all pages */
+@media (max-width: 768px) {
+  body.evryka-site.has-mobile-bottom-nav .mobile-bottom-nav,
+  body.evryka-site.has-mobile-bottom-nav .mobile-bottom-nav__item,
+  body.evryka-site.has-mobile-bottom-nav .mobile-bottom-nav__item span,
+  body.evryka-site.has-mobile-bottom-nav .mobile-bottom-nav__badge {
+    font-family: var(--ev-font, "Inter", system-ui, sans-serif) !important;
+  }
+
+  body.evryka-site.has-mobile-bottom-nav #mobileBottomCartCount.mobile-bottom-nav__badge {
+    color: #111111 !important;
+    font-size: 10px !important;
+    font-weight: 600 !important;
+    line-height: 16px !important;
+    font-variant-numeric: tabular-nums !important;
+  }
+}
+
