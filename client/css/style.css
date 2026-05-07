@@ -9672,7 +9672,7 @@ body.evryka-site.page-print3d {
 @media (max-width: 768px) {
   body.evryka-site.has-mobile-bottom-nav .chat-widget-root {
     right: calc(8px + env(safe-area-inset-right, 0px)) !important;
-    bottom: calc(80px + env(safe-area-inset-bottom, 0px)) !important;
+    bottom: calc(88px + env(safe-area-inset-bottom, 0px)) !important;
     z-index: 1202 !important;
   }
 }
@@ -9881,20 +9881,23 @@ body.evryka-site.page-print3d {
 /* Absolute last: cabinet head menu button at row end */
 @media (max-width: 768px) {
   .page-cabinet .cabinet-page-head {
-    display: grid !important;
-    grid-template-columns: minmax(0, 1fr) auto !important;
+    display: flex !important;
+    justify-content: space-between !important;
     align-items: center !important;
-    column-gap: 10px !important;
+    gap: 10px !important;
+    width: 100% !important;
   }
 
   .page-cabinet .cabinet-page-head .cabinet-page-title {
     min-width: 0 !important;
+    margin: 0 !important;
+    flex: 1 1 auto !important;
   }
 
   .page-cabinet .cabinet-page-head #cabinetMenuOpenBtn,
   .page-cabinet .cabinet-page-head .cabinet-menu-open-btn {
-    justify-self: end !important;
-    margin-left: 0 !important;
+    margin-left: auto !important;
+    justify-self: auto !important;
     flex-shrink: 0 !important;
   }
 }
@@ -9925,6 +9928,16 @@ body.evryka-site.page-print3d {
 
   .page-print3d .print3d-wrap {
     margin-top: 0 !important;
+  }
+}
+
+/* Absolute last: keep bottom nav visible when "More" is open */
+@media (max-width: 768px) {
+  body.mobile-more-open .mobile-bottom-nav {
+    opacity: 1 !important;
+    transform: translateY(0) !important;
+    pointer-events: auto !important;
+    z-index: 1251 !important;
   }
 }
 
