@@ -9668,6 +9668,66 @@ body.evryka-site.page-print3d {
   }
 }
 
+/* Home-only: make "More" drawer match provided design */
+@media (max-width: 768px) {
+  body.evryka-site.page-home.has-mobile-bottom-nav .mobile-more-sheet__panel {
+    left: 12px !important;
+    right: 12px !important;
+    bottom: calc(76px + env(safe-area-inset-bottom, 0px)) !important;
+    border-radius: 16px !important;
+    border: 1px solid #9fb8ca !important;
+    background: #d7e8f4 !important;
+    box-shadow: 0 14px 28px rgba(9, 23, 38, 0.24) !important;
+    padding: 10px !important;
+    gap: 8px !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+  }
+
+  body.evryka-site.page-home.has-mobile-bottom-nav .mobile-more-sheet__head {
+    min-height: 36px !important;
+    padding: 4px 4px 8px !important;
+    margin-bottom: 2px !important;
+    border-bottom: 1px solid rgba(76, 110, 131, 0.32) !important;
+  }
+
+  body.evryka-site.page-home.has-mobile-bottom-nav .mobile-more-sheet__head strong {
+    color: #1f3c50 !important;
+    font-size: 15px !important;
+    font-weight: 700 !important;
+  }
+
+  body.evryka-site.page-home.has-mobile-bottom-nav .mobile-more-sheet__close {
+    width: 28px !important;
+    height: 28px !important;
+    border-radius: 8px !important;
+    border: 1px solid #8ea8bb !important;
+    background: #c7ddec !important;
+    color: #204057 !important;
+    font-size: 16px !important;
+    line-height: 1 !important;
+  }
+
+  body.evryka-site.page-home.has-mobile-bottom-nav .mobile-more-sheet__link {
+    min-height: 44px !important;
+    border-radius: 10px !important;
+    border: 1px solid #93afc3 !important;
+    background: #c4dced !important;
+    color: #17354b !important;
+    font-size: 14px !important;
+    font-weight: 600 !important;
+    padding: 10px 12px !important;
+  }
+
+  body.evryka-site.page-home.has-mobile-bottom-nav .mobile-more-sheet__link:hover,
+  body.evryka-site.page-home.has-mobile-bottom-nav .mobile-more-sheet__link:focus-visible,
+  body.evryka-site.page-home.has-mobile-bottom-nav .mobile-more-sheet__link.is-current {
+    background: #b8d4e8 !important;
+    border-color: #7f9fb5 !important;
+    color: #102c42 !important;
+  }
+}
+
 /* Absolute last: chat icon placement must be same on all pages */
 @media (max-width: 768px) {
   body.evryka-site.has-mobile-bottom-nav .chat-widget-root {
@@ -10073,6 +10133,15 @@ body.evryka-site.page-print3d {
     background: rgba(255, 255, 255, 0.92) !important;
     color: var(--text-primary) !important;
   }
+}
+
+/* Absolute final: cart/favorites must be above everything */
+.cart-overlay {
+  z-index: 11990 !important;
+}
+
+.cart-sidebar {
+  z-index: 12000 !important;
 }
 
 /* Absolute final: bottom nav must always stay visible and on top */
