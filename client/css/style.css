@@ -9405,9 +9405,9 @@ body.evryka-site.page-print3d {
   body.cabinet-menu-open .cabinet-menu-open-btn {
     pointer-events: none !important;
     filter: grayscale(1) saturate(0.15) !important;
-    background: #e8edf3 !important;
-    color: #8c95a3 !important;
-    border-color: #c7d1dd !important;
+    background: #f2eee8 !important;
+    color: #7d7468 !important;
+    border-color: #d7cfc4 !important;
     box-shadow: none !important;
   }
 
@@ -9443,9 +9443,9 @@ body.evryka-site.page-print3d {
   body.cabinet-menu-open .page-cabinet [data-uflyout-trigger] {
     pointer-events: none !important;
     filter: grayscale(1) saturate(0.15) !important;
-    background: #e8edf3 !important;
-    color: #8c95a3 !important;
-    border-color: #c7d1dd !important;
+    background: #f2eee8 !important;
+    color: #7d7468 !important;
+    border-color: #d7cfc4 !important;
     box-shadow: none !important;
   }
 
@@ -10214,21 +10214,43 @@ body.evryka-site.has-mobile-bottom-nav.cart-open .mobile-bottom-nav {
   /* Filters + cabinet menu in bottom-nav color palette */
   .page-catalog .catalog-filters,
   .page-cabinet .catalog-filters.cabinet-sidebar {
-    border-color: #d9dce3 !important;
-    background: #f5f6f8 !important;
+    border-color: #d7cfc4 !important;
+    background: #f7f3ee !important;
   }
 
   .page-catalog .catalog-filters .catalog-filters-title,
   .page-cabinet .catalog-filters.cabinet-sidebar .catalog-filters-title {
-    color: #2a3343 !important;
+    color: #111111 !important;
   }
 
+  .page-catalog .catalog-filters .catalog-filter-input,
   .page-catalog .catalog-filters .catalog-select-trigger,
+  .page-catalog .catalog-filters .catalog-reset-btn,
   .page-cabinet .catalog-filters.cabinet-sidebar .catalog-select-trigger,
   .page-cabinet .catalog-filters.cabinet-sidebar .cabinet-nav-btn {
-    border: 1px solid #d8dde6 !important;
+    border: 1px solid #d7cfc4 !important;
     background: #ffffff !important;
-    color: #667085 !important;
+    color: #111111 !important;
+  }
+
+  .page-catalog .catalog-filters .catalog-select-panel {
+    border: 1px solid #d7cfc4 !important;
+    background: #fdfbf8 !important;
+  }
+
+  .page-catalog .catalog-filters .catalog-select-option {
+    color: #111111 !important;
+    background: transparent !important;
+  }
+
+  .page-catalog .catalog-filters .catalog-select-option:hover:not(.is-selected) {
+    background: #f7f3ee !important;
+  }
+
+  .page-catalog .catalog-filters .catalog-select-option.is-selected {
+    border-color: rgba(240, 122, 26, 0.32) !important;
+    background: rgba(240, 122, 26, 0.12) !important;
+    color: #111111 !important;
   }
 
   .page-cabinet .catalog-filters.cabinet-sidebar .cabinet-nav-btn:hover,
