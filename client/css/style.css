@@ -10151,7 +10151,7 @@ body.evryka-site.has-mobile-bottom-nav.cart-open .mobile-bottom-nav {
     bottom: calc(var(--more-panel-bottom) + env(safe-area-inset-bottom, 0px)) !important;
     border-radius: var(--more-panel-radius) !important;
     border: 1px solid rgba(17, 17, 17, 0.1) !important;
-    background: rgba(255, 255, 255, 0.93) !important;
+    background: #f8f8f8 !important;
     backdrop-filter: blur(14px) !important;
     -webkit-backdrop-filter: blur(14px) !important;
     box-shadow:
@@ -10171,7 +10171,7 @@ body.evryka-site.has-mobile-bottom-nav.cart-open .mobile-bottom-nav {
     font-weight: 800 !important;
     line-height: var(--more-head-lh) !important;
     letter-spacing: 0 !important;
-    color: #2a3343 !important;
+    color: #111111 !important;
     font-family: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif !important;
     min-height: var(--more-head-lh) !important;
     box-sizing: border-box !important;
@@ -10182,9 +10182,9 @@ body.evryka-site.has-mobile-bottom-nav.cart-open .mobile-bottom-nav {
     height: var(--more-link-h) !important;
     padding: 10px var(--more-link-pad-x) !important;
     border-radius: 12px !important;
-    border: 1px solid #d8dde6 !important;
+    border: 1px solid rgba(17, 17, 17, 0.1) !important;
     background: #ffffff !important;
-    color: #667085 !important;
+    color: #111111 !important;
     font-size: var(--more-link-fs) !important;
     font-weight: 650 !important;
     line-height: var(--more-link-lh) !important;
@@ -10197,9 +10197,9 @@ body.evryka-site.has-mobile-bottom-nav.cart-open .mobile-bottom-nav {
     width: 32px !important;
     height: 32px !important;
     border-radius: 12px !important;
-    border: 1px solid #d8dde6 !important;
+    border: 1px solid rgba(17, 17, 17, 0.1) !important;
     background: #ffffff !important;
-    color: #667085 !important;
+    color: #111111 !important;
     font-family: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif !important;
   }
 
@@ -10241,13 +10241,13 @@ body.evryka-site.has-mobile-bottom-nav.cart-open .mobile-bottom-nav {
 
   /* Keep identical visual style regardless of current page */
   body.evryka-site.has-mobile-bottom-nav .mobile-more-sheet__link.is-current {
-    border: 1px solid #d8dde6 !important;
+    border: 1px solid rgba(17, 17, 17, 0.1) !important;
     background: #ffffff !important;
-    color: #667085 !important;
+    color: #111111 !important;
   }
 
   body.evryka-site.has-mobile-bottom-nav .mobile-more-sheet__link.is-current::after {
-    color: #94a3b8 !important;
+    color: rgba(17, 17, 17, 0.45) !important;
   }
 
   body.evryka-site.has-mobile-bottom-nav .mobile-more-sheet__link::after {

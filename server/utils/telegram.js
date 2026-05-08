@@ -11,6 +11,12 @@ const MENU_ROWS = [
   [{ text: "🔄 Меню" }]
 ];
 const MENU_TEXT = "Оберіть категорію:";
+const ORDER_FILTER_ROWS = [
+  [{ text: "🆕 Нові" }, { text: "✅ Прийняті" }],
+  [{ text: "🎯 Виконані" }, { text: "🚚 Доставляються" }],
+  [{ text: "📋 Усі замовлення" }, { text: "🔙 Назад" }]
+];
+const ORDER_FILTER_TEXT = "Оберіть статус замовлень:";
 const UPDATE_TIMEOUT_SEC = 25;
 const UPDATE_RETRY_MS = 2000;
 const MAX_ITEMS_PER_SECTION = 5;
@@ -174,12 +180,15 @@ function formatShopOrdersList(items) {
   const rows = ["Останні замовлення магазину:"];
   items.slice(0, MAX_ITEMS_PER_SECTION).forEach((entry, idx) => {
     const customer = entry.customer || {};
+    const orderStatus = short(entry.orderStatus || "—", 50);
+    const deliveryStage = short(entry?.deliveryStatus?.stage || "—", 50);
     rows.push(
       "",
       `${idx + 1}) ${entry.orderNumber || `ID ${entry.id || "—"}`}`,
       `   👤 ${short([customer.name, customer.lastName].filter(Boolean).join(" ") || "—", 80)}`,
       `   🆔 ${short(customer.clientId || customer.id || "—", 80)}`,
-      `   💰 ${Number(entry.total || 0).toFixed(2)} грн | 📦 ${Array.isArray(entry.items) ? entry.items.length : 0} товар(ів)`
+      `   💰 ${Number(entry.total || 0).toFixed(2)} грн | 📦 ${Array.isArray(entry.items) ? entry.items.length : 0} товар(ів)`,
+      `   🏷️ Статус: ${orderStatus} | 🚛 Доставка: ${deliveryStage}`
     );
   });
   return rows.join("\n");
@@ -229,8 +238,51 @@ function buildMenuPayload() {
   };
 }
 
+function buildOrderFilterPayload() {
+  return {
+    reply_markup: {
+      keyboard: ORDER_FILTER_ROWS,
+      resize_keyboard: true,
+      one_time_keyboard: false
+    }
+  };
+}
+
 async function sendMenu(chatId) {
   return sendTelegramTextTo(chatId, MENU_TEXT, buildMenuPayload());
+}
+
+function normalizeOrderFilter(text) {
+  const normalized = String(text || "").trim().toLowerCase();
+  if (normalized === "🆕 нові") return "new";
+  if (normalized === "✅ прийняті") return "accepted";
+  if (normalized === "🎯 виконані") return "completed";
+  if (normalized === "🚚 доставляються") return "delivering";
+  if (normalized === "📋 усі замовлення") return "all";
+  return "";
+}
+
+function filterOrdersByStatus(items, statusFilter) {
+  const list = Array.isArray(items) ? items : [];
+  if (!statusFilter || statusFilter === "all") return list;
+  return list.filter((entry) => {
+    const orderStatus = String(entry?.orderStatus || "").trim().toLowerCase();
+    const deliveryStage = String(entry?.deliveryStatus?.stage || "").trim().toLowerCase();
+
+    if (statusFilter === "new") {
+      return orderStatus === "new" || orderStatus === "awaiting_payment";
+    }
+    if (statusFilter === "accepted") {
+      return ["accepted", "in_progress", "processing", "paid"].includes(orderStatus);
+    }
+    if (statusFilter === "completed") {
+      return ["completed", "done", "delivered", "received"].includes(orderStatus) || deliveryStage === "picked_up";
+    }
+    if (statusFilter === "delivering") {
+      return ["delivering", "shipping", "in_transit"].includes(orderStatus) || ["in_transit", "awaiting_pickup"].includes(deliveryStage);
+    }
+    return true;
+  });
 }
 
 async function sendCategory(chatId, text) {
@@ -249,12 +301,30 @@ async function sendCategory(chatId, text) {
     return;
   }
 
+  if (state === "await_order_filter") {
+    if (normalized === "🔙 назад") {
+      chatStateById.delete(String(chatId));
+      await sendMenu(chatId);
+      return;
+    }
+    const filter = normalizeOrderFilter(text);
+    if (filter) {
+      const orders = await safeReadList("orders");
+      const filtered = filterOrdersByStatus(orders, filter);
+      await sendTelegramTextTo(chatId, formatShopOrdersList(filtered), buildOrderFilterPayload());
+      return;
+    }
+    await sendTelegramTextTo(chatId, "Оберіть фільтр кнопками нижче.", buildOrderFilterPayload());
+    return;
+  }
+
   if (normalized === "📩 запитання") {
     await sendTelegramTextTo(chatId, formatInquiryList(await safeReadList("inquiries")));
     return;
   }
   if (normalized === "🛒 замовлення") {
-    await sendTelegramTextTo(chatId, formatShopOrdersList(await safeReadList("orders")));
+    chatStateById.set(String(chatId), "await_order_filter");
+    await sendTelegramTextTo(chatId, ORDER_FILTER_TEXT, buildOrderFilterPayload());
     return;
   }
   if (normalized === "🖨️ 3d-друк") {
