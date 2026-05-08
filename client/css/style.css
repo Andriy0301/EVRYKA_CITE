@@ -10131,11 +10131,25 @@ body.evryka-site.has-mobile-bottom-nav.cart-open .mobile-bottom-nav {
 
 /* Absolute final: identical "More" sheet on every page */
 @media (max-width: 768px) {
+  :root {
+    --more-panel-side: 12px;
+    --more-panel-bottom: 92px;
+    --more-panel-radius: 18px;
+    --more-panel-pad: 14px;
+    --more-panel-gap: 10px;
+    --more-link-h: 44px;
+    --more-link-pad-x: 12px;
+    --more-link-fs: 15px;
+    --more-link-lh: 18px;
+    --more-head-fs: 17px;
+    --more-head-lh: 20px;
+  }
+
   body.evryka-site.has-mobile-bottom-nav .mobile-more-sheet__panel {
-    left: calc(12px + env(safe-area-inset-left, 0px)) !important;
-    right: calc(12px + env(safe-area-inset-right, 0px)) !important;
-    bottom: calc(92px + env(safe-area-inset-bottom, 0px)) !important;
-    border-radius: 18px !important;
+    left: calc(var(--more-panel-side) + env(safe-area-inset-left, 0px)) !important;
+    right: calc(var(--more-panel-side) + env(safe-area-inset-right, 0px)) !important;
+    bottom: calc(var(--more-panel-bottom) + env(safe-area-inset-bottom, 0px)) !important;
+    border-radius: var(--more-panel-radius) !important;
     border: 1px solid rgba(17, 17, 17, 0.1) !important;
     background: rgba(255, 255, 255, 0.93) !important;
     backdrop-filter: blur(14px) !important;
@@ -10144,33 +10158,39 @@ body.evryka-site.has-mobile-bottom-nav.cart-open .mobile-bottom-nav {
       0 1px 0 rgba(17, 17, 17, 0.04),
       0 14px 34px rgba(0, 0, 0, 0.14),
       0 5px 14px rgba(0, 0, 0, 0.08) !important;
-    padding: 14px !important;
-    gap: 10px !important;
+    padding: var(--more-panel-pad) !important;
+    gap: var(--more-panel-gap) !important;
+    max-height: min(72vh, 520px) !important;
+    box-sizing: border-box !important;
     font-family: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif !important;
   }
 
   body.evryka-site.has-mobile-bottom-nav .mobile-more-sheet__head {
     margin: 0 0 4px 0 !important;
-    font-size: 17px !important;
+    font-size: var(--more-head-fs) !important;
     font-weight: 800 !important;
-    line-height: 1.2 !important;
+    line-height: var(--more-head-lh) !important;
     letter-spacing: 0 !important;
     color: #2a3343 !important;
     font-family: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif !important;
+    min-height: var(--more-head-lh) !important;
+    box-sizing: border-box !important;
   }
 
   body.evryka-site.has-mobile-bottom-nav .mobile-more-sheet__link {
-    min-height: 44px !important;
-    padding: 10px 12px !important;
+    min-height: var(--more-link-h) !important;
+    height: var(--more-link-h) !important;
+    padding: 10px var(--more-link-pad-x) !important;
     border-radius: 12px !important;
     border: 1px solid #d8dde6 !important;
     background: #ffffff !important;
     color: #667085 !important;
-    font-size: 15px !important;
+    font-size: var(--more-link-fs) !important;
     font-weight: 650 !important;
-    line-height: 1.2 !important;
+    line-height: var(--more-link-lh) !important;
     letter-spacing: 0 !important;
     font-family: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif !important;
+    box-sizing: border-box !important;
   }
 
   body.evryka-site.has-mobile-bottom-nav .mobile-more-sheet__close {
@@ -10228,6 +10248,11 @@ body.evryka-site.has-mobile-bottom-nav.cart-open .mobile-bottom-nav {
 
   body.evryka-site.has-mobile-bottom-nav .mobile-more-sheet__link.is-current::after {
     color: #94a3b8 !important;
+  }
+
+  body.evryka-site.has-mobile-bottom-nav .mobile-more-sheet__link::after {
+    font-size: 20px !important;
+    line-height: 1 !important;
   }
 }
 
