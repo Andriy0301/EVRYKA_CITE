@@ -57,6 +57,10 @@ function parseNumber(text, fallback = 0) {
   return Number.isFinite(num) ? num : fallback;
 }
 
+function dedupeKey(name, description) {
+  return `${String(name || "").trim().toLowerCase()}__${String(description || "").trim().toLowerCase()}`;
+}
+
 function getHeaderIndex(headers, name) {
   return headers.findIndex((h) => String(h || "").trim() === name);
 }
@@ -114,7 +118,7 @@ fs.createReadStream(DATA_CSV_PATH)
     const idxPopularity = pickPopularityColumnIndex(headers);
 
     const products = [];
-    const popularity = {};
+    const dedupedByNameDescription = new Map();
 
     for (let i = 0; i < dataRows.length; i += 1) {
       const values = dataRows[i];
@@ -149,11 +153,7 @@ fs.createReadStream(DATA_CSV_PATH)
       const productId = Number.isFinite(numericCode) && numericCode > 0 ? numericCode : fallbackId;
 
       const popularityValue = idxPopularity >= 0 ? Math.max(0, Math.round(parseNumber(getCell(values, idxPopularity), 0))) : 0;
-      if (popularityValue > 0) {
-        popularity[productId] = popularityValue;
-      }
-
-      products.push({
+      const nextProduct = {
         id: productId,
         name: nameUa,
         price,
@@ -161,8 +161,23 @@ fs.createReadStream(DATA_CSV_PATH)
         description: descriptionUa || "",
         category: categoryUa,
         popularity: popularityValue
-      });
+      };
+
+      const key = dedupeKey(nameUa, descriptionUa);
+      const existing = dedupedByNameDescription.get(key);
+      if (!existing || Number(nextProduct.price || 0) < Number(existing.price || 0)) {
+        dedupedByNameDescription.set(key, nextProduct);
+      }
     }
+
+    products.push(...dedupedByNameDescription.values());
+    const popularity = {};
+    products.forEach((product) => {
+      const popularityValue = Math.max(0, Math.round(parseNumber(product.popularity, 0)));
+      if (popularityValue > 0) {
+        popularity[product.id] = popularityValue;
+      }
+    });
 
     fs.writeFileSync(PRODUCTS_PATH, JSON.stringify(products, null, 2), "utf8");
     fs.writeFileSync(POPULARITY_PATH, JSON.stringify(popularity, null, 2), "utf8");

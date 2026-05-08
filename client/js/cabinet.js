@@ -135,14 +135,60 @@ function showCabinetMessage(message = "", isError = true) {
 
 function getProfileBonuses(profile) {
   const raw = Number(profile?.bonuses || profile?.bonus || 0);
-  return Number.isFinite(raw) && raw > 0 ? raw : 0;
+  return Number.isFinite(raw) && raw > 0 ? Math.floor(raw) : 0;
+}
+
+function getProfileBonusesHistory(profile) {
+  if (!Array.isArray(profile?.bonusesHistory)) return [];
+  return profile.bonusesHistory
+    .map((entry) => ({
+      orderNumber: String(entry?.orderNumber || "").trim() || "—",
+      bonus: Number(entry?.bonus || 0),
+      total: Number(entry?.total || 0),
+      createdAt: entry?.createdAt || ""
+    }))
+    .filter((entry) => Number.isFinite(entry.bonus) && entry.bonus > 0);
+}
+
+function renderCabinetBonusesHistory(profile) {
+  const listEl = document.getElementById("cabBonusesHistory");
+  if (!listEl) return;
+  const history = getProfileBonusesHistory(profile);
+  if (!history.length) {
+    listEl.innerHTML = "<p>Ще немає нарахованих бонусів.</p>";
+    return;
+  }
+
+  listEl.innerHTML = history
+    .slice(0, 20)
+    .map((entry) => {
+      const dateText = formatCabOrderDate(entry.createdAt);
+      return `
+        <div class="cab-order-card">
+          <p><b>Замовлення:</b> ${entry.orderNumber}</p>
+          <p><b>Сума замовлення:</b> ${Number(entry.total || 0).toFixed(2)} грн</p>
+          <p><b>Нараховано бонусів:</b> ${Math.floor(Number(entry.bonus || 0))}</p>
+          <p><b>Дата:</b> ${dateText}</p>
+        </div>
+      `;
+    })
+    .join("");
 }
 
 function renderCabinetBonuses(profile) {
   const amountEl = document.getElementById("cabBonusesAmount");
   if (!amountEl) return;
   const amount = getProfileBonuses(profile);
-  amountEl.innerText = amount.toFixed(2);
+  const amountText = String(Math.floor(amount));
+  const amountRow = amountEl.parentElement;
+  if (amountRow) {
+    // Keep unit text stable even if HTML source has broken encoding.
+    amountRow.innerHTML = `<b id="cabBonusesAmount">${amountText}</b> бонусів`;
+    renderCabinetBonusesHistory(profile);
+    return;
+  }
+  amountEl.innerText = amountText;
+  renderCabinetBonusesHistory(profile);
 }
 
 function formatCabOrderDate(value) {
@@ -810,6 +856,16 @@ function bindCabinetMenuFallback() {
   });
 }
 
+function bindCabinetQuickActions() {
+  document.querySelectorAll('.cabinet-nav-btn[data-action="cart"]').forEach((btn) => {
+    btn.addEventListener("click", () => {
+      if (typeof toggleCart !== "function") return;
+      // Let drawer close handlers run first, then open cart.
+      setTimeout(() => toggleCart(true), 0);
+    });
+  });
+}
+
 function renderInitials(profile) {
   const initialsEl = document.getElementById("authInitials");
   const authIcon = document.getElementById("authIcon");
@@ -1203,6 +1259,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   setupCabinetSections();
   initCabinetMenuDrawer();
   bindCabinetMenuFallback();
+  bindCabinetQuickActions();
   setupCabinetDeliveryUI();
   if (typeof initCatalogCustomSelect === "function") {
     initCatalogCustomSelect("cabProvider");

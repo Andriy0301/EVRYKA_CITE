@@ -9,6 +9,12 @@ let branchOptions = [];
 let branchDropdownVisible = false;
 let branchSelectionInProgress = false;
 let orderSubmitting = false;
+let orderPricing = {
+  subtotal: 0,
+  availableBonuses: 0,
+  bonusUsed: 0,
+  total: 0
+};
 
 function capitalizeCityInput(value) {
   return String(value || "")
@@ -38,19 +44,67 @@ function setProfile(profile) {
 function calculateOrderBonuses(total) {
   const normalized = Number(total || 0);
   if (!Number.isFinite(normalized) || normalized <= 0) return 0;
-  return Number((normalized * ORDER_BONUS_RATE).toFixed(2));
+  return Math.floor(normalized * ORDER_BONUS_RATE);
 }
 
-function awardBonusesForOrder(totalCost) {
+function awardBonusesForOrder(totalCost, orderMeta = {}) {
   const profile = getProfile() || {};
   const currentBonuses = Number(profile?.bonuses || profile?.bonus || 0);
   const safeCurrentBonuses = Number.isFinite(currentBonuses) && currentBonuses > 0 ? currentBonuses : 0;
   const earnedBonuses = calculateOrderBonuses(totalCost);
   if (earnedBonuses <= 0) return;
+  const existingHistory = Array.isArray(profile?.bonusesHistory) ? profile.bonusesHistory : [];
+  const nextEntry = {
+    orderNumber: String(orderMeta?.orderNumber || orderMeta?.id || "").trim() || "—",
+    bonus: earnedBonuses,
+    total: Number(totalCost || 0),
+    createdAt: orderMeta?.createdAt || new Date().toISOString()
+  };
+  const nextHistory = [nextEntry, ...existingHistory].slice(0, 100);
 
   setProfile({
-    bonuses: Number((safeCurrentBonuses + earnedBonuses).toFixed(2))
+    bonuses: Math.max(0, Math.floor(safeCurrentBonuses + earnedBonuses)),
+    bonusesHistory: nextHistory
   });
+}
+
+function getAvailableBonuses(profile = getProfile()) {
+  const value = Number(profile?.bonuses || profile?.bonus || 0);
+  return Number.isFinite(value) && value > 0 ? Math.floor(value) : 0;
+}
+
+function clampBonusUsage(value, subtotal, availableBonuses) {
+  let numeric = Number(String(value || "").replace(",", "."));
+  if (!Number.isFinite(numeric) || numeric < 0) numeric = 0;
+  return Math.min(Number(subtotal || 0), Number(availableBonuses || 0), Math.floor(numeric));
+}
+
+function recalcOrderPricing(items = getCheckoutItems()) {
+  const subtotal = items.reduce((sum, item) => sum + Number(item.price || 0) * Number(item.qty || 1), 0);
+  const availableBonuses = getAvailableBonuses();
+  const bonusInput = document.getElementById("orderBonusUse");
+  const requestedBonus = bonusInput?.value || 0;
+  const bonusUsed = clampBonusUsage(requestedBonus, subtotal, availableBonuses);
+  const total = Math.max(0, Number((subtotal - bonusUsed).toFixed(2)));
+
+  orderPricing = {
+    subtotal: Number(subtotal.toFixed(2)),
+    availableBonuses,
+    bonusUsed: Math.floor(bonusUsed),
+    total
+  };
+
+  if (bonusInput) {
+    bonusInput.max = String(Math.min(Math.floor(subtotal), Math.floor(availableBonuses)));
+    bonusInput.value = String(bonusUsed);
+    bonusInput.disabled = subtotal <= 0 || availableBonuses <= 0;
+  }
+  const availableEl = document.getElementById("orderBonusBalance");
+  const usedEl = document.getElementById("orderBonusUsed");
+  const totalEl = document.getElementById("orderTotal");
+  if (availableEl) availableEl.innerText = String(Math.floor(availableBonuses));
+  if (usedEl) usedEl.innerText = String(Math.floor(bonusUsed || 0));
+  if (totalEl) totalEl.innerText = total.toFixed(2);
 }
 
 function getCheckoutItems() {
@@ -96,13 +150,10 @@ function fillForm(profile) {
 
 function renderItems(items) {
   const container = document.getElementById("orderItems");
-  const totalEl = document.getElementById("orderTotal");
   container.innerHTML = "";
-  let total = 0;
 
   items.forEach((item) => {
     const qty = Number(item.qty || 1);
-    total += Number(item.price || 0) * qty;
     const row = document.createElement("div");
     row.className = "cart-item";
     row.innerHTML = `
@@ -125,7 +176,7 @@ function renderItems(items) {
     container.appendChild(row);
   });
 
-  totalEl.innerText = total;
+  recalcOrderPricing(items);
 
   container.querySelectorAll(".order-qty-minus").forEach((btn) => {
     btn.addEventListener("click", () => changeOrderItemQty(btn.dataset.id, -1));
@@ -138,6 +189,16 @@ function renderItems(items) {
   });
   container.querySelectorAll(".order-remove-btn").forEach((btn) => {
     btn.addEventListener("click", () => removeOrderItem(btn.dataset.id));
+  });
+}
+
+function applyUsedBonuses(bonusUsed = 0) {
+  const safeUsed = Number(bonusUsed || 0);
+  if (!Number.isFinite(safeUsed) || safeUsed <= 0) return;
+  const profile = getProfile() || {};
+  const current = getAvailableBonuses(profile);
+  setProfile({
+    bonuses: Math.max(0, Math.floor(current - safeUsed))
   });
 }
 
@@ -258,7 +319,8 @@ function buildOrderSuccessDetails(order) {
     <p><b>Адреса:</b> ${delivery.address || "-"}</p>
     ${order?.ttn ? `<p><b>ТТН:</b> ${order.ttn}</p>` : ""}
     <p><b>Сума:</b> ${order?.total || 0} грн</p>
-    <p><b>Нараховано бонусів:</b> ${calculateOrderBonuses(order?.total || 0).toFixed(2)}</p>
+    ${Number(order?.bonusUsed || 0) > 0 ? `<p><b>Списано бонусів:</b> ${Math.floor(Number(order?.bonusUsed || 0))}</p>` : ""}
+    <p><b>Нараховано бонусів:</b> ${calculateOrderBonuses(order?.total || 0)}</p>
     <p><b>Товари:</b></p>
     <ul class="order-success-items">${itemsHtml}</ul>
   `;
@@ -779,7 +841,10 @@ async function submitOrder(e) {
     orderSubmitting = true;
     setOrderSubmitLoading(true);
     showMessage("Оформлюємо замовлення, зачекайте...", false);
-    const totalCost = items.reduce((sum, item) => sum + Number(item.price || 0) * Number(item.qty || 1), 0);
+    recalcOrderPricing(items);
+    const subtotalCost = Number(orderPricing.subtotal || 0);
+    const usedBonuses = Number(orderPricing.bonusUsed || 0);
+    const totalCost = Number(orderPricing.total || 0);
     let ttn = "";
     const orderNumber = `EVR-${Date.now().toString().slice(-8)}`;
     if (profile.id) {
@@ -811,10 +876,17 @@ async function submitOrder(e) {
       customer: profile,
       items,
       orderNumber,
+      subtotal: subtotalCost,
+      bonusUsed: usedBonuses,
       total: totalCost,
       ttn
     });
-    awardBonusesForOrder(totalCost);
+    applyUsedBonuses(usedBonuses);
+    awardBonusesForOrder(totalCost, {
+      id: savedOrder?.id,
+      orderNumber: savedOrder?.orderNumber || orderNumber,
+      createdAt: savedOrder?.createdAt
+    });
 
     const paymentMethod = String(profile?.delivery?.paymentMethod || "cod").trim().toLowerCase();
     if (paymentMethod === "mono") {
@@ -867,6 +939,9 @@ document.addEventListener("DOMContentLoaded", () => {
   setupDeliveryUI();
   hydratePrefilledNovaDelivery(profile);
   renderItems(items);
+  const bonusInput = document.getElementById("orderBonusUse");
+  bonusInput?.addEventListener("input", () => recalcOrderPricing(getCheckoutItems()));
+  bonusInput?.addEventListener("change", () => recalcOrderPricing(getCheckoutItems()));
   bindCitySuggestionEvents();
   bindBranchSuggestionEvents();
   const cityInput = document.getElementById("orderCity");

@@ -91,6 +91,12 @@
     <section class="products cabinet-card order-items-card">
       <h2>���� ����������</h2>
       <div id="orderItems"></div>
+      <div id="orderBonusesBox" class="order-bonuses-box">
+        <p><b>Доступно бонусів:</b> <span id="orderBonusBalance">0.00</span></p>
+        <label for="orderBonusUse">Використати бонусів</label>
+        <input id="orderBonusUse" type="number" min="0" step="1" value="0" inputmode="numeric">
+        <p><b>Буде списано:</b> <span id="orderBonusUsed">0.00</span></p>
+      </div>
       <div class="cart-total order-total-row">
         <span>�����</span>
         <div><b id="orderTotal">0</b><span>���</span></div>

@@ -450,6 +450,8 @@ a:hover {
 .cart-overlay.active {
   opacity: 1;
   pointer-events: all;
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
 }
 
 @media (max-width: 768px) {
@@ -9668,66 +9670,6 @@ body.evryka-site.page-print3d {
   }
 }
 
-/* Home-only: make "More" drawer match provided design */
-@media (max-width: 768px) {
-  body.evryka-site.page-home.has-mobile-bottom-nav .mobile-more-sheet__panel {
-    left: 12px !important;
-    right: 12px !important;
-    bottom: calc(76px + env(safe-area-inset-bottom, 0px)) !important;
-    border-radius: 16px !important;
-    border: 1px solid #9fb8ca !important;
-    background: #d7e8f4 !important;
-    box-shadow: 0 14px 28px rgba(9, 23, 38, 0.24) !important;
-    padding: 10px !important;
-    gap: 8px !important;
-    backdrop-filter: none !important;
-    -webkit-backdrop-filter: none !important;
-  }
-
-  body.evryka-site.page-home.has-mobile-bottom-nav .mobile-more-sheet__head {
-    min-height: 36px !important;
-    padding: 4px 4px 8px !important;
-    margin-bottom: 2px !important;
-    border-bottom: 1px solid rgba(76, 110, 131, 0.32) !important;
-  }
-
-  body.evryka-site.page-home.has-mobile-bottom-nav .mobile-more-sheet__head strong {
-    color: #1f3c50 !important;
-    font-size: 15px !important;
-    font-weight: 700 !important;
-  }
-
-  body.evryka-site.page-home.has-mobile-bottom-nav .mobile-more-sheet__close {
-    width: 28px !important;
-    height: 28px !important;
-    border-radius: 8px !important;
-    border: 1px solid #8ea8bb !important;
-    background: #c7ddec !important;
-    color: #204057 !important;
-    font-size: 16px !important;
-    line-height: 1 !important;
-  }
-
-  body.evryka-site.page-home.has-mobile-bottom-nav .mobile-more-sheet__link {
-    min-height: 44px !important;
-    border-radius: 10px !important;
-    border: 1px solid #93afc3 !important;
-    background: #c4dced !important;
-    color: #17354b !important;
-    font-size: 14px !important;
-    font-weight: 600 !important;
-    padding: 10px 12px !important;
-  }
-
-  body.evryka-site.page-home.has-mobile-bottom-nav .mobile-more-sheet__link:hover,
-  body.evryka-site.page-home.has-mobile-bottom-nav .mobile-more-sheet__link:focus-visible,
-  body.evryka-site.page-home.has-mobile-bottom-nav .mobile-more-sheet__link.is-current {
-    background: #b8d4e8 !important;
-    border-color: #7f9fb5 !important;
-    color: #102c42 !important;
-  }
-}
-
 /* Absolute last: chat icon placement must be same on all pages */
 @media (max-width: 768px) {
   body.evryka-site.has-mobile-bottom-nav .chat-widget-root {
@@ -10102,8 +10044,8 @@ body.evryka-site.page-print3d {
     right: calc(var(--neo-final-side) + env(safe-area-inset-right, 0px)) !important;
     bottom: calc(80px + var(--neo-final-side) + env(safe-area-inset-bottom, 0px)) !important;
     border-radius: 18px !important;
-    border: 1px solid rgba(17, 17, 17, 0.1) !important;
-    background: rgba(255, 255, 255, 0.93) !important;
+    border: 1px solid #d9dce3 !important;
+    background: #f5f6f8 !important;
     backdrop-filter: blur(14px) !important;
     -webkit-backdrop-filter: blur(14px) !important;
     box-shadow:
@@ -10142,6 +10084,11 @@ body.evryka-site.page-print3d {
 
 .cart-sidebar {
   z-index: 12000 !important;
+}
+
+/* Keep bottom mobile nav under cart blur layer */
+body.evryka-site.has-mobile-bottom-nav.cart-open .mobile-bottom-nav {
+  z-index: 2000 !important;
 }
 
 /* Absolute final: bottom nav must always stay visible and on top */
@@ -10205,7 +10152,7 @@ body.evryka-site.page-print3d {
     font-weight: 800 !important;
     line-height: 1.2 !important;
     letter-spacing: 0 !important;
-    color: #111111 !important;
+    color: #2a3343 !important;
     font-family: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif !important;
   }
 
@@ -10213,9 +10160,9 @@ body.evryka-site.page-print3d {
     min-height: 44px !important;
     padding: 10px 12px !important;
     border-radius: 12px !important;
-    border: 1px solid rgba(17, 17, 17, 0.1) !important;
-    background: rgba(255, 255, 255, 0.92) !important;
-    color: #111111 !important;
+    border: 1px solid #d8dde6 !important;
+    background: #ffffff !important;
+    color: #667085 !important;
     font-size: 15px !important;
     font-weight: 650 !important;
     line-height: 1.2 !important;
@@ -10227,10 +10174,46 @@ body.evryka-site.page-print3d {
     width: 32px !important;
     height: 32px !important;
     border-radius: 12px !important;
-    border: 1px solid rgba(17, 17, 17, 0.1) !important;
-    background: rgba(255, 255, 255, 0.92) !important;
-    color: #111111 !important;
+    border: 1px solid #d8dde6 !important;
+    background: #ffffff !important;
+    color: #667085 !important;
     font-family: var(--ev-font, "Inter", system-ui, sans-serif) !important;
+  }
+
+  body.evryka-site.has-mobile-bottom-nav .mobile-more-sheet__link:hover,
+  body.evryka-site.has-mobile-bottom-nav .mobile-more-sheet__link:focus-visible,
+  body.evryka-site.has-mobile-bottom-nav .mobile-more-sheet__link.is-current {
+    border-color: rgba(240, 122, 26, 0.38) !important;
+    background: rgba(240, 122, 26, 0.1) !important;
+    color: #c96816 !important;
+  }
+
+  /* Filters + cabinet menu in bottom-nav color palette */
+  .page-catalog .catalog-filters,
+  .page-cabinet .catalog-filters.cabinet-sidebar {
+    border-color: #d9dce3 !important;
+    background: #f5f6f8 !important;
+  }
+
+  .page-catalog .catalog-filters .catalog-filters-title,
+  .page-cabinet .catalog-filters.cabinet-sidebar .catalog-filters-title {
+    color: #2a3343 !important;
+  }
+
+  .page-catalog .catalog-filters .catalog-select-trigger,
+  .page-cabinet .catalog-filters.cabinet-sidebar .catalog-select-trigger,
+  .page-cabinet .catalog-filters.cabinet-sidebar .cabinet-nav-btn {
+    border: 1px solid #d8dde6 !important;
+    background: #ffffff !important;
+    color: #667085 !important;
+  }
+
+  .page-cabinet .catalog-filters.cabinet-sidebar .cabinet-nav-btn:hover,
+  .page-cabinet .catalog-filters.cabinet-sidebar .cabinet-nav-btn:focus-visible,
+  .page-cabinet .catalog-filters.cabinet-sidebar .cabinet-nav-btn.active {
+    border-color: rgba(240, 122, 26, 0.38) !important;
+    background: rgba(240, 122, 26, 0.1) !important;
+    color: #c96816 !important;
   }
 }
 
