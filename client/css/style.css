@@ -10095,7 +10095,7 @@ body.evryka-site.has-mobile-bottom-nav.cart-open .mobile-bottom-nav {
 @media (max-width: 768px) {
   body.evryka-site.has-mobile-bottom-nav .mobile-bottom-nav {
     position: fixed !important;
-    z-index: 5000 !important;
+    z-index: 1200 !important;
     opacity: 1 !important;
     visibility: visible !important;
     display: grid !important;
@@ -10103,17 +10103,20 @@ body.evryka-site.has-mobile-bottom-nav.cart-open .mobile-bottom-nav {
     pointer-events: auto !important;
   }
 
-  body.evryka-site.has-mobile-bottom-nav.cart-open .mobile-bottom-nav,
-  body.evryka-site.has-mobile-bottom-nav.header-nav-open .mobile-bottom-nav,
-  body.evryka-site.has-mobile-bottom-nav.mobile-more-open .mobile-bottom-nav,
-  body.evryka-site.has-mobile-bottom-nav.catalog-filters-open .mobile-bottom-nav,
-  body.evryka-site.has-mobile-bottom-nav.cabinet-menu-open .mobile-bottom-nav {
+  body.evryka-site.has-mobile-bottom-nav.mobile-more-open .mobile-bottom-nav {
     opacity: 1 !important;
     visibility: visible !important;
     display: grid !important;
     transform: translateY(0) !important;
     pointer-events: auto !important;
     z-index: 5000 !important;
+  }
+
+  body.evryka-site.has-mobile-bottom-nav.cart-open .mobile-bottom-nav,
+  body.evryka-site.has-mobile-bottom-nav.header-nav-open .mobile-bottom-nav,
+  body.evryka-site.has-mobile-bottom-nav.catalog-filters-open .mobile-bottom-nav,
+  body.evryka-site.has-mobile-bottom-nav.cabinet-menu-open .mobile-bottom-nav {
+    z-index: 1200 !important;
   }
 
   body.evryka-site.has-mobile-bottom-nav .chat-widget-root,
@@ -10177,7 +10180,7 @@ body.evryka-site.has-mobile-bottom-nav.cart-open .mobile-bottom-nav {
     border: 1px solid #d8dde6 !important;
     background: #ffffff !important;
     color: #667085 !important;
-    font-family: var(--ev-font, "Inter", system-ui, sans-serif) !important;
+    font-family: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif !important;
   }
 
   body.evryka-site.has-mobile-bottom-nav .mobile-more-sheet__link:hover,
@@ -10214,6 +10217,17 @@ body.evryka-site.has-mobile-bottom-nav.cart-open .mobile-bottom-nav {
     border-color: rgba(240, 122, 26, 0.38) !important;
     background: rgba(240, 122, 26, 0.1) !important;
     color: #c96816 !important;
+  }
+
+  /* Keep identical visual style regardless of current page */
+  body.evryka-site.has-mobile-bottom-nav .mobile-more-sheet__link.is-current {
+    border: 1px solid #d8dde6 !important;
+    background: #ffffff !important;
+    color: #667085 !important;
+  }
+
+  body.evryka-site.has-mobile-bottom-nav .mobile-more-sheet__link.is-current::after {
+    color: #94a3b8 !important;
   }
 }
 
