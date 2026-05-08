@@ -1,5 +1,6 @@
 ﻿const ORDER_PROFILE_STORAGE_KEY = "userProfile";
 const ORDER_CHECKOUT_ITEMS_KEY = "checkoutItems";
+const ORDER_BONUS_RATE = 0.05;
 let cityOptions = [];
 let cityDropdownVisible = false;
 let citySearchTimer = null;
@@ -32,6 +33,24 @@ function setProfile(profile) {
     }
   };
   localStorage.setItem(ORDER_PROFILE_STORAGE_KEY, JSON.stringify(merged));
+}
+
+function calculateOrderBonuses(total) {
+  const normalized = Number(total || 0);
+  if (!Number.isFinite(normalized) || normalized <= 0) return 0;
+  return Number((normalized * ORDER_BONUS_RATE).toFixed(2));
+}
+
+function awardBonusesForOrder(totalCost) {
+  const profile = getProfile() || {};
+  const currentBonuses = Number(profile?.bonuses || profile?.bonus || 0);
+  const safeCurrentBonuses = Number.isFinite(currentBonuses) && currentBonuses > 0 ? currentBonuses : 0;
+  const earnedBonuses = calculateOrderBonuses(totalCost);
+  if (earnedBonuses <= 0) return;
+
+  setProfile({
+    bonuses: Number((safeCurrentBonuses + earnedBonuses).toFixed(2))
+  });
 }
 
 function getCheckoutItems() {
@@ -189,6 +208,19 @@ function getPaymentMethodTitle(method) {
   return "-";
 }
 
+function getOrderFieldLabel(inputId) {
+  const input = document.getElementById(inputId);
+  const label = input ? input.closest("label") : null;
+  if (!label) return null;
+  return Array.from(label.childNodes).find((node) => node.nodeType === Node.TEXT_NODE) || null;
+}
+
+function setOrderFieldLabel(inputId, text) {
+  const textNode = getOrderFieldLabel(inputId);
+  if (!textNode) return;
+  textNode.nodeValue = text;
+}
+
 function escapeOrderHtml(text) {
   return String(text || "")
     .replace(/&/g, "&amp;")
@@ -226,6 +258,7 @@ function buildOrderSuccessDetails(order) {
     <p><b>Адреса:</b> ${delivery.address || "-"}</p>
     ${order?.ttn ? `<p><b>ТТН:</b> ${order.ttn}</p>` : ""}
     <p><b>Сума:</b> ${order?.total || 0} грн</p>
+    <p><b>Нараховано бонусів:</b> ${calculateOrderBonuses(order?.total || 0).toFixed(2)}</p>
     <p><b>Товари:</b></p>
     <ul class="order-success-items">${itemsHtml}</ul>
   `;
@@ -278,24 +311,38 @@ function setupDeliveryUI() {
     const deliveryType = deliveryTypeEl.value;
     const hasProvider = Boolean(provider);
     const isNova = provider === "nova_poshta";
+    const isUkrPoshta = provider === "ukr_poshta";
+    const branchLabel = branchWrap.firstChild;
 
     deliveryTypeWrap.style.display = hasProvider && isNova ? "grid" : "none";
     document.getElementById("cityWrap").style.display = hasProvider ? "grid" : "none";
-    cityEl.placeholder = isNova ? "Почніть вводити місто..." : "Місто";
+    cityEl.required = hasProvider;
+    cityEl.placeholder = isNova ? "Почніть вводити місто..." : "Вкажіть місто";
     branchWrap.style.display = !hasProvider || (isNova && deliveryType === "address") ? "none" : "grid";
     addressWrap.style.display = hasProvider && isNova && deliveryType === "address" ? "grid" : "none";
     middleNameWrap.style.display = hasProvider && isNova && deliveryType === "address" ? "grid" : "none";
 
-    branchWrap.firstChild.textContent = deliveryType === "postomat" ? "Обрати поштомат" : "Обрати відділення";
-    branchEl.required = isNova && deliveryType !== "address";
+    if (branchLabel) {
+      branchLabel.textContent = isUkrPoshta
+        ? "Поштовий індекс відділення"
+        : (deliveryType === "postomat" ? "Обрати поштомат" : "Обрати відділення");
+    }
+    setOrderFieldLabel("orderBranch", isUkrPoshta ? "Поштовий індекс відділення" : "Номер відділення");
+    branchEl.required = isUkrPoshta || (isNova && deliveryType !== "address");
     addressEl.required = isNova && deliveryType === "address";
     middleNameEl.required = isNova && deliveryType === "address";
+    branchEl.inputMode = isUkrPoshta ? "numeric" : "text";
+    branchEl.pattern = isUkrPoshta ? "\\d{5}" : "";
+    branchEl.placeholder = isUkrPoshta
+      ? "Наприклад: 01001"
+      : (deliveryType === "postomat" ? "Почніть вводити поштомат..." : "Почніть вводити відділення...");
 
     if (!isNova) {
       cityRefEl.value = "";
       branchRefEl.value = "";
-      branchEl.value = "";
-      branchEl.placeholder = "Вкажіть відділення вручну";
+      if (!isUkrPoshta) {
+        branchEl.value = "";
+      }
       branchOptions = [];
       renderBranchSuggestions([]);
     }
@@ -677,11 +724,16 @@ async function submitOrder(e) {
       paymentMethod: document.getElementById("orderPaymentMethod").value || "cod",
       city: document.getElementById("orderCity").value.trim(),
       cityRef: document.getElementById("orderCityRef").value.trim(),
-      branch: document.getElementById("orderBranchRef").value.trim(),
+      branch: "",
       branchText: document.getElementById("orderBranch").value.trim(),
       address: document.getElementById("orderAddress").value.trim()
     }
   };
+  const isUkrPoshta = profile.delivery.provider === "ukr_poshta";
+  const ukrPoshtaBranchIndex = profile.delivery.branchText.replace(/\s+/g, "");
+  profile.delivery.branch = isUkrPoshta
+    ? ukrPoshtaBranchIndex
+    : document.getElementById("orderBranchRef").value.trim();
 
   if (!profile.name || !profile.lastName || !profile.phone || !profile.email) {
     showMessage("Заповніть контактні дані");
@@ -710,6 +762,17 @@ async function submitOrder(e) {
       showMessage("Оберіть відділення або поштомат");
       return;
     }
+  }
+  if (isUkrPoshta) {
+    if (!profile.delivery.city) {
+      showMessage("Вкажіть місто для Укрпошти");
+      return;
+    }
+    if (!/^\d{5}$/.test(ukrPoshtaBranchIndex)) {
+      showMessage("Вкажіть 5-значний поштовий індекс відділення Укрпошти");
+      return;
+    }
+    profile.delivery.branchText = ukrPoshtaBranchIndex;
   }
 
   try {
@@ -751,6 +814,7 @@ async function submitOrder(e) {
       total: totalCost,
       ttn
     });
+    awardBonusesForOrder(totalCost);
 
     const paymentMethod = String(profile?.delivery?.paymentMethod || "cod").trim().toLowerCase();
     if (paymentMethod === "mono") {

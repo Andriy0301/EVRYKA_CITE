@@ -119,7 +119,7 @@
           </div>
           <button class="cabinet-nav-btn neo-drawer__item active" data-uflyout-item type="button" data-section="personal">??????? ???</button>
           <button class="cabinet-nav-btn neo-drawer__item" data-uflyout-item type="button" data-section="orders">?? ??????????</button>
-          <button class="cabinet-nav-btn neo-drawer__item" data-uflyout-item type="button">??????</button>
+          <button class="cabinet-nav-btn neo-drawer__item" data-uflyout-item type="button" data-section="bonuses">??????</button>
           <button class="cabinet-nav-btn neo-drawer__item" data-uflyout-item type="button">?????</button>
           <button id="logoutBtn" class="cabinet-nav-btn neo-drawer__item logout" data-uflyout-item type="button">?????</button>
         </aside>
@@ -184,6 +184,13 @@
     <section id="cabOrdersSection" class="products cabinet-card" style="display:none;">
       <h2>?? ??????????</h2>
       <div id="cabOrdersList" class="cab-orders-list"></div>
+    </section>
+
+    <section id="cabBonusesSection" class="products cabinet-card" style="display:none;">
+      <h2>??????</h2>
+      <p>????????? ?????????? ???????:</p>
+      <p><b id="cabBonusesAmount">0</b> ?????</p>
+      <p class="cab-bonus-note">?? ???????? ??????? ?? ????????? ??????? ??? ??????.</p>
     </section>
           </div>
         </div>
@@ -280,10 +287,10 @@
     </div>
   </div>
 
-  <script src="js/header-nav.js?v=20260506-13"></script>
+  <script src="js/header-nav.js?v=20260508-1"></script>
   <script src="js/api.js?v=20260422"></script>
   <script src="js/custom-select.js?v=1"></script>
-  <script src="js/cabinet.js?v=20260506-13"></script>
+  <script src="js/cabinet.js?v=20260508-1"></script>
   <script>
     (function () {
       function recoverCabinetText() {
@@ -336,7 +343,7 @@
         setText("#cabinetMenuCloseBtn", "✕");
 
         const navBtns = document.querySelectorAll(".page-cabinet .cabinet-nav-btn");
-        const navTexts = ["Особисті дані", "Мої замовлення", "Обране", "Кошик", "Вийти"];
+        const navTexts = ["Особисті дані", "Мої замовлення", "Бонуси", "Кошик", "Вийти"];
         navBtns.forEach((btn, i) => {
           if (navTexts[i]) btn.textContent = navTexts[i];
         });
@@ -344,6 +351,9 @@
         setText("#cabPersonalSection h2", "Мої дані");
         setText("#cabPersonalSection h3", "Доставка");
         setText("#cabOrdersSection h2", "Мої замовлення");
+        setText("#cabBonusesSection h2", "Бонуси");
+        setText("#cabBonusesSection p:nth-of-type(1)", "Поточний бонусний баланс:");
+        setText(".cab-bonus-note", "За кожне замовлення ви отримуєте 5% бонусами.");
         setText("#cabProviderValue", "Оберіть службу доставки");
         setText("#cabDeliveryTypeValue", "Відділення");
         setAttr("#cabBranch", "placeholder", "Почніть вводити відділення...");

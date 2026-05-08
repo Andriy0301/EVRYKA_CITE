@@ -133,6 +133,18 @@ function showCabinetMessage(message = "", isError = true) {
   el.style.color = isError ? "#b00020" : "#1b7f3a";
 }
 
+function getProfileBonuses(profile) {
+  const raw = Number(profile?.bonuses || profile?.bonus || 0);
+  return Number.isFinite(raw) && raw > 0 ? raw : 0;
+}
+
+function renderCabinetBonuses(profile) {
+  const amountEl = document.getElementById("cabBonusesAmount");
+  if (!amountEl) return;
+  const amount = getProfileBonuses(profile);
+  amountEl.innerText = amount.toFixed(2);
+}
+
 function formatCabOrderDate(value) {
   try {
     return new Date(value).toLocaleString("uk-UA");
@@ -651,12 +663,14 @@ async function loadCabinetOrders(profile) {
 function setupCabinetSections() {
   const personal = document.getElementById("cabPersonalSection");
   const orders = document.getElementById("cabOrdersSection");
+  const bonuses = document.getElementById("cabBonusesSection");
   const buttons = Array.from(document.querySelectorAll(".cabinet-nav-btn[data-section]"));
-  if (!personal || !orders || !buttons.length) return;
+  if (!personal || !orders || !bonuses || !buttons.length) return;
 
   const show = (section) => {
     personal.style.display = section === "personal" ? "block" : "none";
     orders.style.display = section === "orders" ? "block" : "none";
+    bonuses.style.display = section === "bonuses" ? "block" : "none";
     buttons.forEach((btn) => {
       btn.classList.toggle("active", btn.dataset.section === section);
     });
@@ -671,6 +685,10 @@ function setupCabinetSections() {
     }
     if (raw === "orders" || raw === "zamovlennya") {
       show("orders");
+      return;
+    }
+    if (raw === "bonuses" || raw === "bonusy") {
+      show("bonuses");
       return;
     }
     if (raw === "personal" || raw === "profile") {
@@ -689,6 +707,7 @@ function setupCabinetSections() {
       show(section);
       try {
         if (section === "orders") history.replaceState(null, "", "#orders");
+        else if (section === "bonuses") history.replaceState(null, "", "#bonuses");
         else if (section === "personal") history.replaceState(null, "", "#personal");
       } catch (_) {
         // ignore
@@ -726,7 +745,7 @@ function initCabinetMenuDrawer() {
     sidebar.style.setProperty("left", "12px", "important");
     sidebar.style.setProperty("right", "12px", "important");
     sidebar.style.setProperty("bottom", "92px", "important");
-    sidebar.style.setProperty("z-index", "1302", "important");
+    sidebar.style.setProperty("z-index", "4000", "important");
     sidebar.style.setProperty("display", "flex", "important");
     sidebar.style.setProperty("flex-direction", "column", "important");
     sidebar.style.setProperty("opacity", "1", "important");
@@ -1180,6 +1199,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   }
 
   fillCabinet(profile);
+  renderCabinetBonuses(profile);
   setupCabinetSections();
   initCabinetMenuDrawer();
   bindCabinetMenuFallback();

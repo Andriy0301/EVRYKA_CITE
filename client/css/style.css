@@ -9969,7 +9969,7 @@ body.evryka-site.page-print3d {
 /* Absolute last: cart badge number must be black */
 @media (max-width: 768px) {
   body.evryka-site.has-mobile-bottom-nav .mobile-bottom-nav__item--cart .mobile-bottom-nav__badge {
-    font-family: var(--ev-font, "Inter", system-ui, sans-serif) !important;
+    font-family: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif !important;
     font-size: 10px !important;
     font-weight: 600 !important;
     line-height: 16px !important;
@@ -10127,7 +10127,7 @@ body.evryka-site.page-print3d {
       0 5px 14px rgba(0, 0, 0, 0.08) !important;
     padding: 14px !important;
     gap: 10px !important;
-    font-family: var(--ev-font, "Inter", system-ui, sans-serif) !important;
+    font-family: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif !important;
   }
 
   body.evryka-site.has-mobile-bottom-nav .mobile-more-sheet__head {
@@ -10137,7 +10137,7 @@ body.evryka-site.page-print3d {
     line-height: 1.2 !important;
     letter-spacing: 0 !important;
     color: #111111 !important;
-    font-family: var(--ev-font, "Inter", system-ui, sans-serif) !important;
+    font-family: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif !important;
   }
 
   body.evryka-site.has-mobile-bottom-nav .mobile-more-sheet__link {
@@ -10151,7 +10151,7 @@ body.evryka-site.page-print3d {
     font-weight: 650 !important;
     line-height: 1.2 !important;
     letter-spacing: 0 !important;
-    font-family: var(--ev-font, "Inter", system-ui, sans-serif) !important;
+    font-family: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif !important;
   }
 
   body.evryka-site.has-mobile-bottom-nav .mobile-more-sheet__close {
