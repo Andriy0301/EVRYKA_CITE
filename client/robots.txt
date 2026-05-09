@@ -1,0 +1,9 @@
+# EVRYKA — дозволити індексацію публічних сторінок
+User-agent: *
+Allow: /
+
+# Адмін-панель та технічні шляхи не індексувати
+Disallow: /admin-orders
+Disallow: /api/
+
+Sitemap: https://evryka3d.com/sitemap.xml

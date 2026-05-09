@@ -1,3 +1,75 @@
+const SITE_ORIGIN = "https://evryka3d.com";
+const DEFAULT_OG_IMAGE = `${SITE_ORIGIN}/images/text_logo.png`;
+
+function stripHtml(html) {
+  const div = document.createElement("div");
+  div.innerHTML = String(html || "");
+  return (div.textContent || "").replace(/\s+/g, " ").trim();
+}
+
+function ensureMetaProperty(property, content) {
+  let el = document.head.querySelector(`meta[property="${property}"]`);
+  if (!el) {
+    el = document.createElement("meta");
+    el.setAttribute("property", property);
+    document.head.appendChild(el);
+  }
+  el.setAttribute("content", content);
+}
+
+function ensureMetaName(name, content) {
+  let el = document.head.querySelector(`meta[name="${name}"]`);
+  if (!el) {
+    el = document.createElement("meta");
+    el.setAttribute("name", name);
+    document.head.appendChild(el);
+  }
+  el.setAttribute("content", content);
+}
+
+function ensureCanonical(href) {
+  let el = document.head.querySelector('link[rel="canonical"]');
+  if (!el) {
+    el = document.createElement("link");
+    el.setAttribute("rel", "canonical");
+    document.head.appendChild(el);
+  }
+  el.setAttribute("href", href);
+}
+
+function resolveOgImage(product) {
+  const raw = product?.images?.[0];
+  if (!raw) return DEFAULT_OG_IMAGE;
+  const s = String(raw);
+  if (/^https?:\/\//i.test(s)) return s;
+  if (typeof API_URL !== "undefined" && API_URL) {
+    return `${API_URL}${s.startsWith("/") ? s : "/" + s}`;
+  }
+  return s.startsWith("/") ? SITE_ORIGIN + s : `${SITE_ORIGIN}/${s}`;
+}
+
+function applyProductSeo(product, id) {
+  const name = String(product?.name || "Товар").trim();
+  const rawDesc = stripHtml(product?.description || "");
+  let desc = rawDesc.slice(0, 155);
+  if (rawDesc.length > 155) desc += "…";
+  if (!desc) desc = `${name} — 3D-друк EVRYKA. Доставка Новою Поштою по Україні.`;
+
+  document.title = `${name} — купити в EVRYKA`;
+  ensureMetaName("description", desc);
+  ensureMetaProperty("og:type", "website");
+  ensureMetaProperty("og:title", `${name} | EVRYKA`);
+  ensureMetaProperty("og:description", desc);
+  const canonicalUrl = `${SITE_ORIGIN}/product?id=${encodeURIComponent(id)}`;
+  ensureCanonical(canonicalUrl);
+  ensureMetaProperty("og:url", canonicalUrl);
+  const ogImg = resolveOgImage(product);
+  ensureMetaProperty("og:image", ogImg);
+  ensureMetaName("twitter:title", `${name} | EVRYKA`);
+  ensureMetaName("twitter:description", desc);
+  ensureMetaName("twitter:image", ogImg);
+}
+
 async function loadProduct() {
   const params = new URLSearchParams(window.location.search);
   const id = Number(params.get("id"));
@@ -11,6 +83,8 @@ async function loadProduct() {
       document.body.innerHTML = "<h2>Товар не знайдено</h2>";
       return;
     }
+
+    applyProductSeo(product, id);
 
     // 🔥 дані
     document.getElementById("title").innerText = product.name;
@@ -156,12 +230,14 @@ function renderGallery(product) {
   if (!product.images || product.images.length === 0) return;
 
   let currentImageIndex = 0;
+  const altBase = String(product?.name || "Товар EVRYKA").trim();
 
   const setActiveImage = (nextIndex) => {
     if (!Array.isArray(product.images) || !product.images.length) return;
     const clamped = Math.max(0, Math.min(product.images.length - 1, Number(nextIndex) || 0));
     currentImageIndex = clamped;
     mainImage.src = `${API_URL}${product.images[currentImageIndex]}`;
+    mainImage.alt = `${altBase} — головне фото`;
     document.querySelectorAll(".thumbnails img").forEach((thumb, idx) => {
       thumb.classList.toggle("thumb-active", idx === currentImageIndex);
     });
@@ -172,6 +248,7 @@ function renderGallery(product) {
   product.images.forEach((img, i) => {
     const el = document.createElement("img");
     el.src = `${API_URL}${img}`;
+    el.alt = `${altBase} — мініатюра ${i + 1}`;
     if (i === 0) el.classList.add("thumb-active");
 
     el.onclick = () => {
