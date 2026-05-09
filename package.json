@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "node server/server.js"
+    "start": "node server/server.js",
+    "bot:ping": "node server/ping-bot.js"
   },
   "keywords": [],
   "author": "",
