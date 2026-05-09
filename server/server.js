@@ -9,6 +9,9 @@ const app = express();
 const { isTelegramConfigured, startTelegramMenuBot } = require("./utils/telegram");
 const { startOrderStatusSyncLoop } = require("./utils/order-status-sync");
 const { initDataStore } = require("./utils/data-store");
+const { sendProductIndexPage, isProductIndexPath } = require("./utils/product-page-html");
+
+const SITE_ORIGIN = process.env.PUBLIC_SITE_ORIGIN || "https://evryka3d.com";
 
 // CORS
 app.use(cors({
@@ -38,6 +41,14 @@ app.use((req, res, next) => {
   if (target == null) return next();
   const qs = req.url.includes("?") ? req.url.slice(req.url.indexOf("?")) : "";
   return res.redirect(301, target + qs);
+});
+
+// Сторінка товару завжди через Node: Product JSON-LD у HTML source при ?id=
+app.use((req, res, next) => {
+  if (req.method !== "GET") return next();
+  const p = req.path || "";
+  if (!isProductIndexPath(p)) return next();
+  sendProductIndexPage(res, SITE_ORIGIN, req);
 });
 
 // 🔥 СТАТИКА

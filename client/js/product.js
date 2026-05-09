@@ -48,87 +48,6 @@ function resolveOgImage(product) {
   return s.startsWith("/") ? SITE_ORIGIN + s : `${SITE_ORIGIN}/${s}`;
 }
 
-/** Абсолютний URL зображення товару для JSON-LD / OG */
-function resolveProductImageUrl(raw) {
-  if (!raw) return null;
-  const s = String(raw);
-  if (/^https?:\/\//i.test(s)) return s;
-  if (typeof API_URL !== "undefined" && API_URL) {
-    return `${API_URL}${s.startsWith("/") ? s : "/" + s}`;
-  }
-  return s.startsWith("/") ? SITE_ORIGIN + s : `${SITE_ORIGIN}/${s}`;
-}
-
-function removeProductJsonLd() {
-  document.querySelectorAll('script[type="application/ld+json"][data-evryka-product-schema]').forEach((el) => {
-    el.remove();
-  });
-}
-
-/**
- * Product schema (JSON-LD) для Google Shopping / Merchant Center та rich results.
- */
-function applyProductJsonLd(product, id) {
-  removeProductJsonLd();
-
-  const canonicalUrl = `${SITE_ORIGIN}/product?id=${encodeURIComponent(id)}`;
-  const name = String(product?.name || "Товар").trim();
-  let description = stripHtml(product?.description || "").trim();
-  if (!description) {
-    description = `${name} — 3D-друк EVRYKA. Доставка Новою Поштою по Україні.`;
-  }
-
-  const imageUrls = Array.isArray(product?.images)
-    ? product.images.map((img) => resolveProductImageUrl(img)).filter(Boolean)
-    : [];
-  if (imageUrls.length === 0) {
-    imageUrls.push(DEFAULT_OG_IMAGE);
-  }
-
-  const priceNum = Number(product?.price);
-  const priceOk = Number.isFinite(priceNum) && priceNum >= 0;
-
-  const availability =
-    product?.availability === "https://schema.org/OutOfStock" ||
-    product?.availability === "OutOfStock" ||
-    product?.inStock === false
-      ? "https://schema.org/OutOfStock"
-      : "https://schema.org/InStock";
-
-  const schema = {
-    "@context": "https://schema.org",
-    "@type": "Product",
-    name,
-    description,
-    image: imageUrls.length === 1 ? imageUrls[0] : imageUrls,
-    sku: String(id),
-    url: canonicalUrl,
-    brand: {
-      "@type": "Brand",
-      name: "EVRYKA"
-    },
-    offers: {
-      "@type": "Offer",
-      url: canonicalUrl,
-      priceCurrency: "UAH",
-      price: priceOk ? priceNum : 0,
-      availability,
-      itemCondition: "https://schema.org/NewCondition",
-      seller: {
-        "@type": "Organization",
-        name: "EVRYKA",
-        url: SITE_ORIGIN
-      }
-    }
-  };
-
-  const script = document.createElement("script");
-  script.type = "application/ld+json";
-  script.setAttribute("data-evryka-product-schema", "1");
-  script.textContent = JSON.stringify(schema);
-  document.head.appendChild(script);
-}
-
 function applyProductSeo(product, id) {
   const name = String(product?.name || "Товар").trim();
   const rawDesc = stripHtml(product?.description || "");
@@ -166,7 +85,6 @@ async function loadProduct() {
     }
 
     applyProductSeo(product, id);
-    applyProductJsonLd(product, id);
 
     // 🔥 дані
     document.getElementById("title").innerText = product.name;
