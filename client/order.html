@@ -136,6 +136,8 @@
               <option value="">������ ������ ��������</option>
               <option value="nova_poshta">���� �����</option>
               <option value="ukr_poshta">��������</option>
+              <option value="meest">Meest</option>
+              <option value="rozetka_delivery">Rozetka Delivery</option>
             </select>
           </div>
         </label>
@@ -368,10 +370,12 @@
         paymentSelect.options[1].text = "Оплата Monobank";
       }
       const providerSelect = document.getElementById("orderProvider");
-      if (providerSelect && providerSelect.options.length >= 3) {
+      if (providerSelect && providerSelect.options.length >= 5) {
         providerSelect.options[0].text = "Оберіть службу доставки";
         providerSelect.options[1].text = "Нова пошта";
         providerSelect.options[2].text = "Укрпошта";
+        providerSelect.options[3].text = "Meest";
+        providerSelect.options[4].text = "Rozetka Delivery";
       }
       const typeSelect = document.getElementById("orderDeliveryType");
       if (typeSelect && typeSelect.options.length >= 3) {

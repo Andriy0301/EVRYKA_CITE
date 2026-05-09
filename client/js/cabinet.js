@@ -890,6 +890,10 @@ function capitalizeCityInput(value) {
     .replace(/(^|\s|-)([a-zа-яіїєґ])/giu, (match, separator, letter) => `${separator}${letter.toUpperCase()}`);
 }
 
+function isManualCourierDeliveryCab(provider) {
+  return provider === "ukr_poshta" || provider === "meest" || provider === "rozetka_delivery";
+}
+
 function fillCabinet(profile) {
   document.getElementById("cabName").value = profile?.name || "";
   document.getElementById("cabLastName").value = profile?.lastName || "";
@@ -931,6 +935,9 @@ function setupCabinetDeliveryUI() {
     const provider = providerEl.value;
     const deliveryType = deliveryTypeEl.value;
     const isNova = provider === "nova_poshta";
+    const isUkrPoshta = provider === "ukr_poshta";
+    const isTextBranchCarrier = provider === "meest" || provider === "rozetka_delivery";
+    const isManualCourier = isManualCourierDeliveryCab(provider);
 
     if (!provider) {
       deliveryTypeWrap.style.display = "none";
@@ -944,9 +951,25 @@ function setupCabinetDeliveryUI() {
     cityWrap.style.display = "grid";
     branchWrap.style.display = isNova && deliveryType === "address" ? "none" : "grid";
     addressWrap.style.display = isNova && deliveryType === "address" ? "grid" : "none";
-    cityEl.placeholder = isNova ? "Почніть вводити місто..." : "Місто";
-    branchWrap.firstChild.textContent = deliveryType === "postomat" ? "Обрати поштомат" : "Обрати відділення";
-    branchEl.placeholder = deliveryType === "postomat" ? "Почніть вводити поштомат..." : "Почніть вводити відділення...";
+    cityEl.placeholder = isNova ? "Почніть вводити місто..." : "Вкажіть місто";
+    if (isUkrPoshta) {
+      branchWrap.firstChild.textContent = "Поштовий індекс відділення";
+      branchEl.placeholder = "Наприклад: 01001";
+      branchEl.inputMode = "numeric";
+    } else if (isTextBranchCarrier) {
+      branchWrap.firstChild.textContent = "Відділення / пункт видачі";
+      branchEl.placeholder = "Назва відділення, адреса або номер пункту";
+      branchEl.inputMode = "text";
+    } else if (isNova) {
+      branchWrap.firstChild.textContent = deliveryType === "postomat" ? "Обрати поштомат" : "Обрати відділення";
+      branchEl.placeholder =
+        deliveryType === "postomat" ? "Почніть вводити поштомат..." : "Почніть вводити відділення...";
+      branchEl.inputMode = "text";
+    } else {
+      branchWrap.firstChild.textContent = "Відділення";
+      branchEl.placeholder = "Вкажіть відділення";
+      branchEl.inputMode = "text";
+    }
     // У профілі поля доставки не обов'язкові.
     branchEl.required = false;
     addressEl.required = false;
@@ -954,6 +977,9 @@ function setupCabinetDeliveryUI() {
     if (!isNova) {
       cityRefEl.value = "";
       branchRefEl.value = "";
+      if (!isManualCourier) {
+        branchEl.value = "";
+      }
       cabBranchOptions = [];
       renderCabBranchSuggestions([]);
     }
@@ -1214,6 +1240,19 @@ async function saveCabinet(e) {
     return;
   }
 
+  const cabProvider = document.getElementById("cabProvider").value;
+  const cabBranchTextRaw = document.getElementById("cabBranch").value.trim();
+  const cabBranchRef = document.getElementById("cabBranchRef").value.trim();
+  const ukrIndex = cabBranchTextRaw.replace(/\s+/g, "");
+  let cabBranchStored = cabBranchRef;
+  let cabBranchTextStored = cabBranchTextRaw;
+  if (cabProvider === "ukr_poshta") {
+    cabBranchStored = ukrIndex;
+    cabBranchTextStored = ukrIndex;
+  } else if (cabProvider === "meest" || cabProvider === "rozetka_delivery") {
+    cabBranchStored = cabBranchTextRaw;
+  }
+
   const payload = {
     id: current.id,
     email: email,
@@ -1221,12 +1260,12 @@ async function saveCabinet(e) {
     lastName: lastName,
     phone: phone,
     delivery: {
-      provider: document.getElementById("cabProvider").value,
+      provider: cabProvider,
       deliveryType: document.getElementById("cabDeliveryType").value,
       city: document.getElementById("cabCity").value.trim(),
       cityRef: document.getElementById("cabCityRef").value.trim(),
-      branch: document.getElementById("cabBranchRef").value.trim(),
-      branchText: document.getElementById("cabBranch").value.trim(),
+      branch: cabBranchStored,
+      branchText: cabBranchTextStored,
       address: document.getElementById("cabAddress").value.trim()
     }
   };

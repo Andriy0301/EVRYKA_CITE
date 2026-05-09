@@ -144,6 +144,8 @@
               <option value="">?????? ?????? ????????</option>
               <option value="nova_poshta">???? ?????</option>
               <option value="ukr_poshta">????????</option>
+              <option value="meest">Meest</option>
+              <option value="rozetka_delivery">Rozetka Delivery</option>
             </select>
           </div>
         </label>
@@ -389,6 +391,15 @@
         setText(".chat-widget-close", "✕");
         setAttr("#chatWidgetText", "placeholder", "Ваше запитання...");
         setText("#chatWidgetSend", "Надіслати");
+
+        const cabProviderSelect = document.getElementById("cabProvider");
+        if (cabProviderSelect && cabProviderSelect.options.length >= 5) {
+          cabProviderSelect.options[0].text = "Оберіть службу доставки";
+          cabProviderSelect.options[1].text = "Нова пошта";
+          cabProviderSelect.options[2].text = "Укрпошта";
+          cabProviderSelect.options[3].text = "Meest";
+          cabProviderSelect.options[4].text = "Rozetka Delivery";
+        }
       }
 
       if (document.readyState === "loading") {

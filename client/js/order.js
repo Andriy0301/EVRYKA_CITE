@@ -24,6 +24,10 @@ function capitalizeCityInput(value) {
     });
 }
 
+function isManualCourierDelivery(provider) {
+  return provider === "ukr_poshta" || provider === "meest" || provider === "rozetka_delivery";
+}
+
 function getProfile() {
   return JSON.parse(localStorage.getItem(ORDER_PROFILE_STORAGE_KEY) || "null");
 }
@@ -256,6 +260,8 @@ function setOrderSubmitLoading(isLoading) {
 function getProviderTitle(provider) {
   if (provider === "nova_poshta") return "Нова пошта";
   if (provider === "ukr_poshta") return "Укрпошта";
+  if (provider === "meest") return "Meest";
+  if (provider === "rozetka_delivery") return "Rozetka Delivery";
   return "-";
 }
 
@@ -377,6 +383,8 @@ function setupDeliveryUI() {
     const hasProvider = Boolean(provider);
     const isNova = provider === "nova_poshta";
     const isUkrPoshta = provider === "ukr_poshta";
+    const isTextBranchCarrier = provider === "meest" || provider === "rozetka_delivery";
+    const isManualCourier = isManualCourierDelivery(provider);
     const branchLabel = branchWrap.firstChild;
 
     deliveryTypeWrap.style.display = hasProvider && isNova ? "grid" : "none";
@@ -388,12 +396,19 @@ function setupDeliveryUI() {
     middleNameWrap.style.display = hasProvider && isNova && deliveryType === "address" ? "grid" : "none";
 
     if (branchLabel) {
-      branchLabel.textContent = isUkrPoshta
-        ? "Поштовий індекс відділення"
-        : (deliveryType === "postomat" ? "Обрати поштомат" : "Обрати відділення");
+      if (isUkrPoshta) {
+        branchLabel.textContent = "Поштовий індекс відділення";
+      } else if (isTextBranchCarrier) {
+        branchLabel.textContent = "Відділення / пункт видачі";
+      } else {
+        branchLabel.textContent = deliveryType === "postomat" ? "Обрати поштомат" : "Обрати відділення";
+      }
     }
-    setOrderFieldLabel("orderBranch", isUkrPoshta ? "Поштовий індекс відділення" : "Номер відділення");
-    branchEl.required = isUkrPoshta || (isNova && deliveryType !== "address");
+    setOrderFieldLabel(
+      "orderBranch",
+      isUkrPoshta ? "Поштовий індекс відділення" : isTextBranchCarrier ? "Відділення / пункт видачі" : "Номер відділення"
+    );
+    branchEl.required = isUkrPoshta || isTextBranchCarrier || (isNova && deliveryType !== "address");
     addressEl.required = isNova && deliveryType === "address";
     middleNameEl.required = isNova && deliveryType === "address";
     branchEl.inputMode = isUkrPoshta ? "numeric" : "text";
@@ -404,12 +419,16 @@ function setupDeliveryUI() {
     }
     branchEl.placeholder = isUkrPoshta
       ? "Наприклад: 01001"
-      : (deliveryType === "postomat" ? "Почніть вводити поштомат..." : "Почніть вводити відділення...");
+      : isTextBranchCarrier
+        ? "Назва відділення, адреса або номер пункту"
+        : deliveryType === "postomat"
+          ? "Почніть вводити поштомат..."
+          : "Почніть вводити відділення...";
 
     if (!isNova) {
       cityRefEl.value = "";
       branchRefEl.value = "";
-      if (!isUkrPoshta) {
+      if (!isManualCourier) {
         branchEl.value = "";
       }
       branchOptions = [];
@@ -799,10 +818,16 @@ async function submitOrder(e) {
     }
   };
   const isUkrPoshta = profile.delivery.provider === "ukr_poshta";
+  const isMeest = profile.delivery.provider === "meest";
+  const isRozetkaDelivery = profile.delivery.provider === "rozetka_delivery";
   const ukrPoshtaBranchIndex = profile.delivery.branchText.replace(/\s+/g, "");
-  profile.delivery.branch = isUkrPoshta
-    ? ukrPoshtaBranchIndex
-    : document.getElementById("orderBranchRef").value.trim();
+  if (isUkrPoshta) {
+    profile.delivery.branch = ukrPoshtaBranchIndex;
+  } else if (isMeest || isRozetkaDelivery) {
+    profile.delivery.branch = profile.delivery.branchText.trim();
+  } else {
+    profile.delivery.branch = document.getElementById("orderBranchRef").value.trim();
+  }
 
   if (!profile.name || !profile.lastName || !profile.phone || !profile.email) {
     showMessage("Заповніть контактні дані");
@@ -842,6 +867,16 @@ async function submitOrder(e) {
       return;
     }
     profile.delivery.branchText = ukrPoshtaBranchIndex;
+  }
+  if (isMeest || isRozetkaDelivery) {
+    if (!profile.delivery.city) {
+      showMessage(isMeest ? "Вкажіть місто для Meest" : "Вкажіть місто для Rozetka Delivery");
+      return;
+    }
+    if (!profile.delivery.branchText.trim()) {
+      showMessage("Вкажіть відділення або пункт видачі");
+      return;
+    }
   }
 
   try {

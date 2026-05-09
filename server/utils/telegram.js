@@ -108,6 +108,8 @@ function formatDeliveryProvider(provider) {
   const p = String(provider || "").trim();
   if (p === "nova_poshta") return "Нова пошта";
   if (p === "ukr_poshta" || p === "ukrposhta") return "Укрпошта";
+  if (p === "meest") return "Meest";
+  if (p === "rozetka_delivery") return "Rozetka Delivery";
   if (p === "courier") return "Кур'єр";
   if (p === "self_pickup") return "Самовивіз";
   return p || "—";
@@ -472,8 +474,8 @@ function formatOrder(order) {
     `Email: ${c.email || "—"}`,
     "",
     "Доставка:",
-    `  Служба: ${d.provider || "—"}`,
-    `  Тип: ${d.deliveryType || "—"}`,
+    `  Служба: ${formatDeliveryProvider(d.provider)}`,
+    `  Тип: ${formatDeliveryType(d.deliveryType)}`,
     `  Місто: ${d.city || "—"}`,
     `  Відділення / адреса: ${d.branchText || d.address || "—"}`,
     `  Оплата: ${d.paymentMethod || "—"}`,
