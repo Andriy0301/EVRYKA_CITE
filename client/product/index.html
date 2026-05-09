@@ -15,7 +15,20 @@
   <title>Товар — EVRYKA | 3D-друк з доставкою по Україні</title>
   <meta name="description" content="Опис та фото 3D-друкованого товару EVRYKA: ціна, відгуки, доставка Новою Поштою. Оберіть кількість і оформіть замовлення онлайн." />
   <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
-  <link rel="canonical" href="https://evryka3d.com/product" />
+  <link rel="canonical" href="https://evryka3d.com/product" id="evryka-product-canonical" />
+  <script>
+    (function () {
+      try {
+        var params = new URLSearchParams(window.location.search);
+        var id = params.get("id");
+        if (!id) return;
+        var link = document.getElementById("evryka-product-canonical");
+        if (link) {
+          link.href = "https://evryka3d.com/product?id=" + encodeURIComponent(id);
+        }
+      } catch (e) {}
+    })();
+  </script>
   <meta property="og:type" content="website" />
   <meta property="og:site_name" content="EVRYKA" />
   <meta property="og:locale" content="uk_UA" />
@@ -394,7 +407,7 @@
 </div>
 
 <script src="/js/api.js?v=20260423"></script>
-<script src="/js/product.js?v=20260411"></script>
+<script src="/js/product.js?v=20260509-1"></script>
 <script src="/js/cart.js?v=20260430"></script>
 <script src="/js/header-nav.js?v=20260427-4"></script>
 <script src="/js/mojibake-fix.js?v=2"></script>
