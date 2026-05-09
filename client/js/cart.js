@@ -304,7 +304,7 @@ async function checkout() {
   }
 
   localStorage.setItem("checkoutItems", JSON.stringify(cart));
-  window.location.href = "order.html";
+  window.location.href = "/order";
 }
 
 document.addEventListener("DOMContentLoaded", () => {

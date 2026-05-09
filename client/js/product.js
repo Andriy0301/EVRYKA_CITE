@@ -43,7 +43,7 @@ document.getElementById("quickCheckoutBtn").onclick = () => {
     image: product.images?.[0] || ""
   };
   localStorage.setItem("checkoutItems", JSON.stringify([checkoutItem]));
-  window.location.href = "order.html";
+  window.location.href = "/order";
 };
 
   } catch (err) {
@@ -282,7 +282,7 @@ function renderSimilarProductCards(container, items) {
       <p>${p.price} грн</p>
     `;
     card.addEventListener("click", () => {
-      window.location.href = `product.html?id=${p.id}`;
+      window.location.href = `/product?id=${p.id}`;
     });
     container.appendChild(card);
   });

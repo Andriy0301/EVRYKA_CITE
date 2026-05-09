@@ -1,1 +1,10 @@
-{}
+{
+  "lastRunAt": "2026-05-09T18:47:24.601Z",
+  "lastRunResult": {
+    "trackedShop": 0,
+    "trackedPrint3d": 0,
+    "eventsCreated": 0,
+    "startedAt": "2026-05-09T18:47:24.586Z",
+    "finishedAt": "2026-05-09T18:47:24.601Z"
+  }
+}

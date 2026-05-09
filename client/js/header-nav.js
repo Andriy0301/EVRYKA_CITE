@@ -77,7 +77,7 @@
     nav.setAttribute("aria-label", "Швидке нижнє меню");
 
     nav.innerHTML =
-      '<a href="catalog.html" class="mobile-bottom-nav__item" data-item="catalog">' +
+      '<a href="/catalog" class="mobile-bottom-nav__item" data-item="catalog">' +
       '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 4h6v6H4zM14 4h6v6h-6zM4 14h6v6H4zM14 14h6v6h-6z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg>' +
       "<span>Каталог</span>" +
       "</a>" +
@@ -86,7 +86,7 @@
       "<span>Обране</span>" +
       "</button>" +
       '<button type="button" class="mobile-bottom-nav__item mobile-bottom-nav__item--cart" data-item="cart" aria-label="Відкрити кошик">' +
-      '<img src="images/cart-icon.svg" class="mobile-bottom-nav__cart-icon" alt="" aria-hidden="true">' +
+      '<img src="/images/cart-icon.svg" class="mobile-bottom-nav__cart-icon" alt="" aria-hidden="true">' +
       "<span>Кошик</span>" +
       '<span class="mobile-bottom-nav__badge" id="mobileBottomCartCount">0</span>' +
       "</button>" +
@@ -112,12 +112,12 @@
         '<strong>Меню</strong>' +
         '<button type="button" class="mobile-more-sheet__close neo-drawer__close" data-uflyout-close aria-label="Закрити меню">×</button>' +
         "</div>" +
-        '<a href="index.html" class="mobile-more-sheet__link neo-drawer__item" data-uflyout-item>Головна</a>' +
-        '<a href="catalog.html" class="mobile-more-sheet__link neo-drawer__item" data-uflyout-item>Каталог</a>' +
-        '<a href="about.html" class="mobile-more-sheet__link neo-drawer__item" data-uflyout-item>Про нас</a>' +
-        '<a href="order-3d-print.html" class="mobile-more-sheet__link neo-drawer__item" data-uflyout-item>Замовити 3D друк</a>' +
-        '<a href="cabinet.html" class="mobile-more-sheet__link neo-drawer__item" data-uflyout-item>Кабінет</a>' +
-        '<a href="index.html#contacts" class="mobile-more-sheet__link neo-drawer__item" data-uflyout-item>Контакти</a>' +
+        '<a href="/" class="mobile-more-sheet__link neo-drawer__item" data-uflyout-item>Головна</a>' +
+        '<a href="/catalog" class="mobile-more-sheet__link neo-drawer__item" data-uflyout-item>Каталог</a>' +
+        '<a href="/about" class="mobile-more-sheet__link neo-drawer__item" data-uflyout-item>Про нас</a>' +
+        '<a href="/order-3d-print" class="mobile-more-sheet__link neo-drawer__item" data-uflyout-item>Замовити 3D друк</a>' +
+        '<a href="/cabinet" class="mobile-more-sheet__link neo-drawer__item" data-uflyout-item>Кабінет</a>' +
+        '<a href="/contact" class="mobile-more-sheet__link neo-drawer__item" data-uflyout-item>Контакти</a>' +
         "</div>";
       document.body.appendChild(moreSheet);
     }
@@ -146,11 +146,11 @@
       }
     };
 
-    const path = (window.location.pathname.split("/").pop() || "index.html").toLowerCase();
+    const pathnameLower = window.location.pathname.toLowerCase();
     const activeItem =
-      path === "catalog.html" || path === "product.html"
+      pathnameLower.includes("/catalog") || pathnameLower.includes("/product")
         ? "catalog"
-        : path === "cabinet.html"
+        : pathnameLower.includes("/cabinet")
           ? "more"
           : null;
     if (activeItem) {
@@ -189,7 +189,12 @@
       link.addEventListener("click", closeMoreSheet);
     });
 
-    const sheetPath = (window.location.pathname.split("/").pop() || "index.html").toLowerCase();
+    const lastSeg = function (pathname) {
+      const clean = String(pathname || "").replace(/\/+$/, "");
+      const parts = clean.split("/").filter(Boolean);
+      return (parts[parts.length - 1] || "").toLowerCase();
+    };
+    const sheetPath = lastSeg(window.location.pathname);
     const sheetHash = String(window.location.hash || "").toLowerCase();
     moreSheet?.querySelectorAll(".mobile-more-sheet__link").forEach(function (link) {
       const href = String(link.getAttribute("href") || "").trim();
@@ -197,15 +202,15 @@
       let linkHash = "";
       try {
         const parsed = new URL(href, window.location.href);
-        linkPath = (parsed.pathname.split("/").pop() || "index.html").toLowerCase();
+        linkPath = lastSeg(parsed.pathname);
         linkHash = String(parsed.hash || "").toLowerCase();
       } catch {
-        linkPath = (href.split("#")[0] || "index.html").toLowerCase();
+        linkPath = lastSeg(href.split("#")[0] || "");
         linkHash = href.includes("#") ? `#${href.split("#")[1] || ""}`.toLowerCase() : "";
       }
 
-      const isCurrentPath = linkPath === sheetPath || (sheetPath === "index.html" && linkPath === "");
-      const isCurrent = linkHash ? isCurrentPath && linkHash === sheetHash : isCurrentPath;
+      const pathMatch = linkPath === sheetPath || (!linkPath && !sheetPath);
+      const isCurrent = linkHash ? pathMatch && linkHash === sheetHash : pathMatch;
       link.classList.toggle("is-current", isCurrent);
     });
 

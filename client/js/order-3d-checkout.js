@@ -148,7 +148,7 @@ function renderItems() {
     const row = document.createElement("div");
     row.className = "cart-item";
     row.innerHTML = `
-      <img src="images/favicon.png" alt="${escapeHtml(m.name)}">
+      <img src="/images/favicon.png" alt="${escapeHtml(m.name)}">
       <div style="flex:1;">
         <h4 style="margin:0 0 4px;">${escapeHtml(m.name)}</h4>
         <p style="margin:0 0 8px;">${Number(m.price || 0).toFixed(2)} грн</p>
@@ -169,7 +169,7 @@ function buildOrderSuccessDetails(order) {
     .map((item) => {
       const nameSafe = escapeHtml(item.name);
       const sum = Number(item.price || 0);
-      return `<li class="order-success-item"><img class="order-success-item-thumb" src="images/favicon.png" alt="${nameSafe}" loading="lazy"><span class="order-success-item-text">${nameSafe} — ${sum.toFixed(2)} грн (${escapeHtml(item.material || "-")}, ${escapeHtml(item.strength || "-")}, ${escapeHtml(item.quality || "-")})</span></li>`;
+      return `<li class="order-success-item"><img class="order-success-item-thumb" src="/images/favicon.png" alt="${nameSafe}" loading="lazy"><span class="order-success-item-text">${nameSafe} — ${sum.toFixed(2)} грн (${escapeHtml(item.material || "-")}, ${escapeHtml(item.strength || "-")}, ${escapeHtml(item.quality || "-")})</span></li>`;
     })
     .join("");
 
@@ -203,7 +203,7 @@ function showOrderSuccessModal(order) {
 function closeOrderSuccessModal() {
   const modal = document.getElementById("orderSuccessModal");
   if (modal) modal.style.display = "none";
-  window.location.href = "order-3d-print.html";
+  window.location.href = "/order-3d-print";
 }
 
 function initOrderSuccessModalEvents() {
@@ -655,7 +655,7 @@ async function submitOrder(e) {
 async function bootstrapPending() {
   const raw = sessionStorage.getItem(PRINT3D_PENDING_KEY);
   if (!raw) {
-    window.location.href = "order-3d-print.html";
+    window.location.href = "/order-3d-print";
     return false;
   }
   let parsed = null;
@@ -663,13 +663,13 @@ async function bootstrapPending() {
     parsed = JSON.parse(raw);
   } catch {
     sessionStorage.removeItem(PRINT3D_PENDING_KEY);
-    window.location.href = "order-3d-print.html";
+    window.location.href = "/order-3d-print";
     return false;
   }
   const models = Array.isArray(parsed?.models) ? parsed.models : [];
   if (!models.length) {
     sessionStorage.removeItem(PRINT3D_PENDING_KEY);
-    window.location.href = "order-3d-print.html";
+    window.location.href = "/order-3d-print";
     return false;
   }
   pendingState.meta = parsed;

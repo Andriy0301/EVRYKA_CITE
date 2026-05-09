@@ -106,7 +106,7 @@ function renderCatalogGrid(products) {
 
     const card = document.createElement("a");
     card.className = "catalog-product-card";
-    card.href = `product.html?id=${product.id}`;
+    card.href = `/product?id=${product.id}`;
 
     card.innerHTML = `
       <div class="catalog-product-img-wrap">
@@ -429,7 +429,7 @@ function initCatalogPage() {
       if (window.history.length > 1) {
         window.history.back();
       } else {
-        window.location.href = "index.html";
+        window.location.href = "/";
       }
     });
   }

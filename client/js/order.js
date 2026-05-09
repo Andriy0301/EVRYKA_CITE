@@ -384,7 +384,7 @@ function closeOrderSuccessModal() {
   const modal = document.getElementById("orderSuccessModal");
   if (!modal) return;
   modal.style.display = "none";
-  window.location.href = "index.html";
+  window.location.href = "/";
 }
 
 function initOrderSuccessModalEvents() {

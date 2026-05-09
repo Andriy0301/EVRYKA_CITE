@@ -287,7 +287,7 @@ router.post("/mono/invoice", async (req, res) => {
 
   const baseUrl = resolveBaseUrl(req);
   const safeOrderNumber = encodeURIComponent(String(currentOrder?.orderNumber || wantedOrderNumber || "").trim());
-  const redirectUrl = `${baseUrl}/cabinet.html?section=orders&monoPaid=1&order=${safeOrderNumber}`;
+  const redirectUrl = `${baseUrl}/cabinet?section=orders&monoPaid=1&order=${safeOrderNumber}`;
   const webhookUrl = `${baseUrl}/api/orders/mono/webhook`;
 
   const monoPayload = {

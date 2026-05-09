@@ -391,7 +391,7 @@ function renderProducts(products) {
 // 🔹 ПЕРЕХІД
 // =========================
 function goToProduct(id) {
-  window.location.href = "product.html?id=" + id;
+  window.location.href = "/product?id=" + id;
 }
 
 // =========================
@@ -665,7 +665,7 @@ function renderSearchResults(products, query) {
 
   const more = document.createElement("a");
   more.className = "search-more";
-  more.href = `catalog.html?q=${encodeURIComponent(query.trim())}`;
+  more.href = `/catalog?q=${encodeURIComponent(query.trim())}`;
   more.textContent = "Дивитися всі результати";
 
   searchResults.appendChild(more);
@@ -913,7 +913,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     authBtn.onclick = () => {
       const profile = getSavedProfile();
       if (profile?.id) {
-        window.location.href = "cabinet.html";
+        window.location.href = "/cabinet";
       } else {
         openAuthModal("login");
       }
@@ -941,5 +941,5 @@ document.addEventListener("DOMContentLoaded", async () => {
 // 🔹 HOME
 // =========================
 function goHome() {
-  window.location.href = "index.html";
+  window.location.href = "/";
 }

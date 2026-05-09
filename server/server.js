@@ -18,6 +18,28 @@ app.use(cors({
 // JSON
 app.use(express.json());
 
+// 301 з legacy *.html URL на «чисті» шляхи (для закладок і зовнішніх посилань)
+const LEGACY_HTML_TO_PATH = new Map([
+  ["catalog.html", "/catalog"],
+  ["about.html", "/about"],
+  ["contact.html", "/contact"],
+  ["product.html", "/product"],
+  ["order.html", "/order"],
+  ["order-3d-print.html", "/order-3d-print"],
+  ["order-3d-checkout.html", "/order-3d-checkout"],
+  ["cabinet.html", "/cabinet"],
+  ["print.html", "/print"],
+  ["admin-orders.html", "/admin-orders"],
+  ["index.html", "/"]
+]);
+app.use((req, res, next) => {
+  const base = (req.path || "").split("/").filter(Boolean).pop() || "";
+  const target = LEGACY_HTML_TO_PATH.get(base);
+  if (target == null) return next();
+  const qs = req.url.includes("?") ? req.url.slice(req.url.indexOf("?")) : "";
+  return res.redirect(301, target + qs);
+});
+
 // 🔥 СТАТИКА
 app.use(express.static(path.join(__dirname, "../client")));
 

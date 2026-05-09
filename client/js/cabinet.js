@@ -77,14 +77,14 @@ async function hydrateFavoritesFromProfile(profile) {
 
 function resolveFavoriteImageSrc(item) {
   const candidate = item?.image || item?.images?.[0] || "";
-  if (!candidate) return "images/favicon.png";
+  if (!candidate) return "/images/favicon.png";
   if (/^https?:\/\//i.test(candidate)) return candidate;
   return `${API_URL}${candidate}`;
 }
 
 function goToProduct(id) {
   if (!id) return;
-  window.location.href = `product.html?id=${encodeURIComponent(id)}`;
+  window.location.href = `/product?id=${encodeURIComponent(id)}`;
 }
 
 function renderFavoritesList() {
@@ -309,7 +309,7 @@ function formatCabOrderDate(value) {
 
 function getCabOrderItemImage(item) {
   const candidate = item?.image || item?.images?.[0] || "";
-  if (!candidate) return "images/favicon.png";
+  if (!candidate) return "/images/favicon.png";
   if (/^https?:\/\//i.test(candidate)) return candidate;
   return `${API_URL}${candidate}`;
 }
@@ -834,6 +834,18 @@ function setupCabinetSections() {
       btn.classList.toggle("active", btn.dataset.section === section);
     });
   };
+
+  const params = new URLSearchParams(window.location.search);
+  const sectionQs = (params.get("section") || "").toLowerCase();
+  if (sectionQs === "orders" || sectionQs === "personal" || sectionQs === "bonuses") {
+    show(sectionQs);
+    try {
+      const hash = sectionQs === "orders" ? "#orders" : sectionQs === "bonuses" ? "#bonuses" : "#personal";
+      history.replaceState(null, "", `${window.location.pathname}${hash}`);
+    } catch (_) {
+      // ignore
+    }
+  }
 
   const applyHash = () => {
     const raw = (window.location.hash || "").replace(/^#/, "").toLowerCase();
@@ -1396,13 +1408,13 @@ async function saveCabinet(e) {
 
 function logout() {
   localStorage.removeItem(PROFILE_STORAGE_KEY);
-  window.location.href = "index.html";
+  window.location.href = "/";
 }
 
 document.addEventListener("DOMContentLoaded", async () => {
   const profile = getProfile();
   if (!profile?.id) {
-    window.location.href = "index.html";
+    window.location.href = "/";
     return;
   }
 
@@ -1436,7 +1448,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   });
   renderInitials(profile);
   const authBtn = document.getElementById("authBtn");
-  if (authBtn) authBtn.addEventListener("click", () => window.location.href = "cabinet.html");
+  if (authBtn) authBtn.addEventListener("click", () => window.location.href = "/cabinet");
   await hydrateFavoritesFromProfile(profile);
   renderFavoritesList();
   document.getElementById("cabinetForm").addEventListener("submit", saveCabinet);

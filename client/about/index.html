@@ -1,0 +1,485 @@
+﻿<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-YB40K9C0ET"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'G-YB40K9C0ET');
+  </script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>��� ��� - EVRYKA</title>
+  <link rel="icon" href="/images/favicon.png" type="image/png">
+  <link rel="apple-touch-icon" href="/images/favicon.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/style.css?v=20260508-7">
+  <link rel="stylesheet" href="/css/about-page.css?v=3">
+  <link rel="stylesheet" href="/css/evryka-header-hero.css">
+  <script src="https://accounts.google.com/gsi/client" async defer></script>
+</head>
+<body class="evryka-site page-about">
+
+<header class="header header--in-shell header--home-detached">
+  <div class="header-inner">
+    <a href="/" class="logo header-logo">
+      <img src="/images/text_logo.png" alt="EVRYKA" class="header-logo-img">
+    </a>
+    <button type="button" class="header-burger" id="navToggle" aria-label="³������ ����" aria-expanded="false" aria-controls="headerNavPanel">
+      <span class="header-burger__line"></span>
+      <span class="header-burger__line"></span>
+      <span class="header-burger__line"></span>
+    </button>
+    <nav class="nav header-nav" id="headerNavPanel" aria-label="������� ��������">
+      <a href="/">�������</a>
+      <a href="/catalog">�������</a>
+      <a href="/about" class="active">��� ���</a>
+      <a href="/order-3d-print">�������� 3D ����</a>
+    </nav>
+    <div class="header-utilities">
+      <div class="search-box">
+        <input type="search" placeholder="�����" id="search" name="q" autocomplete="off">
+        <div id="searchResults" class="search-results"></div>
+      </div>
+      <div class="header-actions">
+        <button type="button" id="authBtn" class="auth-icon-btn" title="������">
+          <svg id="authIcon" viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M12 12c2.8 0 5-2.2 5-5s-2.2-5-5-5-5 2.2-5 5 2.2 5 5 5Zm0 2c-4.4 0-8 2.7-8 6v2h16v-2c0-3.3-3.6-6-8-6Z"></path>
+          </svg>
+          <span id="authInitials" class="auth-initials"></span>
+        </button>
+        <button type="button" id="favoritesBtn" class="auth-icon-btn" title="�����" onclick="toggleFavorites(true)">
+          <svg class="heart-icon" viewBox="0 0 512 512" aria-hidden="true">
+            <path d="M257 88L255 88C248.355 74.9828 235.475 63.8415 224 55.1304C173.114 16.5016 99.2988 19.267 51 61.2894C-1.26738 106.765 -12.8083 185.773 13.0116 248C25.4527 277.984 45.9981 303.467 67.9105 327C103.494 365.215 144.281 398.581 184 432.421C198.063 444.402 211.938 456.598 226 468.579C233.971 475.37 241.993 483.022 253 483.907C268.121 485.122 278.342 475.197 289 466C306.641 450.778 324.263 435.533 342 420.421C356.437 408.121 370.854 395.797 385 383.166C443.359 331.055 512 269.827 512 185C512 178.072 512.538 170.886 511.715 164C506.476 120.199 486.854 78.636 450 52.7207C401.715 18.7669 334.983 19.4645 288 55.1304C276.525 63.8415 263.645 74.9828 257 88z"></path>
+          </svg>
+        </button>
+        <div class="cart" onclick="toggleCart(true)">
+          <img src="/images/cart-icon.svg" class="cart-icon" alt="�����">
+          <span id="cartCount">0</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="container">
+  <div class="catalog-shell">
+    <div class="product-nav catalog-page-nav">
+      <a href="/" class="back-btn">
+        <svg class="back-icon" viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M15 6l-6 6 6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+        </svg>
+        �����
+      </a>
+      <div class="breadcrumbs">
+        <a href="/">�������</a>
+        <span>/</span>
+        <span>��� ���</span>
+      </div>
+    </div>
+
+    <section class="about-v2" aria-labelledby="about-v2-title">
+      <header class="about-v2__intro">
+        <div class="about-v2__tag">EVRYKA � 3D ���� � �����</div>
+        <h1 id="about-v2-title" class="about-v2__title">��� ���</h1>
+        <p class="about-v2__lead">EVRYKA � ������� ����������� 3D-�����. �� ��������� ������ ��� ������, �������, ������ �� ������������� �����, �� ������ �������, ������ � ��������� ���������.</p>
+      </header>
+
+      <section class="about-v2__stats" aria-label="������� ��� EVRYKA">
+        <article class="about-v2__stat">
+          <h3>5+ ����</h3>
+          <p>��������� ������ � 3D-�����</p>
+        </article>
+        <article class="about-v2__stat">
+          <h3>������ �����</h3>
+          <p>������� ���� 3D-�������� � ������� ������ � ������ �����������</p>
+        </article>
+        <article class="about-v2__stat">
+          <h3>�. ����</h3>
+          <p>���� ������� �� �����������</p>
+        </article>
+        <article class="about-v2__stat">
+          <h3>�� �����</h3>
+          <p>����������� ���������� �����</p>
+        </article>
+      </section>
+
+      <div class="about-v2__layout">
+        <section class="about-v2__card about-v2__card--wide" aria-labelledby="about-v2-story">
+          <h2 id="about-v2-story" class="about-v2__h">
+            <span class="about-v2__h-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
+                <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path>
+                <path d="M8 7h8M8 11h6"></path>
+              </svg>
+            </span>
+            <span class="about-v2__h-text">���� ������</span>
+          </h2>
+          <p>�������� � ��������� ���������, �� ���������� ����� ����� �� �����������. � ������ ����������� �� �� ��������� �����: �� ������������ � ������ ��������� �� �������� ������ � �������������� �����������.</p>
+          <p>������� �� �������� �� � ���������� ���������� ��������, ��� � � ����������� �������� �� �볺���, ���� ������ �������������, ������ �� ������������ �����.</p>
+        </section>
+
+        <section class="about-v2__card" aria-labelledby="about-v2-services">
+          <h2 id="about-v2-services" class="about-v2__h">
+            <span class="about-v2__h-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"></path>
+              </svg>
+            </span>
+            <span class="about-v2__h-text">�� ������</span>
+          </h2>
+          <ul class="about-v2__list">
+            <li>���� �������, �������, ������ �� �������������� �������.</li>
+            <li>������������ ������� ��� ������� �� ����������.</li>
+            <li>����������� ���������� �� ������ �����������.</li>
+            <li>������������ �� ��������� � ������������� �����.</li>
+          </ul>
+        </section>
+
+        <section class="about-v2__card" aria-labelledby="about-v2-values">
+          <h2 id="about-v2-values" class="about-v2__h">
+            <span class="about-v2__h-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M12 3l2.7 5.46 6.03.88-4.36 4.25 1.03 6.01L12 17.77 6.6 19.6l1.03-6.01-4.36-4.25 6.03-.88L12 3z"></path>
+              </svg>
+            </span>
+            <span class="about-v2__h-text">��� �����</span>
+          </h2>
+          <ul class="about-v2__list">
+            <li>��������� ������ ������ � ��� ����� ������� ���������.</li>
+            <li>Գ����� ������ �� ������� �� ������ ������.</li>
+            <li>���������� �� ����������� �� ����������� ������.</li>
+            <li>ϳ�������� �������� ����� � ��������� �����������.</li>
+          </ul>
+        </section>
+
+        <section class="about-v2__card about-v2__card--soft" aria-labelledby="about-v2-location">
+          <h2 id="about-v2-location" class="about-v2__h">
+            <span class="about-v2__h-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+                <circle cx="12" cy="10" r="3"></circle>
+              </svg>
+            </span>
+            <span class="about-v2__h-text">������� � �����</span>
+          </h2>
+          <p>�������� � <strong>�����</strong>. �������� �������� �� ��� ����� �������� ��� ��� ��������.</p>
+          <p class="about-v2__hours">����: 9:00 � 20:00</p>
+        </section>
+      </div>
+
+      <section class="about-v2__contacts" aria-labelledby="about-v2-contacts">
+        <h2 id="about-v2-contacts">��������</h2>
+        <div class="about-v2__contact-grid">
+          <a class="about-v2__contact-tile" href="mailto:andrysejko22@gmail.com">
+            <span class="about-v2__contact-label">Email</span>
+            <span class="about-v2__contact-value">andrysejko22@gmail.com</span>
+          </a>
+          <a class="about-v2__contact-tile" href="tel:+380501662271">
+            <span class="about-v2__contact-label">�������</span>
+            <span class="about-v2__contact-value">+380 50 166 22 71</span>
+          </a>
+          <a class="about-v2__contact-tile about-v2__contact-tile--telegram" href="https://t.me/+380501662271" target="_blank" rel="noopener noreferrer">
+            <span class="about-v2__contact-label">Telegram</span>
+            <span class="about-v2__messenger-row">
+              <span class="about-v2__messenger-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.64 6.8c-.15 1.58-.8 5.42-1.13 7.19-.14.75-.42 1-.68 1.03-.58.05-1.02-.38-1.58-.75-.88-.58-1.38-.94-2.23-1.5-.99-.65-.35-1.01.22-1.59.15-.15 2.71-2.48 2.76-2.69a.2.2 0 00-.05-.18c-.06-.05-.14-.03-.21-.02-.09.02-1.49.95-4.22 2.79-.4.27-.76.41-1.08.4-.36-.01-1.04-.2-1.55-.37-.63-.2-1.12-.31-1.08-.66.02-.18.27-.36.74-.55 2.92-1.27 4.86-2.11 5.83-2.51 2.78-1.16 3.35-1.36 3.73-1.36.08 0 .27.02.39.12.1.08.13.19.14.27-.01.06.01.24 0 .38z"></path></svg>
+              </span>
+              <span class="about-v2__contact-value">�������� � Telegram</span>
+            </span>
+          </a>
+          <a class="about-v2__contact-tile about-v2__contact-tile--viber" href="viber://chat?number=%2B380501662271">
+            <span class="about-v2__contact-label">Viber</span>
+            <span class="about-v2__messenger-row">
+              <span class="about-v2__messenger-icon" aria-hidden="true">
+                <svg class="about-v2__messenger-svg about-v2__messenger-svg--viber" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path fill="currentColor" d="M11.4 0C9.473.028 5.333.344 3.02 2.467 1.302 4.187.696 6.7.633 9.817.57 12.933.488 18.776 6.12 20.36h.003l-.004 2.416s-.037.977.61 1.177c.777.242 1.234-.5 1.98-1.302.407-.44.972-1.084 1.397-1.58 3.85.326 6.812-.416 7.15-.525.776-.252 5.176-.816 5.892-6.657.74-6.02-.36-9.83-2.34-11.546-.596-.55-3.006-2.3-8.375-2.323 0 0-.395-.025-1.037-.017zm.058 1.693c.545-.004.88.017.88.017 4.542.02 6.717 1.388 7.222 1.846 1.675 1.435 2.53 4.868 1.906 9.897v.002c-.604 4.878-4.174 5.184-4.832 5.395-.28.09-2.882.737-6.153.524 0 0-2.436 2.94-3.197 3.704-.12.12-.26.167-.352.144-.13-.033-.166-.188-.165-.414l.02-4.018c-4.762-1.32-4.485-6.292-4.43-8.895.054-2.604.543-4.738 1.996-6.173 1.96-1.773 5.474-2.018 7.11-2.03zm.38 2.602c-.167 0-.303.135-.304.302 0 .167.133.303.3.305 1.624.01 2.946.537 4.028 1.592 1.073 1.046 1.62 2.468 1.633 4.334.002.167.14.3.307.3.166-.002.3-.138.3-.304-.014-1.984-.618-3.596-1.816-4.764-1.19-1.16-2.692-1.753-4.447-1.765zm-3.96.695c-.19-.032-.4.005-.616.117l-.01.002c-.43.247-.816.562-1.146.932-.002.004-.006.004-.008.008-.267.323-.42.638-.46.948-.008.046-.01.093-.007.14 0 .136.022.27.065.4l.013.01c.135.48.473 1.276 1.205 2.604.42.768.903 1.5 1.446 2.186.27.344.56.673.87.984l.132.132c.31.308.64.6.984.87.686.543 1.418 1.027 2.186 1.447 1.328.733 2.126 1.07 2.604 1.206l.01.014c.13.042.265.064.402.063.046.002.092 0 .138-.008.31-.036.627-.19.948-.46.004 0 .003-.002.008-.005.37-.33.683-.72.93-1.148l.003-.01c.225-.432.15-.842-.18-1.12-.004 0-.698-.58-1.037-.83-.36-.255-.73-.492-1.113-.71-.51-.285-1.032-.106-1.248.174l-.447.564c-.23.283-.657.246-.657.246-3.12-.796-3.955-3.955-3.955-3.955s-.037-.426.248-.656l.563-.448c.277-.215.456-.737.17-1.248-.217-.383-.454-.756-.71-1.115-.25-.34-.826-1.033-.83-1.035-.137-.165-.31-.265-.502-.297zm4.49.88c-.158.002-.29.124-.3.282-.01.167.115.312.282.324 1.16.085 2.017.466 2.645 1.15.63.688.93 1.524.906 2.57-.002.168.13.306.3.31.166.003.305-.13.31-.297.025-1.175-.334-2.193-1.067-2.994-.74-.81-1.777-1.253-3.05-1.346h-.024zm.463 1.63c-.16.002-.29.127-.3.287-.008.167.12.31.288.32.523.028.875.175 1.113.422.24.245.388.62.416 1.164.01.167.15.295.318.287.167-.008.295-.15.287-.317-.03-.644-.215-1.178-.58-1.557-.367-.378-.893-.574-1.52-.607h-.018z"/></svg>
+              </span>
+              <span class="about-v2__contact-value">�������� � Viber</span>
+            </span>
+          </a>
+        </div>
+      </section>
+    </section>
+  </div>
+</div>
+
+<div id="cartOverlay" class="cart-overlay" onclick="toggleCart(false)"></div>
+
+<div id="cartSidebar" class="cart-sidebar">
+  <div class="cart-head-float">
+    <h3 id="cartPanelTitle">�����</h3>
+    <button type="button" class="cart-head-float-close" onclick="toggleCart(false)" aria-label="������� �����">?</button>
+  </div>
+  <div id="cartItems" class="cart-items"></div>
+  <div class="cart-footer">
+    <div class="cart-total">
+      <span>�����</span>
+      <div>
+        <b id="cartTotal">0</b>
+        <span>���</span>
+      </div>
+    </div>
+    <button class="checkout-btn" onclick="checkout()">��������</button>
+    <button class="clear-btn" onclick="clearCart()">�������� �����</button>
+  </div>
+</div>
+
+<div id="favoritesOverlay" class="cart-overlay" onclick="toggleFavorites(false)"></div>
+<div id="favoritesSidebar" class="cart-sidebar">
+  <div class="cart-head-float">
+    <h3>�����</h3>
+    <button type="button" class="cart-head-float-close" onclick="toggleFavorites(false)" aria-label="������� �����">?</button>
+  </div>
+  <div id="favoritesItems" class="cart-items"></div>
+  <div class="cart-footer">
+    <button class="clear-btn" onclick="clearFavorites()">�������� �����</button>
+  </div>
+</div>
+
+<div id="authModal" class="auth-modal">
+  <div class="auth-modal-content auth-light">
+    <button id="closeAuthBtn" class="close-btn">?</button>
+    <h3 id="authTitle" class="auth-title">Log In</h3>
+    <form id="registerForm">
+      <input id="regName" class="auth-input auth-register-only" type="text" placeholder="��'�">
+      <input id="regLastName" class="auth-input auth-register-only" type="text" placeholder="�������">
+      <input id="regPhone" class="auth-input auth-register-only" type="tel" placeholder="�������">
+      <input id="regEmail" class="auth-input" type="email" placeholder="Email Address*">
+      <input id="authPassword" class="auth-input" type="password" placeholder="Password*">
+      <input id="authPasswordConfirm" class="auth-input auth-register-only" type="password" placeholder="Repeat password*">
+      <button id="authSubmitBtn" type="submit" class="auth-submit-btn">Log In</button>
+      <p id="authMessage" class="auth-message"></p>
+      <div class="auth-links">
+        <button id="switchRegisterBtn" type="button" class="auth-link-btn">Create Your Account</button>
+        <button id="switchLoginBtn" type="button" class="auth-link-btn">Back to Log In</button>
+      </div>
+      <label class="auth-terms auth-register-only">
+        <input id="termsCheck" type="checkbox">
+        <span>I agree to Terms of Use and Privacy Policy</span>
+      </label>
+      <div class="auth-divider">
+        <span id="authOauthLabel">Login with Google</span>
+      </div>
+      <div id="googleSignInBtn" class="google-btn-wrap"></div>
+    </form>
+  </div>
+</div>
+
+<footer>
+    <div class="footer-grid">
+      <div>
+        <a href="/" class="footer-logo">
+          <img src="/images/text_logo.png" alt="EVRYKA" class="footer-brand-img">
+        </a>
+        <p class="footer-desc">
+          3D-�������� ������ �� ���� �������, ������� � ������ �� ����� �����.
+          ������. �����. � �������� ��� ���������.
+        </p>
+        <div class="footer-contacts">
+          <a href="tel:+380501662271" class="footer-contact">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.61 3.4 2 2 0 0 1 3.6 1.22h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L7.91 8.96a16 16 0 0 0 6.29 6.29l1.41-1.41a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+            +38 (050) 166 22 71
+          </a>
+          <a href="mailto:andrysejko22@gmail.com" class="footer-contact">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+            andrysejko22@gmail.com
+          </a>
+        </div>
+      </div>
+
+      <div>
+        <div class="footer-col-title">��������</div>
+        <div class="footer-links">
+          <a href="/" class="footer-link">�������</a>
+          <a href="/catalog" class="footer-link">�������</a>
+          <a href="/about" class="footer-link">��� ���</a>
+          <a href="/order-3d-print" class="footer-link">���������� 3D �����</a>
+        </div>
+      </div>
+
+      <div>
+        <div class="footer-col-title">�������</div>
+        <div class="footer-links">
+          <a href="/catalog" class="footer-link">�������� �� ������</a>
+          <a href="/catalog" class="footer-link">�����</a>
+          <a href="/catalog" class="footer-link">�������</a>
+          <a href="/catalog" class="footer-link">�������</a>
+        </div>
+      </div>
+
+      <div>
+        <div class="footer-col-title">ϳ�������</div>
+        <div class="footer-links">
+          <a href="https://t.me/+380501662271" class="footer-link" target="_blank">Telegram</a>
+          <a href="viber://chat?number=%2B380501662271" class="footer-link">Viber</a>
+          <a href="/about#about-v2-location" class="footer-link">�� ��� ������</a>
+          <a href="/cabinet#orders" class="footer-link">�� ����������</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <div class="footer-copy">� 2026 EVRYKA � �� ����� �������</div>
+      <div class="footer-payments">
+        <span class="payment-badge">VISA</span>
+        <span class="payment-badge">MASTERCARD</span>
+      </div>
+    </div>
+  </footer>
+
+<div id="chatWidgetRoot" class="chat-widget-root">
+  <button type="button" id="chatWidgetToggle" class="chat-widget-toggle" aria-expanded="false" aria-controls="chatWidgetPanel" title="�������� ���">
+    <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true">
+      <path fill="currentColor" d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm0 14H5.17L4 17.17V4h16v12z"></path>
+    </svg>
+  </button>
+  <div id="chatWidgetPanel" class="chat-widget-panel" role="dialog" aria-modal="true" aria-labelledby="chatWidgetTitle" aria-hidden="true">
+    <div class="chat-widget-card">
+    <div class="chat-widget-head-float">
+      <span id="chatWidgetTitle">�������� ���</span>
+      <button type="button" class="chat-widget-close" aria-label="������� ���">?</button>
+    </div>
+    <div class="chat-widget-sheet">
+      <div id="chatWidgetMessages" class="chat-widget-messages" aria-live="polite"></div>
+      <div class="chat-widget-compose-float">
+        <div class="chat-widget-compose">
+          <input type="text" id="chatWidgetText" class="chat-widget-field" placeholder="���� ����������" maxlength="2000" autocomplete="off">
+          <button type="button" id="chatWidgetSend" class="chat-widget-send">��������</button>
+        </div>
+        <p id="chatWidgetStatus" class="chat-widget-status" role="status"></p>
+      </div>
+    </div>
+    </div>
+  </div>
+</div>
+
+<script src="/js/api.js?v=20260426"></script>
+<script src="/js/cart.js?v=20260430"></script>
+<script src="/js/header-nav.js?v=20260427-4"></script>
+<script src="/js/mojibake-fix.js?v=2"></script>
+<script>
+  (function recoverAboutText() {
+    const setText = (selector, text) => {
+      const el = document.querySelector(selector);
+      if (el) el.textContent = text;
+    };
+    const setAttr = (selector, attr, value) => {
+      const el = document.querySelector(selector);
+      if (el) el.setAttribute(attr, value);
+    };
+
+    document.title = "Про нас - EVRYKA";
+    setAttr("#navToggle", "aria-label", "Відкрити меню");
+    setAttr("#headerNavPanel", "aria-label", "Головна навігація");
+    setText('#headerNavPanel a[href="/"]', "Головна");
+    setText('#headerNavPanel a[href="/catalog"]', "Каталог");
+    setText('#headerNavPanel a[href="/about"]', "Про нас");
+    setText('#headerNavPanel a[href="/order-3d-print"]', "Замовити 3D друк");
+    setAttr("#search", "placeholder", "Пошук");
+    setAttr("#authBtn", "title", "Кабінет");
+    setAttr("#favoritesBtn", "title", "Обране");
+    setAttr(".cart .cart-icon", "alt", "Кошик");
+
+    const backBtn = document.querySelector(".product-nav .back-btn");
+    if (backBtn) {
+      const icon = backBtn.querySelector(".back-icon");
+      backBtn.textContent = "Назад";
+      if (icon) backBtn.prepend(icon);
+    }
+    setText(".breadcrumbs a", "Головна");
+    setText(".breadcrumbs span:last-child", "Про нас");
+
+    setText(".about-v2__tag", "EVRYKA - 3D друк у Львові");
+    setText("#about-v2-title", "Про нас");
+    setText(".about-v2__lead", "EVRYKA - команда професіоналів 3D-друку. Ми виготовляємо вироби для ремонту, творчості, бізнесу та індивідуальних задач, що поєднують якість, точність і сучасні технології.");
+
+    const stats = document.querySelectorAll(".about-v2__stat");
+    const statsData = [
+      ["5+ років", "Практичного досвіду в 3D-друці"],
+      ["Власний парк", "Сучасних FDM 3D-принтерів з різними зонами друку"],
+      ["м. Львів", "Працюємо по Україні"],
+      ["До ночі", "Оперативний зворотний зв'язок"]
+    ];
+    stats.forEach((card, i) => {
+      const h3 = card.querySelector("h3");
+      const p = card.querySelector("p");
+      if (h3 && statsData[i]) h3.textContent = statsData[i][0];
+      if (p && statsData[i]) p.textContent = statsData[i][1];
+    });
+
+    const heads = document.querySelectorAll(".about-v2__h-text");
+    const headTexts = ["Наша історія", "Що робимо", "Наші цінності", "Локація й графік"];
+    heads.forEach((el, i) => {
+      if (headTexts[i]) el.textContent = headTexts[i];
+    });
+
+    const story = document.querySelectorAll("#about-v2-story ~ p");
+    if (story[0]) story[0].textContent = "Починали з невеликих проєктів, але поступово стали командою, яка закриває повний цикл: від ідеї та підготовки моделі до якісного друку й післяпродажної підтримки.";
+    if (story[1]) story[1].textContent = "Сьогодні ми працюємо як з індивідуальними запитами, так і з серійними замовленнями для клієнтів, яким потрібна швидкість, стабільність та прогнозований результат.";
+
+    const services = document.querySelectorAll("#about-v2-services ~ .about-v2__list li");
+    const servicesTexts = [
+      "3D друк деталей, корпусів, макетів та функціональних елементів.",
+      "Підбір матеріалу під задачу та умови експлуатації.",
+      "Оптимізація моделей під якісний друк.",
+      "Допомога з розробкою й доопрацюванням моделі."
+    ];
+    services.forEach((el, i) => {
+      if (servicesTexts[i]) el.textContent = servicesTexts[i];
+    });
+
+    const values = document.querySelectorAll("#about-v2-values ~ .about-v2__list li");
+    const valuesTexts = [
+      "Стабільна якість кожного виробу і чітке дотримання термінів.",
+      "Прозора комунікація на кожному етапі замовлення.",
+      "Відповідальність за результат та довгострокову співпрацю.",
+      "Постійне вдосконалення процесів і технологій виробництва."
+    ];
+    values.forEach((el, i) => {
+      if (valuesTexts[i]) el.textContent = valuesTexts[i];
+    });
+
+    const locationPars = document.querySelectorAll("#about-v2-location ~ p");
+    if (locationPars[0]) locationPars[0].innerHTML = "Працюємо у <strong>Львові</strong>. Відправляємо замовлення по всій Україні поштовими службами.";
+    if (locationPars[1]) locationPars[1].textContent = "Графік: 9:00 - 20:00";
+
+    setText("#about-v2-contacts", "Контакти");
+    setText(".about-v2__contact-tile[href^='tel'] .about-v2__contact-label", "Телефон");
+    setText(".about-v2__contact-tile--telegram .about-v2__contact-value", "Написати в Telegram");
+    setText(".about-v2__contact-tile--viber .about-v2__contact-value", "Написати в Viber");
+
+    setText("#cartPanelTitle", "Кошик");
+    document.querySelectorAll(".cart-head-float-close").forEach((b) => (b.textContent = "✕"));
+    setText(".cart-total > span", "Разом");
+    const cartCurrency = document.querySelector(".cart-total div span");
+    if (cartCurrency) cartCurrency.textContent = "грн";
+    setText("#cartSidebar .checkout-btn", "Оформити");
+    setText("#cartSidebar .clear-btn", "Очистити кошик");
+    setText("#favoritesSidebar h3", "Обране");
+    setText("#favoritesSidebar .clear-btn", "Очистити обране");
+    setAttr("#regName", "placeholder", "Ім'я");
+    setAttr("#regLastName", "placeholder", "Прізвище");
+    setAttr("#regPhone", "placeholder", "Телефон");
+
+    setText("#chatWidgetTitle", "Онлайн чат");
+    setText(".chat-widget-close", "✕");
+    setAttr(".chat-widget-close", "aria-label", "Закрити чат");
+    setAttr("#chatWidgetToggle", "title", "Онлайн чат");
+    setAttr("#chatWidgetText", "placeholder", "Ваше запитання...");
+    setText("#chatWidgetSend", "Надіслати");
+  })();
+</script>
+  <script src="/js/app.js?v=20260427-5"></script>
+<script src="/js/chat-widget.js?v=20260409"></script>
+<script src="/js/scroll-to-top.js?v=4"></script>
+</body>
+</html>
+
+
+
