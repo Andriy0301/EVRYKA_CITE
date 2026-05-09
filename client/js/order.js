@@ -1,5 +1,6 @@
 ﻿const ORDER_PROFILE_STORAGE_KEY = "userProfile";
 const ORDER_CHECKOUT_ITEMS_KEY = "checkoutItems";
+const ORDER_PENDING_MONO_BONUS_KEY = "pendingMonoBonusOrders";
 const ORDER_BONUS_RATE = 0.05;
 let cityOptions = [];
 let cityDropdownVisible = false;
@@ -49,6 +50,39 @@ function calculateOrderBonuses(total) {
   const normalized = Number(total || 0);
   if (!Number.isFinite(normalized) || normalized <= 0) return 0;
   return Math.floor(normalized * ORDER_BONUS_RATE);
+}
+
+function getPendingMonoBonusOrders() {
+  try {
+    const parsed = JSON.parse(localStorage.getItem(ORDER_PENDING_MONO_BONUS_KEY) || "[]");
+    return Array.isArray(parsed) ? parsed : [];
+  } catch {
+    return [];
+  }
+}
+
+function savePendingMonoBonusOrders(entries) {
+  const safeEntries = Array.isArray(entries) ? entries : [];
+  localStorage.setItem(ORDER_PENDING_MONO_BONUS_KEY, JSON.stringify(safeEntries.slice(0, 50)));
+}
+
+function rememberPendingMonoBonusOrder(entry) {
+  const orderRef = String(entry?.orderNumber || entry?.orderId || "").trim();
+  if (!orderRef) return;
+  const pending = getPendingMonoBonusOrders();
+  const nextEntry = {
+    orderId: String(entry?.orderId || "").trim(),
+    orderNumber: String(entry?.orderNumber || "").trim(),
+    total: Math.max(0, Number(entry?.total || 0)),
+    bonusUsed: Math.max(0, Math.floor(Number(entry?.bonusUsed || 0))),
+    createdAt: entry?.createdAt || new Date().toISOString()
+  };
+  const next = pending.filter((item) => {
+    const itemRef = String(item?.orderNumber || item?.orderId || "").trim();
+    return itemRef && itemRef !== orderRef;
+  });
+  next.unshift(nextEntry);
+  savePendingMonoBonusOrders(next);
 }
 
 function awardBonusesForOrder(totalCost, orderMeta = {}) {
@@ -923,15 +957,16 @@ async function submitOrder(e) {
       total: totalCost,
       ttn
     });
-    applyUsedBonuses(usedBonuses);
-    awardBonusesForOrder(totalCost, {
-      id: savedOrder?.id,
-      orderNumber: savedOrder?.orderNumber || orderNumber,
-      createdAt: savedOrder?.createdAt
-    });
 
     const paymentMethod = String(profile?.delivery?.paymentMethod || "cod").trim().toLowerCase();
     if (paymentMethod === "mono") {
+      rememberPendingMonoBonusOrder({
+        orderId: savedOrder?.id,
+        orderNumber: savedOrder?.orderNumber || orderNumber,
+        bonusUsed: usedBonuses,
+        total: totalCost,
+        createdAt: savedOrder?.createdAt
+      });
       showMessage("Переадресація на оплату Monobank...", false);
       const invoice = await createMonoInvoice({
         orderType: "shop",
@@ -949,6 +984,13 @@ async function submitOrder(e) {
       window.location.href = invoice.pageUrl;
       return;
     }
+
+    applyUsedBonuses(usedBonuses);
+    awardBonusesForOrder(totalCost, {
+      id: savedOrder?.id,
+      orderNumber: savedOrder?.orderNumber || orderNumber,
+      createdAt: savedOrder?.createdAt
+    });
 
     showMessage("", false);
     localStorage.removeItem(ORDER_CHECKOUT_ITEMS_KEY);

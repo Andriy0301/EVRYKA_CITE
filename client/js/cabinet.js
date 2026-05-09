@@ -1,5 +1,7 @@
 ﻿const PROFILE_STORAGE_KEY = "userProfile";
 const FAVORITES_STORAGE_KEY = "favorites";
+const PENDING_MONO_BONUS_KEY = "pendingMonoBonusOrders";
+const BONUS_RATE = 0.05;
 let cabCityOptions = [];
 let cabBranchOptions = [];
 let cabCityDropdownVisible = false;
@@ -23,6 +25,26 @@ function setProfile(profile) {
     }
   };
   localStorage.setItem(PROFILE_STORAGE_KEY, JSON.stringify(merged));
+}
+
+function getPendingMonoBonusOrders() {
+  try {
+    const parsed = JSON.parse(localStorage.getItem(PENDING_MONO_BONUS_KEY) || "[]");
+    return Array.isArray(parsed) ? parsed : [];
+  } catch {
+    return [];
+  }
+}
+
+function savePendingMonoBonusOrders(entries) {
+  const safeEntries = Array.isArray(entries) ? entries : [];
+  localStorage.setItem(PENDING_MONO_BONUS_KEY, JSON.stringify(safeEntries.slice(0, 50)));
+}
+
+function calculateBonusesFromTotal(total) {
+  const numeric = Number(total || 0);
+  if (!Number.isFinite(numeric) || numeric <= 0) return 0;
+  return Math.floor(numeric * BONUS_RATE);
 }
 
 function getFavorites() {
@@ -136,6 +158,92 @@ function showCabinetMessage(message = "", isError = true) {
 function getProfileBonuses(profile) {
   const raw = Number(profile?.bonuses || profile?.bonus || 0);
   return Number.isFinite(raw) && raw > 0 ? Math.floor(raw) : 0;
+}
+
+function applyPendingMonoBonusAdjustments(data, profile) {
+  const pendingEntries = getPendingMonoBonusOrders();
+  if (!pendingEntries.length) return profile;
+
+  const regularOrders = Array.isArray(data?.orders) ? data.orders : [];
+  const print3dOrders = Array.isArray(data?.print3dOrders) ? data.print3dOrders : [];
+  const orders = [...regularOrders, ...print3dOrders];
+  const byOrderRef = new Map();
+  orders.forEach((order) => {
+    const orderNumberRef = String(order?.orderNumber || "").trim();
+    const orderIdRef = String(order?.id || "").trim();
+    if (orderNumberRef) byOrderRef.set(orderNumberRef, order);
+    if (orderIdRef) byOrderRef.set(orderIdRef, order);
+  });
+
+  const baseProfile = profile || {};
+  const currentBonuses = getProfileBonuses(baseProfile);
+  const spentRefs = new Set(Array.isArray(baseProfile?.bonusSpentOrderRefs) ? baseProfile.bonusSpentOrderRefs : []);
+  const earnedRefs = new Set(Array.isArray(baseProfile?.bonusEarnedOrderRefs) ? baseProfile.bonusEarnedOrderRefs : []);
+  const history = Array.isArray(baseProfile?.bonusesHistory) ? [...baseProfile.bonusesHistory] : [];
+
+  let nextBonuses = currentBonuses;
+  const nextPending = [];
+  let changed = false;
+
+  pendingEntries.forEach((entry) => {
+    const orderRef = String(entry?.orderNumber || entry?.orderId || "").trim();
+    if (!orderRef) return;
+    const order = byOrderRef.get(orderRef);
+    if (!order) {
+      nextPending.push(entry);
+      return;
+    }
+
+    const paymentStatus = String(order?.payment?.status || "").trim().toLowerCase();
+    const orderStatus = String(order?.orderStatus || "").trim().toLowerCase();
+    const isPaid = paymentStatus === "paid" || paymentStatus === "success";
+    const isFailed = ["failed", "failure", "reversed", "expired"].includes(paymentStatus) || orderStatus === "cancelled";
+
+    if (isPaid) {
+      const used = Math.max(0, Math.floor(Number(entry?.bonusUsed || 0)));
+      if (used > 0 && !spentRefs.has(orderRef)) {
+        nextBonuses = Math.max(0, nextBonuses - used);
+        spentRefs.add(orderRef);
+        changed = true;
+      }
+
+      if (!earnedRefs.has(orderRef)) {
+        const totalForEarn = Number(order?.total || entry?.total || 0);
+        const earned = calculateBonusesFromTotal(totalForEarn);
+        if (earned > 0) {
+          history.unshift({
+            orderNumber: String(order?.orderNumber || orderRef || "—").trim() || "—",
+            bonus: earned,
+            total: totalForEarn,
+            createdAt: order?.createdAt || entry?.createdAt || new Date().toISOString()
+          });
+          earnedRefs.add(orderRef);
+          nextBonuses = Math.max(0, Math.floor(nextBonuses + earned));
+          changed = true;
+        }
+      }
+      return;
+    }
+
+    if (!isFailed) {
+      nextPending.push(entry);
+    } else {
+      changed = true;
+    }
+  });
+
+  savePendingMonoBonusOrders(nextPending);
+  if (!changed) return baseProfile;
+
+  const updatedProfile = {
+    ...baseProfile,
+    bonuses: Math.max(0, Math.floor(nextBonuses)),
+    bonusesHistory: history.slice(0, 100),
+    bonusSpentOrderRefs: Array.from(spentRefs).slice(-200),
+    bonusEarnedOrderRefs: Array.from(earnedRefs).slice(-200)
+  };
+  setProfile(updatedProfile);
+  return updatedProfile;
 }
 
 function getProfileBonusesHistory(profile) {
@@ -693,6 +801,11 @@ async function loadCabinetOrders(profile) {
   if (list) list.innerHTML = "<p>Завантаження...</p>";
   try {
     const data = await getMyOrders(profile);
+    const syncedProfile = applyPendingMonoBonusAdjustments(data, profile);
+    if (syncedProfile !== profile) {
+      renderCabinetBonuses(syncedProfile);
+      profile = syncedProfile;
+    }
     renderCabinetOrders({
       orders: data?.orders || [],
       print3dOrders: data?.print3dOrders || profile?.print3dOrders || []
