@@ -79,7 +79,8 @@ function clampBonusUsage(value, subtotal, availableBonuses) {
   return Math.min(Number(subtotal || 0), Number(availableBonuses || 0), Math.floor(numeric));
 }
 
-function recalcOrderPricing(items = getCheckoutItems()) {
+function recalcOrderPricing(items = getCheckoutItems(), options = {}) {
+  const syncBonusInputValue = options?.syncBonusInputValue !== false;
   const subtotal = items.reduce((sum, item) => sum + Number(item.price || 0) * Number(item.qty || 1), 0);
   const availableBonuses = getAvailableBonuses();
   const bonusInput = document.getElementById("orderBonusUse");
@@ -96,7 +97,9 @@ function recalcOrderPricing(items = getCheckoutItems()) {
 
   if (bonusInput) {
     bonusInput.max = String(Math.min(Math.floor(subtotal), Math.floor(availableBonuses)));
-    bonusInput.value = String(bonusUsed);
+    if (syncBonusInputValue) {
+      bonusInput.value = String(bonusUsed);
+    }
     bonusInput.disabled = subtotal <= 0 || availableBonuses <= 0;
   }
   const availableEl = document.getElementById("orderBonusBalance");
@@ -394,7 +397,11 @@ function setupDeliveryUI() {
     addressEl.required = isNova && deliveryType === "address";
     middleNameEl.required = isNova && deliveryType === "address";
     branchEl.inputMode = isUkrPoshta ? "numeric" : "text";
-    branchEl.pattern = isUkrPoshta ? "\\d{5}" : "";
+    if (isUkrPoshta) {
+      branchEl.pattern = "\\d{5}";
+    } else {
+      branchEl.removeAttribute("pattern");
+    }
     branchEl.placeholder = isUkrPoshta
       ? "Наприклад: 01001"
       : (deliveryType === "postomat" ? "Почніть вводити поштомат..." : "Почніть вводити відділення...");
@@ -940,7 +947,9 @@ document.addEventListener("DOMContentLoaded", () => {
   hydratePrefilledNovaDelivery(profile);
   renderItems(items);
   const bonusInput = document.getElementById("orderBonusUse");
-  bonusInput?.addEventListener("input", () => recalcOrderPricing(getCheckoutItems()));
+  bonusInput?.addEventListener("input", () => {
+    recalcOrderPricing(getCheckoutItems(), { syncBonusInputValue: false });
+  });
   bonusInput?.addEventListener("change", () => recalcOrderPricing(getCheckoutItems()));
   bindCitySuggestionEvents();
   bindBranchSuggestionEvents();
