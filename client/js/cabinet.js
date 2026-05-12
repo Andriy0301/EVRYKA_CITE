@@ -415,6 +415,25 @@ function getCabOrderDelivery(order) {
   return order?.delivery || order?.customer?.delivery || {};
 }
 
+function getDeliveryProviderCode(order) {
+  return String(getCabOrderDelivery(order)?.provider || "")
+    .trim()
+    .toLowerCase();
+}
+
+function isNovaPoshtaOrder(order) {
+  return getDeliveryProviderCode(order) === "nova_poshta";
+}
+
+function getCabDeliveryStatusHtml(order) {
+  if (!order?.ttn) return "ТТН відсутня";
+  if (!isNovaPoshtaOrder(order)) {
+    return `<span class="cab-order-status-badge is-transit">🚚 Відправлено</span>`;
+  }
+  const provider = getDeliveryProviderCode(order);
+  return `<span data-ttn-status="${order.ttn}" data-delivery-provider="${provider}">Перевіряємо...</span>`;
+}
+
 function getCabSummaryStatusBadgeHtml(order) {
   if (isCabOrderCancelled(order)) {
     return `<span class="cab-order-status-badge is-cancelled">⛔ Скасовано</span>`;
@@ -429,9 +448,9 @@ function getCabSummaryStatusBadgeHtml(order) {
   if (orderStatus === "completed") {
     return `<span class="cab-order-status-badge is-arrived">🎯 Виконано</span>`;
   }
-  return order?.ttn
-    ? `<span class="cab-order-status-badge is-loading" data-ttn-status="${order.ttn}">⏳ Перевіряємо...</span>`
-    : `<span class="cab-order-status-badge is-neutral">🆕 Нове замовлення</span>`;
+  if (!order?.ttn) return `<span class="cab-order-status-badge is-neutral">🆕 Нове замовлення</span>`;
+  if (!isNovaPoshtaOrder(order)) return `<span class="cab-order-status-badge is-transit">🚚 Відправлено</span>`;
+  return `<span class="cab-order-status-badge is-loading" data-ttn-status="${order.ttn}" data-delivery-provider="nova_poshta">⏳ Перевіряємо...</span>`;
 }
 
 function canCancelCabinetOrder(order) {
@@ -671,7 +690,7 @@ function renderCabinetOrders(data, profile) {
               <p><b>Статус оплати:</b> ${getCabPaymentStatusHtml(order)}</p>
               <p><b>Доставка:</b> ${delivery?.city || "-"}, ${deliveryPoint}</p>
               ${order?.ttn ? `<p><b>ТТН:</b> ${order.ttn}</p>` : ""}
-              <p><b>Статус доставки:</b> ${order?.ttn ? `<span data-ttn-status="${order.ttn}" data-delivery-provider="${String(delivery?.provider || "").trim().toLowerCase()}">Перевіряємо...</span>` : "ТТН відсутня"}</p>
+              <p><b>Статус доставки:</b> ${getCabDeliveryStatusHtml(order)}</p>
               ${getCabRepayButtonHtml("print3d", order)}
               ${getCabCancelButtonHtml("print3d", order)}
             </div>
@@ -723,7 +742,7 @@ function renderCabinetOrders(data, profile) {
             <p><b>Статус оплати:</b> ${getCabPaymentStatusHtml(order)}</p>
             <p><b>Доставка:</b> ${delivery?.city || "-"}, ${delivery?.branchText || "-"}</p>
             ${order?.ttn ? `<p><b>ТТН:</b> ${order.ttn}</p>` : ""}
-            <p><b>Статус доставки:</b> ${order?.ttn ? `<span data-ttn-status="${order.ttn}" data-delivery-provider="${String(delivery?.provider || "").trim().toLowerCase()}">Перевіряємо...</span>` : "ТТН відсутня"}</p>
+            <p><b>Статус доставки:</b> ${getCabDeliveryStatusHtml(order)}</p>
             <ul class="cab-order-items">${itemsHtml}</ul>
             ${getCabRepayButtonHtml("shop", order)}
             ${getCabCancelButtonHtml("shop", order)}

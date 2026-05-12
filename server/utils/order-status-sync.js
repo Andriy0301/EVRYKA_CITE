@@ -144,6 +144,12 @@ function deriveOrderStatus(currentStatus, deliveryStage) {
   return "new";
 }
 
+function isNovaPoshtaProvider(provider) {
+  return String(provider || "")
+    .trim()
+    .toLowerCase() === "nova_poshta";
+}
+
 async function syncOrdersCollection(orders, orderType) {
   const now = new Date();
   const nowIso = now.toISOString();
@@ -155,6 +161,7 @@ async function syncOrdersCollection(orders, orderType) {
     const ttn = String(order?.ttn || "").trim();
     if (!ttn) continue;
     if (String(order?.orderStatus || "").trim() === "cancelled") continue;
+    if (!isNovaPoshtaProvider(order?.customer?.delivery?.provider || order?.delivery?.provider)) continue;
 
     const prevStatus = order?.deliveryStatus || {};
     if (String(prevStatus.stage || "") === "picked_up") continue;
