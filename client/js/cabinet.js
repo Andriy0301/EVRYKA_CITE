@@ -679,6 +679,7 @@ function renderCabinetOrders(data, profile) {
         `;
       }
 
+      const delivery = getCabOrderDelivery(order);
       const items = Array.isArray(order?.items) ? order.items : [];
       const thumbsHtml = items
         .slice(0, 5)
@@ -720,7 +721,7 @@ function renderCabinetOrders(data, profile) {
             <p><b>Статус замовлення:</b> ${getCabOrderLifecycleLabel(order)}</p>
             <p><b>Спосіб оплати:</b> ${getCabPaymentMethodLabel(order)}</p>
             <p><b>Статус оплати:</b> ${getCabPaymentStatusHtml(order)}</p>
-            <p><b>Доставка:</b> ${order?.customer?.delivery?.city || "-"}, ${order?.customer?.delivery?.branchText || "-"}</p>
+            <p><b>Доставка:</b> ${delivery?.city || "-"}, ${delivery?.branchText || "-"}</p>
             ${order?.ttn ? `<p><b>ТТН:</b> ${order.ttn}</p>` : ""}
             <p><b>Статус доставки:</b> ${order?.ttn ? `<span data-ttn-status="${order.ttn}" data-delivery-provider="${String(delivery?.provider || "").trim().toLowerCase()}">Перевіряємо...</span>` : "ТТН відсутня"}</p>
             <ul class="cab-order-items">${itemsHtml}</ul>
