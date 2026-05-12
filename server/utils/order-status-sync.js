@@ -134,6 +134,16 @@ function getAwaitingSinceIso(trackDoc, nowIso) {
   return receivedDate ? receivedDate.toISOString() : nowIso;
 }
 
+function deriveOrderStatus(currentStatus, deliveryStage) {
+  const normalizedCurrent = String(currentStatus || "").trim().toLowerCase();
+  const normalizedStage = String(deliveryStage || "").trim().toLowerCase();
+  if (normalizedCurrent === "cancelled") return "cancelled";
+  if (normalizedStage === "picked_up") return "completed";
+  if (["in_transit", "awaiting_pickup"].includes(normalizedStage)) return "delivering";
+  if (normalizedCurrent === "accepted") return "accepted";
+  return "new";
+}
+
 async function syncOrdersCollection(orders, orderType) {
   const now = new Date();
   const nowIso = now.toISOString();
@@ -219,8 +229,14 @@ async function syncOrdersCollection(orders, orderType) {
 
       const prevJson = JSON.stringify(prevStatus || {});
       const nextJson = JSON.stringify(nextStatus);
+      const nextOrderStatus = deriveOrderStatus(order?.orderStatus, stage);
+      const prevOrderStatus = String(order?.orderStatus || "").trim().toLowerCase();
       if (prevJson !== nextJson) {
         order.deliveryStatus = nextStatus;
+        changed = true;
+      }
+      if (prevOrderStatus !== String(nextOrderStatus || "").trim().toLowerCase()) {
+        order.orderStatus = nextOrderStatus;
         changed = true;
       }
     } catch (error) {

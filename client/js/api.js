@@ -381,6 +381,49 @@ async function updateCrmEventStatus(adminKey, eventId, status) {
   return res.json();
 }
 
+async function updateAdminOrderStatus(adminKey, payload) {
+  const res = await fetch(`/api/orders/admin/status`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({
+      key: String(adminKey || ""),
+      orderType: String(payload?.orderType || "shop"),
+      orderId: payload?.orderId,
+      orderNumber: payload?.orderNumber,
+      status: String(payload?.status || "")
+    })
+  });
+  if (!res.ok) {
+    const body = await res.json().catch(() => ({}));
+    throw new Error(body.error || "Не вдалося оновити статус замовлення");
+  }
+  return res.json();
+}
+
+async function updateAdminOrderTtn(adminKey, payload) {
+  const res = await fetch(`/api/orders/admin/ttn`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({
+      key: String(adminKey || ""),
+      orderType: String(payload?.orderType || "shop"),
+      orderId: payload?.orderId,
+      orderNumber: payload?.orderNumber,
+      provider: String(payload?.provider || ""),
+      ttn: String(payload?.ttn || "")
+    })
+  });
+  if (!res.ok) {
+    const body = await res.json().catch(() => ({}));
+    throw new Error(body.error || "Не вдалося зберегти ТТН");
+  }
+  return res.json();
+}
+
 async function cancelMyOrder(payload) {
   const res = await fetch(`/api/orders/cancel`, {
     method: "POST",

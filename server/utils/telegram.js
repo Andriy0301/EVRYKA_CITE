@@ -123,6 +123,27 @@ function formatDeliveryType(type) {
   return t || "—";
 }
 
+function resolveBusinessStatus(order) {
+  const current = String(order?.orderStatus || "").trim().toLowerCase();
+  const stage = String(order?.deliveryStatus?.stage || "").trim().toLowerCase();
+  if (current === "cancelled") return "cancelled";
+  if (stage === "picked_up" || ["completed", "done", "delivered", "received"].includes(current)) return "completed";
+  if (["in_transit", "awaiting_pickup"].includes(stage) || ["delivering", "shipping", "in_transit"].includes(current)) {
+    return "delivering";
+  }
+  if (["accepted", "in_progress", "processing", "paid"].includes(current)) return "accepted";
+  return "new";
+}
+
+function businessStatusLabel(status) {
+  if (status === "new") return "Нові";
+  if (status === "accepted") return "Прийняті";
+  if (status === "delivering") return "Відправлені";
+  if (status === "completed") return "Виконані";
+  if (status === "cancelled") return "Скасовані";
+  return "—";
+}
+
 function formatClientByIdCard(user) {
   if (!user) return "Клієнта за вказаним ID не знайдено.";
   const delivery = user.delivery || {};
@@ -182,7 +203,7 @@ function formatShopOrdersList(items) {
   const rows = ["Останні замовлення магазину:"];
   items.slice(0, MAX_ITEMS_PER_SECTION).forEach((entry, idx) => {
     const customer = entry.customer || {};
-    const orderStatus = short(entry.orderStatus || "—", 50);
+    const orderStatus = businessStatusLabel(resolveBusinessStatus(entry));
     const deliveryStage = short(entry?.deliveryStatus?.stage || "—", 50);
     rows.push(
       "",
@@ -268,21 +289,11 @@ function filterOrdersByStatus(items, statusFilter) {
   const list = Array.isArray(items) ? items : [];
   if (!statusFilter || statusFilter === "all") return list;
   return list.filter((entry) => {
-    const orderStatus = String(entry?.orderStatus || "").trim().toLowerCase();
-    const deliveryStage = String(entry?.deliveryStatus?.stage || "").trim().toLowerCase();
-
-    if (statusFilter === "new") {
-      return orderStatus === "new" || orderStatus === "awaiting_payment";
-    }
-    if (statusFilter === "accepted") {
-      return ["accepted", "in_progress", "processing", "paid"].includes(orderStatus);
-    }
-    if (statusFilter === "completed") {
-      return ["completed", "done", "delivered", "received"].includes(orderStatus) || deliveryStage === "picked_up";
-    }
-    if (statusFilter === "delivering") {
-      return ["delivering", "shipping", "in_transit"].includes(orderStatus) || ["in_transit", "awaiting_pickup"].includes(deliveryStage);
-    }
+    const business = resolveBusinessStatus(entry);
+    if (statusFilter === "new") return business === "new";
+    if (statusFilter === "accepted") return business === "accepted";
+    if (statusFilter === "completed") return business === "completed";
+    if (statusFilter === "delivering") return business === "delivering";
     return true;
   });
 }

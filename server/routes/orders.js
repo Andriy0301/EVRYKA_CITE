@@ -486,6 +486,118 @@ router.post("/crm-events/status", async (req, res) => {
   return res.json({ ok: true, event: events[idx] });
 });
 
+router.post("/admin/status", async (req, res) => {
+  const key = String(req.body?.key || req.query.key || req.headers["x-admin-key"] || "").trim();
+  if (!key || key !== ADMIN_ORDERS_KEY) {
+    return res.status(403).json({ error: "Доступ заборонено" });
+  }
+
+  const orderType = String(req.body?.orderType || "shop").trim() === "print3d" ? "print3d" : "shop";
+  const orderId = String(req.body?.orderId || "").trim();
+  const orderNumber = String(req.body?.orderNumber || "").trim();
+  const nextStatus = String(req.body?.status || "").trim().toLowerCase();
+
+  if (!orderId && !orderNumber) {
+    return res.status(400).json({ error: "Не передано orderId або orderNumber" });
+  }
+  if (nextStatus !== "accepted") {
+    return res.status(400).json({ error: "Дозволено встановлювати тільки статус accepted" });
+  }
+
+  const listName = orderType === "print3d" ? "print3dOrders" : "orders";
+  const list = orderType === "print3d" ? await readPrint3dOrders() : await readOrders();
+  const idx = list.findIndex((order) => {
+    const idMatch = orderId && String(order?.id || "").trim() === orderId;
+    const numMatch = orderNumber && String(order?.orderNumber || "").trim() === orderNumber;
+    return idMatch || numMatch;
+  });
+
+  if (idx < 0) {
+    return res.status(404).json({ error: "Замовлення не знайдено" });
+  }
+
+  const current = list[idx] || {};
+  if (String(current?.orderStatus || "").trim().toLowerCase() !== "new") {
+    return res.status(400).json({ error: "Змінювати можна тільки замовлення зі статусом new" });
+  }
+
+  const updated = {
+    ...current,
+    orderStatus: "accepted",
+    acceptedAt: new Date().toISOString()
+  };
+  list[idx] = updated;
+  await setList(listName, list);
+
+  return res.json({ ok: true, order: updated });
+});
+
+router.post("/admin/ttn", async (req, res) => {
+  const key = String(req.body?.key || req.query.key || req.headers["x-admin-key"] || "").trim();
+  if (!key || key !== ADMIN_ORDERS_KEY) {
+    return res.status(403).json({ error: "Доступ заборонено" });
+  }
+
+  const orderType = String(req.body?.orderType || "shop").trim() === "print3d" ? "print3d" : "shop";
+  const orderId = String(req.body?.orderId || "").trim();
+  const orderNumber = String(req.body?.orderNumber || "").trim();
+  const provider = String(req.body?.provider || "").trim().toLowerCase();
+  const ttn = String(req.body?.ttn || "").trim();
+  const allowedProviders = new Set(["ukr_poshta", "ukrposhta", "meest", "rozetka_delivery", "rozetka"]);
+
+  if (!orderId && !orderNumber) {
+    return res.status(400).json({ error: "Не передано orderId або orderNumber" });
+  }
+  if (!allowedProviders.has(provider)) {
+    return res.status(400).json({ error: "Дозволено лише служби: Укрпошта, Meest, Rozetka" });
+  }
+  if (!ttn || ttn.length < 5) {
+    return res.status(400).json({ error: "Некоректна ТТН" });
+  }
+
+  const listName = orderType === "print3d" ? "print3dOrders" : "orders";
+  const list = orderType === "print3d" ? await readPrint3dOrders() : await readOrders();
+  const idx = list.findIndex((order) => {
+    const idMatch = orderId && String(order?.id || "").trim() === orderId;
+    const numMatch = orderNumber && String(order?.orderNumber || "").trim() === orderNumber;
+    return idMatch || numMatch;
+  });
+
+  if (idx < 0) {
+    return res.status(404).json({ error: "Замовлення не знайдено" });
+  }
+
+  const current = list[idx] || {};
+  const currentProvider = String(current?.customer?.delivery?.provider || "").trim().toLowerCase();
+  const normalizedProvider = provider === "ukrposhta" ? "ukr_poshta" : provider === "rozetka" ? "rozetka_delivery" : provider;
+  if (currentProvider && currentProvider !== normalizedProvider) {
+    return res.status(400).json({ error: "Служба доставки замовлення не збігається з вибраною" });
+  }
+
+  const nextDeliveryStatus = {
+    ...(current?.deliveryStatus || {}),
+    source: normalizedProvider,
+    stage: String(current?.deliveryStatus?.stage || "").trim() || "created",
+    text: String(current?.deliveryStatus?.text || "").trim() || "ТТН додано вручну",
+    lastChangedAt: new Date().toISOString()
+  };
+  const updated = {
+    ...current,
+    ttn,
+    customer: {
+      ...(current?.customer || {}),
+      delivery: {
+        ...((current?.customer || {}).delivery || {}),
+        provider: normalizedProvider
+      }
+    },
+    deliveryStatus: nextDeliveryStatus
+  };
+  list[idx] = updated;
+  await setList(listName, list);
+  return res.json({ ok: true, order: updated });
+});
+
 router.post("/cancel", async (req, res) => {
   const {
     orderType = "shop",

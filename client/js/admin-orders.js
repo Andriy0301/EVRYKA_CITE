@@ -22,6 +22,23 @@ function paymentLabel(value) {
   return value || "-";
 }
 
+function orderStatusLabel(status) {
+  const normalized = String(status || "").trim().toLowerCase();
+  if (normalized === "new") return "Нові";
+  if (normalized === "accepted") return "Прийняті";
+  if (normalized === "delivering") return "Відправлені";
+  if (normalized === "completed") return "Виконані";
+  if (normalized === "awaiting_payment") return "Очікує оплати";
+  if (normalized === "paid") return "Оплачено";
+  if (normalized === "cancelled") return "Скасовано";
+  return normalized || "-";
+}
+
+function supportsManualTtn(provider) {
+  const normalized = String(provider || "").trim().toLowerCase();
+  return ["ukr_poshta", "ukrposhta", "meest", "rozetka_delivery", "rozetka"].includes(normalized);
+}
+
 function deliveryStageLabel(stage) {
   if (stage === "created") return "ТТН створена, очікує передачі в НП";
   if (stage === "picked_up") return "Отримано клієнтом";
@@ -90,6 +107,8 @@ function renderAdminOrders(payload) {
         .map((item) => `<li>${escapeHtml(item.name || item.originalname || "Позиція")} x ${Number(item.qty || 1)}</li>`)
         .join("");
       const deliveryPoint = delivery?.branchText || delivery?.point || "-";
+      const provider = String(delivery?.provider || "").trim().toLowerCase();
+      const canEditTtn = supportsManualTtn(provider);
       return `
         <article class="admin-order-card">
           <p><b>Тип:</b> ${entry.kind === "print3d" ? "3D-друк" : "Магазин"}</p>
@@ -107,11 +126,52 @@ function renderAdminOrders(payload) {
           <p><b>Статус замовлення:</b> ${escapeHtml(formatOrderStatus(order))}</p>
           <p><b>Остання перевірка:</b> ${escapeHtml(order?.deliveryStatus?.lastCheckedAt || "-")}</p>
           <p><b>Сума:</b> ${Number(order.total || 0)} грн</p>
+          <p><b>Внутрішній статус:</b> ${escapeHtml(orderStatusLabel(order.orderStatus || "new"))}</p>
+          <label>Змінити статус
+            <select
+              class="admin-order-status-select"
+              data-order-kind="${escapeHtml(entry.kind)}"
+              data-order-id="${escapeHtml(order.id || "")}"
+              data-order-number="${escapeHtml(order.orderNumber || "")}"
+            >
+              <option value="new" ${(String(order.orderStatus || "new").toLowerCase() === "new") ? "selected" : ""}>Нові</option>
+              <option
+                value="accepted"
+                ${(String(order.orderStatus || "").toLowerCase() === "accepted") ? "selected" : ""}
+                ${(String(order.orderStatus || "new").toLowerCase() !== "new" && String(order.orderStatus || "").toLowerCase() !== "accepted") ? "disabled" : ""}
+              >Прийняті</option>
+            </select>
+          </label>
+          ${canEditTtn ? `
+            <label>ТТН (${escapeHtml(delivery.provider || "служба")})
+              <input
+                type="text"
+                class="admin-order-ttn-input"
+                data-order-kind="${escapeHtml(entry.kind)}"
+                data-order-id="${escapeHtml(order.id || "")}"
+                data-order-number="${escapeHtml(order.orderNumber || "")}"
+                data-provider="${escapeHtml(provider)}"
+                value="${escapeHtml(order.ttn || "")}"
+                placeholder="Введіть ТТН"
+              />
+            </label>
+            <button
+              type="button"
+              class="checkout-btn admin-order-ttn-save-btn"
+              data-order-kind="${escapeHtml(entry.kind)}"
+              data-order-id="${escapeHtml(order.id || "")}"
+              data-order-number="${escapeHtml(order.orderNumber || "")}"
+              data-provider="${escapeHtml(provider)}"
+            >Зберегти ТТН</button>
+          ` : ""}
           <ul>${items}</ul>
         </article>
       `;
     })
     .join("");
+
+  bindAdminOrderStatusEvents();
+  bindAdminOrderTtnEvents();
 }
 
 function renderCrmEvents(events = []) {
@@ -171,6 +231,82 @@ function bindCrmStatusEvents() {
         showAdminOrdersMessage("CRM-статус оновлено", false);
       } catch (error) {
         showAdminOrdersMessage(error.message || "Не вдалося оновити CRM-статус");
+      }
+    });
+  });
+}
+
+function bindAdminOrderStatusEvents() {
+  document.querySelectorAll(".admin-order-status-select").forEach((selectEl) => {
+    const initialStatus = String(selectEl.value || "").trim().toLowerCase();
+    selectEl.addEventListener("change", async () => {
+      const key = document.getElementById("adminKeyInput")?.value?.trim();
+      if (!key) {
+        showAdminOrdersMessage("Введіть адмін-ключ");
+        selectEl.value = initialStatus || "new";
+        return;
+      }
+
+      const selectedStatus = String(selectEl.value || "").trim().toLowerCase();
+      if (selectedStatus !== "accepted") {
+        showAdminOrdersMessage("Для адміна зараз дозволено тільки зміну на статус 'Прийняті'");
+        selectEl.value = initialStatus || "new";
+        return;
+      }
+      if (initialStatus !== "new" && initialStatus !== "accepted") {
+        showAdminOrdersMessage("Змінювати можна лише замовлення зі статусом 'Нові'");
+        selectEl.value = initialStatus || "new";
+        return;
+      }
+
+      try {
+        await updateAdminOrderStatus(key, {
+          orderType: selectEl.dataset.orderKind === "print3d" ? "print3d" : "shop",
+          orderId: selectEl.dataset.orderId || "",
+          orderNumber: selectEl.dataset.orderNumber || "",
+          status: "accepted"
+        });
+        showAdminOrdersMessage("Статус замовлення оновлено", false);
+        await onLoadOrders();
+      } catch (error) {
+        showAdminOrdersMessage(error.message || "Не вдалося оновити статус замовлення");
+        selectEl.value = initialStatus || "new";
+      }
+    });
+  });
+}
+
+function bindAdminOrderTtnEvents() {
+  document.querySelectorAll(".admin-order-ttn-save-btn").forEach((btn) => {
+    btn.addEventListener("click", async () => {
+      const key = document.getElementById("adminKeyInput")?.value?.trim();
+      if (!key) {
+        showAdminOrdersMessage("Введіть адмін-ключ");
+        return;
+      }
+      const orderKind = btn.dataset.orderKind || "shop";
+      const orderId = btn.dataset.orderId || "";
+      const orderNumber = btn.dataset.orderNumber || "";
+      const provider = btn.dataset.provider || "";
+      const card = btn.closest(".admin-order-card");
+      const input = card?.querySelector(".admin-order-ttn-input");
+      const ttn = String(input?.value || "").trim();
+      if (!ttn) {
+        showAdminOrdersMessage("Введіть ТТН");
+        return;
+      }
+      try {
+        await updateAdminOrderTtn(key, {
+          orderType: orderKind === "print3d" ? "print3d" : "shop",
+          orderId,
+          orderNumber,
+          provider,
+          ttn
+        });
+        showAdminOrdersMessage("ТТН збережено", false);
+        await onLoadOrders();
+      } catch (error) {
+        showAdminOrdersMessage(error.message || "Не вдалося зберегти ТТН");
       }
     });
   });
