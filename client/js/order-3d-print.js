@@ -12,7 +12,6 @@ const PRINT3D_DB_NAME = "evrykaPrint3dDb";
 const PRINT3D_DB_STORE = "pendingFiles";
 const MAX_BYTES = 50 * 1024 * 1024;
 const DEBOUNCE_MS = 400;
-const ESM_THREE_BASE = "https://esm.sh/three@0.170.0";
 
 let threeMods = null;
 let debounceTimer = null;
@@ -90,10 +89,13 @@ function withTimeout(promise, ms, label) {
 
 async function importThreeBundle(threeUrl, stlUrl, objUrl, orbitUrl) {
   const THREE = normalizeThreeModule(await import(threeUrl));
-  const { STLLoader } = await import(stlUrl);
-  const { OBJLoader } = await import(objUrl);
-  const { OrbitControls } = await import(orbitUrl);
-  if (typeof THREE?.Scene !== "function" || typeof STLLoader !== "function") {
+  const stlMod = await import(stlUrl);
+  const objMod = await import(objUrl);
+  const orbitMod = await import(orbitUrl);
+  const STLLoader = stlMod.STLLoader || stlMod.default;
+  const OBJLoader = objMod.OBJLoader || objMod.default;
+  const OrbitControls = orbitMod.OrbitControls || orbitMod.default;
+  if (typeof THREE?.Scene !== "function" || typeof STLLoader !== "function" || typeof OrbitControls !== "function") {
     throw new Error("Three.js modules failed to load");
   }
   return { THREE, STLLoader, OBJLoader, OrbitControls };
@@ -104,19 +106,8 @@ async function loadThreeMods() {
 
   const attempts = [
     {
-      label: "local-importmap",
-      timeoutMs: 8000,
-      run: () =>
-        importThreeBundle(
-          "three",
-          "three/addons/loaders/STLLoader.js",
-          "three/addons/loaders/OBJLoader.js",
-          "three/addons/controls/OrbitControls.js"
-        )
-    },
-    {
-      label: "local-paths",
-      timeoutMs: 8000,
+      label: "local-vendor",
+      timeoutMs: 15000,
       run: () =>
         importThreeBundle(
           "/js/vendor/three/three.module.js",
@@ -126,14 +117,14 @@ async function loadThreeMods() {
         )
     },
     {
-      label: "esm.sh",
-      timeoutMs: 6000,
+      label: "importmap",
+      timeoutMs: 8000,
       run: () =>
         importThreeBundle(
-          ESM_THREE_BASE,
-          `${ESM_THREE_BASE}/examples/jsm/loaders/STLLoader.js`,
-          `${ESM_THREE_BASE}/examples/jsm/loaders/OBJLoader.js`,
-          `${ESM_THREE_BASE}/examples/jsm/controls/OrbitControls.js`
+          "three",
+          "three/addons/loaders/STLLoader.js",
+          "three/addons/loaders/OBJLoader.js",
+          "three/addons/controls/OrbitControls.js"
         )
     }
   ];
@@ -989,15 +980,18 @@ async function mountPreview(item) {
   controls.enableDamping = true;
   controls.dampingFactor = 0.08;
 
-  const fileUrl = URL.createObjectURL(item.file);
   let object = null;
 
   try {
     if (ext === "stl") {
-      const geometry = await new Promise((resolve, reject) => {
-        const loader = new STLLoader();
-        loader.load(fileUrl, resolve, undefined, reject);
-      });
+      const buffer = await item.file.arrayBuffer();
+      const geometry = new STLLoader().parse(buffer);
+      if (!geometry.getAttribute("position") || geometry.getAttribute("position").count < 3) {
+        throw new Error("STL без геометрії");
+      }
+      if (!geometry.getAttribute("normal")) {
+        geometry.computeVertexNormals();
+      }
       const material = new THREE.MeshStandardMaterial({
         color: item.color || DEFAULT_COLOR,
         metalness: 0.04,
@@ -1005,12 +999,12 @@ async function mountPreview(item) {
       });
       object = new THREE.Mesh(geometry, material);
     } else {
-      object = await new Promise((resolve, reject) => {
-        const loader = new OBJLoader();
-        loader.load(fileUrl, resolve, undefined, reject);
-      });
+      const text = await item.file.text();
+      object = new OBJLoader().parse(text);
+      let meshCount = 0;
       object.traverse((c) => {
         if (c.isMesh) {
+          meshCount += 1;
           c.material = new THREE.MeshStandardMaterial({
             color: item.color || DEFAULT_COLOR,
             metalness: 0.05,
@@ -1018,16 +1012,15 @@ async function mountPreview(item) {
           });
         }
       });
+      if (!meshCount) throw new Error("OBJ без мешів");
     }
   } catch (e) {
     console.error("[preview]", e);
-    host.innerHTML = '<p class="print3d-canvas-empty">Не вдалося показати модель</p>';
-    URL.revokeObjectURL(fileUrl);
+    host.innerHTML = `<p class="print3d-canvas-empty">Не вдалося показати модель${e?.message ? `: ${String(e.message).slice(0, 80)}` : ""}</p>`;
     renderer.dispose();
     return;
   }
 
-  URL.revokeObjectURL(fileUrl);
   scene.add(object);
   applyColorToObject(THREE, object, item.color);
   item.applyPreviewColor = (hex) => applyColorToObject(THREE, object, hex);
@@ -1173,7 +1166,8 @@ function addFiles(files, els) {
 
     void mountPreview(item).catch((e) => {
       console.error("[mountPreview]", e);
-      item.ui.canvasHost.innerHTML = "<p class=\"print3d-canvas-empty\">Не вдалося завантажити прев'ю</p>";
+      const detail = e?.message ? String(e.message).slice(0, 100) : "";
+      item.ui.canvasHost.innerHTML = `<p class="print3d-canvas-empty">Не вдалося завантажити прев'ю${detail ? `: ${detail}` : ""}</p>`;
     });
     void analyzeItem(item, els);
   });
