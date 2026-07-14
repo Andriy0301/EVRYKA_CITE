@@ -3,7 +3,7 @@ const path = require("path");
 const https = require("https");
 const csv = require("csv-parser");
 
-const DATA_CSV_PATH = "client/export-products-04-04-26_09-30-12.csv";
+const DATA_CSV_PATH = "client/export-products-14-07-26_21-51-49.csv";
 const IMAGES_DIR = "client/images";
 const PRODUCTS_PATH = "server/data/products.json";
 const POPULARITY_PATH = "server/data/popularity.json";
