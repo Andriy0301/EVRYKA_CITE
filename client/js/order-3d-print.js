@@ -1,8 +1,8 @@
 /**
  * Замовити 3D-друк — мультизавантаження моделей з окремим прев'ю та ціною.
+ * Three.js: import map (jsDelivr) з запасним шляхом через esm.sh.
  */
 
-const THREE_BASE = "https://esm.sh/three@0.170.0";
 const API_ANALYZE = "/api/print3d/analyze-model";
 const API_REQUEST = "/api/print3d/request";
 const API_ORDER = "/api/print3d/order";
@@ -12,6 +12,7 @@ const PRINT3D_DB_NAME = "evrykaPrint3dDb";
 const PRINT3D_DB_STORE = "pendingFiles";
 const MAX_BYTES = 50 * 1024 * 1024;
 const DEBOUNCE_MS = 400;
+const ESM_THREE_BASE = "https://esm.sh/three@0.170.0";
 
 let threeMods = null;
 let debounceTimer = null;
@@ -67,14 +68,88 @@ const COLOR_PRESETS = [
 ];
 const DEFAULT_COLOR = COLOR_PRESETS[7].hex;
 
+function normalizeThreeModule(mod) {
+  return mod?.default && typeof mod.default.Scene === "function" ? mod.default : mod;
+}
+
+function withTimeout(promise, ms, label) {
+  return new Promise((resolve, reject) => {
+    const timer = setTimeout(() => reject(new Error(`${label} timed out after ${ms}ms`)), ms);
+    promise.then(
+      (value) => {
+        clearTimeout(timer);
+        resolve(value);
+      },
+      (err) => {
+        clearTimeout(timer);
+        reject(err);
+      }
+    );
+  });
+}
+
+async function importThreeBundle(threeUrl, stlUrl, objUrl, orbitUrl) {
+  const THREE = normalizeThreeModule(await import(threeUrl));
+  const { STLLoader } = await import(stlUrl);
+  const { OBJLoader } = await import(objUrl);
+  const { OrbitControls } = await import(orbitUrl);
+  if (typeof THREE?.Scene !== "function" || typeof STLLoader !== "function") {
+    throw new Error("Three.js modules failed to load");
+  }
+  return { THREE, STLLoader, OBJLoader, OrbitControls };
+}
+
 async function loadThreeMods() {
   if (threeMods) return threeMods;
-  const THREE = await import(THREE_BASE);
-  const { STLLoader } = await import(`${THREE_BASE}/examples/jsm/loaders/STLLoader.js`);
-  const { OBJLoader } = await import(`${THREE_BASE}/examples/jsm/loaders/OBJLoader.js`);
-  const { OrbitControls } = await import(`${THREE_BASE}/examples/jsm/controls/OrbitControls.js`);
-  threeMods = { THREE, STLLoader, OBJLoader, OrbitControls };
-  return threeMods;
+
+  const attempts = [
+    {
+      label: "local-importmap",
+      timeoutMs: 8000,
+      run: () =>
+        importThreeBundle(
+          "three",
+          "three/addons/loaders/STLLoader.js",
+          "three/addons/loaders/OBJLoader.js",
+          "three/addons/controls/OrbitControls.js"
+        )
+    },
+    {
+      label: "local-paths",
+      timeoutMs: 8000,
+      run: () =>
+        importThreeBundle(
+          "/js/vendor/three/three.module.js",
+          "/js/vendor/three/addons/loaders/STLLoader.js",
+          "/js/vendor/three/addons/loaders/OBJLoader.js",
+          "/js/vendor/three/addons/controls/OrbitControls.js"
+        )
+    },
+    {
+      label: "esm.sh",
+      timeoutMs: 6000,
+      run: () =>
+        importThreeBundle(
+          ESM_THREE_BASE,
+          `${ESM_THREE_BASE}/examples/jsm/loaders/STLLoader.js`,
+          `${ESM_THREE_BASE}/examples/jsm/loaders/OBJLoader.js`,
+          `${ESM_THREE_BASE}/examples/jsm/controls/OrbitControls.js`
+        )
+    }
+  ];
+
+  let lastError = null;
+  for (const attempt of attempts) {
+    try {
+      threeMods = await withTimeout(attempt.run(), attempt.timeoutMs, attempt.label);
+      return threeMods;
+    } catch (err) {
+      lastError = err;
+      console.warn("[loadThreeMods] attempt failed", attempt.label, err);
+    }
+  }
+
+  throw lastError || new Error("Не вдалося завантажити Three.js");
 }
 
 function extOf(name) {
@@ -870,12 +945,25 @@ async function mountPreview(item) {
     return;
   }
 
-  const { THREE, STLLoader, OBJLoader, OrbitControls } = await loadThreeMods();
+  host.innerHTML = "<p class=\"print3d-canvas-empty\">Завантаження прев'ю...</p>";
+
+  let THREE;
+  let STLLoader;
+  let OBJLoader;
+  let OrbitControls;
+  try {
+    ({ THREE, STLLoader, OBJLoader, OrbitControls } = await loadThreeMods());
+  } catch (e) {
+    console.error("[preview] three load", e);
+    host.innerHTML = '<p class="print3d-canvas-empty">Не вдалося завантажити 3D-переглядач. Перевірте інтернет і оновіть сторінку.</p>';
+    return;
+  }
+
   host.innerHTML = "";
 
   const rect = host.getBoundingClientRect();
-  const w = Math.max(rect.width, 260);
-  const h = Math.max(rect.height, 240);
+  const w = Math.max(Math.floor(rect.width) || 0, 280);
+  const h = Math.max(Math.floor(rect.height) || 0, 260);
 
   const scene = new THREE.Scene();
   scene.background = new THREE.Color(0xfcfaf7);
