@@ -54,30 +54,30 @@
       <span class="header-burger__line"></span>
     </button>
     <nav class="nav header-nav" id="headerNavPanel" aria-label="??������ ���??��????�">
-      <a href="/">??������</a>
-      <a href="/catalog" class="active">??�??����</a>
-      <a href="/about">????� ���</a>
-      <a href="/order-3d-print">??�����??� 3D �????�</a>
+      <a href="/">Головна</a>
+      <a href="/catalog" class="active">Каталог</a>
+      <a href="/about">Про нас</a>
+      <a href="/order-3d-print">3D друк</a>
     </nav>
     <div class="header-utilities">
       <div class="search-box">
-        <input type="search" placeholder="??�????�" id="search" name="q" autocomplete="off">
+        <input type="search" placeholder="Пошук" id="search" name="q" autocomplete="off">
         <div id="searchResults" class="search-results"></div>
       </div>
       <div class="header-actions">
-        <button type="button" id="authBtn" class="auth-icon-btn" title="????�????�??">
+        <button type="button" id="authBtn" class="auth-icon-btn" title="Вхід">
           <svg id="authIcon" viewBox="0 0 24 24" aria-hidden="true">
             <path d="M12 12c2.8 0 5-2.2 5-5s-2.2-5-5-5-5 2.2-5 5 2.2 5 5 5Zm0 2c-4.4 0-8 2.7-8 6v2h16v-2c0-3.3-3.6-6-8-6Z"></path>
           </svg>
           <span id="authInitials" class="auth-initials"></span>
         </button>
-        <button type="button" id="favoritesBtn" class="auth-icon-btn" title="??�??��??" onclick="toggleFavorites(true)">
+        <button type="button" id="favoritesBtn" class="auth-icon-btn" title="Вибране" onclick="toggleFavorites(true)">
           <svg class="heart-icon" viewBox="0 0 512 512" aria-hidden="true">
             <path d="M257 88L255 88C248.355 74.9828 235.475 63.8415 224 55.1304C173.114 16.5016 99.2988 19.267 51 61.2894C-1.26738 106.765 -12.8083 185.773 13.0116 248C25.4527 277.984 45.9981 303.467 67.9105 327C103.494 365.215 144.281 398.581 184 432.421C198.063 444.402 211.938 456.598 226 468.579C233.971 475.37 241.993 483.022 253 483.907C268.121 485.122 278.342 475.197 289 466C306.641 450.778 324.263 435.533 342 420.421C356.437 408.121 370.854 395.797 385 383.166C443.359 331.055 512 269.827 512 185C512 178.072 512.538 170.886 511.715 164C506.476 120.199 486.854 78.636 450 52.7207C401.715 18.7669 334.983 19.4645 288 55.1304C276.525 63.8415 263.645 74.9828 257 88z"></path>
           </svg>
         </button>
         <div class="cart" onclick="toggleCart(true)">
-          <img src="/images/cart-icon.svg" class="cart-icon" alt="??�??��">
+          <img src="/images/cart-icon.svg" class="cart-icon" alt="Кошик">
           <span id="cartCount">0</span>
         </div>
       </div>
@@ -88,117 +88,106 @@
 <div class="container">
   <div class="catalog-shell">
   <div class="product-nav catalog-page-nav">
-    <button type="button" class="back-btn" id="catalogBackBtn" aria-label="�����">
+    <button type="button" class="back-btn" id="catalogBackBtn" aria-label="Назад">
       <svg class="back-icon" viewBox="0 0 24 24" aria-hidden="true">
         <path d="M15 6l-6 6 6 6"></path>
       </svg>
-      �����
+      Назад
     </button>
     <div class="breadcrumbs">
-      <a href="/">??������</a>
+      <a href="/">Головна</a>
       <span>/</span>
-      <span>??�??����</span>
+      <span>Каталог</span>
     </div>
   </div>
 
   <div class="catalog-page-layout">
-    <aside class="catalog-filters neo-drawer neo-drawer--filters" data-uflyout="panel" aria-label="�??�??????� ��??����??">
+    <aside class="catalog-filters neo-drawer neo-drawer--filters" data-uflyout="panel" aria-label="Фільтри">
       <div class="neo-drawer__title-row">
-        <h2 class="catalog-filters-title neo-drawer__title">�??�??????�</h2>
-        <button type="button" class="catalog-filters-close neo-drawer__close" data-uflyout-close id="catalogFiltersCloseBtn" aria-label="??��??�??� ????�??????�" onclick="window.closeCatalogFiltersDrawer && window.closeCatalogFiltersDrawer()">?</button>
+        <h2 class="catalog-filters-title neo-drawer__title">Фільтри</h2>
+        <button type="button" class="catalog-filters-close neo-drawer__close" data-uflyout-close id="catalogFiltersCloseBtn" aria-label="Закрити фільтри" onclick="window.closeCatalogFiltersDrawer && window.closeCatalogFiltersDrawer()">?</button>
       </div>
 
       <div class="catalog-filter-block">
-        <span class="catalog-filter-label" id="catalogSortLabel">��??????�����</span>
+        <span class="catalog-filter-label" id="catalogSortLabel">Сортування</span>
         <div class="catalog-select-wrap">
           <button type="button" class="catalog-select-trigger" id="catalogSortTrigger" aria-expanded="false" aria-haspopup="listbox" aria-labelledby="catalogSortLabel catalogSortValue">
-            <span class="catalog-select-value" id="catalogSortValue">??� �����????������</span>
+            <span class="catalog-select-value" id="catalogSortValue">Оберіть</span>
             <svg class="catalog-select-chevron" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9l6 6 6-6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg>
           </button>
           <ul class="catalog-select-panel" role="listbox" hidden></ul>
           <select id="catalogSort" class="catalog-filter-select-native" tabindex="-1" aria-hidden="true">
-            <option value="default">??� �����????������</option>
-            <option value="price_asc">���??�??�?? ��??��????</option>
-            <option value="price_desc">���??�??�?? ��??��????</option>
-            <option value="popular">??��??��??�??????</option>
+            <option value="default">Оберіть</option>
+            <option value="price_asc">Від найдешевших</option>
+            <option value="price_desc">Від найдорожчих</option>
+            <option value="popular">За популярністю</option>
           </select>
         </div>
       </div>
 
       <div class="catalog-filter-block">
-        <span class="catalog-filter-label" id="catalogCategoryLabel">??�??���????�</span>
+        <span class="catalog-filter-label" id="catalogCategoryLabel">Категорія</span>
         <div class="catalog-select-wrap">
           <button type="button" class="catalog-select-trigger" id="catalogCategoryTrigger" aria-expanded="false" aria-haspopup="listbox" aria-labelledby="catalogCategoryLabel catalogCategoryValue">
-            <span class="catalog-select-value" id="catalogCategoryValue">��?? ��??���??????</span>
+            <span class="catalog-select-value" id="catalogCategoryValue">Оберіть</span>
             <svg class="catalog-select-chevron" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9l6 6 6-6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg>
           </button>
           <ul class="catalog-select-panel" role="listbox" hidden></ul>
           <select id="catalogFilterCategory" class="catalog-filter-select-native" tabindex="-1" aria-hidden="true">
-            <option value="all">��?? ��??���??????</option>
+            <option value="all">Оберіть</option>
           </select>
         </div>
       </div>
 
       <div class="catalog-filter-block">
-        <span class="catalog-filter-label">�??��, �??�</span>
+        <span class="catalog-filter-label">Ціна</span>
         <div class="catalog-price-row">
-          <input type="number" id="catalogPriceMin" class="catalog-filter-input" min="0" step="1" placeholder="????�">
-          <span class="catalog-price-dash">�</span>
-          <input type="number" id="catalogPriceMax" class="catalog-filter-input" min="0" step="1" placeholder="??�">
+          <input type="number" id="catalogPriceMin" class="catalog-filter-input" min="0" step="1" placeholder="В
         </div>
       </div>
 
-      <button type="button" id="catalogResetFilters" class="catalog-reset-btn">����????� ????�??????�</button>
+      <button type="button" id="catalogResetFilters" class="catalog-reset-btn">Скинути фільтри</button>
     </aside>
 
     <div class="catalog-main">
       <div class="catalog-products-inner">
         <section class="products catalog-products-section">
           <div class="catalog-products-head">
-            <h2>??�??���� ??���????�</h2>
-            <button type="button" class="back-btn catalog-filters-open-btn neo-drawer-trigger" data-uflyout-trigger id="catalogFiltersOpenBtn" aria-label="????��??�??� ????�??????�" onclick="if(window.openCatalogFiltersDrawer){window.openCatalogFiltersDrawer();}else{document.body.classList.add('catalog-filters-open');var o=document.getElementById('catalogFiltersOverlay');if(o)o.hidden=false;var d=document.querySelector('.page-catalog .catalog-filters[data-uflyout=&quot;panel&quot;]');if(d){d.style.setProperty('position','fixed','important');d.style.setProperty('left','0','important');d.style.setProperty('right','0','important');d.style.setProperty('bottom','92px','important');d.style.setProperty('z-index','1302','important');d.style.setProperty('display','grid','important');d.style.setProperty('opacity','1','important');d.style.setProperty('pointer-events','auto','important');d.style.setProperty('transform','translateY(0) scale(1)','important');}}">
-              �??�??????
+            <h2>Товари</h2>
+            <button type="button" class="back-btn catalog-filters-open-btn neo-drawer-trigger" data-uflyout-trigger id="catalogFiltersOpenBtn" aria-label="Відкрити фільтри" onclick="if(window.openCatalogFiltersDrawer){window.openCatalogFiltersDrawer();}else{document.body.classList.add('catalog-filters-open');var o=document.getElementById('catalogFiltersOverlay');if(o)o.hidden=false;var d=document.querySelector('.page-catalog .catalog-filters[data-uflyout=&quot;panel&quot;]');if(d){d.style.setProperty('position','fixed','important');d.style.setProperty('left','0','important');d.style.setProperty('right','0','important');d.style.setProperty('bottom','92px','important');d.style.setProperty('z-index','1302','important');d.style.setProperty('display','grid','important');d.style.setProperty('opacity','1','important');d.style.setProperty('pointer-events','auto','important');d.style.setProperty('transform','translateY(0) scale(1)','important');}}">
+              Відкрити фільтри
             </button>
           </div>
-          <div id="catalogPageGrid" class="catalog-products-grid"></div>
-        </section>
-      </div>
-    </div>
-  </div>
-  <div class="catalog-filters-overlay neo-drawer-overlay" data-uflyout-overlay id="catalogFiltersOverlay" hidden onclick="if(window.closeCatalogFiltersDrawer){window.closeCatalogFiltersDrawer();}else{document.body.classList.remove('catalog-filters-open');this.hidden=true;var d=document.querySelector('.page-catalog .catalog-filters[data-uflyout=&quot;panel&quot;]');if(d){d.style.removeProperty('position');d.style.removeProperty('left');d.style.removeProperty('right');d.style.removeProperty('bottom');d.style.removeProperty('z-index');d.style.removeProperty('display');d.style.removeProperty('opacity');d.style.removeProperty('pointer-events');d.style.removeProperty('transform');}}"></div>
-  </div>
-</div>
-
-<div id="cartOverlay" class="cart-overlay" onclick="toggleCart(false)"></div>
-
+          <div id="catalogPageGrid" class="catalog-products-grid">
+            <div class="catalog-product-item
 <div id="cartSidebar" class="cart-sidebar">
   <div class="cart-head-float">
-    <h3 id="cartPanelTitle">??�??��</h3>
+    <h3 id="cartPanelTitle">Кошик</h3>
     <button type="button" class="cart-head-float-close" onclick="toggleCart(false)" aria-label="??��??�??� ��??��">?</button>
   </div>
   <div id="cartItems" class="cart-items"></div>
   <div class="cart-footer">
     <div class="cart-total">
-      <span>�����</span>
+      <span>Кошик</span>
       <div>
         <b id="cartTotal">0</b>
-        <span>�??�</span>
+        <span>грн</span>
       </div>
     </div>
-    <button class="checkout-btn" onclick="checkout()">????�??��??�</button>
-    <button class="clear-btn" onclick="clearCart()">????��??�??� ��??��</button>
+    <button class="checkout-btn" onclick="checkout()">Оформити замовлення</button>
+    <button class="clear-btn" onclick="clearCart()">Очистити кошик</button>
   </div>
 </div>
 
 <div id="favoritesOverlay" class="cart-overlay" onclick="toggleFavorites(false)"></div>
 <div id="favoritesSidebar" class="cart-sidebar">
   <div class="cart-head-float">
-    <h3>??�??��??</h3>
+    <h3>Вибране</h3>
     <button type="button" class="cart-head-float-close" onclick="toggleFavorites(false)" aria-label="??��??�??� ��??��??">?</button>
   </div>
   <div id="favoritesItems" class="cart-items"></div>
   <div class="cart-footer">
-    <button class="clear-btn" onclick="clearFavorites()">????��??�??� ��??��??</button>
+    <button class="clear-btn" onclick="clearFavorites()">Очистити вибране</button>
   </div>
 </div>
 
@@ -208,8 +197,8 @@
     <h3 id="authTitle" class="auth-title">Log In</h3>
     <form id="registerForm">
       <input id="regName" class="auth-input auth-register-only" type="text" placeholder="??�'�">
-      <input id="regLastName" class="auth-input auth-register-only" type="text" placeholder="??????���??�">
-      <input id="regPhone" class="auth-input auth-register-only" type="tel" placeholder="����??��">
+      <input id="regLastName" class="auth-input auth-register-only" type="text" placeholder="Прізвище">
+      <input id="regPhone" class="auth-input auth-register-only" type="tel" placeholder="Телефон">
       <input id="regEmail" class="auth-input" type="email" placeholder="Email Address*">
       <input id="authPassword" class="auth-input" type="password" placeholder="Password*">
       <input id="authPasswordConfirm" class="auth-input auth-register-only" type="password" placeholder="Repeat password*">
@@ -238,8 +227,7 @@
           <img src="/images/text_logo.png" alt="EVRYKA" class="footer-brand-img">
         </a>
         <p class="footer-desc">
-          3D-�������� ������ �� ���� �������, ������� � ������ �� ����� �����.
-          ������. �����. � �������� ��� ���������.
+          3D-друк на замовлення в Україні, виготовлення в Україні, доставка в Україні.
         </p>
         <div class="footer-contacts">
           <a href="tel:+380501662271" class="footer-contact">
@@ -254,38 +242,38 @@
       </div>
 
       <div>
-        <div class="footer-col-title">��������</div>
+        <div class="footer-col-title">Навігація</div>
         <div class="footer-links">
-          <a href="/" class="footer-link">�������</a>
-          <a href="/catalog" class="footer-link">�������</a>
-          <a href="/about" class="footer-link">��� ���</a>
-          <a href="/order-3d-print" class="footer-link">���������� 3D �����</a>
+          <a href="/" class="footer-link">Головна</a>
+          <a href="/catalog" class="footer-link">Каталог</a>
+          <a href="/about" class="footer-link">Про нас</a>
+          <a href="/order-3d-print" class="footer-link">Замовити 3D друк</a>
         </div>
       </div>
 
       <div>
-        <div class="footer-col-title">�������</div>
+        <div class="footer-col-title">Контакти</div>
         <div class="footer-links">
-          <a href="/catalog" class="footer-link">�������� �� ������</a>
-          <a href="/catalog" class="footer-link">�����</a>
-          <a href="/catalog" class="footer-link">�������</a>
-          <a href="/catalog" class="footer-link">�������</a>
+          <a href="/catalog" class="footer-link">Контакти</a>
+          <a href="/catalog" class="footer-link">Доставка</a>
+          <a href="/catalog" class="footer-link">Оплата</a>
+          <a href="/catalog" class="footer-link">Гарантія</a>
         </div>
       </div>
 
       <div>
-        <div class="footer-col-title">ϳ�������</div>
+        <div class="footer-col-title">Соціальні мережі</div>
         <div class="footer-links">
           <a href="https://t.me/+380501662271" class="footer-link" target="_blank">Telegram</a>
           <a href="viber://chat?number=%2B380501662271" class="footer-link">Viber</a>
-          <a href="/about#about-v2-location" class="footer-link">�� ��� ������</a>
-          <a href="/cabinet#orders" class="footer-link">�� ����������</a>
+          <a href="/about#about-v2-location" class="footer-link">Наші адреси</a>
+          <a href="/cabinet#orders" class="footer-link">Мої замовлення</a>
         </div>
       </div>
     </div>
 
     <div class="footer-bottom">
-      <div class="footer-copy">� 2026 EVRYKA � �� ����� �������</div>
+      <div class="footer-copy">© 2026 EVRYKA © Всі права застережено</div>
       <div class="footer-payments">
         <span class="payment-badge">VISA</span>
         <span class="payment-badge">MASTERCARD</span>
@@ -294,7 +282,7 @@
   </footer>
 
 <div id="chatWidgetRoot" class="chat-widget-root">
-  <button type="button" id="chatWidgetToggle" class="chat-widget-toggle" aria-expanded="false" aria-controls="chatWidgetPanel" title="������??� ���">
+  <button type="button" id="chatWidgetToggle" class="chat-widget-toggle" aria-expanded="false" aria-controls="chatWidgetPanel" title="Відкрити чат">
     <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true">
       <path fill="currentColor" d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm0 14H5.17L4 17.17V4h16v12z"></path>
     </svg>
@@ -302,7 +290,7 @@
   <div id="chatWidgetPanel" class="chat-widget-panel" role="dialog" aria-modal="true" aria-labelledby="chatWidgetTitle" aria-hidden="true">
     <div class="chat-widget-card">
     <div class="chat-widget-head-float">
-      <span id="chatWidgetTitle">����???????? ���</span>
+      <span id="chatWidgetTitle">Відкрити чат</span>
       <button type="button" class="chat-widget-close" aria-label="??��??�??� ??�??">?</button>
     </div>
     <div class="chat-widget-sheet">
@@ -310,7 +298,7 @@
       <div class="chat-widget-compose-float">
         <div class="chat-widget-compose">
           <input type="text" id="chatWidgetText" class="chat-widget-field" placeholder="??�??� ����??����?" maxlength="2000" autocomplete="off">
-          <button type="button" id="chatWidgetSend" class="chat-widget-send">���??���??�</button>
+          <button type="button" id="chatWidgetSend" class="chat-widget-send">Відправити</button>
         </div>
         <p id="chatWidgetStatus" class="chat-widget-status" role="status"></p>
       </div>
@@ -407,20 +395,20 @@
       setAttr("#regLastName", "placeholder", "Прізвище");
       setAttr("#regPhone", "placeholder", "Телефон");
 
-      setText("footer .footer-col:nth-child(1) h4", "����");
-      setText("footer .footer-col:nth-child(2) h4", "��������� ������");
-      setText("footer .footer-col:nth-child(3) h4", "��������");
-      setText("footer .footer-col:nth-child(4) h4", "����������");
-      setText('footer .footer-col:nth-child(1) a[href="/"]', "�������");
-      setText('footer .footer-col:nth-child(1) a[href="/catalog"]', "�������");
-      setText('footer .footer-col:nth-child(1) a[href="/about"]', "��� ���");
-      setText('footer .footer-col:nth-child(1) a[href="/order-3d-print"]', "�������� 3D ����");
-      setText('footer .footer-col:nth-child(2) a[href="/cabinet#orders"]', "�� ����������");
-      setText('footer .footer-col:nth-child(2) a[href="/cabinet#personal"]', "������� ���");
-      setText('footer .footer-col:nth-child(2) a[href="/catalog#favorites"]', "������");
-      setText('footer .footer-col:nth-child(3) a[href="/about#about-v2-location"]', "������� � �����");
-      setText("footer .pay-text", "������");
-      setText("footer .footer-bottom span", "���������");
+      setText("footer .footer-col:nth-child(1) h4", "Про нас");
+      setText("footer .footer-col:nth-child(2) h4", "Навігація");
+      setText("footer .footer-col:nth-child(3) h4", "Контакти");
+      setText("footer .footer-col:nth-child(4) h4", "Соціальні мережі");
+      setText('footer .footer-col:nth-child(1) a[href="/"]', "Головна");
+      setText('footer .footer-col:nth-child(1) a[href="/catalog"]', "Каталог");
+      setText('footer .footer-col:nth-child(1) a[href="/about"]', "Про нас");
+      setText('footer .footer-col:nth-child(1) a[href="/order-3d-print"]', "Замовити 3D друк");
+      setText('footer .footer-col:nth-child(2) a[href="/cabinet#orders"]', "Мої замовлення");
+      setText('footer .footer-col:nth-child(2) a[href="/cabinet#personal"]', "Мої дані");
+      setText('footer .footer-col:nth-child(2) a[href="/catalog#favorites"]', "Обране");
+      setText('footer .footer-col:nth-child(3) a[href="/about#about-v2-location"]', "Наші адреси");
+      setText("footer .pay-text", "Оплата");
+      setText("footer .footer-bottom span", "Всі права застережено");
 
       setAttr("#chatWidgetToggle", "title", "Онлайн чат");
       setText("#chatWidgetTitle", "Онлайн чат");

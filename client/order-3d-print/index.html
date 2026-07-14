@@ -49,36 +49,36 @@
     <a href="/" class="logo header-logo">
       <img src="/images/text_logo.png" alt="EVRYKA" class="header-logo-img">
     </a>
-    <button type="button" class="header-burger" id="navToggle" aria-label="³������ ����" aria-expanded="false" aria-controls="headerNavPanel">
+    <button type="button" class="header-burger" id="navToggle" aria-label="Відкрити меню" aria-expanded="false" aria-controls="headerNavPanel">
       <span class="header-burger__line"></span>
       <span class="header-burger__line"></span>
       <span class="header-burger__line"></span>
     </button>
-    <nav class="nav header-nav" id="headerNavPanel" aria-label="������� ��������">
-      <a href="/">�������</a>
-      <a href="/catalog">�������</a>
-      <a href="/about">��� ���</a>
-      <a href="/order-3d-print" class="active">�������� 3D ����</a>
+    <nav class="nav header-nav" id="headerNavPanel" aria-label="Головна навігація">
+      <a href="/">Головна</a>
+      <a href="/catalog">Каталог</a>
+      <a href="/about">Про нас</a>
+      <a href="/order-3d-print" class="active">Замовити 3D друк</a>
     </nav>
     <div class="header-utilities">
       <div class="search-box">
-        <input type="search" placeholder="�����" id="search" name="q" autocomplete="off">
+        <input type="search" placeholder="Пошук" id="search" name="q" autocomplete="off">
         <div id="searchResults" class="search-results"></div>
       </div>
       <div class="header-actions">
-        <button type="button" id="authBtn" class="auth-icon-btn" title="������">
+        <button type="button" id="authBtn" class="auth-icon-btn" title="Вхід">
           <svg id="authIcon" viewBox="0 0 24 24" aria-hidden="true">
             <path d="M12 12c2.8 0 5-2.2 5-5s-2.2-5-5-5-5 2.2-5 5 2.2 5 5 5Zm0 2c-4.4 0-8 2.7-8 6v2h16v-2c0-3.3-3.6-6-8-6Z"></path>
           </svg>
           <span id="authInitials" class="auth-initials"></span>
         </button>
-        <button type="button" id="favoritesBtn" class="auth-icon-btn" title="�����" onclick="toggleFavorites(true)">
+        <button type="button" id="favoritesBtn" class="auth-icon-btn" title="Обране" onclick="toggleFavorites(true)">
           <svg class="heart-icon" viewBox="0 0 512 512" aria-hidden="true">
             <path d="M257 88L255 88C248.355 74.9828 235.475 63.8415 224 55.1304C173.114 16.5016 99.2988 19.267 51 61.2894C-1.26738 106.765 -12.8083 185.773 13.0116 248C25.4527 277.984 45.9981 303.467 67.9105 327C103.494 365.215 144.281 398.581 184 432.421C198.063 444.402 211.938 456.598 226 468.579C233.971 475.37 241.993 483.022 253 483.907C268.121 485.122 278.342 475.197 289 466C306.641 450.778 324.263 435.533 342 420.421C356.437 408.121 370.854 395.797 385 383.166C443.359 331.055 512 269.827 512 185C512 178.072 512.538 170.886 511.715 164C506.476 120.199 486.854 78.636 450 52.7207C401.715 18.7669 334.983 19.4645 288 55.1304C276.525 63.8415 263.645 74.9828 257 88z"></path>
           </svg>
         </button>
         <div class="cart" onclick="toggleCart(true)">
-          <img src="/images/cart-icon.svg" class="cart-icon" alt="�����">
+          <img src="/images/cart-icon.svg" class="cart-icon" alt="Кошик">
           <span id="cartCount">0</span>
         </div>
       </div>
@@ -96,30 +96,30 @@
         Назад
       </button>
       <div class="breadcrumbs">
-        <a href="/">�������</a>
+        <a href="/">Головна</a>
         <span>/</span>
-        <span>�������� 3D ����</span>
+        <span>Замовити 3D друк</span>
       </div>
     </div>
 
-    <h1 class="about-page-title">�������� 3D-����</h1>
+    <h1 class="about-page-title">Замовити 3D друк</h1>
 
     <div class="print3d-wrap">
       <div class="print3d-mode-tabs">
-        <button type="button" id="print3dTabModel" class="is-active">� 3D ������</button>
-        <button type="button" id="print3dTabRequest">���� �����</button>
+        <button type="button" id="print3dTabModel" class="is-active">Завантажити 3D модель</button>
+        <button type="button" id="print3dTabRequest">Замовити 3D друк</button>
       </div>
 
       <div id="print3dPanelModel">
         <div class="print3d-upload-config">
           <div class="print3d-dropzone" id="print3dDrop" role="button" tabindex="0">
-            <p style="margin:0;font-weight:600;font-size:1.05rem;">���������� STL / OBJ / 3MF ����� ����</p>
-            <p style="margin:8px 0 0;font-size:14px;color:var(--ev-muted,#6b7280);">��� ��������, ��� ������ ����� ����� � �� 50 �� �����</p>
+            <p style="margin:0;font-weight:600;font-size:1.05rem;">Завантажте STL / OBJ / 3MF файли</p>
+            <p style="margin:8px 0 0;font-size:14px;color:var(--ev-muted,#6b7280);">Для того, щоб завантажити 3D модель, вам потрібно завантажити файл STL / OBJ / 3MF файл</p>
             <input type="file" id="print3dFile" multiple accept=".stl,.obj,.3mf,model/stl,model/obj" aria-label="����� 3D �������">
           </div>
           <div class="print3d-config-side">
             <div class="print3d-fields">
-              <label>�������
+              <label>Матеріал
                 <div class="catalog-select-wrap print3d-select-wrap">
                   <button type="button" class="catalog-select-trigger print3d-select-trigger" id="print3dMaterialTrigger" aria-expanded="false" aria-haspopup="listbox" aria-label="�������">
                     <span class="catalog-select-value" id="print3dMaterialValue">PLA</span>
@@ -203,20 +203,20 @@
               <input name="email" type="email" required autocomplete="email" placeholder="you@example.com">
             </label>
             <label>���� *
-              <textarea name="description" required placeholder="�������, �� �����������, ������, ������..."></textarea>
+              <textarea name="description" required placeholder="Опис, деталі, вимоги, інше..."></textarea>
             </label>
-            <label>��������� (������������)
+            <label>Посилання на 3D модель (модель нашого сайту)
               <input name="link" type="url" placeholder="https://�">
             </label>
-            <label>���� (��������� / ����)
+            <label>Файл (STL / OBJ)
               <div class="print3d-request-file">
                 <input id="print3dRequestFile" name="attachment" type="file" accept="image/*,.pdf,.stl,.obj">
                 <button type="button" class="print3d-request-file-btn" id="print3dRequestFileBtn">������� ����</button>
-                <span id="print3dRequestFileName" class="print3d-request-file-name">���� �� �������</span>
+                <span id="print3dRequestFileName" class="print3d-request-file-name">Завантажити файл</span>
               </div>
             </label>
             <p id="print3dRequestStatus" class="print3d-request-status" hidden></p>
-            <button type="submit">�������� �����</button>
+            <button type="submit">Замовити 3D друк</button>
           </form>
         </div>
       </div>
@@ -228,32 +228,32 @@
 
 <div id="cartSidebar" class="cart-sidebar">
   <div class="cart-head-float">
-    <h3 id="cartPanelTitle">�����</h3>
+    <h3 id="cartPanelTitle">Кошик</h3>
     <button type="button" class="cart-head-float-close" onclick="toggleCart(false)" aria-label="������� �����">?</button>
   </div>
   <div id="cartItems" class="cart-items"></div>
   <div class="cart-footer">
     <div class="cart-total">
-      <span>�����</span>
+      <span>Кошик</span>
       <div>
         <b id="cartTotal">0</b>
-        <span>���</span>
+        <span>грн</span>
       </div>
     </div>
-    <button class="checkout-btn" onclick="checkout()">��������</button>
-    <button class="clear-btn" onclick="clearCart()">�������� �����</button>
+    <button class="checkout-btn" onclick="checkout()">Оформити замовлення</button>
+    <button class="clear-btn" onclick="clearCart()">Очистити кошик</button>
   </div>
 </div>
 
 <div id="favoritesOverlay" class="cart-overlay" onclick="toggleFavorites(false)"></div>
 <div id="favoritesSidebar" class="cart-sidebar">
   <div class="cart-head-float">
-    <h3>�����</h3>
+    <h3>Обране</h3>
     <button type="button" class="cart-head-float-close" onclick="toggleFavorites(false)" aria-label="������� �����">?</button>
   </div>
   <div id="favoritesItems" class="cart-items"></div>
   <div class="cart-footer">
-    <button class="clear-btn" onclick="clearFavorites()">�������� �����</button>
+      <button class="clear-btn" onclick="clearFavorites()">Очистити обране</button>
   </div>
 </div>
 
@@ -293,8 +293,7 @@
           <img src="/images/text_logo.png" alt="EVRYKA" class="footer-brand-img">
         </a>
         <p class="footer-desc">
-          3D-�������� ������ �� ���� �������, ������� � ������ �� ����� �����.
-          ������. �����. � �������� ��� ���������.
+          3D-друк на замовлення в Україні, виготовлення в Україні, доставка в Україні.
         </p>
         <div class="footer-contacts">
           <a href="tel:+380501662271" class="footer-contact">
@@ -309,38 +308,38 @@
       </div>
 
       <div>
-        <div class="footer-col-title">��������</div>
+        <div class="footer-col-title">Навігація</div>
         <div class="footer-links">
-          <a href="/" class="footer-link">�������</a>
-          <a href="/catalog" class="footer-link">�������</a>
-          <a href="/about" class="footer-link">��� ���</a>
-          <a href="/order-3d-print" class="footer-link">���������� 3D �����</a>
+          <a href="/" class="footer-link">Головна</a>
+          <a href="/catalog" class="footer-link">Каталог</a>
+          <a href="/about" class="footer-link">Про нас</a>
+          <a href="/order-3d-print" class="footer-link">Замовити 3D друк</a>
         </div>
       </div>
 
       <div>
-        <div class="footer-col-title">�������</div>
+        <div class="footer-col-title">Контакти</div>
         <div class="footer-links">
-          <a href="/catalog" class="footer-link">�������� �� ������</a>
-          <a href="/catalog" class="footer-link">�����</a>
-          <a href="/catalog" class="footer-link">�������</a>
-          <a href="/catalog" class="footer-link">�������</a>
+          <a href="/catalog" class="footer-link">Контакти</a>
+          <a href="/catalog" class="footer-link">Доставка</a>
+          <a href="/catalog" class="footer-link">Оплата</a>
+          <a href="/catalog" class="footer-link">Гарантія</a>
         </div>
       </div>
 
       <div>
-        <div class="footer-col-title">ϳ�������</div>
+        <div class="footer-col-title">Соціальні мережі</div>
         <div class="footer-links">
           <a href="https://t.me/+380501662271" class="footer-link" target="_blank">Telegram</a>
           <a href="viber://chat?number=%2B380501662271" class="footer-link">Viber</a>
-          <a href="/about#about-v2-location" class="footer-link">�� ��� ������</a>
-          <a href="/cabinet#orders" class="footer-link">�� ����������</a>
+          <a href="/about#about-v2-location" class="footer-link">Наші адреси</a>
+          <a href="/cabinet#orders" class="footer-link">Мої замовлення</a>
         </div>
       </div>
     </div>
 
     <div class="footer-bottom">
-      <div class="footer-copy">� 2026 EVRYKA � �� ����� �������</div>
+      <div class="footer-copy">© 2026 EVRYKA © Всі права застережено</div>
       <div class="footer-payments">
         <span class="payment-badge">VISA</span>
         <span class="payment-badge">MASTERCARD</span>
@@ -357,15 +356,15 @@
   <div id="chatWidgetPanel" class="chat-widget-panel" role="dialog" aria-modal="true" aria-labelledby="chatWidgetTitle" aria-hidden="true">
     <div class="chat-widget-card">
     <div class="chat-widget-head-float">
-      <span id="chatWidgetTitle">�������� ���</span>
-      <button type="button" class="chat-widget-close" aria-label="������� ���">?</button>
+      <span id="chatWidgetTitle">Відкрити чат</span>
+      <button type="button" class="chat-widget-close" aria-label="Закрити чат">?</button>
     </div>
     <div class="chat-widget-sheet">
       <div id="chatWidgetMessages" class="chat-widget-messages" aria-live="polite"></div>
       <div class="chat-widget-compose-float">
         <div class="chat-widget-compose">
           <input type="text" id="chatWidgetText" class="chat-widget-field" placeholder="���� ����������" maxlength="2000" autocomplete="off">
-          <button type="button" id="chatWidgetSend" class="chat-widget-send">��������</button>
+          <button type="button" id="chatWidgetSend" class="chat-widget-send">Надіслати</button>
         </div>
         <p id="chatWidgetStatus" class="chat-widget-status" role="status"></p>
       </div>
@@ -377,12 +376,12 @@
 <div id="print3dCheckoutModal" class="print3d-checkout-modal" hidden>
   <div class="print3d-confirm-backdrop" data-close-print3d-checkout></div>
   <div class="print3d-checkout-card" role="dialog" aria-modal="true" aria-labelledby="print3dCheckoutTitle">
-    <button type="button" class="print3d-confirm-close" data-close-print3d-checkout aria-label="������� ����������">?</button>
-    <h3 id="print3dCheckoutTitle">���������� 3D-����������</h3>
+    <button type="button" class="print3d-confirm-close" data-close-print3d-checkout aria-label="Закрити замовлення">?</button>
+    <h3 id="print3dCheckoutTitle">Замовлення 3D друку</h3>
     <p id="print3dCheckoutSummary" class="print3d-checkout-summary"></p>
 
     <div id="print3dCheckoutAuthPrompt" class="print3d-checkout-auth-prompt" hidden>
-      <p>��� ������ �������� ����������, ������ � ��� ������.</p>
+      <p>Для того, щоб замовити 3D друк, вам потрібно бути зареєстрованим користувачем.</p>
       <div class="print3d-checkout-auth-actions">
         <button type="button" class="print3d-btn-primary" id="print3dCheckoutLoginBtn">�����</button>
         <button type="button" class="print3d-btn-primary print3d-btn-secondary" id="print3dCheckoutRegisterBtn">��������������</button>
@@ -392,63 +391,63 @@
 
     <form id="print3dCheckoutForm" class="print3d-checkout-form" hidden>
       <div class="print3d-checkout-grid">
-        <label>������� *
+        <label>Прізвище *
           <input type="text" name="lastName" required>
         </label>
-        <label>��'� *
+        <label>Ім'я *
           <input type="text" name="name" required>
         </label>
-        <label>������� *
+        <label>Телефон *
           <input type="tel" name="phone" required>
         </label>
         <label>Email *
           <input type="email" name="email" required>
         </label>
-        <label>�� �������
+        <label>Ім'я отримувача
           <input type="text" name="middleName">
         </label>
-        <label>������ �������� *
+        <label>Доставка *
           <select name="deliveryProvider" id="print3dCheckoutDeliveryProvider" required>
-            <option value="nova_poshta">���� �����</option>
-            <option value="ukrposhta">��������</option>
-            <option value="courier">���'��</option>
-            <option value="self_pickup">��������</option>
+            <option value="nova_poshta">Доставка Новою Поштою</option>
+            <option value="ukrposhta">Доставка Новою Поштою</option>
+            <option value="courier">Доставка кур'єром</option>
+            <option value="self_pickup">Самовивіз</option>
           </select>
         </label>
-        <label id="print3dCheckoutDeliveryTypeWrap">��� �������� *
+        <label id="print3dCheckoutDeliveryTypeWrap">Тип доставки *
           <select name="deliveryType" id="print3dCheckoutDeliveryType" required>
-            <option value="warehouse">³�������</option>
-            <option value="postomat">��������</option>
-            <option value="address">������� ��������</option>
+            <option value="warehouse">Доставка Новою Поштою</option>
+            <option value="postomat">Доставка Новою Поштою</option>
+            <option value="address">Доставка Новою Поштою</option>
           </select>
         </label>
-        <label>����� ������ *
+        <label>Метод оплати *
           <select name="paymentMethod" id="print3dCheckoutPaymentMethod" required>
-            <option value="cod">ϳ��������</option>
-            <option value="card_online">������ ������� ������</option>
-            <option value="bank_transfer">�����������</option>
+            <option value="cod">Накладений платіж</option>
+            <option value="card_online">Онлайн платіж</option>
+            <option value="bank_transfer">Банківський переказ</option>
           </select>
         </label>
       </div>
-      <label>̳��� *
+        <label>Місто *
         <div id="print3dCheckoutCityWrap" class="city-autocomplete-wrap print3d-checkout-suggest-wrap">
-          <input type="text" id="print3dCheckoutCity" name="city" required autocomplete="off" placeholder="������ ������� ����...">
+          <input type="text" id="print3dCheckoutCity" name="city" required autocomplete="off" placeholder="Місто...">
           <div id="print3dCheckoutCitySuggestions" class="city-suggestions" style="display:none;"></div>
         </div>
       </label>
       <input type="hidden" name="cityRef" id="print3dCheckoutCityRef">
-      <label id="print3dCheckoutDeliveryPointWrap">³������� / ������ *
+      <label id="print3dCheckoutDeliveryPointWrap">Відділення / поштомат *
         <div id="print3dCheckoutBranchWrap" class="city-autocomplete-wrap print3d-checkout-suggest-wrap">
-          <input type="text" id="print3dCheckoutDeliveryPoint" name="deliveryPoint" required autocomplete="off" placeholder="������ ������� ��������...">
+          <input type="text" id="print3dCheckoutDeliveryPoint" name="deliveryPoint" required autocomplete="off" placeholder="Відділення / поштомат...">
           <div id="print3dCheckoutBranchSuggestions" class="city-suggestions" style="display:none;"></div>
         </div>
       </label>
       <input type="hidden" name="branchRef" id="print3dCheckoutBranchRef">
-      <label>�������� �� ����������
-        <textarea name="orderComment" rows="3" placeholder="�������� ��������� �� ��������/����������"></textarea>
+      <label>Коментар до замовлення
+        <textarea name="orderComment" rows="3" placeholder="Коментар до замовлення"></textarea>
       </label>
       <p id="print3dCheckoutStatus" class="print3d-checkout-status" hidden></p>
-      <button type="submit" class="print3d-btn-primary" id="print3dCheckoutSubmit">ϳ��������� ����������</button>
+      <button type="submit" class="print3d-btn-primary" id="print3dCheckoutSubmit">Замовити 3D друк</button>
     </form>
   </div>
 </div>
@@ -456,11 +455,11 @@
 <div id="print3dConfirmModal" class="print3d-confirm-modal" hidden>
   <div class="print3d-confirm-backdrop" data-close-print3d-modal></div>
   <div class="print3d-confirm-card" role="dialog" aria-modal="true" aria-labelledby="print3dConfirmTitle">
-    <button type="button" class="print3d-confirm-close" data-close-print3d-modal aria-label="������� �����������">?</button>
-    <h3 id="print3dConfirmTitle">���������� ��������</h3>
-    <p id="print3dConfirmText">���� ���������� �������� �� ������ ������������. ��������� ����� ������������: 1�2 ��.</p>
+    <button type="button" class="print3d-confirm-close" data-close-print3d-modal aria-label="Закрити замовлення">?</button>
+    <h3 id="print3dConfirmTitle">Замовлення 3D друку</h3>
+    <p id="print3dConfirmText">Замовлення 3D друку буде надруковано в найближчому часі. Загальна вартість замовлення: 12 грн.</p>
     <div id="print3dConfirmDetails" class="print3d-confirm-details"></div>
-    <button type="button" class="print3d-btn-primary" data-close-print3d-modal>�����</button>
+    <button type="button" class="print3d-btn-primary" data-close-print3d-modal>Закрити</button>
   </div>
 </div>
 
