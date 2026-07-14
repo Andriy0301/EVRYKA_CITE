@@ -927,6 +927,58 @@ function normalizeAndFit(THREE, object, camera, controls) {
   controls.update();
 }
 
+function isWebGlAvailable() {
+  try {
+    const canvas = document.createElement("canvas");
+    const gl =
+      canvas.getContext("webgl", { failIfMajorPerformanceCaveat: false }) ||
+      canvas.getContext("experimental-webgl", { failIfMajorPerformanceCaveat: false }) ||
+      canvas.getContext("webgl2", { failIfMajorPerformanceCaveat: false });
+    if (!gl) return false;
+    gl.getExtension("WEBGL_lose_context")?.loseContext();
+    return true;
+  } catch {
+    return false;
+  }
+}
+
+function disposeAllPreviewsExcept(exceptId) {
+  modelItems.forEach((item) => {
+    if (exceptId && item.id === exceptId) return;
+    if (typeof item.disposePreview === "function") {
+      try {
+        item.disposePreview();
+      } catch (err) {
+        console.warn("[preview] dispose failed", err);
+      }
+      item.disposePreview = null;
+      item.applyPreviewColor = null;
+    }
+  });
+}
+
+function createWebGlRenderer(THREE) {
+  const optionSets = [
+    { antialias: false, alpha: false, powerPreference: "default", failIfMajorPerformanceCaveat: false },
+    { antialias: false, alpha: true, failIfMajorPerformanceCaveat: false },
+    { antialias: true, alpha: false, failIfMajorPerformanceCaveat: false },
+    { failIfMajorPerformanceCaveat: false },
+    {}
+  ];
+
+  let lastError = null;
+  for (const options of optionSets) {
+    try {
+      const canvas = document.createElement("canvas");
+      const renderer = new THREE.WebGLRenderer({ ...options, canvas });
+      return renderer;
+    } catch (err) {
+      lastError = err;
+    }
+  }
+  throw lastError || new Error("Error creating WebGL context.");
+}
+
 async function mountPreview(item) {
   const host = item.ui.canvasHost;
   const ext = extOf(item.file.name);
@@ -946,7 +998,13 @@ async function mountPreview(item) {
     ({ THREE, STLLoader, OBJLoader, OrbitControls } = await loadThreeMods());
   } catch (e) {
     console.error("[preview] three load", e);
-    host.innerHTML = '<p class="print3d-canvas-empty">Не вдалося завантажити 3D-переглядач. Перевірте інтернет і оновіть сторінку.</p>';
+    host.innerHTML = '<p class="print3d-canvas-empty">Не вдалося завантажити 3D-переглядач. Оновіть сторінку.</p>';
+    return;
+  }
+
+  if (!isWebGlAvailable()) {
+    host.innerHTML =
+      '<p class="print3d-canvas-empty">WebGL вимкнено в браузері. Увімкніть апаратне прискорення (Chrome → Налаштування → Система) і перезапустіть браузер.</p>';
     return;
   }
 
@@ -960,8 +1018,24 @@ async function mountPreview(item) {
   scene.background = new THREE.Color(0xfcfaf7);
 
   const camera = new THREE.PerspectiveCamera(45, w / h, 0.1, 100000);
-  const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: false });
-  renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+
+  let renderer;
+  try {
+    renderer = createWebGlRenderer(THREE);
+  } catch (firstErr) {
+    console.warn("[preview] webgl create failed, freeing contexts", firstErr);
+    disposeAllPreviewsExcept(item.id);
+    try {
+      renderer = createWebGlRenderer(THREE);
+    } catch (err) {
+      console.error("[preview] webgl", err);
+      host.innerHTML =
+        '<p class="print3d-canvas-empty">Не вдалося створити WebGL. Відкрийте сторінку в Chrome/Edge (не вбудований перегляд) і увімкніть апаратне прискорення.</p>';
+      return;
+    }
+  }
+
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 1.5));
   renderer.setSize(w, h);
   renderer.outputColorSpace = THREE.SRGBColorSpace;
   renderer.toneMapping = THREE.ACESFilmicToneMapping;
@@ -1017,7 +1091,12 @@ async function mountPreview(item) {
   } catch (e) {
     console.error("[preview]", e);
     host.innerHTML = `<p class="print3d-canvas-empty">Не вдалося показати модель${e?.message ? `: ${String(e.message).slice(0, 80)}` : ""}</p>`;
-    renderer.dispose();
+    try {
+      renderer.dispose();
+      renderer.forceContextLoss?.();
+    } catch {
+      /* ignore */
+    }
     return;
   }
 
@@ -1047,7 +1126,11 @@ async function mountPreview(item) {
   item.disposePreview = () => {
     cancelAnimationFrame(raf);
     window.removeEventListener("resize", onResize);
-    controls.dispose();
+    try {
+      controls.dispose();
+    } catch {
+      /* ignore */
+    }
     scene.remove(object);
     object.traverse?.((c) => {
       if (c.geometry) c.geometry.dispose();
@@ -1061,7 +1144,12 @@ async function mountPreview(item) {
       const mats = Array.isArray(object.material) ? object.material : [object.material];
       mats.forEach((m) => m.dispose && m.dispose());
     }
-    renderer.dispose();
+    try {
+      renderer.forceContextLoss?.();
+      renderer.dispose();
+    } catch {
+      /* ignore */
+    }
     if (renderer.domElement.parentNode === host) host.removeChild(renderer.domElement);
   };
 }
