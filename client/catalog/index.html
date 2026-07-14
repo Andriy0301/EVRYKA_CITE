@@ -140,9 +140,11 @@
       </div>
 
       <div class="catalog-filter-block">
-        <span class="catalog-filter-label">Ціна</span>
+        <span class="catalog-filter-label">Ціна, грн</span>
         <div class="catalog-price-row">
-          <input type="number" id="catalogPriceMin" class="catalog-filter-input" min="0" step="1" placeholder="В
+          <input type="number" id="catalogPriceMin" class="catalog-filter-input" min="0" step="1" placeholder="Від">
+          <span class="catalog-price-dash">–</span>
+          <input type="number" id="catalogPriceMax" class="catalog-filter-input" min="0" step="1" placeholder="До">
         </div>
       </div>
 
@@ -153,13 +155,22 @@
       <div class="catalog-products-inner">
         <section class="products catalog-products-section">
           <div class="catalog-products-head">
-            <h2>Товари</h2>
+            <h2>Каталог товарів</h2>
             <button type="button" class="back-btn catalog-filters-open-btn neo-drawer-trigger" data-uflyout-trigger id="catalogFiltersOpenBtn" aria-label="Відкрити фільтри" onclick="if(window.openCatalogFiltersDrawer){window.openCatalogFiltersDrawer();}else{document.body.classList.add('catalog-filters-open');var o=document.getElementById('catalogFiltersOverlay');if(o)o.hidden=false;var d=document.querySelector('.page-catalog .catalog-filters[data-uflyout=&quot;panel&quot;]');if(d){d.style.setProperty('position','fixed','important');d.style.setProperty('left','0','important');d.style.setProperty('right','0','important');d.style.setProperty('bottom','92px','important');d.style.setProperty('z-index','1302','important');d.style.setProperty('display','grid','important');d.style.setProperty('opacity','1','important');d.style.setProperty('pointer-events','auto','important');d.style.setProperty('transform','translateY(0) scale(1)','important');}}">
-              Відкрити фільтри
+              Фільтри
             </button>
           </div>
-          <div id="catalogPageGrid" class="catalog-products-grid">
-            <div class="catalog-product-item
+          <div id="catalogPageGrid" class="catalog-products-grid"></div>
+        </section>
+      </div>
+    </div>
+  </div>
+  <div class="catalog-filters-overlay neo-drawer-overlay" data-uflyout-overlay id="catalogFiltersOverlay" hidden onclick="if(window.closeCatalogFiltersDrawer){window.closeCatalogFiltersDrawer();}else{document.body.classList.remove('catalog-filters-open');this.hidden=true;var d=document.querySelector('.page-catalog .catalog-filters[data-uflyout=&quot;panel&quot;]');if(d){d.style.removeProperty('position');d.style.removeProperty('left');d.style.removeProperty('right');d.style.removeProperty('bottom');d.style.removeProperty('z-index');d.style.removeProperty('display');d.style.removeProperty('opacity');d.style.removeProperty('pointer-events');d.style.removeProperty('transform');}}"></div>
+  </div>
+</div>
+
+<div id="cartOverlay" class="cart-overlay" onclick="toggleCart(false)"></div>
+
 <div id="cartSidebar" class="cart-sidebar">
   <div class="cart-head-float">
     <h3 id="cartPanelTitle">Кошик</h3>
