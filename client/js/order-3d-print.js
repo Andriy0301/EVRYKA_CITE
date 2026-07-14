@@ -927,21 +927,6 @@ function normalizeAndFit(THREE, object, camera, controls) {
   controls.update();
 }
 
-function isWebGlAvailable() {
-  try {
-    const canvas = document.createElement("canvas");
-    const gl =
-      canvas.getContext("webgl", { failIfMajorPerformanceCaveat: false }) ||
-      canvas.getContext("experimental-webgl", { failIfMajorPerformanceCaveat: false }) ||
-      canvas.getContext("webgl2", { failIfMajorPerformanceCaveat: false });
-    if (!gl) return false;
-    gl.getExtension("WEBGL_lose_context")?.loseContext();
-    return true;
-  } catch {
-    return false;
-  }
-}
-
 function disposeAllPreviewsExcept(exceptId) {
   modelItems.forEach((item) => {
     if (exceptId && item.id === exceptId) return;
@@ -970,8 +955,7 @@ function createWebGlRenderer(THREE) {
   for (const options of optionSets) {
     try {
       const canvas = document.createElement("canvas");
-      const renderer = new THREE.WebGLRenderer({ ...options, canvas });
-      return renderer;
+      return new THREE.WebGLRenderer({ ...options, canvas });
     } catch (err) {
       lastError = err;
     }
@@ -979,45 +963,270 @@ function createWebGlRenderer(THREE) {
   throw lastError || new Error("Error creating WebGL context.");
 }
 
-async function mountPreview(item) {
-  const host = item.ui.canvasHost;
-  const ext = extOf(item.file.name);
+function setPreviewHint(host, text) {
+  const hint = host.parentElement?.querySelector(".print3d-canvas-hint");
+  if (hint) hint.textContent = text;
+}
 
-  if (ext !== "stl" && ext !== "obj") {
-    host.innerHTML = '<p class="print3d-canvas-empty">Перегляд доступний для STL/OBJ</p>';
+function hexToRgb(hex) {
+  const raw = String(hex || DEFAULT_COLOR).replace("#", "");
+  const full = raw.length === 3 ? raw.split("").map((c) => c + c).join("") : raw.padEnd(6, "0").slice(0, 6);
+  const n = Number.parseInt(full, 16);
+  if (!Number.isFinite(n)) return { r: 245, g: 158, b: 11 };
+  return { r: (n >> 16) & 255, g: (n >> 8) & 255, b: n & 255 };
+}
+
+function collectMeshTriangles(THREE, object) {
+  const tris = [];
+  const vA = new THREE.Vector3();
+  const vB = new THREE.Vector3();
+  const vC = new THREE.Vector3();
+  object.updateMatrixWorld(true);
+
+  object.traverse((child) => {
+    if (!child.isMesh || !child.geometry) return;
+    const pos = child.geometry.getAttribute("position");
+    if (!pos) return;
+    const index = child.geometry.getIndex();
+    const matrix = child.matrixWorld;
+    const pushTri = (i0, i1, i2) => {
+      vA.fromBufferAttribute(pos, i0).applyMatrix4(matrix);
+      vB.fromBufferAttribute(pos, i1).applyMatrix4(matrix);
+      vC.fromBufferAttribute(pos, i2).applyMatrix4(matrix);
+      tris.push(vA.x, vA.y, vA.z, vB.x, vB.y, vB.z, vC.x, vC.y, vC.z);
+    };
+
+    if (index) {
+      for (let i = 0; i < index.count; i += 3) {
+        pushTri(index.getX(i), index.getX(i + 1), index.getX(i + 2));
+      }
+    } else {
+      for (let i = 0; i < pos.count; i += 3) {
+        pushTri(i, i + 1, i + 2);
+      }
+    }
+  });
+
+  return tris;
+}
+
+function mountCanvas2dPreview(item, THREE, object, host, width, height) {
+  const dpr = Math.min(window.devicePixelRatio || 1, 1.5);
+  const canvas = document.createElement("canvas");
+  const ctx = canvas.getContext("2d");
+  if (!ctx) {
+    host.innerHTML = '<p class="print3d-canvas-empty">Перегляд недоступний у цьому браузері</p>';
     return;
   }
 
-  host.innerHTML = "<p class=\"print3d-canvas-empty\">Завантаження прев'ю...</p>";
+  canvas.width = Math.floor(width * dpr);
+  canvas.height = Math.floor(height * dpr);
+  canvas.style.width = `${width}px`;
+  canvas.style.height = `${height}px`;
+  canvas.style.display = "block";
+  canvas.style.touchAction = "none";
+  canvas.style.cursor = "grab";
+  host.appendChild(canvas);
+  setPreviewHint(host, "Режим без WebGL: затисніть ЛКМ і обертайте");
 
-  let THREE;
-  let STLLoader;
-  let OBJLoader;
-  let OrbitControls;
-  try {
-    ({ THREE, STLLoader, OBJLoader, OrbitControls } = await loadThreeMods());
-  } catch (e) {
-    console.error("[preview] three load", e);
-    host.innerHTML = '<p class="print3d-canvas-empty">Не вдалося завантажити 3D-переглядач. Оновіть сторінку.</p>';
+  let colorHex = item.color || DEFAULT_COLOR;
+  let yaw = 0.55;
+  let pitch = 0.35;
+  let dragging = false;
+  let lastX = 0;
+  let lastY = 0;
+  let raf = 0;
+  let needsDraw = true;
+
+  const raw = collectMeshTriangles(THREE, object);
+  if (raw.length < 9) {
+    host.innerHTML = '<p class="print3d-canvas-empty">Модель без геометрії</p>';
     return;
   }
 
-  if (!isWebGlAvailable()) {
-    host.innerHTML =
-      '<p class="print3d-canvas-empty">WebGL вимкнено в браузері. Увімкніть апаратне прискорення (Chrome → Налаштування → Система) і перезапустіть браузер.</p>';
-    return;
+  let minX = Infinity;
+  let minY = Infinity;
+  let minZ = Infinity;
+  let maxX = -Infinity;
+  let maxY = -Infinity;
+  let maxZ = -Infinity;
+  for (let i = 0; i < raw.length; i += 3) {
+    minX = Math.min(minX, raw[i]);
+    minY = Math.min(minY, raw[i + 1]);
+    minZ = Math.min(minZ, raw[i + 2]);
+    maxX = Math.max(maxX, raw[i]);
+    maxY = Math.max(maxY, raw[i + 1]);
+    maxZ = Math.max(maxZ, raw[i + 2]);
+  }
+  const cx = (minX + maxX) / 2;
+  const cy = (minY + maxY) / 2;
+  const cz = (minZ + maxZ) / 2;
+  const span = Math.max(maxX - minX, maxY - minY, maxZ - minZ, 1);
+
+  const MAX_TRIS = 45000;
+  const triCount = raw.length / 9;
+  const step = Math.max(1, Math.ceil(triCount / MAX_TRIS));
+  const verts = [];
+  for (let t = 0; t < triCount; t += step) {
+    const i = t * 9;
+    verts.push(
+      (raw[i] - cx) / span,
+      (raw[i + 1] - cy) / span,
+      (raw[i + 2] - cz) / span,
+      (raw[i + 3] - cx) / span,
+      (raw[i + 4] - cy) / span,
+      (raw[i + 5] - cz) / span,
+      (raw[i + 6] - cx) / span,
+      (raw[i + 7] - cy) / span,
+      (raw[i + 8] - cz) / span
+    );
   }
 
-  host.innerHTML = "";
+  const projected = new Array(Math.floor(verts.length / 9));
 
-  const rect = host.getBoundingClientRect();
-  const w = Math.max(Math.floor(rect.width) || 0, 280);
-  const h = Math.max(Math.floor(rect.height) || 0, 260);
+  function draw() {
+    const w = canvas.width;
+    const h = canvas.height;
+    const rgb = hexToRgb(colorHex);
+    ctx.fillStyle = "#fcfaf7";
+    ctx.fillRect(0, 0, w, h);
 
+    const cosY = Math.cos(yaw);
+    const sinY = Math.sin(yaw);
+    const cosP = Math.cos(pitch);
+    const sinP = Math.sin(pitch);
+    const scale = Math.min(w, h) * 0.72;
+    let count = 0;
+
+    for (let i = 0; i < verts.length; i += 9) {
+      const rot = [];
+      for (let k = 0; k < 3; k++) {
+        let x = verts[i + k * 3];
+        let y = verts[i + k * 3 + 1];
+        let z = verts[i + k * 3 + 2];
+        const x1 = x * cosY - z * sinY;
+        const z1 = x * sinY + z * cosY;
+        const y1 = y * cosP - z1 * sinP;
+        const z2 = y * sinP + z1 * cosP;
+        rot.push(x1, y1, z2);
+      }
+
+      const ax = rot[0];
+      const ay = rot[1];
+      const az = rot[2];
+      const bx = rot[3];
+      const by = rot[4];
+      const bz = rot[5];
+      const cx3 = rot[6];
+      const cy3 = rot[7];
+      const cz3 = rot[8];
+
+      const ux = bx - ax;
+      const uy = by - ay;
+      const uz = bz - az;
+      const vx = cx3 - ax;
+      const vy = cy3 - ay;
+      const vz = cz3 - az;
+      const nx = uy * vz - uz * vy;
+      const ny = uz * vx - ux * vz;
+      const nz = ux * vy - uy * vx;
+      if (nz >= 0) continue;
+
+      const nlen = Math.hypot(nx, ny, nz) || 1;
+      const light = Math.max(0.22, Math.min(1, (-nx * 0.2 + ny * 0.55 - nz * 0.85) / nlen));
+      projected[count++] = {
+        z: (az + bz + cz3) / 3,
+        ax: w * 0.5 + ax * scale,
+        ay: h * 0.55 - ay * scale,
+        bx: w * 0.5 + bx * scale,
+        by: h * 0.55 - by * scale,
+        cx: w * 0.5 + cx3 * scale,
+        cy: h * 0.55 - cy3 * scale,
+        light
+      };
+    }
+
+    projected.length = count;
+    projected.sort((a, b) => a.z - b.z);
+
+    for (let i = 0; i < projected.length; i++) {
+      const t = projected[i];
+      const shade = t.light;
+      ctx.beginPath();
+      ctx.moveTo(t.ax, t.ay);
+      ctx.lineTo(t.bx, t.by);
+      ctx.lineTo(t.cx, t.cy);
+      ctx.closePath();
+      ctx.fillStyle = `rgb(${Math.round(rgb.r * shade)},${Math.round(rgb.g * shade)},${Math.round(rgb.b * shade)})`;
+      ctx.fill();
+    }
+  }
+
+  const tick = () => {
+    raf = requestAnimationFrame(tick);
+    if (!needsDraw) return;
+    needsDraw = false;
+    draw();
+  };
+  tick();
+
+  const onPointerDown = (e) => {
+    dragging = true;
+    lastX = e.clientX;
+    lastY = e.clientY;
+    canvas.style.cursor = "grabbing";
+    canvas.setPointerCapture?.(e.pointerId);
+  };
+  const onPointerMove = (e) => {
+    if (!dragging) return;
+    yaw += (e.clientX - lastX) * 0.01;
+    pitch += (e.clientY - lastY) * 0.01;
+    pitch = Math.max(-1.2, Math.min(1.2, pitch));
+    lastX = e.clientX;
+    lastY = e.clientY;
+    needsDraw = true;
+  };
+  const onPointerUp = (e) => {
+    dragging = false;
+    canvas.style.cursor = "grab";
+    try {
+      canvas.releasePointerCapture?.(e.pointerId);
+    } catch {
+      /* ignore */
+    }
+  };
+
+  canvas.addEventListener("pointerdown", onPointerDown);
+  canvas.addEventListener("pointermove", onPointerMove);
+  canvas.addEventListener("pointerup", onPointerUp);
+  canvas.addEventListener("pointercancel", onPointerUp);
+
+  item.applyPreviewColor = (hex) => {
+    colorHex = hex || DEFAULT_COLOR;
+    needsDraw = true;
+  };
+  item.disposePreview = () => {
+    cancelAnimationFrame(raf);
+    canvas.removeEventListener("pointerdown", onPointerDown);
+    canvas.removeEventListener("pointermove", onPointerMove);
+    canvas.removeEventListener("pointerup", onPointerUp);
+    canvas.removeEventListener("pointercancel", onPointerUp);
+    if (canvas.parentNode === host) host.removeChild(canvas);
+  };
+
+  object.traverse?.((c) => {
+    if (c.geometry) c.geometry.dispose();
+    if (c.material) {
+      const mats = Array.isArray(c.material) ? c.material : [c.material];
+      mats.forEach((m) => m.dispose && m.dispose());
+    }
+  });
+}
+
+function mountWebGlPreview(item, THREE, OrbitControls, object, host, width, height) {
   const scene = new THREE.Scene();
   scene.background = new THREE.Color(0xfcfaf7);
-
-  const camera = new THREE.PerspectiveCamera(45, w / h, 0.1, 100000);
+  const camera = new THREE.PerspectiveCamera(45, width / height, 0.1, 100000);
 
   let renderer;
   try {
@@ -1025,22 +1234,16 @@ async function mountPreview(item) {
   } catch (firstErr) {
     console.warn("[preview] webgl create failed, freeing contexts", firstErr);
     disposeAllPreviewsExcept(item.id);
-    try {
-      renderer = createWebGlRenderer(THREE);
-    } catch (err) {
-      console.error("[preview] webgl", err);
-      host.innerHTML =
-        '<p class="print3d-canvas-empty">Не вдалося створити WebGL. Відкрийте сторінку в Chrome/Edge (не вбудований перегляд) і увімкніть апаратне прискорення.</p>';
-      return;
-    }
+    renderer = createWebGlRenderer(THREE);
   }
 
   renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 1.5));
-  renderer.setSize(w, h);
+  renderer.setSize(width, height);
   renderer.outputColorSpace = THREE.SRGBColorSpace;
   renderer.toneMapping = THREE.ACESFilmicToneMapping;
   renderer.toneMappingExposure = 1.15;
   host.appendChild(renderer.domElement);
+  setPreviewHint(host, "Обертання: затисніть ЛКМ і рухайте");
 
   scene.add(new THREE.HemisphereLight(0xffffff, 0xfff1dc, 1.2));
   const key = new THREE.DirectionalLight(0xffffff, 1.15);
@@ -1053,52 +1256,6 @@ async function mountPreview(item) {
   const controls = new OrbitControls(camera, renderer.domElement);
   controls.enableDamping = true;
   controls.dampingFactor = 0.08;
-
-  let object = null;
-
-  try {
-    if (ext === "stl") {
-      const buffer = await item.file.arrayBuffer();
-      const geometry = new STLLoader().parse(buffer);
-      if (!geometry.getAttribute("position") || geometry.getAttribute("position").count < 3) {
-        throw new Error("STL без геометрії");
-      }
-      if (!geometry.getAttribute("normal")) {
-        geometry.computeVertexNormals();
-      }
-      const material = new THREE.MeshStandardMaterial({
-        color: item.color || DEFAULT_COLOR,
-        metalness: 0.04,
-        roughness: 0.38
-      });
-      object = new THREE.Mesh(geometry, material);
-    } else {
-      const text = await item.file.text();
-      object = new OBJLoader().parse(text);
-      let meshCount = 0;
-      object.traverse((c) => {
-        if (c.isMesh) {
-          meshCount += 1;
-          c.material = new THREE.MeshStandardMaterial({
-            color: item.color || DEFAULT_COLOR,
-            metalness: 0.05,
-            roughness: 0.42
-          });
-        }
-      });
-      if (!meshCount) throw new Error("OBJ без мешів");
-    }
-  } catch (e) {
-    console.error("[preview]", e);
-    host.innerHTML = `<p class="print3d-canvas-empty">Не вдалося показати модель${e?.message ? `: ${String(e.message).slice(0, 80)}` : ""}</p>`;
-    try {
-      renderer.dispose();
-      renderer.forceContextLoss?.();
-    } catch {
-      /* ignore */
-    }
-    return;
-  }
 
   scene.add(object);
   applyColorToObject(THREE, object, item.color);
@@ -1152,6 +1309,88 @@ async function mountPreview(item) {
     }
     if (renderer.domElement.parentNode === host) host.removeChild(renderer.domElement);
   };
+}
+
+async function parseModelObject(item, THREE, STLLoader, OBJLoader) {
+  const ext = extOf(item.file.name);
+  if (ext === "stl") {
+    const buffer = await item.file.arrayBuffer();
+    const geometry = new STLLoader().parse(buffer);
+    if (!geometry.getAttribute("position") || geometry.getAttribute("position").count < 3) {
+      throw new Error("STL без геометрії");
+    }
+    if (!geometry.getAttribute("normal")) geometry.computeVertexNormals();
+    return new THREE.Mesh(
+      geometry,
+      new THREE.MeshStandardMaterial({
+        color: item.color || DEFAULT_COLOR,
+        metalness: 0.04,
+        roughness: 0.38
+      })
+    );
+  }
+
+  const text = await item.file.text();
+  const object = new OBJLoader().parse(text);
+  let meshCount = 0;
+  object.traverse((c) => {
+    if (c.isMesh) {
+      meshCount += 1;
+      c.material = new THREE.MeshStandardMaterial({
+        color: item.color || DEFAULT_COLOR,
+        metalness: 0.05,
+        roughness: 0.42
+      });
+    }
+  });
+  if (!meshCount) throw new Error("OBJ без мешів");
+  return object;
+}
+
+async function mountPreview(item) {
+  const host = item.ui.canvasHost;
+  const ext = extOf(item.file.name);
+
+  if (ext !== "stl" && ext !== "obj") {
+    host.innerHTML = '<p class="print3d-canvas-empty">Перегляд доступний для STL/OBJ</p>';
+    return;
+  }
+
+  host.innerHTML = "<p class=\"print3d-canvas-empty\">Завантаження прев'ю...</p>";
+
+  let THREE;
+  let STLLoader;
+  let OBJLoader;
+  let OrbitControls;
+  try {
+    ({ THREE, STLLoader, OBJLoader, OrbitControls } = await loadThreeMods());
+  } catch (e) {
+    console.error("[preview] three load", e);
+    host.innerHTML = '<p class="print3d-canvas-empty">Не вдалося завантажити 3D-переглядач. Оновіть сторінку.</p>';
+    return;
+  }
+
+  let object;
+  try {
+    object = await parseModelObject(item, THREE, STLLoader, OBJLoader);
+  } catch (e) {
+    console.error("[preview] parse", e);
+    host.innerHTML = `<p class="print3d-canvas-empty">Не вдалося показати модель${e?.message ? `: ${String(e.message).slice(0, 80)}` : ""}</p>`;
+    return;
+  }
+
+  host.innerHTML = "";
+  const rect = host.getBoundingClientRect();
+  const w = Math.max(Math.floor(rect.width) || 0, 280);
+  const h = Math.max(Math.floor(rect.height) || 0, 260);
+
+  try {
+    mountWebGlPreview(item, THREE, OrbitControls, object, host, w, h);
+  } catch (err) {
+    console.warn("[preview] WebGL unavailable, using 2D fallback", err);
+    host.innerHTML = "";
+    mountCanvas2dPreview(item, THREE, object, host, w, h);
+  }
 }
 
 async function analyzeItem(item, els) {
