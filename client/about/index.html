@@ -49,36 +49,36 @@
     <a href="/" class="logo header-logo">
       <img src="/images/text_logo.png" alt="EVRYKA" class="header-logo-img">
     </a>
-    <button type="button" class="header-burger" id="navToggle" aria-label="³������ ����" aria-expanded="false" aria-controls="headerNavPanel">
+    <button type="button" class="header-burger" id="navToggle" aria-label="Відкрити меню" aria-expanded="false" aria-controls="headerNavPanel">
       <span class="header-burger__line"></span>
       <span class="header-burger__line"></span>
       <span class="header-burger__line"></span>
     </button>
-    <nav class="nav header-nav" id="headerNavPanel" aria-label="������� ��������">
-      <a href="/">�������</a>
-      <a href="/catalog">�������</a>
-      <a href="/about" class="active">��� ���</a>
-      <a href="/order-3d-print">�������� 3D ����</a>
+    <nav class="nav header-nav" id="headerNavPanel" aria-label="Навігація">
+      <a href="/">Головна</a>
+      <a href="/catalog">Каталог</a>
+      <a href="/about" class="active">Про нас</a>
+      <a href="/order-3d-print">Замовити 3D друк</a>
     </nav>
     <div class="header-utilities">
       <div class="search-box">
-        <input type="search" placeholder="�����" id="search" name="q" autocomplete="off">
+        <input type="search" placeholder="Пошук" id="search" name="q" autocomplete="off">
         <div id="searchResults" class="search-results"></div>
       </div>
       <div class="header-actions">
-        <button type="button" id="authBtn" class="auth-icon-btn" title="������">
+        <button type="button" id="authBtn" class="auth-icon-btn" title="Авторизація">
           <svg id="authIcon" viewBox="0 0 24 24" aria-hidden="true">
             <path d="M12 12c2.8 0 5-2.2 5-5s-2.2-5-5-5-5 2.2-5 5 2.2 5 5 5Zm0 2c-4.4 0-8 2.7-8 6v2h16v-2c0-3.3-3.6-6-8-6Z"></path>
           </svg>
           <span id="authInitials" class="auth-initials"></span>
         </button>
-        <button type="button" id="favoritesBtn" class="auth-icon-btn" title="�����" onclick="toggleFavorites(true)">
+        <button type="button" id="favoritesBtn" class="auth-icon-btn" title="Обране" onclick="toggleFavorites(true)">
           <svg class="heart-icon" viewBox="0 0 512 512" aria-hidden="true">
             <path d="M257 88L255 88C248.355 74.9828 235.475 63.8415 224 55.1304C173.114 16.5016 99.2988 19.267 51 61.2894C-1.26738 106.765 -12.8083 185.773 13.0116 248C25.4527 277.984 45.9981 303.467 67.9105 327C103.494 365.215 144.281 398.581 184 432.421C198.063 444.402 211.938 456.598 226 468.579C233.971 475.37 241.993 483.022 253 483.907C268.121 485.122 278.342 475.197 289 466C306.641 450.778 324.263 435.533 342 420.421C356.437 408.121 370.854 395.797 385 383.166C443.359 331.055 512 269.827 512 185C512 178.072 512.538 170.886 511.715 164C506.476 120.199 486.854 78.636 450 52.7207C401.715 18.7669 334.983 19.4645 288 55.1304C276.525 63.8415 263.645 74.9828 257 88z"></path>
           </svg>
         </button>
         <div class="cart" onclick="toggleCart(true)">
-          <img src="/images/cart-icon.svg" class="cart-icon" alt="�����">
+          <img src="/images/cart-icon.svg" class="cart-icon" alt="Кошик">
           <span id="cartCount">0</span>
         </div>
       </div>
@@ -93,34 +93,34 @@
         <svg class="back-icon" viewBox="0 0 24 24" aria-hidden="true">
           <path d="M15 6l-6 6 6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
         </svg>
-        �����
+        Головна
       </a>
       <div class="breadcrumbs">
-        <a href="/">�������</a>
+        <a href="/">Головна</a>
         <span>/</span>
-        <span>��� ���</span>
+        <span>Про нас</span>
       </div>
     </div>
 
     <section class="about-v2" aria-labelledby="about-v2-title">
       <header class="about-v2__intro">
-        <div class="about-v2__tag">EVRYKA � 3D ���� � �����</div>
-        <h1 id="about-v2-title" class="about-v2__title">��� ���</h1>
-        <p class="about-v2__lead">EVRYKA � ������� ����������� 3D-�����. �� ��������� ������ ��� ������, �������, ������ �� ������������� �����, �� ������ �������, ������ � ��������� ���������.</p>
+        <div class="about-v2__tag">EVRYKA - 3D друк - Львів</div>
+        <h1 id="about-v2-title" class="about-v2__title">Про нас</h1>
+        <p class="about-v2__lead">EVRYKA - це команда професіоналів, які мають великий досвід в 3D друку. Ми виготовляємо 3D моделі для ремонту, бізнесу та творчості. Ми маємо великий вибір моделей, які можна використовувати для ремонту, бізнесу та творчості.</p>
       </header>
 
       <section class="about-v2__stats" aria-label="������� ��� EVRYKA">
         <article class="about-v2__stat">
-          <h3>5+ ����</h3>
-          <p>��������� ������ � 3D-�����</p>
+          <h3>5+ років</h3>
+          <p>Практичного досвіду в 3D-друці</p>
         </article>
         <article class="about-v2__stat">
-          <h3>������ �����</h3>
-          <p>������� ���� 3D-�������� � ������� ������ � ������ �����������</p>
+          <h3>Власний парк</h3>
+          <p>Сучасних FDM 3D-принтерів з різними зонами друку</p>
         </article>
         <article class="about-v2__stat">
-          <h3>�. ����</h3>
-          <p>���� ������� �� �����������</p>
+          <h3>м. Львів </h3>
+          <p>Працюємо по Україні</p>
         </article>
         <article class="about-v2__stat">
           <h3>Клієнтська підтримка</h3>
@@ -138,10 +138,10 @@
                 <path d="M8 7h8M8 11h6"></path>
               </svg>
             </span>
-            <span class="about-v2__h-text">���� ������</span>
+            <span class="about-v2__h-text">Наша історія</span>
           </h2>
-          <p>�������� � ��������� ���������, �� ���������� ����� ����� �� �����������. � ������ ����������� �� �� ��������� �����: �� ������������ � ������ ��������� �� �������� ������ � �������������� �����������.</p>
-          <p>������� �� �������� �� � ���������� ���������� ��������, ��� � � ����������� �������� �� �볺���, ���� ������ �������������, ������ �� ������������ �����.</p>
+          <p>Починали з невеликих проєктів, але поступово стали командою, яка закриває повний цикл: від ідеї та підготовки моделі до якісного друку й післяпродажної підтримки.</p>
+          <p>Ми маємо великий вибір моделей, які можна використовувати для ремонСьогодні ми працюємо як з індивідуальними запитами, так і з серійними замовленнями для клієнтів, яким потрібна швидкість, стабільність та прогнозований результат.</p>
         </section>
 
         <section class="about-v2__card" aria-labelledby="about-v2-services">
@@ -151,13 +151,13 @@
                 <path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"></path>
               </svg>
             </span>
-            <span class="about-v2__h-text">�� ������</span>
+            <span class="about-v2__h-text">Що робимо</span>
           </h2>
           <ul class="about-v2__list">
-            <li>���� �������, �������, ������ �� �������������� �������.</li>
-            <li>������������ ������� ��� ������� �� ����������.</li>
-            <li>����������� ���������� �� ������ �����������.</li>
-            <li>������������ �� ��������� � ������������� �����.</li>
+            <li>3D друк деталей, корпусів, макетів та функціональних елементів.</li>
+            <li>Підбір матеріалу під задачу та умови експлуатації.</li>
+            <li>Оптимізація моделей під якісний друк.</li>
+            <li>Допомога з розробкою й доопрацюванням моделі.</li>
           </ul>
         </section>
 
@@ -168,13 +168,13 @@
                 <path d="M12 3l2.7 5.46 6.03.88-4.36 4.25 1.03 6.01L12 17.77 6.6 19.6l1.03-6.01-4.36-4.25 6.03-.88L12 3z"></path>
               </svg>
             </span>
-            <span class="about-v2__h-text">��� �����</span>
+            <span class="about-v2__h-text">Наші цінності</span>
           </h2>
           <ul class="about-v2__list">
-            <li>��������� ������ ������ � ��� ����� ������� ���������.</li>
-            <li>Գ����� ������ �� ������� �� ������ ������.</li>
-            <li>���������� �� ����������� �� ����������� ������.</li>
-            <li>ϳ�������� �������� ����� � ��������� �����������.</li>
+            <li>Стабільна якість кожного виробу і чітке дотримання термінів.</li>
+            <li>Прозора комунікація на кожному етапі замовлення.</li>
+            <li>Відповідальність за результат та довгострокову співпрацю.с</li>
+            <li>Постійне вдосконалення процесів і технологій виробництва.</li>
           </ul>
         </section>
 
@@ -186,22 +186,22 @@
                 <circle cx="12" cy="10" r="3"></circle>
               </svg>
             </span>
-            <span class="about-v2__h-text">������� � �����</span>
+            <span class="about-v2__h-text">Локація й графік</span>
           </h2>
-          <p>�������� � <strong>�����</strong>. �������� �������� �� ��� ����� �������� ��� ��� ��������.</p>
-          <p class="about-v2__hours">����: 9:00 � 20:00</p>
+          <p>Працюємо у <strong>Львові</strong>. Відправляємо замовлення по всій Україні поштовими службами.</p>
+          <p class="about-v2__hours">Графік: 9:00 - 20:00</p>
         </section>
       </div>
 
       <section class="about-v2__contacts" aria-labelledby="about-v2-contacts">
-        <h2 id="about-v2-contacts">��������</h2>
+        <h2 id="about-v2-contacts">Контакти</h2>
         <div class="about-v2__contact-grid">
           <a class="about-v2__contact-tile" href="mailto:andrysejko22@gmail.com">
             <span class="about-v2__contact-label">Email</span>
             <span class="about-v2__contact-value">andrysejko22@gmail.com</span>
           </a>
           <a class="about-v2__contact-tile" href="tel:+380501662271">
-            <span class="about-v2__contact-label">�������</span>
+            <span class="about-v2__contact-label">Телефон</span>
             <span class="about-v2__contact-value">+380 50 166 22 71</span>
           </a>
           <a class="about-v2__contact-tile about-v2__contact-tile--telegram" href="https://t.me/+380501662271" target="_blank" rel="noopener noreferrer">
@@ -210,7 +210,7 @@
               <span class="about-v2__messenger-icon" aria-hidden="true">
                 <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.64 6.8c-.15 1.58-.8 5.42-1.13 7.19-.14.75-.42 1-.68 1.03-.58.05-1.02-.38-1.58-.75-.88-.58-1.38-.94-2.23-1.5-.99-.65-.35-1.01.22-1.59.15-.15 2.71-2.48 2.76-2.69a.2.2 0 00-.05-.18c-.06-.05-.14-.03-.21-.02-.09.02-1.49.95-4.22 2.79-.4.27-.76.41-1.08.4-.36-.01-1.04-.2-1.55-.37-.63-.2-1.12-.31-1.08-.66.02-.18.27-.36.74-.55 2.92-1.27 4.86-2.11 5.83-2.51 2.78-1.16 3.35-1.36 3.73-1.36.08 0 .27.02.39.12.1.08.13.19.14.27-.01.06.01.24 0 .38z"></path></svg>
               </span>
-              <span class="about-v2__contact-value">�������� � Telegram</span>
+              <span class="about-v2__contact-value">Написати в Telegram</span>
             </span>
           </a>
           <a class="about-v2__contact-tile about-v2__contact-tile--viber" href="viber://chat?number=%2B380501662271">
@@ -219,7 +219,7 @@
               <span class="about-v2__messenger-icon" aria-hidden="true">
                 <svg class="about-v2__messenger-svg about-v2__messenger-svg--viber" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path fill="currentColor" d="M11.4 0C9.473.028 5.333.344 3.02 2.467 1.302 4.187.696 6.7.633 9.817.57 12.933.488 18.776 6.12 20.36h.003l-.004 2.416s-.037.977.61 1.177c.777.242 1.234-.5 1.98-1.302.407-.44.972-1.084 1.397-1.58 3.85.326 6.812-.416 7.15-.525.776-.252 5.176-.816 5.892-6.657.74-6.02-.36-9.83-2.34-11.546-.596-.55-3.006-2.3-8.375-2.323 0 0-.395-.025-1.037-.017zm.058 1.693c.545-.004.88.017.88.017 4.542.02 6.717 1.388 7.222 1.846 1.675 1.435 2.53 4.868 1.906 9.897v.002c-.604 4.878-4.174 5.184-4.832 5.395-.28.09-2.882.737-6.153.524 0 0-2.436 2.94-3.197 3.704-.12.12-.26.167-.352.144-.13-.033-.166-.188-.165-.414l.02-4.018c-4.762-1.32-4.485-6.292-4.43-8.895.054-2.604.543-4.738 1.996-6.173 1.96-1.773 5.474-2.018 7.11-2.03zm.38 2.602c-.167 0-.303.135-.304.302 0 .167.133.303.3.305 1.624.01 2.946.537 4.028 1.592 1.073 1.046 1.62 2.468 1.633 4.334.002.167.14.3.307.3.166-.002.3-.138.3-.304-.014-1.984-.618-3.596-1.816-4.764-1.19-1.16-2.692-1.753-4.447-1.765zm-3.96.695c-.19-.032-.4.005-.616.117l-.01.002c-.43.247-.816.562-1.146.932-.002.004-.006.004-.008.008-.267.323-.42.638-.46.948-.008.046-.01.093-.007.14 0 .136.022.27.065.4l.013.01c.135.48.473 1.276 1.205 2.604.42.768.903 1.5 1.446 2.186.27.344.56.673.87.984l.132.132c.31.308.64.6.984.87.686.543 1.418 1.027 2.186 1.447 1.328.733 2.126 1.07 2.604 1.206l.01.014c.13.042.265.064.402.063.046.002.092 0 .138-.008.31-.036.627-.19.948-.46.004 0 .003-.002.008-.005.37-.33.683-.72.93-1.148l.003-.01c.225-.432.15-.842-.18-1.12-.004 0-.698-.58-1.037-.83-.36-.255-.73-.492-1.113-.71-.51-.285-1.032-.106-1.248.174l-.447.564c-.23.283-.657.246-.657.246-3.12-.796-3.955-3.955-3.955-3.955s-.037-.426.248-.656l.563-.448c.277-.215.456-.737.17-1.248-.217-.383-.454-.756-.71-1.115-.25-.34-.826-1.033-.83-1.035-.137-.165-.31-.265-.502-.297zm4.49.88c-.158.002-.29.124-.3.282-.01.167.115.312.282.324 1.16.085 2.017.466 2.645 1.15.63.688.93 1.524.906 2.57-.002.168.13.306.3.31.166.003.305-.13.31-.297.025-1.175-.334-2.193-1.067-2.994-.74-.81-1.777-1.253-3.05-1.346h-.024zm.463 1.63c-.16.002-.29.127-.3.287-.008.167.12.31.288.32.523.028.875.175 1.113.422.24.245.388.62.416 1.164.01.167.15.295.318.287.167-.008.295-.15.287-.317-.03-.644-.215-1.178-.58-1.557-.367-.378-.893-.574-1.52-.607h-.018z"/></svg>
               </span>
-              <span class="about-v2__contact-value">�������� � Viber</span>
+              <span class="about-v2__contact-value">Написати в Viber</span>
             </span>
           </a>
         </div>
@@ -232,32 +232,32 @@
 
 <div id="cartSidebar" class="cart-sidebar">
   <div class="cart-head-float">
-    <h3 id="cartPanelTitle">�����</h3>
-    <button type="button" class="cart-head-float-close" onclick="toggleCart(false)" aria-label="������� �����">?</button>
+    <h3 id="cartPanelTitle">Кошик</h3>
+    <button type="button" class="cart-head-float-close" onclick="toggleCart(false)" aria-label="Закрити">?</button>
   </div>
   <div id="cartItems" class="cart-items"></div>
   <div class="cart-footer">
     <div class="cart-total">
-      <span>�����</span>
+      <span>Разом</span>
       <div>
         <b id="cartTotal">0</b>
-        <span>���</span>
+        <span>грн</span>
       </div>
     </div>
-    <button class="checkout-btn" onclick="checkout()">��������</button>
-    <button class="clear-btn" onclick="clearCart()">�������� �����</button>
+    <button class="checkout-btn" onclick="checkout()">Оформити замовлення</button>
+    <button class="clear-btn" onclick="clearCart()">Очистити кошик</button>
   </div>
 </div>
 
 <div id="favoritesOverlay" class="cart-overlay" onclick="toggleFavorites(false)"></div>
 <div id="favoritesSidebar" class="cart-sidebar">
   <div class="cart-head-float">
-    <h3>�����</h3>
-    <button type="button" class="cart-head-float-close" onclick="toggleFavorites(false)" aria-label="������� �����">?</button>
+    <h3>Обране</h3>
+    <button type="button" class="cart-head-float-close" onclick="toggleFavorites(false)" aria-label="Закрити">?</button>
   </div>
   <div id="favoritesItems" class="cart-items"></div>
   <div class="cart-footer">
-    <button class="clear-btn" onclick="clearFavorites()">�������� �����</button>
+    <button class="clear-btn" onclick="clearFavorites()">Очистити обране</button>
   </div>
 </div>
 
@@ -266,8 +266,8 @@
     <button id="closeAuthBtn" class="close-btn">?</button>
     <h3 id="authTitle" class="auth-title">Log In</h3>
     <form id="registerForm">
-      <input id="regName" class="auth-input auth-register-only" type="text" placeholder="��'�">
-      <input id="regLastName" class="auth-input auth-register-only" type="text" placeholder="�������">
+        <input id="regName" class="auth-input auth-register-only" type="text" placeholder="Ім'я">
+      <input id="regLastName" class="auth-input auth-register-only" type="text" placeholder="Прізвище">
       <input id="regPhone" class="auth-input auth-register-only" type="tel" placeholder="�������">
       <input id="regEmail" class="auth-input" type="email" placeholder="Email Address*">
       <input id="authPassword" class="auth-input" type="password" placeholder="Password*">
@@ -297,8 +297,9 @@
           <img src="/images/text_logo.png" alt="EVRYKA" class="footer-brand-img">
         </a>
         <p class="footer-desc">
-          3D-�������� ������ �� ���� �������, ������� � ������ �� ����� �����.
-          ������. �����. � �������� ��� ���������.
+          3D-друковані вироби для ремонту, творчості та прототипів. Готові рішення або під індивідуальне замовлення.
+
+
         </p>
         <div class="footer-contacts">
           <a href="tel:+380501662271" class="footer-contact">
@@ -313,38 +314,38 @@
       </div>
 
       <div>
-        <div class="footer-col-title">��������</div>
+        <div class="footer-col-title">Про нас</div>
         <div class="footer-links">
-          <a href="/" class="footer-link">�������</a>
-          <a href="/catalog" class="footer-link">�������</a>
-          <a href="/about" class="footer-link">��� ���</a>
-          <a href="/order-3d-print" class="footer-link">���������� 3D �����</a>
+          <a href="/" class="footer-link">Головна</a>
+          <a href="/catalog" class="footer-link">Каталог</a>
+          <a href="/about" class="footer-link">Про нас</a>
+          <a href="/order-3d-print" class="footer-link">Замовити 3D друк</a>
         </div>
       </div>
 
       <div>
-        <div class="footer-col-title">�������</div>
+        <div class="footer-col-title">Каталог</div>
         <div class="footer-links">
-          <a href="/catalog" class="footer-link">�������� �� ������</a>
-          <a href="/catalog" class="footer-link">�����</a>
-          <a href="/catalog" class="footer-link">�������</a>
-          <a href="/catalog" class="footer-link">�������</a>
+          <a href="/catalog" class="footer-link">Всі категорії</a>
+          <a href="/catalog" class="footer-link">Деталі</a>
+          <a href="/catalog" class="footer-link">Корпуси</a>
+          <a href="/catalog" class="footer-link">Макети</a>
         </div>
       </div>
 
       <div>
-        <div class="footer-col-title">ϳ�������</div>
+        <div class="footer-col-title">Контакти</div>
         <div class="footer-links">
           <a href="https://t.me/+380501662271" class="footer-link" target="_blank">Telegram</a>
           <a href="viber://chat?number=%2B380501662271" class="footer-link">Viber</a>
-          <a href="/about#about-v2-location" class="footer-link">�� ��� ������</a>
-          <a href="/cabinet#orders" class="footer-link">�� ����������</a>
+          <a href="/about#about-v2-location" class="footer-link">Локація й графік</a>
+          <a href="/cabinet#orders" class="footer-link">Кабінет</a>
         </div>
       </div>
     </div>
 
     <div class="footer-bottom">
-      <div class="footer-copy">� 2026 EVRYKA � �� ����� �������</div>
+      <div class="footer-copy">© 2026 EVRYKA - 3D друк у Львові</div>
       <div class="footer-payments">
         <span class="payment-badge">VISA</span>
         <span class="payment-badge">MASTERCARD</span>
@@ -361,15 +362,15 @@
   <div id="chatWidgetPanel" class="chat-widget-panel" role="dialog" aria-modal="true" aria-labelledby="chatWidgetTitle" aria-hidden="true">
     <div class="chat-widget-card">
     <div class="chat-widget-head-float">
-      <span id="chatWidgetTitle">�������� ���</span>
-      <button type="button" class="chat-widget-close" aria-label="������� ���">?</button>
+      <span id="chatWidgetTitle">Контакти</span>
+      <button type="button" class="chat-widget-close" aria-label="Закрити">?</button>
     </div>
     <div class="chat-widget-sheet">
       <div id="chatWidgetMessages" class="chat-widget-messages" aria-live="polite"></div>
       <div class="chat-widget-compose-float">
         <div class="chat-widget-compose">
-          <input type="text" id="chatWidgetText" class="chat-widget-field" placeholder="���� ����������" maxlength="2000" autocomplete="off">
-          <button type="button" id="chatWidgetSend" class="chat-widget-send">��������</button>
+          <input type="text" id="chatWidgetText" class="chat-widget-field" placeholder="Написати повідомлення" maxlength="2000" autocomplete="off">
+          <button type="button" id="chatWidgetSend" class="chat-widget-send">Надіслати</button>
         </div>
         <p id="chatWidgetStatus" class="chat-widget-status" role="status"></p>
       </div>

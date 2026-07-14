@@ -7562,11 +7562,6 @@ body.evryka-site.page-print3d {
   transform: translateY(-50%);
 }
 
-/* На сторінці товару гортання тільки свайпом/скролом — без стрілок. */
-.page-product .similar-arrow {
-  display: none !important;
-}
-
 .page-product .similar-card {
   scroll-snap-align: center;
   background: var(--ev-p-card);
