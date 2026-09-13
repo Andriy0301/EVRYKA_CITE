@@ -38,6 +38,23 @@ function clearCatalogFiltersState() {
   sessionStorage.removeItem(CATALOG_FILTERS_STORAGE_KEY);
 }
 
+function clearCatalogSearchQuery() {
+  catalogTextQuery = "";
+  const headerSearch = document.getElementById("search");
+  if (headerSearch) headerSearch.value = "";
+
+  try {
+    const url = new URL(window.location.href);
+    if (url.searchParams.has("q")) {
+      url.searchParams.delete("q");
+      const next = `${url.pathname}${url.search}${url.hash}`;
+      window.history.replaceState({}, "", next);
+    }
+  } catch {
+    /* ignore */
+  }
+}
+
 function hasSelectOption(selectEl, value) {
   if (!selectEl) return false;
   return Array.from(selectEl.options || []).some((opt) => String(opt?.value || "") === String(value || ""));
@@ -227,11 +244,17 @@ function initCatalogFilterControls() {
   const maxEl = document.getElementById("catalogPriceMax");
   const resetBtn = document.getElementById("catalogResetFilters");
 
+  const onFilterChange = () => {
+    // Будь-яка ручна зміна фільтрів знімає текстовий пошук з шапки.
+    if (catalogTextQuery) clearCatalogSearchQuery();
+    applyCatalogFilters();
+  };
+
   [sortEl, catEl, minEl, maxEl].forEach((el) => {
     if (el) {
-      el.addEventListener("change", () => applyCatalogFilters());
+      el.addEventListener("change", onFilterChange);
       if (el === minEl || el === maxEl) {
-        el.addEventListener("input", () => applyCatalogFilters());
+        el.addEventListener("input", onFilterChange);
       }
     }
   });
@@ -246,6 +269,7 @@ function initCatalogFilterControls() {
       }
       if (minEl) minEl.value = "";
       if (maxEl) maxEl.value = "";
+      clearCatalogSearchQuery();
       clearCatalogFiltersState();
       document.querySelectorAll(".catalog-select-wrap").forEach((w) => syncCatalogSelectUI(w));
       applyCatalogFilters();
@@ -357,16 +381,12 @@ function initCatalogPage() {
   const products = Array.isArray(allProducts) ? allProducts : [];
   const params = new URLSearchParams(window.location.search);
   const savedState = readCatalogFiltersState();
-  const urlTextQuery = (params.get("q") || "").trim();
-  catalogTextQuery = String(savedState?.textQuery || "").trim();
-  if (urlTextQuery) {
-    catalogTextQuery = urlTextQuery;
-  }
+  // Пошук беремо лише з URL (?q=...). Не відновлюємо зі sessionStorage —
+  // щоб після зміни категорії / переходу на іншу сторінку він не «залипав».
+  catalogTextQuery = (params.get("q") || "").trim();
   const headerSearch = document.getElementById("search");
-  if (headerSearch && catalogTextQuery) {
+  if (headerSearch) {
     headerSearch.value = catalogTextQuery;
-  } else if (headerSearch) {
-    headerSearch.value = "";
   }
 
   const catsParam = params.get("cats");
@@ -377,10 +397,7 @@ function initCatalogPage() {
     catalogMultiCats = Array.isArray(savedState?.multiCats) ? savedState.multiCats.filter(Boolean) : null;
   }
 
-  const shouldRestoreSavedState = Boolean(savedState);
-  if (shouldRestoreSavedState) {
-    if (headerSearch) headerSearch.value = catalogTextQuery;
-  }
+  const shouldRestoreSavedState = Boolean(savedState) && !catalogTextQuery;
 
   const catSelect = document.getElementById("catalogFilterCategory");
   if (catSelect) {
