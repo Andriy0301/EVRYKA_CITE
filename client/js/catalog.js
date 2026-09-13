@@ -87,8 +87,8 @@ function renderCatalogGrid(products) {
     return;
   }
 
-  const normalizeImageSrc = (item) => {
-    const raw = String(item?.images?.[0] || "").trim();
+  const normalizeImageSrc = (rawImage) => {
+    const raw = String(rawImage || "").trim();
     if (!raw) return "images/text_logo.png";
     if (/^https?:\/\//i.test(raw)) return raw;
     if (raw.startsWith("/")) return `${API_URL}${raw}`;
@@ -104,13 +104,21 @@ function renderCatalogGrid(products) {
       images: Array.isArray(p?.images) ? p.images : []
     };
 
+    const primarySrc = normalizeImageSrc(product.images[0]);
+    const secondarySrc =
+      product.images.length > 1 ? normalizeImageSrc(product.images[1]) : "";
+    const secondaryImgHtml = secondarySrc
+      ? `<img class="product-img-secondary" src="${secondarySrc}" alt="" aria-hidden="true">`
+      : "";
+
     const card = document.createElement("a");
     card.className = "catalog-product-card";
     card.href = `/product?id=${product.id}`;
 
     card.innerHTML = `
       <div class="catalog-product-img-wrap">
-        <img src="${normalizeImageSrc(product)}" alt="${product.name}">
+        <img class="product-img-primary" src="${primarySrc}" alt="${product.name}">
+        ${secondaryImgHtml}
         <button class="catalog-product-fav ${isFavorite(product.id) ? "active" : ""}" type="button" title="В обране" aria-label="В обране">
           <svg class="heart-icon" viewBox="0 0 512 512" aria-hidden="true">
             <path d="M257 88L255 88C248.355 74.9828 235.475 63.8415 224 55.1304C173.114 16.5016 99.2988 19.267 51 61.2894C-1.26738 106.765 -12.8083 185.773 13.0116 248C25.4527 277.984 45.9981 303.467 67.9105 327C103.494 365.215 144.281 398.581 184 432.421C198.063 444.402 211.938 456.598 226 468.579C233.971 475.37 241.993 483.022 253 483.907C268.121 485.122 278.342 475.197 289 466C306.641 450.778 324.263 435.533 342 420.421C356.437 408.121 370.854 395.797 385 383.166C443.359 331.055 512 269.827 512 185C512 178.072 512.538 170.886 511.715 164C506.476 120.199 486.854 78.636 450 52.7207C401.715 18.7669 334.983 19.4645 288 55.1304C276.525 63.8415 263.645 74.9828 257 88z"></path>
@@ -128,10 +136,16 @@ function renderCatalogGrid(products) {
       </div>
     `;
 
-    const imageEl = card.querySelector("img");
-    imageEl.onerror = () => {
-      imageEl.src = "images/text_logo.png";
-    };
+    card.querySelectorAll("img").forEach((imageEl) => {
+      imageEl.onerror = () => {
+        imageEl.src = "images/text_logo.png";
+      };
+    });
+
+    if (secondarySrc) {
+      card.addEventListener("mouseenter", () => card.classList.add("is-hovering"));
+      card.addEventListener("mouseleave", () => card.classList.remove("is-hovering"));
+    }
 
     const favBtn = card.querySelector(".catalog-product-fav");
     favBtn.addEventListener("click", (event) => {

@@ -1048,6 +1048,32 @@ footer .footer-bottom {
   filter: saturate(1.06);
 }
 
+.product-img-wrap img.product-img-secondary,
+.catalog-product-img-wrap img.product-img-secondary,
+.product-media img.product-img-secondary {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0;
+  pointer-events: none;
+  z-index: 1;
+  transition:
+    opacity 0.35s ease,
+    transform 0.4s ease,
+    filter 0.3s ease;
+}
+
+.product-card:hover .product-img-wrap img.product-img-secondary,
+.product-card.is-hovering .product-img-wrap img.product-img-secondary,
+.catalog-product-card:hover .catalog-product-img-wrap img.product-img-secondary,
+.catalog-product-card.is-hovering .catalog-product-img-wrap img.product-img-secondary,
+.product:hover .product-media img.product-img-secondary,
+.product.is-hovering .product-media img.product-img-secondary {
+  opacity: 1;
+}
+
 .auth-icon-btn,
 .product-fav,
 .catalog-product-fav,
@@ -1329,12 +1355,31 @@ select:focus,
 }
 
 /* картинка */
-.product img {
+.product-media {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  overflow: hidden;
+  border-radius: var(--product-media-radius);
+}
+
+.product img,
+.product-media img {
   width: 100%;
   aspect-ratio: 1 / 1; /* 🔥 квадрат */
   object-fit: cover;   /* 🔥 не розтягує, а обрізає */
 
   border-radius: var(--product-media-radius);
+}
+
+.product-media img {
+  aspect-ratio: auto;
+  height: 100%;
+  transition: transform 0.35s ease;
+}
+
+.product:hover .product-media img {
+  transform: scale(1.06);
 }
 
 /* назва */
@@ -6022,11 +6067,17 @@ body.cart-open .header .cart {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  transition: transform 0.4s;
+  transition: transform 0.4s, opacity 0.35s ease;
 }
 
 .page-catalog .catalog-product-card:hover .catalog-product-img-wrap img {
   transform: scale(1.06);
+}
+
+.page-catalog .catalog-product-img-wrap img.product-img-secondary {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
 }
 
 .page-catalog .catalog-product-fav {
@@ -6038,6 +6089,7 @@ body.cart-open .header .cart {
   background: white;
   border-radius: 50%;
   display: flex;
+  z-index: 2;
   align-items: center;
   justify-content: center;
   border: none;

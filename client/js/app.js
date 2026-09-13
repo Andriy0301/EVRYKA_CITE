@@ -357,8 +357,17 @@ function renderProducts(products) {
 
     div.onclick = () => goToProduct(p.id);
 
+    const primarySrc = `${API_URL}${p.images?.[0] || ""}`;
+    const secondarySrc = p.images?.[1] ? `${API_URL}${p.images[1]}` : "";
+    const secondaryImgHtml = secondarySrc
+      ? `<img class="product-img-secondary" src="${secondarySrc}" alt="" aria-hidden="true">`
+      : "";
+
     div.innerHTML = `
-      <img src="${API_URL}${p.images?.[0] || ''}">
+      <div class="product-media">
+        <img class="product-img-primary" src="${primarySrc}" alt="${p.name || "Без назви"}">
+        ${secondaryImgHtml}
+      </div>
 
       <div class="product-content">
         <h3>${p.name || "Без назви"}</h3>
@@ -377,6 +386,11 @@ function renderProducts(products) {
         </div>
       </div>
     `;
+
+    if (secondarySrc) {
+      div.addEventListener("mouseenter", () => div.classList.add("is-hovering"));
+      div.addEventListener("mouseleave", () => div.classList.remove("is-hovering"));
+    }
 
     container.appendChild(div);
   });

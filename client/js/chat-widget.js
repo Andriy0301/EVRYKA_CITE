@@ -7,6 +7,7 @@
   const textEl = document.getElementById("chatWidgetText");
   const statusEl = document.getElementById("chatWidgetStatus");
   const messagesEl = document.getElementById("chatWidgetMessages");
+  const titleEl = document.getElementById("chatWidgetTitle");
 
   const WELCOME_LOGGED_IN = "Добрий день, можете задавати будь які запитання";
   const WELCOME_GUEST =
@@ -14,6 +15,25 @@
   const PROFILE_KEY = "userProfile";
 
   if (!toggle || !panel || !root) return;
+
+  function ensureChromeLabels() {
+    if (titleEl) titleEl.textContent = "Онлайн чат";
+
+    if (closeBtn) {
+      closeBtn.setAttribute("aria-label", "Закрити чат");
+      closeBtn.innerHTML =
+        '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" aria-hidden="true"><path d="M18 6L6 18M6 6l12 12"/></svg>';
+    }
+
+    if (toggle) toggle.setAttribute("title", "Онлайн чат");
+    if (textEl) textEl.setAttribute("placeholder", "Ваше запитання...");
+    if (sendBtn) sendBtn.textContent = "Надіслати";
+  }
+
+  ensureChromeLabels();
+  // Після mojibake-fix / інших скриптів ще раз підставляємо підписи.
+  window.setTimeout(ensureChromeLabels, 0);
+  window.setTimeout(ensureChromeLabels, 300);
 
   function isLoggedIn() {
     try {
@@ -85,6 +105,7 @@
     toggle.setAttribute("aria-expanded", open ? "true" : "false");
     panel.setAttribute("aria-hidden", open ? "false" : "true");
     if (open) {
+      ensureChromeLabels();
       seedWelcome();
       syncWelcomeIfOnlyGreeting();
       textEl?.focus();

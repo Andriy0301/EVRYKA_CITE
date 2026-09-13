@@ -51,7 +51,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="/css/style.css?v=20260508-7">
+  <link rel="stylesheet" href="/css/style.css?v=20260913-1">
   <link rel="stylesheet" href="/css/evryka-header-hero.css?v=20260420-21">
   <script src="https://accounts.google.com/gsi/client" async defer></script>
 </head>
@@ -382,7 +382,7 @@
   </footer>
 
 <div id="chatWidgetRoot" class="chat-widget-root">
-  <button type="button" id="chatWidgetToggle" class="chat-widget-toggle" aria-expanded="false" aria-controls="chatWidgetPanel" title="�������� ���">
+  <button type="button" id="chatWidgetToggle" class="chat-widget-toggle" aria-expanded="false" aria-controls="chatWidgetPanel" title="Онлайн чат">
     <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true">
       <path fill="currentColor" d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm0 14H5.17L4 17.17V4h16v12z"></path>
     </svg>
@@ -390,15 +390,15 @@
   <div id="chatWidgetPanel" class="chat-widget-panel" role="dialog" aria-modal="true" aria-labelledby="chatWidgetTitle" aria-hidden="true">
     <div class="chat-widget-card">
     <div class="chat-widget-head-float">
-      <span id="chatWidgetTitle">�������� ���</span>
-      <button type="button" class="chat-widget-close" aria-label="������� ���">?</button>
+      <span id="chatWidgetTitle">Онлайн чат</span>
+      <button type="button" class="chat-widget-close" aria-label="Закрити чат">✕</button>
     </div>
     <div class="chat-widget-sheet">
       <div id="chatWidgetMessages" class="chat-widget-messages" aria-live="polite"></div>
       <div class="chat-widget-compose-float">
         <div class="chat-widget-compose">
-          <input type="text" id="chatWidgetText" class="chat-widget-field" placeholder="���� ����������" maxlength="2000" autocomplete="off">
-          <button type="button" id="chatWidgetSend" class="chat-widget-send">��������</button>
+          <input type="text" id="chatWidgetText" class="chat-widget-field" placeholder="Ваше запитання..." maxlength="2000" autocomplete="off">
+          <button type="button" id="chatWidgetSend" class="chat-widget-send">Надіслати</button>
         </div>
         <p id="chatWidgetStatus" class="chat-widget-status" role="status"></p>
       </div>
@@ -445,6 +445,17 @@
       setText("#favoritesSidebar h3", "Обране");
       setAttr("#favoritesSidebar .cart-head-float-close", "aria-label", "Закрити обране");
       setText("#favoritesSidebar .clear-btn", "Очистити обране");
+
+      setText("#chatWidgetTitle", "Онлайн чат");
+      setAttr(".chat-widget-close", "aria-label", "Закрити чат");
+      const chatClose = document.querySelector(".chat-widget-close");
+      if (chatClose) {
+        chatClose.innerHTML =
+          '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" aria-hidden="true"><path d="M18 6L6 18M6 6l12 12"/></svg>';
+      }
+      setAttr("#chatWidgetToggle", "title", "Онлайн чат");
+      setAttr("#chatWidgetText", "placeholder", "Ваше запитання...");
+      setText("#chatWidgetSend", "Надіслати");
     }
 
     if (document.readyState === "loading") {
@@ -455,7 +466,7 @@
   })();
 </script>
   <script src="/js/app.js?v=20260427-5"></script>
-<script src="/js/chat-widget.js?v=20260409"></script>
+<script src="/js/chat-widget.js?v=20260913-1"></script>
 
 </body>
 </html>

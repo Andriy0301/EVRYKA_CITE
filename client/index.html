@@ -36,7 +36,7 @@
   <link rel="apple-touch-icon" href="/images/favicon.png" />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Manrope:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="/css/style.css?v=20260508-7">
+  <link rel="stylesheet" href="/css/style.css?v=20260913-1">
   <link rel="stylesheet" href="/css/evryka-header-hero.css?v=20260420-21">
   <script src="https://accounts.google.com/gsi/client" async defer></script>
   <script type="application/ld+json">
@@ -1158,10 +1158,23 @@
       width: 100%;
       height: 100%;
       object-fit: cover;
-      transition: transform 0.4s;
+      transition: transform 0.4s, opacity 0.35s ease;
+    }
+
+    .product-img-wrap img.product-img-secondary {
+      position: absolute;
+      inset: 0;
+      opacity: 0;
+      pointer-events: none;
+      z-index: 1;
     }
 
     .product-card:hover .product-img-wrap img { transform: scale(1.06); }
+
+    .product-card:hover .product-img-wrap img.product-img-secondary,
+    .product-card.is-hovering .product-img-wrap img.product-img-secondary {
+      opacity: 1;
+    }
 
     .product-badge {
       position: absolute;
@@ -1174,6 +1187,7 @@
       text-transform: uppercase;
       padding: 4px 10px;
       border-radius: 6px;
+      z-index: 2;
     }
 
     .product-badge.orange { background: var(--orange); }
@@ -1182,6 +1196,7 @@
       position: absolute;
       top: 12px; right: 12px;
       width: 34px; height: 34px;
+      z-index: 2;
       background: white;
       border-radius: 50%;
       display: flex; align-items: center; justify-content: center;
@@ -2681,18 +2696,42 @@
       const add = document.getElementById(`homeCardAdd${index}`);
       if (!link || !img || !name || !price || !fav || !add || !product) return;
 
+      const images = Array.isArray(product.images)
+        ? product.images.map((item) => String(item || "").trim()).filter(Boolean)
+        : [];
+
       const safeProduct = {
         id: Number(product.id) || index,
         name: product.name || "Товар",
         price: Number(product.price) || 0,
-        images: [String(product.images?.[0] || "")]
+        images
       };
 
+      img.classList.add("product-img-primary");
       img.src = normalizeImageSrc(safeProduct.images[0]);
       img.alt = safeProduct.name;
       img.onerror = () => {
         img.src = "images/text_logo.png";
       };
+
+      const wrap = img.parentElement;
+      if (wrap) {
+        wrap.querySelectorAll("img.product-img-secondary").forEach((node) => node.remove());
+        if (safeProduct.images[1]) {
+          const secondary = document.createElement("img");
+          secondary.className = "product-img-secondary";
+          secondary.src = normalizeImageSrc(safeProduct.images[1]);
+          secondary.alt = "";
+          secondary.setAttribute("aria-hidden", "true");
+          secondary.onerror = () => {
+            secondary.src = "images/text_logo.png";
+          };
+          wrap.insertBefore(secondary, img.nextSibling);
+          link.addEventListener("mouseenter", () => link.classList.add("is-hovering"));
+          link.addEventListener("mouseleave", () => link.classList.remove("is-hovering"));
+        }
+      }
+
       link.href = `/product?id=${safeProduct.id}`;
       name.textContent = safeProduct.name;
       price.innerHTML = `${safeProduct.price} <small>грн</small>`;
@@ -2743,7 +2782,7 @@
   <script src="/js/header-nav.js?v=20260427-4"></script>
   <script src="/js/mojibake-fix.js?v=2"></script>
   <script src="/js/app.js?v=20260430-6"></script>
-  <script src="/js/chat-widget.js?v=20260409"></script>
+  <script src="/js/chat-widget.js?v=20260913-1"></script>
 </body>
 </html>
 
